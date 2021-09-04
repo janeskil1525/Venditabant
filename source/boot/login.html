@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Venditabant</title>
+    <meta name="Author" CONTENT="SoftwareSamurai">
+    <meta name="Description" CONTENT="login" />
+    <meta name="Keywords" CONTENT="some keywords" />
+    <meta name="Classification" CONTENT="Klassifizierung">
+    <script type="text/javascript" src="script/qx-6.0.0a.min.js"></script>
+    <script type="text/javascript" src="LoginWindow.js"></script>
+    <script type="text/javascript" src="SignupWindow.js"></script>
+    <script type="text/javascript" src="ForgotWindow.js"></script>
+    <script type="text/javascript" src="ApplicationWindow.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    qx.Class.define ( "LoginWindow.Application", {
+        extend : qx.application.Standalone,
+        members: {
+            main : function ( )  {
+                this.base ( arguments );
+                if ( qx.core.Environment.get ( "qx.debug" ) )  {
+                    qx.log.appender.Native;
+                    qx.log.appender.Console;
+                }
+                var root = this.getRoot ( );
+                var decorator = new qx.ui.decoration.Decorator ( );
+                decorator.setBackgroundImage ( "background.jpg" );
+                decorator.setBackgroundRepeat( "scale" );
+                this.getRoot ( ).setDecorator( decorator );
+                this.rpc ( "type=check", function ( success )  {
+                    var win = null;
+                    if ( success )
+                        win = new ao.apps.users.SoftwareSamurai.ApplicationWindow ( );
+                    else
+                        win = new ao.apps.users.SoftwareSamurai.LoginWindow ( );
+                    win.show ( );
+                },this );
+            },
+            rpc : function ( str, cb, ctx )  {
+                var rpc = new qx.io.request.Xhr ( "user.class.php?"+str );
+                rpc.addListener ( "success", function ( e, x, y ) {
+                    var req = e.getTarget ( );
+                    var rsp = req.getResponse ( );
+                    cb.call ( ctx, ( rsp === "true" ) );
+                }, this );
+                rpc.send ( );
+            }
+        }
+    } );
+    qx.core.Environment.add ( "qx.application", "LoginWindow.Application" );
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+qx.Class.define ( "venditabant.users.login.LoginWindow",
+    {
+        extend : qx.ui.container.Composite,
+        construct : function ( ) {
+            this.base ( arguments );
+            this.setLayout ( new qx.ui.layout.Canvas ( ) );
+            this.set ( { width: 300, height: 200 } );
+            this._buildLogin ( );
+            var top  = parseInt ( ( qx.bom.Document.getHeight ( ) - 200 ) / 2, 10 );
+            var left = parseInt ( ( qx.bom.Document.getWidth  ( ) - 300 ) / 2, 10 );
+            var app  = qx.core.Init.getApplication ( );
+            var root = app.getRoot( );
+            root.add ( this, { top: top, left: left } );
+        },
+        destruct : function ( )  {
+        },
+        members  :  {
+            _buildLogin : function ( )  {
+                var semi = new qx.ui.core.Widget ( );
+                semi.set ( { opacity: 0.6, backgroundColor: "#404040" } );
+                this.add ( semi, { top: 1, left: 1, right: 1, bottom: 1 } );
+
+                var font = new qx.bom.Font ( 24, [ "Arial" ] );
+                font.setBold ( true );
+                //font.setColor ( "#FFFFFF" );
+                var lbl = new qx.ui.basic.Label ( "<center><b style='color: #FFFFFF'>" + this.tr ( "Log in" ) + "</b></center>" );
+                lbl.setFont ( font );
+                lbl.setRich ( true );
+                lbl.setWidth( this.getWidth ( ) - 20  );
+                this.add ( lbl, { top: 10, left: 10 } );
+
+                var line = new qx.ui.core.Widget ( );
+                line.set ( { height: 2, backgroundColor: '#FFFFFF' } );
+                this.add ( line, { top: 50, left: 10, right: 10 } );
+
+                var name = new qx.ui.form.TextField ( );
+                name.setPlaceholder ( this.tr ( "Username" ) );
+                this.add ( name, { top: 65, left: 10, right: 10 } );
+                this._name = name;
+
+                var pass = new qx.ui.form.PasswordField ( );
+                pass.setPlaceholder ( this.tr ( "Password" ) );
+                this.add ( pass, { top: 100, left: 10, right: 10 } );
+                this._pass = pass;
+
+                var chk = new qx.ui.form.CheckBox ( "<b style='color: #FFFFFF'>" + this.tr ( "Remember me ?" ) + "</b>" );
+                lbl = chk.getChildControl ( "label" );
+                lbl.setRich ( true );
+                this.add ( chk, { top: 130, left: 10 } );
+                this._remember = chk;
+
+                var strForgot = "<center><i style='color: white'>" + this.tr ( "Forgot Password ?" ) + "</i></center>";
+                var btnForgot = new qx.ui.basic.Atom ( strForgot );
+                btnForgot.set ( { cursor: 'pointer' } );
+                lbl = btnForgot.getChildControl ( "label" );
+                lbl.setRich ( true );
+                lbl.setAllowGrowY ( true );
+                btnForgot.addListener( "mouseover", function ( )  {
+                    btnForgot.setLabel ( "<u style='color: white'>" + strForgot + "</u>" );
+                },this );
+                btnForgot.addListener( "mouseout", function ( )  {
+                    btnForgot.setLabel ( strForgot );
+                },this );
+                btnForgot.addListener( "click", function ( )  {
+                    this.forgot ( );
+                },this );
+                this.add ( btnForgot, { top: 130, right: 10 } );
+
+                var width = parseInt ( ( this.getWidth ( ) - 30 ) / 2, 10 );
+                var btnLogin = this._createBtn ( this.tr ( "Log in" ), "#AAAAFF70", width, function ( ) {
+                    this.login ( );
+                }, this );
+                this.add ( btnLogin, { bottom: 10, left: 10 } );
+                var btnSignup = this._createBtn ( this.tr ( "Sign Up" ), "#AAFFAA70", width, function ( ) {
+                    this.signup ( );
+                }, this );
+                this.add ( btnSignup, { bottom: 10, right: 10 } );
+
+            },
+            _createBtn : function ( txt, clr, width, cb, ctx )  {
+                let btn = new qx.ui.form.Button ( "<b style='color: white'>" + txt + "</b>" );
+                btn.set ( { width: width, cursor: 'pointer' } );
+                let lbl = btn.getChildControl ( "label" );
+                lbl.setRich ( true );
+                btn.addListenerOnce ( "appear", function ( )  {
+                    this.setBGColor ( btn, "#AAAAAA00", "#AAAAAA00" );
+                },this );
+                btn.addListener ( "mouseover", function ( )  {
+                    this.setBGColor ( btn, clr, clr );
+                },this );
+                btn.addListener ( "mouseout", function ( )  {
+                    this.setBGColor ( btn, "#AAAAAA00", "#AAAAAA00" );
+                },this );
+                btn.addListener ( "execute", function ( e )  {
+                    cb.call ( this );
+                }, ctx );
+                return btn;
+            },
+            setBGColor : function ( btn, clr1, clr2 ) {
+                var elem = btn.getContentElement ( );
+                var dom  = elem.getDomElement ( );
+                var img  = "linear-gradient(" + clr1 + " 35%, " + clr2 + " 100%)";
+                if ( dom.style.setProperty )
+                    dom.style.setProperty ( "background-image", img, null );
+                else
+                    dom.style.setAttribute ( "backgroundImage", img );
+            },
+            forgot : function ( )  {
+                var forgot = new venditabant.users.login.ForgotWindow ( );
+                forgot.show  ( );
+                this.destroy ( );
+            },
+            login : function ( )  {
+                var name = this._name.getValue ( );
+                var pass = this._pass.getValue ( );
+                var remember = this._remember.getValue ( );
+                if ( name.length < 1 || pass.length < 1 )  {
+                    alert ( this.tr ( "Please provie username and password" ) );
+                    return;
+                }
+
+                var str = "type=login";
+                str += "&username="+name;
+                str += "&password="+pass;
+                str += "&remember="+remember;
+                var app = qx.core.Init.getApplication ( );
+                app.rpc ( str, function ( success ) {
+                    var win = null;
+                    if ( success )  {
+                        win = new venditabant.application.ApplicationWindow ( );
+                        win.show ( );
+                        this.destroy ( );
+                    }
+                    else  {
+                        alert ( this.tr ( "Could not log in." ) );
+                    }
+                }, this );
+            },
+            signup : function ( )  {
+                var signup = new venditabant.users.login.SignupWindow ( );
+                signup.show  ( );
+                this.destroy ( );
+            },
+        }
+    } );

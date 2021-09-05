@@ -34,7 +34,7 @@ qx.Class.define ( "venditabant.users.login.LoginWindow",
                 this.add ( line, { top: 50, left: 10, right: 10 } );
 
                 var name = new qx.ui.form.TextField ( );
-                name.setPlaceholder ( this.tr ( "Username" ) );
+                name.setPlaceholder ( this.tr ( "Email" ) );
                 this.add ( name, { top: 65, left: 10, right: 10 } );
                 this._name = name;
 

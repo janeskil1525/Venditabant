@@ -6,7 +6,7 @@ qx.Class.define("venditabant.users.login.SignupWindow",
         construct : function() {
             this.base (arguments);
             this.setLayout(new qx.ui.layout.Canvas);
-            this.set({ width: 300, height: 200 });
+            this.set({ width: 300, height: 300 });
             this._buildSignup ( );
             var top  = parseInt ( ( qx.bom.Document.getHeight ( ) - 200 ) / 2, 10 );
             var left = parseInt ( ( qx.bom.Document.getWidth  ( ) - 300 ) / 2, 10 );
@@ -19,11 +19,15 @@ qx.Class.define("venditabant.users.login.SignupWindow",
         },
         members : {
             signup : function () {
-                var name = this._name.getValue  ( );
+                var email = this._email.getValue ( );
+                var user_name = this._user_name.getValue ( );
+                var company_name = this._company_name.getValue  ( );
+                var company_orgnr = this._company_orgnr.getValue  ( );
+                var company_address = this._company_address.getValue  ( );
                 var pass1= this._pass1.getValue ( );
                 var pass2= this._pass2.getValue ( );
-                var email= this._email.getValue ( );
-                if ( name.length < 1 || email.length < 1 || pass1.length < 1 )  {
+
+                if ( company_name.length < 1 || email.length < 1 || pass1.length < 1 || company_orgnr.length < 1)  {
                     alert ( this.tr ( "Please provide username, password, and email" ) );
                     return;
                 }
@@ -32,13 +36,18 @@ qx.Class.define("venditabant.users.login.SignupWindow",
                     return;
                 }
 
-                var str = "type=signup";
-                str += "&username="+name;
-                str += "&password="+pass1;
-                str += "&email="+email;
-                var app = qx.core.Init.getApplication ( );
-                app.rpc ( str, function ( success ) {
-                    var win = null;
+                let data = {
+                    email:email,
+                    user_name:user_name,
+                    company_name:company_name,
+                    company_orgnr:company_orgnr,
+                    company_address:company_address,
+                    password:pass1,
+                };
+                let app = new venditabant.communication.Post ( );
+
+                app.send ( "http://192.168.1.134/", "api/signup/", data, function ( success ) {
+                    let win = null;
                     if ( success )  {
                         this.login ( );
                     }
@@ -98,30 +107,46 @@ qx.Class.define("venditabant.users.login.SignupWindow",
                 line.set ( { height: 2, backgroundColor: '#FFFFFF' } );
                 this.add ( line, { top: 50, left: 10, right: 10 } );
 
-                let name = new qx.ui.form.TextField ( );
-                name.setPlaceholder ( this.tr ( "Username" ) );
-                this.add ( name, { top: 65, left: 10, right: 10 } );
-                this._name = name;
+                let email = new qx.ui.form.TextField ( );
+                email.setPlaceholder ( this.tr ( "Email" ) );
+                email.setWidth ( 135 );
+                this.add ( email, { top: 65, right: 10, left: 10 } );
+                this._email = email;
+
+                let user_name = new qx.ui.form.TextField ( );
+                user_name.setPlaceholder ( this.tr ( "Name" ) );
+                this.add ( user_name, { top: 95, left: 10, right: 10 } );
+                this._user_name = user_name;
+
+                let company_name = new qx.ui.form.TextField ( );
+                company_name.setPlaceholder ( this.tr ( "Company" ) );
+                this.add ( company_name, { top: 125, left: 10, right: 10 } );
+                this._company_name = company_name;
+
+                let company_orgnr = new qx.ui.form.TextField ( );
+                company_orgnr.setPlaceholder ( this.tr ( "Org. number" ) );
+                this.add ( company_orgnr, { top: 155, left: 10, right: 10 } );
+                this._company_orgnr = company_orgnr;
+
+                let company_address = new qx.ui.form.TextField ( );
+                company_address.setPlaceholder ( this.tr ( "Company address" ) );
+                this.add ( company_address, { top: 185, left: 10, right: 10 } );
+                this._company_address = company_address;
 
                 let pass1 = new qx.ui.form.PasswordField ( );
                 pass1.setPlaceholder ( this.tr ( "Password" ) );
                 pass1.setWidth ( 135 );
-                this.add ( pass1, { top: 100, left: 10 } );
+                this.add ( pass1, { top: 220, left: 10 } );
                 this._pass1 = pass1;
 
                 let pass2 = new qx.ui.form.PasswordField ( );
                 pass2.setPlaceholder ( this.tr ( "Retype Password" ) );
                 pass2.setWidth ( 135 );
-                this.add ( pass2, { top: 100, right: 10 } );
+                this.add ( pass2, { top: 220, right: 10 } );
                 this._pass2 = pass2;
 
-                let email = new qx.ui.form.TextField ( );
-                email.setPlaceholder ( this.tr ( "email" ) );
-                email.setWidth ( 135 );
-                this.add ( email, { top: 135, right: 10, left: 10 } );
-                this._email = email;
 
-                let btnSignup = this._createBtn ( this.tr ( "Sign Up" ), "#AAFFAA70", 135, function ( ) {
+                let btnSignup = this._createBtn ( this.tr ( "Sign Up" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.signup ( );
                 }, this );
                 this.add ( btnSignup, { bottom: 10, left: 10 } );

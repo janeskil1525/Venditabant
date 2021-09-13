@@ -1,54 +1,82 @@
 package venditabant;
 use Mojo::Base 'Mojolicious', -signatures;
 
+use Mojo::Pg;
+
+use venditabant::Helpers::Login;
+use venditabant::Helpers::Stockitems;
+use venditabant::Helpers::Jwt;
+use venditabant::Helpers::Pricelists;
+
+use File::Share;
+use Mojo::File;
+
+use Mojo::JSON qw {from_json};
+
+$ENV{VENDITABANT_HOME} = '/home/jan/Project/Venditabant/Backend/venditabant/'
+    unless $ENV{TRANSLATIONS_HOME};
+
+has dist_dir => sub {
+  return Mojo::File->new(
+      File::Share::dist_dir('venditabant')
+  );
+};
+
+has home => sub {
+  Mojo::Home->new($ENV{VENDITABANT_HOME});
+};
+
 # This method will run once at server start
 sub startup ($self) {
 
   # Load configuration from config file
-  my $config = $self->plugin('NotYAMLConfig');
+  my $config = $self->plugin('Config');
+  $self->helper(pg => sub {state $pg = Mojo::Pg->new->dsn(shift->config('pg'))});
+  $self->helper(login => sub {state $login = venditabant::Helpers::Login->new(pg => shift->pg)});
+  $self->helper(stockitems => sub {state $stockitems = venditabant::Helpers::Stockitems->new(pg => shift->pg)});
+  $self->helper(jwt => sub {state $jwt= venditabant::Helpers::Jwt->new()});
+  $self->helper(pricelists => sub {state $pricelists= venditabant::Helpers::Pricelists->new(pg => shift->pg)});
 
   # Configure the application
   $self->secrets($config->{secrets});
+  $self->log->path($self->home() . $self->config('log'));
 
-  $self->plugin('qooxdoo',{
-      prefix => '/',
-      path => 'v1/jsonrpc/login',
-      controller => 'Login'
-  });
-  $self->plugin('SecureCORS');
-  $self->routes->to('cors.credentials'=>1);
+  $self->pg->migrations->name('venditabant')->from_file(
+      $self->dist_dir->child('migrations/venditabant.sql')
+  )->migrate(9);
 
-  # $self->hook(after_dispatch => sub {
-  #   my $c = shift;
-  #   $c->res->headers->header('Access-Control-Allow-Origin' => '*');
-  #   $c->res->headers->access_control_allow_origin('*');
-  #   $c->res->headers->header('Access-Control-Allow-Methods' => 'GET, OPTIONS, POST, DELETE, PUT');
-  #   $c->res->headers->header('Access-Control-Allow-Headers' => 'Content-Type' => 'application/x-www-form-urlencoded');
-  #
-  # });
-  # Router
-  #my $r = $self->routes;
-  my $r = $self->routes->under_strict_cors('/');
+  $self->renderer->paths([
+      $self->dist_dir->child('templates'),
+  ]);
+  $self->static->paths([
+      $self->dist_dir->child('public'),
+  ]);
+
   # Normal route to controller
+  my $r = $self->routes;
+
+  my $auth = $r->under('/api/v1' => sub {
+    my $c = shift;
+    #say "authentichate " . $c->req->headers->header('X-Token-Check');
+    # Authenticated
+
+    return 1 if $c->login->authenticate($c->req->headers->header('X-Token-Check'));
+    # Not authenticated
+    $c->render(json => '{"error":"unknown error"}');
+    return undef;
+  });
+
   $r->get('/')->to('Example#welcome');
 
-   $r->cors('/v1/login/')->to(
-        'cors.methods'      => 'GET, POST',
-  #     # 'cors.origin'       => 'http://localhost:8080',
-  #    #  'cors.credentials'  => 1,
-   );
 
-  $r->post('/v1/login/',
-      headers => { 'Content-Type' => 'application/json' }
-  )->to('login#login_user',
-      'cors.origin'       => 'http://localhost:8080',
-      'cors.credentials'  => 1,
-  );
 
-  $r->any('/RpcService') -> to(
-      controller => 'Login',
-      action => 'dispatch',
-  );
+  $r->put('/api/login/')->to('login#login_user');
+  $r->put('/api/signup/')->to('signup#signup_company');
+  $auth->put('/stockitem/save/')->to('stockitems#save_stockitem');
+  $auth->get('/stockitem/load_list/')->to('stockitems#load_list');
+  $auth->get('/pricelists/heads/load_list/')->to('pricelists#load_list_heads');
+  $auth->put('/pricelists/heads/save/')->to('pricelists#upsert_head');
+
 }
 
 1;

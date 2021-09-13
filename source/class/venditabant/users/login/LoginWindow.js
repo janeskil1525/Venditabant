@@ -78,32 +78,10 @@ qx.Class.define ( "venditabant.users.login.LoginWindow",
 
             },
             _createBtn : function ( txt, clr, width, cb, ctx )  {
-                let btn = new qx.ui.form.Button ( "<b style='color: white'>" + txt + "</b>" );
-                btn.set ( { width: width, cursor: 'pointer' } );
-                let lbl = btn.getChildControl ( "label" );
-                lbl.setRich ( true );
-                btn.addListenerOnce ( "appear", function ( )  {
-                    this.setBGColor ( btn, "#AAAAAA00", "#AAAAAA00" );
-                },this );
-                btn.addListener ( "mouseover", function ( )  {
-                    this.setBGColor ( btn, clr, clr );
-                },this );
-                btn.addListener ( "mouseout", function ( )  {
-                    this.setBGColor ( btn, "#AAAAAA00", "#AAAAAA00" );
-                },this );
-                btn.addListener ( "execute", function ( e )  {
-                    cb.call ( this );
-                }, ctx );
+
+                let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
+
                 return btn;
-            },
-            setBGColor : function ( btn, clr1, clr2 ) {
-                var elem = btn.getContentElement ( );
-                var dom  = elem.getDomElement ( );
-                var img  = "linear-gradient(" + clr1 + " 35%, " + clr2 + " 100%)";
-                if ( dom.style.setProperty )
-                    dom.style.setProperty ( "background-image", img, null );
-                else
-                    dom.style.setAttribute ( "backgroundImage", img );
             },
             forgot : function ( )  {
                 var forgot = new venditabant.users.login.ForgotWindow ( );
@@ -115,26 +93,27 @@ qx.Class.define ( "venditabant.users.login.LoginWindow",
                 var pass = this._pass.getValue ( );
                 var remember = this._remember.getValue ( );
                 if ( name.length < 1 || pass.length < 1 )  {
-                    alert ( this.tr ( "Please provie username and password" ) );
+                    alert ( this.tr ( "Please provide username and password" ) );
                     return;
                 }
 
-                var str = "type=login";
-                str += "&username="+name;
-                str += "&password="+pass;
-                str += "&remember="+remember;
-                var app = qx.core.Init.getApplication ( );
-                app.rpc ( str, function ( success ) {
-                    var win = null;
-                    if ( success )  {
-                        win = new venditabant.application.ApplicationWindow ( );
-                        win.show ( );
-                        this.destroy ( );
-                    }
-                    else  {
-                        alert ( this.tr ( "Could not log in." ) );
+                let app = new venditabant.communication.Post ( );
+                let data = {
+                    username:name, password:pass
+                };
+                app.send ( "http://192.168.1.134/", "api/login/", data, function ( success, rsp ) {
+                    if (success) {
+                        let jwt = new qx.data.store.Offline('userid','local');
+                        jwt.setModel(qx.data.marshal.Json.createModel(rsp.data));
+
+                        let win = new venditabant.application.ApplicationWindow();
+                        win.show();
+                        this.destroy();
+                    } else {
+                        alert(this.tr("Could not log in."));
                     }
                 }, this );
+
             },
             signup : function ( )  {
                 var signup = new venditabant.users.login.SignupWindow ( );

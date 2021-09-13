@@ -1,14 +1,23 @@
 {
-  "name": "qxl",
+  "name": "venditabant",
   "version": "1.0.0",
   "description": "Test",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Jan Eskilsson",
   "license": "ISC",
   "devDependencies": {
     "@qooxdoo/compiler": "^1.0.2"
-  }
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janeskil1525/Venditabant.git"
+  },
+  "bugs": {
+    "url": "https://github.com/janeskil1525/Venditabant/issues"
+  },
+  "homepage": "https://github.com/janeskil1525/Venditabant#readme"
 }

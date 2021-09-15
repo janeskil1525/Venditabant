@@ -6,7 +6,7 @@ has 'db';
 
 async sub load_list_heads_p ($self, $companies_pkey) {
 
-    my $result = await $self->pg->db->select_p('pricelists',
+    my $result = await $self->db->select_p('pricelists',
         undef,
         {
             companies_fkey => $companies_pkey

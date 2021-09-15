@@ -69,13 +69,20 @@ sub startup ($self) {
   $r->get('/')->to('Example#welcome');
 
 
-
   $r->put('/api/login/')->to('login#login_user');
   $r->put('/api/signup/')->to('signup#signup_company');
   $auth->put('/stockitem/save/')->to('stockitems#save_stockitem');
   $auth->get('/stockitem/load_list/')->to('stockitems#load_list');
+
   $auth->get('/pricelists/heads/load_list/')->to('pricelists#load_list_heads');
   $auth->put('/pricelists/heads/save/')->to('pricelists#upsert_head');
+  $auth->put('/pricelists/items/save/')->to('pricelists#insert_item');
+  $auth->get(
+      '/pricelists/items/load_list/:pricelist'
+  )->to(
+      'pricelists#load_list_items'
+  );
+
 
 }
 

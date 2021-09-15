@@ -20,14 +20,15 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
         members: {
             // Public functions ...
             __table : null,
+            _selectedPricelistHead : null,
             setParams: function (params) {
             },
             _buildWindow: function () {
                 var win = new qx.ui.window.Window("Pricelists", "icon/16/apps/internet-feed-reader.png");
-                win.setLayout(new qx.ui.layout.Canvas());
+                win.setLayout(new qx.ui.layout.VBox(10));
                 win.setStatus("Application is ready");
-                win.setWidth(800);
-                win.setHeight(500);
+                /*win.setWidth(800);
+                win.setHeight(500);*/
                 win.setCenterOnAppear(true);
                 win.open();
                 let app = qx.core.Init.getApplication();
@@ -38,102 +39,204 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 win.add(atom);
                 win.setShowStatusbar(true);
 
-                /*var box = new qx.ui.container.Composite();
-                box.setLayout(new qx.ui.layout.HBox(10));
-                win.add(box, {flex: 1});*/
+                var tabView = new qx.ui.tabview.TabView();
+                tabView.setWidth(800);
+                tabView.setHeight(300);
+                win.add(tabView, {flex:1});
 
-                let pricelists = this.loadPricelists();
+                var page1 = new qx.ui.tabview.Page("Definition");
+                //page1.setLayout(new qx.ui.layout.VBox(4));
+                page1.setLayout(new qx.ui.layout.Canvas());
+
+                let pricelists = new qx.ui.form.SelectBox();
+
                 pricelists.addListener("changeSelection", function(e) {
                     let selection = e.getData()[0].getLabel();
-                    this.debug("Selected item: " + selection);
-                    alert("Selected item: " + selection);
+
+                    this._selectedPricelistHead = selection;
+
+                    /*this.debug("Selected item: " + selection);
+                    alert("Selected item: " + selection);*/
                 },this);
-                win.add ( pricelists, { top: 30, left: 10 } );
+                this._pricelists = pricelists;
+                this.loadPricelists();
+
+                page1.add ( pricelists, { top: 30, left: 10 } );
 
                 let btnAddPricelist = this._createBtn ( this.tr ( "Add" ), "rgba(239,170,255,0.44)", 70, function ( ) {
                     this.addPricelist ( );
                 }, this );
 
-                win.add ( btnAddPricelist, { top: 30, left: 140 } );
+                page1.add ( btnAddPricelist, { top: 30, left: 140 } );
 
                 let lbl = new qx.ui.basic.Label ( this.tr( "Stockitem" )  );
                 lbl.setRich ( true );
                 lbl.setWidth( 70 );
-                win.add ( lbl, { top: 80, left: 10 } );
+                page1.add ( lbl, { top: 80, left: 10 } );
 
-                var stockitem = new qx.ui.form.TextField ( );
+                let stockitems = new qx.ui.form.SelectBox();
+                stockitems.setWidth( 150 );
+                stockitems.addListener("changeSelection", function(e) {
+                    let selection = e.getData()[0].getLabel();
+                    this._selectedStockitem = selection;
+                },this);
+                this._stockitems = stockitems;
+                this.loadStockitems();
+
+                page1.add ( stockitems, { top: 80, left: 90 } );
+
+                /*var stockitem = new qx.ui.form.TextField ( );
                 stockitem.setPlaceholder (  ( "Stockitem" ) );
                 stockitem.setWidth( 150 );
 
-                win.add ( stockitem, { top: 80, left: 90 } );
-                this._stockitem = stockitem;
+                page1.add ( stockitem, { top: 80, left: 90 } );
+                this._stockitem = stockitem;*/
 
-                lbl = new qx.ui.basic.Label ( ( "Description" )  );
+                lbl = new qx.ui.basic.Label ( ( "Price" )  );
                 lbl.setRich ( true );
                 lbl.setWidth( 70 );
-                win.add ( lbl, { top: 80, left: 250 } );
+                page1.add ( lbl, { top: 80, left: 250 } );
 
-                var descriptn = new qx.ui.form.TextField ( );
-                descriptn.setPlaceholder (  ( "Description" ) );
-                descriptn.setWidth( 250 );
+                var price = new qx.ui.form.TextField ( );
+                price.setPlaceholder (  ( "Price" ) );
+                price.setWidth( 150 );
 
-                win.add ( descriptn, { top: 80, left: 350 } );
-                this._description = descriptn;
+                page1.add ( price, { top: 80, left: 350 } );
+                this._price = price;
+
+                var format = new qx.util.format.DateFormat("yyyy-MM-dd");
+
+                lbl = new qx.ui.basic.Label ( this.tr( "From" )  );
+                lbl.setRich ( true );
+                lbl.setWidth( 70 );
+                page1.add ( lbl, { top: 120, left: 10 } );
+
+                var from = new qx.ui.form.DateField ( );
+                from.setDateFormat(format);
+                from.setValue (new Date());
+                from.setWidth( 150 );
+
+                page1.add ( from, { top: 120, left: 90 } );
+                this._from = from;
+
+                lbl = new qx.ui.basic.Label ( ( "To" )  );
+                lbl.setRich ( true );
+                lbl.setWidth( 70 );
+                page1.add ( lbl, { top: 120, left: 250 } );
+
+                var to = new qx.ui.form.DateField ( );
+                to.setDateFormat(format);
+                to.setValue (new Date(new Date().setFullYear(new Date().getFullYear() + 3)));
+                to.setWidth( 150 );
+
+                page1.add ( to, { top: 120, left: 350 } );
+                this._to = to;
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
-                    this.saveStockitem ( );
+                    this.savePricelistItem ( );
                 }, this );
-                win.add ( btnSignup, { bottom: 10, left: 10 } );
+                page1.add ( btnSignup, { bottom: 10, left: 10 } );
 
                 let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
                     this.cancel ( );
                 }, this );
-                win.add ( btnCancel, { bottom: 10, right: 10 } );
+                page1.add ( btnCancel, { bottom: 10, right: 10 } );
+                tabView.add(page1);
 
+                this._createTable();
+                win.add(this._table);
+                this.loadPricelistItems();
+            },
+            loadPricelistItems:function() {
+                let pricelistitems = new venditabant.sales.pricelists.models.PricelistItems();
 
-                /*var page2 = new qx.ui.tabview.Page("Page 2");
-                tabView.add(page2);
+                let pricelisthead = 'DEFAULT'
+                if(typeof this._selectedPricelistHead !== 'undefined' && this._selectedPricelistHead !== null){
+                    pricelisthead = this._selectedPricelistHead;
+                }
 
-                var page3 = new qx.ui.tabview.Page("Page 3");
-                tabView.add(page3);*/
+                pricelistitems.loadList(function(response) {
+                        let tableData = [];
+                        if(response.data !== null) {
+                            for(let i = 0; i < response.data.length; i++) {
+                                tableData.push([
+                                    response.data[i].pricelist_items_pkey,
+                                    response.data[i].stockitem,
+                                    response.data[i].price,
+                                    response.data[i].fromdate,
+                                    response.data[i].todate,
+                                ]);
+                            }
+                        }
 
+                        this._table.getTableModel().setData(tableData);
+                    },
+                    this,
+                    pricelisthead
+                );
+            },
+            loadStockitems:function () {
+                let stockitems = new venditabant.stock.stockitems.models.Stockitem();
+                stockitems.loadList(function(response, rsp) {
+                    let tableData = [];
+                    for(let i = 0; i < response.data.length; i++) {
+                        this.addStockitemsToList(response.data[i].stockitem);
+                    }
+                }, this);
+            },
+            addStockitemsToList:function(stockitem) {
+                let tempItem = new qx.ui.form.ListItem(stockitem);
+                this._stockitems.add(tempItem);
             },
             addPricelist : function() {
-                let win = new venditabant.sales.pricelists.views.NewHead();
+                let win = new venditabant.sales.pricelists.views.NewHead(this);
 
             },
             loadPricelists : function() {
-                /*var container = new qx.ui.container.Composite(new qx.ui.layout.VBox(2));
+                let that = this;
+                let pricelist_heads = new venditabant.sales.pricelists.models.Pricelists();
 
-                container.add(new qx.ui.basic.Label(this.tr("Pricelists")));*/
-
-                var selectBox = new qx.ui.form.SelectBox();
-                for (var i=0; i<30; i++) {
-                    var tempItem = new qx.ui.form.ListItem("Random Value " + Math.round(Math.random()*100000000));
-                    selectBox.add(tempItem);
-                }
-
-                return selectBox;
+                pricelist_heads.loadList(function(response){
+                    if(response.data !== null) {
+                        for(let i= 0; i < response.data.length ;i++) {
+                            let pricelist = response.data[i].pricelist;
+                            that.addPricelistHead(pricelist);
+                        }
+                    }
+                }, this);
             },
-            savePriceListHead:function() {
-                let stockitem = this._stockitem.getValue();
-                let description  = this._description.getValue();
-                let data = {
-                    stockitem: stockitem,
-                    description: description
+            addPricelistHead:function(pricelist) {
+                let tempItem = new qx.ui.form.ListItem(pricelist);
+                this._pricelists.add(tempItem);
+                if(pricelist === 'DEFAULT'){
+                    this._selectedPricelistHead = 'DEFAULT';
+                    this._pricelists.setSelection([tempItem]);
                 }
-                let com = new venditabant.communication.Post ( );
-                com.send ( "http://192.168.1.134/", "api/v1/stockitem/save/", data, function ( success ) {
-                    let win = null;
+            },
+            savePricelistItem:function() {
+                let that = this;
+                let pricelist = this._selectedPricelistHead;
+                let stockitem = this._selectedStockitem;
+                let price  = this._price.getValue();
+                let from = this._from.getValue();
+                let to = this._to.getValue();
+
+                let data = {
+                    pricelist: pricelist,
+                    stockitem: stockitem,
+                    price: price,
+                    fromdate:from,
+                    todate:to,
+                }
+                let model = new venditabant.sales.pricelists.models.PricelistItems();
+                model.savePricelistItem(data, function(success) {
                     if ( success )  {
-                        this.loadStockitems();
-                        alert("Saved item successfully");
+                        that.loadPricelistItems();
                     }
                     else  {
-                        alert ( this.tr ( 'success' ) );
+                        alert ( this.tr ( 'Something went bad during saving of pricelist item' ) );
                     }
-                }, this );
-
+                }, this);
             },
             _createBtn : function (txt, clr, width, cb, ctx) {
                 let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
@@ -147,7 +250,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Stockitem", "Description" ]);
+                tableModel.setColumns([ "ID", "Stockitem", "Price", "From", "To" ]);
                 tableModel.setData(rowData);
                 //tableModel.setColumnEditable(1, true);
                 //tableModel.setColumnEditable(2, true);
@@ -169,8 +272,8 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                         selectedRows.push(table.getTableModel().getRowData(index));
                     });
 
-                    that._stockitem.setValue(selectedRows[0][1]);
-                    that._description.setValue(selectedRows[0][2]);
+                    /*that._stockitem.setValue(selectedRows[0][1]);
+                    that._description.setValue(selectedRows[0][2]);*/
                 });
                 var tcm = table.getTableColumnModel();
 
@@ -184,20 +287,5 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
 
                 return ;
             },
-            loadStockitems:function () {
-                let stockitems = new venditabant.stock.stockitems.models.Stockitem();
-                stockitems.loadList(function(response, rsp) {
-                    let tableData = [];
-                    for(let i = 0; i < response.data.length; i++) {
-
-                        tableData.push([response.data[i].stockitems_pkey,
-                            response.data[i].stockitem,
-                            response.data[i].description]);
-                    }
-                    this._table.getTableModel().setData(tableData);
-                    //alert("Set table data here");
-                }, this);
-                //return ;//list;
-            }
         }
     });

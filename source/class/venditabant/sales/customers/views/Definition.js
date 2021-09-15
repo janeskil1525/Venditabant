@@ -1,5 +1,5 @@
 
-qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
+qx.Class.define ( "venditabant.sales.customers.views.Definition",
     {
         extend: qx.ui.window.Window,
 
@@ -23,7 +23,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
             setParams: function (params) {
             },
             _buildWindow: function () {
-                var win = new qx.ui.window.Window("Stockitems", "icon/16/apps/internet-feed-reader.png");
+                var win = new qx.ui.window.Window("Customers", "icon/16/apps/internet-feed-reader.png");
                 win.setLayout(new qx.ui.layout.VBox(10));
                 win.setStatus("Application is ready");
                 win.open();
@@ -31,7 +31,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 let root = app.getRoot();
                 root.add(win, {left: 350, top: 120});
 
-                var atom = new qx.ui.basic.Atom("Manage stockitems", "icon/22/apps/utilities-calculator.png");
+                var atom = new qx.ui.basic.Atom("Manage customers", "icon/22/apps/utilities-calculator.png");
                 win.add(atom);
                 win.setShowStatusbar(true);
 
@@ -49,34 +49,61 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 //page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
 
-                var lbl = new qx.ui.basic.Label ( ( "Stockitem" )  );
-                lbl.setRich ( true );
-                lbl.setWidth( 70 );
+                let lbl = this._createLbl(this.tr( "Customer" ), 70);
                 page1.add ( lbl, { top: 10, left: 10 } );
 
-                var stockitem = new qx.ui.form.TextField ( );
-                stockitem.setPlaceholder (  ( "Stockitem" ) );
-                stockitem.setWidth( 150 );
-                stockitem.setRequired(true);
-                stockitem.setRequiredInvalidMessage(this.tr("Stockitem is required"));
+                let customer = this._createTxt("Customer", 150, true, this.tr("Customer is required"));
+                page1.add ( customer, { top: 10, left: 90 } );
+                this._customer = customer;
 
-                page1.add ( stockitem, { top: 10, left: 90 } );
-                this._stockitem = stockitem;
-
-                lbl = new qx.ui.basic.Label ( ( "Description" )  );
-                lbl.setRich ( true );
-                lbl.setWidth( 70 );
+                lbl = this._createLbl(this.tr( "Name" ), 70);
                 page1.add ( lbl, { top: 10, left: 250 } );
 
-                var descriptn = new qx.ui.form.TextField ( );
-                descriptn.setPlaceholder (  ( "Description" ) );
-                descriptn.setWidth( 250 );
+                let name = this._createTxt("Name", 250, false);
+                page1.add ( name, { top: 10, left: 350 } );
+                this._name = name
 
-                page1.add ( descriptn, { top: 10, left: 350 } );
-                this._description = descriptn;
+                lbl = this._createLbl(this.tr( "Org. nr" ), 70);
+                page1.add ( lbl, { top: 50, left: 250 } );
+
+                let orgnbr = this._createTxt("Org. nr", 250, false);
+                page1.add ( orgnbr, { top: 50, left: 350 } );
+                this._orgnbr = orgnbr
+
+
+                lbl = this._createLbl(this.tr( "Pricelist" ), 70);
+                page1.add ( lbl, { top: 50, left: 10 } );
+
+                let pricelists = new qx.ui.form.SelectBox();
+
+                pricelists.addListener("changeSelection", function(e) {
+                    let selection = e.getData()[0].getLabel();
+
+                    this._selectedPricelistHead = selection;
+                },this);
+
+                pricelists.setWidth( 150 );
+                this._pricelists = pricelists;
+                this.loadPricelists();
+
+                page1.add ( pricelists, { top: 50, left: 90 } );
+
+                lbl = this._createLbl(this.tr( "Phone" ), 70);
+                page1.add ( lbl, { top: 90, left: 10 } );
+
+                let phone = this._createTxt("Phone", 150, true, this.tr("Customer is required"));
+                page1.add ( phone, { top: 90, left: 90 } );
+                this._phone = phone;
+
+                lbl = this._createLbl(this.tr( "Homepage" ), 70);
+                page1.add ( lbl, { top: 90, left: 250 } );
+
+                let homepage = this._createTxt("Homepage", 250, false);
+                page1.add ( homepage, { top: 90, left: 350 } );
+                this._phomepage = homepage
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
-                    this.saveStockitem ( );
+                    this.saveCustomer ( );
                 }, this );
                 page1.add ( btnSignup, { bottom: 10, left: 10 } );
 
@@ -95,32 +122,61 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 this._createTable();
                 win.add(this._table);
 
-                this.loadStockitems();
+                this.loadCustomers();
             },
-            saveStockitem:function() {
-                let stockitem = this._stockitem.getValue();
-                let description  = this._description.getValue();
+            saveCustomer:function() {
+                let customer = this._customer.getValue();
+                let name  = this._name.getValue();
                 let data = {
-                    stockitem: stockitem,
-                    description: description
+                    customer: customer,
+                    name: name
                 }
                 let com = new venditabant.communication.Post ( );
-                com.send ( "http://192.168.1.134/", "api/v1/stockitem/save/", data, function ( success ) {
+                com.send ( "http://192.168.1.134/", "api/v1/customers/save/", data, function ( success ) {
                     let win = null;
                     if ( success )  {
-                        this.loadStockitems();
+                        this.loadCustomers();
                         alert("Saved item successfully");
                     }
                     else  {
-                        alert ( this.tr ( 'success' ) );
+                        alert ( this.tr ( 'Something went wrong saving the customer' ) );
                     }
                 }, this );
 
+            },
+            loadPricelists : function() {
+                let that = this;
+                let pricelist_heads = new venditabant.sales.pricelists.models.Pricelists();
+
+                pricelist_heads.loadList(function(response){
+                    if(response.data !== null) {
+                        for(let i= 0; i < response.data.length ;i++) {
+                            let pricelist = response.data[i].pricelist;
+                            that.addPricelistHead(pricelist);
+                        }
+                    }
+                }, this);
+            },
+            addPricelistHead:function(pricelist) {
+                let tempItem = new qx.ui.form.ListItem(pricelist);
+                this._pricelists.add(tempItem);
+                if(pricelist === 'DEFAULT'){
+                    this._selectedPricelistHead = 'DEFAULT';
+                    this._pricelists.setSelection([tempItem]);
+                }
             },
             _createBtn : function (txt, clr, width, cb, ctx) {
                 let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
 
                 return btn;
+            },
+            _createTxt:function(placeholder, width, required, requiredTxt) {
+                let txt = new venditabant.widget.textfield.Standard().createTxt(placeholder, width, required, requiredTxt);
+                return txt;
+            },
+            _createLbl:function(label, width, required, requiredTxt) {
+                let lbl = new venditabant.widget.label.Standard().createLbl(label, width, required, requiredTxt);
+                return lbl;
             },
             _createTable : function() {
                 // Create the initial data
@@ -129,7 +185,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Stockitem", "Description" ]);
+                tableModel.setColumns([ "ID", "Customer", "Name" ]);
                 tableModel.setData(rowData);
                 //tableModel.setColumnEditable(1, true);
                 //tableModel.setColumnEditable(2, true);
@@ -151,8 +207,8 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                         selectedRows.push(table.getTableModel().getRowData(index));
                     });
 
-                    that._stockitem.setValue(selectedRows[0][1]);
-                    that._description.setValue(selectedRows[0][2]);
+                    that._customer.setValue(selectedRows[0][1]);
+                    that._name.setValue(selectedRows[0][2]);
                 });
                 var tcm = table.getTableColumnModel();
 
@@ -166,16 +222,16 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 return ;
             },
-            loadStockitems:function () {
-                let stockitems = new venditabant.stock.stockitems.models.Stockitem();
-                stockitems.loadList(function(response) {
+            loadCustomers:function () {
+                let customers = new venditabant.sales.customers.models.Customers();
+                customers.loadList(function(response) {
                     let tableData = [];
                     for(let i = 0; i < response.data.length; i++) {
 
                         tableData.push([
-                            response.data[i].stockitems_pkey,
-                            response.data[i].stockitem,
-                            response.data[i].description]);
+                            response.data[i].customers_pkey,
+                            response.data[i].customer,
+                            response.data[i].name]);
                     }
                     this._table.getTableModel().setData(tableData);
                     //alert("Set table data here");

@@ -190,8 +190,8 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 let stockitemButton = new qx.ui.menu.Button("Stockitems");
                 let pricelistButton = new qx.ui.menu.Button("Pricelists");
-                /*var previousButton = new qx.ui.menu.Button("Search previous...");
-                var replaceButton = new qx.ui.menu.Button("Replace");
+                let customerButton = new qx.ui.menu.Button("Customers");
+                /* var replaceButton = new qx.ui.menu.Button("Replace");
                 var searchFilesButton = new qx.ui.menu.Button("Search in files", "icon/16/actions/system-search.png");
                 var replaceFilesButton = new qx.ui.menu.Button("Replace in files");*/
 
@@ -199,24 +199,26 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 stockitemButton.addListener("execute", this.stockitemsButton);
                 pricelistButton.addListener("execute", this.pricelistButton);
-                /*previousButton.addListener("execute", this.debugButton);
-                replaceButton.addListener("execute", this.debugButton);
+                customerButton.addListener("execute", this.customerButton);
+                /* replaceButton.addListener("execute", this.debugButton);
                 searchFilesButton.addListener("execute", this.debugButton);
                 replaceFilesButton.addListener("execute", this.debugButton);*/
 
                 menu.add(stockitemButton);
                 menu.add(pricelistButton);
-                /*menu.add(previousButton);
-                menu.add(replaceButton);
+                menu.add(customerButton);
+                /*menu.add(replaceButton);
                 menu.addSeparator();
                 menu.add(searchFilesButton);
                 menu.add(replaceFilesButton);*/
 
                 return menu;
             },
+            customerButton: function() {
+                let customerswindow = new venditabant.sales.customers.views.Definition();
+            },
             stockitemsButton: function () {
                 let stockitemswindow = new venditabant.stock.stockitems.views.Definition();
-                // stockitemswindow.show();
             },
             pricelistButton: function() {
                 let pricelistwindow = new venditabant.sales.pricelists.views.Definition();

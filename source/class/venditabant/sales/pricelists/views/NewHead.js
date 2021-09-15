@@ -3,8 +3,8 @@ qx.Class.define ( "venditabant.sales.pricelists.views.NewHead",
     {
         extend: qx.ui.window.Window,
 
-        construct: function (cb) {
-            this.__cb = cb;
+        construct: function (ctx) {
+            this.__ctx = ctx;
             this.base(arguments);
             this.setLayout(new qx.ui.layout.Canvas());
             this.setWidth(1000);
@@ -21,7 +21,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.NewHead",
         members: {
             // Public functions ...
             __table: null,
-            __cb:null,
+            __ctx:null,
             setParams: function (params) {
             },
             _buildWindow: function () {
@@ -74,8 +74,8 @@ qx.Class.define ( "venditabant.sales.pricelists.views.NewHead",
                 }, this);
                 win.add(btnSignup, {bottom: 10, left: 10});
 
-                let btnCancel = this._createBtn(this.tr("Cancel"), "#FFAAAA70", 135, function () {
-                    this.cancel();
+                let btnCancel = this._createBtn(this.tr("Close"), "#FFAAAA70", 135, function () {
+                    this.doClose();
                 }, this);
                 win.add(btnCancel, {bottom: 10, right: 10});
             },
@@ -87,33 +87,15 @@ qx.Class.define ( "venditabant.sales.pricelists.views.NewHead",
                     description: description
                 }
                 let model = new venditabant.sales.pricelists.models.Pricelists();
-                model.savePricelistHead(data, this.__cb,)
-
-                alert("Add pricelist");
-            },
-            savePriceListHead: function () {
-                let stockitem = this._stockitem.getValue();
-                let description = this._description.getValue();
-                let data = {
-                    stockitem: stockitem,
-                    description: description
-                }
-                let com = new venditabant.communication.Post();
-                com.send("http://192.168.1.134/", "api/v1/stockitem/save/", data, function (success) {
-                    let win = null;
-                    if (success) {
-                        this.loadStockitems();
-                        alert("Saved item successfully");
-                    } else {
-                        alert(this.tr('success'));
-                    }
-                }, this);
-
+                model.savePricelistHead(data, this.__ctx.addPricelistHead, this.__ctx)
             },
             _createBtn: function (txt, clr, width, cb, ctx) {
                 let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
 
                 return btn;
             },
+            doClose:function(){
+                this.destroy();
+            }
         }
     });

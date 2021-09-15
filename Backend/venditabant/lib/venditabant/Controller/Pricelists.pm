@@ -5,6 +5,8 @@ use Mojo::JSON qw { from_json };
 
 sub load_list_heads ($self) {
 
+    $self->render_later;
+
     my $companies_pkey = $self->jwt->companise_pkey(
         $self->req->headers->header('X-Token-Check')
     );
@@ -32,5 +34,37 @@ sub upsert_head ($self) {
         $self->render(json => {'result' => $err});
     })->wait;
 
+}
+
+sub insert_item ($self) {
+    $self->render_later;
+    my $companies_pkey = $self->jwt->companise_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+    my $json_hash = from_json ($self->req->body);
+    $self->pricelists->insert_item($companies_pkey, $json_hash)->then(sub ($result) {
+        $self->render(json => {'result' => $result});
+    })->catch( sub ($err) {
+
+        $self->render(json => {'result' => $err});
+    })->wait;
+}
+
+sub load_list_items ($self) {
+
+    $self->render_later;
+
+    my $companies_pkey = $self->jwt->companise_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+
+    my $pricelist = $self->param('pricelist');
+    $self->pricelists->load_list_items($companies_pkey, $pricelist)->then(sub ($result) {
+
+        $self->render(json => {'result' => 'success', data => $result});
+    })->catch( sub ($err) {
+
+        $self->render(json => {'result' => 'failed', data => $err});
+    })->wait;
 }
 1;

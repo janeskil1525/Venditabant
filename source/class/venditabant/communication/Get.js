@@ -9,8 +9,11 @@ qx.Class.define("venditabant.communication.Get",
         },
         members:{
             load:function(url, endpoint, data, cb, ctx){
-                let address = url + endpoint + data;
-                // "http://192.168.1.134/api/v1/save_stockitem"
+                let address = url + endpoint;
+                if(typeof data !== 'undefined' && data.length > 0) {
+                    address = address + data;
+                }
+
                 let rpc = new qx.io.request.Xhr (address);
                 rpc.setMethod("GET");
 
@@ -23,9 +26,9 @@ qx.Class.define("venditabant.communication.Get",
 
                 rpc.setRequestHeader( "Content-Type", "application/json" );
                 rpc.addListener ( "success", function ( e, x, y ) {
-                    var req = e.getTarget ( );
-                    var rsp = req.getResponse ( );
-                    cb.call ( ctx, ( rsp.result === "success" ), rsp );
+                    let req = e.getTarget ( );
+                    let rsp = req.getResponse ( );
+                    cb.call ( ctx, (rsp));
                 }, this );
                 rpc.send ( );
 

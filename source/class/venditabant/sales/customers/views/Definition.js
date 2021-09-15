@@ -68,7 +68,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                 let orgnbr = this._createTxt("Org. nr", 250, false);
                 page1.add ( orgnbr, { top: 50, left: 350 } );
-                this._orgnbr = orgnbr
+                this._registrationnumber = orgnbr
 
 
                 lbl = this._createLbl(this.tr( "Pricelist" ), 70);
@@ -100,7 +100,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                 let homepage = this._createTxt("Homepage", 250, false);
                 page1.add ( homepage, { top: 90, left: 350 } );
-                this._phomepage = homepage
+                this._homepage = homepage
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveCustomer ( );
@@ -127,13 +127,21 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
             saveCustomer:function() {
                 let customer = this._customer.getValue();
                 let name  = this._name.getValue();
+                let registrationnumber = this._registrationnumber.getValue();
+                let homepage = this._homepage.getValue();
+                let phone = this._phone.getValue();
+                let pricelist = this._selectedPricelistHead;
+
                 let data = {
                     customer: customer,
-                    name: name
+                    name: name,
+                    registrationnumber: registrationnumber,
+                    homepage: homepage,
+                    phone: phone,
+                    pricelist: pricelist,
                 }
                 let com = new venditabant.communication.Post ( );
                 com.send ( "http://192.168.1.134/", "api/v1/customers/save/", data, function ( success ) {
-                    let win = null;
                     if ( success )  {
                         this.loadCustomers();
                         alert("Saved item successfully");
@@ -185,7 +193,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Customer", "Name" ]);
+                tableModel.setColumns([ "ID", "Customer", "Name", "Pricelist", "Org. nr.", "Phone", "Homepage" ]);
                 tableModel.setData(rowData);
                 //tableModel.setColumnEditable(1, true);
                 //tableModel.setColumnEditable(2, true);
@@ -209,6 +217,11 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                     that._customer.setValue(selectedRows[0][1]);
                     that._name.setValue(selectedRows[0][2]);
+                    that._registrationnumber.setValue(selectedRows[0][4]);
+                    that._homepage.setValue(selectedRows[0][6]);
+                    that._phone.setValue(selectedRows[0][5]);
+                    that._selectedPricelistHead = selectedRows[0][3];
+
                 });
                 var tcm = table.getTableColumnModel();
 
@@ -231,7 +244,12 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                         tableData.push([
                             response.data[i].customers_pkey,
                             response.data[i].customer,
-                            response.data[i].name]);
+                            response.data[i].name,
+                            response.data[i].pricelist,
+                            response.data[i].registrationnumber,
+                            response.data[i].phone,
+                            response.data[i].homepage,
+                        ]);
                     }
                     this._table.getTableModel().setData(tableData);
                     //alert("Set table data here");

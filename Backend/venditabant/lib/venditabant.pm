@@ -7,6 +7,7 @@ use venditabant::Helpers::Login;
 use venditabant::Helpers::Stockitems;
 use venditabant::Helpers::Jwt;
 use venditabant::Helpers::Pricelists;
+use venditabant::Helpers::Customers;
 
 use File::Share;
 use Mojo::File;
@@ -34,8 +35,9 @@ sub startup ($self) {
   $self->helper(pg => sub {state $pg = Mojo::Pg->new->dsn(shift->config('pg'))});
   $self->helper(login => sub {state $login = venditabant::Helpers::Login->new(pg => shift->pg)});
   $self->helper(stockitems => sub {state $stockitems = venditabant::Helpers::Stockitems->new(pg => shift->pg)});
-  $self->helper(jwt => sub {state $jwt= venditabant::Helpers::Jwt->new()});
-  $self->helper(pricelists => sub {state $pricelists= venditabant::Helpers::Pricelists->new(pg => shift->pg)});
+  $self->helper(jwt => sub {state $jwt = venditabant::Helpers::Jwt->new()});
+  $self->helper(pricelists => sub {state $pricelists = venditabant::Helpers::Pricelists->new(pg => shift->pg)});
+  $self->helper(customers => sub {state  $customers = venditabant::Helpers::Customers->new(pg => shift->pg)});
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -82,7 +84,8 @@ sub startup ($self) {
   )->to(
       'pricelists#load_list_items'
   );
-
+  $auth->put('/customers/save/')->to('customers#save_customer');
+  $auth->get('/customers/load_list/')->to('customers#load_list');
 
 }
 

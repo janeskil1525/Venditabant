@@ -32,6 +32,7 @@ qx.Class.define("delivery.page.Overview",
       this.base(arguments);
 
       this.getContent().add(new qx.ui.mobile.basic.Label("Your first app."));
+
     },
 
 

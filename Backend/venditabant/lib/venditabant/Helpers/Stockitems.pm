@@ -2,7 +2,6 @@ package venditabant::Helpers::Stockitems;
 use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::Stockitems;
-
 use Data::Dumper;
 
 has 'pg';

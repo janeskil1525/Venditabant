@@ -4,7 +4,6 @@ use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures, -async_await;
 use venditabant::Model::Users;
 use Data::Dumper;
 
-
 has 'pg';
 
 async sub upsert ($self, $companies_pkey, $user) {
@@ -15,9 +14,8 @@ async sub upsert ($self, $companies_pkey, $user) {
     my $err;
     eval {
         my $user_obj = venditabant::Model::Users->new(db => $db);
-
         my $stockitems_pkey = $user_obj->upsert(
-            $companies_pkey, $user
+            $user
         );
 
         my $users_companies_pkey = $user_obj->upsert_user_companies(
@@ -35,7 +33,6 @@ async sub upsert ($self, $companies_pkey, $user) {
 
 async sub load_list ($self, $companies_pkey) {
 
-    say Dumper($self->pg);
     say Dumper($companies_pkey);
 
     my $result = venditabant::Model::Users->new(

@@ -35,14 +35,17 @@ sub startup ($self) {
   # Load configuration from config file
   my $config = $self->plugin('Config');
   $self->helper(pg => sub {state $pg = Mojo::Pg->new->dsn(shift->config('pg'))});
+  $self->helper(users => sub {
+    state $users = venditabant::Helpers::Users->new(pg => $self->pg);
+  });
   $self->helper(login => sub {state $login = venditabant::Helpers::Login->new(pg => shift->pg)});
   $self->helper(stockitems => sub {state $stockitems = venditabant::Helpers::Stockitems->new(pg => shift->pg)});
   $self->helper(jwt => sub {state $jwt = venditabant::Helpers::Jwt->new()});
   $self->helper(pricelists => sub {state $pricelists = venditabant::Helpers::Pricelists->new(pg => shift->pg)});
-  $self->helper(customers => sub {state  $customers = venditabant::Helpers::Customers->new(pg => shift->pg)});
-  $self->helper(users => sub {
-    state $users = venditabant::Helpers::Users->new(pg => shift->pg)
+  $self->helper(customers => sub {
+    state  $customers = venditabant::Helpers::Customers->new(pg => shift->pg)
   });
+
 
   # Configure the application
   $self->secrets($config->{secrets});

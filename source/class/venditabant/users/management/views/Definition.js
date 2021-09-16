@@ -61,11 +61,15 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 lbl = this._createLbl(this.tr( "Password" ),70);
                 page1.add ( lbl, { top: 50, left: 10 } );
 
-                let password1 = this._createTxt(this.tr( "Password 1" ),250,true,this.tr("Name is required") );
+                var password1 = new qx.ui.form.PasswordField ( );
+                password1.setPlaceholder ( this.tr ( "Password 1" ) );
+                password1.setWidth ( 250 );
                 page1.add ( password1, { top: 50, left: 90 } );
                 this._password1 = password1;
 
-                let password2 = this._createTxt(this.tr( "Password 2" ),250,true,this.tr("Name is required") );
+                var password2 = new qx.ui.form.PasswordField ( );
+                password2.setPlaceholder ( this.tr ( "Password 2" ) );
+                password2.setWidth ( 250 );
                 page1.add ( password2, { top: 50, left: 350 } );
                 this._password2 = password2;
 
@@ -103,14 +107,31 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 let userid = this._userid.getValue();
                 let username  = this._username.getValue();
                 let active  = this._active.getValue();
-                let password  = this._password1.getValue();
+                let password1  = this._password1.getValue();
+                let password2  = this._password2.getValue();
+
+                if ( password1 === null )  {
+                    alert ( this.tr ( "Password can't be empty" ) );
+                    return;
+                }
+
+                if ( password1 !== password2 )  {
+                    alert ( this.tr ( "Passwords do not match." ) );
+                    return;
+                }
+
+                if ( password1.length < 5 )  {
+                    alert ( this.tr ( "Password is to short" ) );
+                    return;
+                }
 
                 let data = {
                     userid: userid,
                     username: username,
                     active:active,
-                    password:password,
+                    password:password1,
                 }
+                
                 let model = new venditabant.users.management.models.Users();
                 model.saveUser(data,function ( success ) {
                     if (success) {
@@ -165,11 +186,15 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
 
                     that._userid.setValue(selectedRows[0][1]);
                     that._username.setValue(selectedRows[0][2]);
+                    let active = selectedRows[0][4] ? false : true;
+                    that._active.setValue(active);
+                    that._password1.setValue('');
+                    that._password2.setValue('');
                 });
                 var tcm = table.getTableColumnModel();
 
                 // Display a checkbox in column 3
-                //tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
+                tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
 
                 // use a different header renderer
                 //tcm.setHeaderCellRenderer(2, new qx.ui.table.headerrenderer.Icon("icon/16/apps/office-calendar.png", "A date"));
@@ -183,11 +208,12 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 users.loadList(function(response) {
                     let tableData = [];
                     for(let i = 0; i < response.data.length; i++) {
+                        let active = response.data[i].active ? true : false;
                         tableData.push([
                             response.data[i].users_pkey,
                             response.data[i].userid,
                             response.data[i].username,
-                            response.data[i].active,
+                            active,
                         ]);
                     }
                     this._table.getTableModel().setData(tableData);

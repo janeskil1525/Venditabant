@@ -5,7 +5,7 @@ use Try::Tiny;
 use Data::UUID;
 use Data::Dumper;
 use Digest::SHA qw{sha512_base64};
-
+use Mojo::JSON qw {from_json};
 has 'pg';
 
 sub signup_user{
@@ -76,7 +76,6 @@ sub load_list ($self) {
     my $companies_pkey = $self->jwt->companise_pkey(
         $self->req->headers->header('X-Token-Check')
     );
-say Dumper($self->users);
     $self->users->load_list($companies_pkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});

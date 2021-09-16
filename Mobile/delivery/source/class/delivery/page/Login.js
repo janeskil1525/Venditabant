@@ -41,7 +41,7 @@ qx.Class.define("delivery.page.Login",
 
       // Login Button
       var loginButton = new qx.ui.mobile.form.Button("Login");
-      loginButton.addListener("tap", this._onButtonTap, this);
+      loginButton.addListener("tap", this.login, this);
 
       var loginForm = this.__form = new qx.ui.mobile.form.Form();
       loginForm.add(user, "Username");
@@ -51,8 +51,32 @@ qx.Class.define("delivery.page.Login",
       this.getContent().add(new qx.ui.mobile.form.renderer.Single(loginForm));
       this.getContent().add(loginButton);
     },
+    login : function ( )  {
+      let name = this.name.getValue ( );
+      let pwd = this.pwd.getValue ( );
+      if (!this.__form.validate()) {
+        return;
+      }
+      if ( name.length < 1 || pwd.length < 1 )  {
+        alert ( this.tr ( "Please provide username and password" ) );
+        return;
+      }
 
+      let app = new delivery.communication.Post ( );
+      let data = {
+        username:name, password:pwd
+      };
+      app.send ( "http://192.168.1.134/", "api/login/", data, function ( success, rsp ) {
+        if (success) {
+          let jwt = new qx.data.store.Offline('userid','local');
+          jwt.setModel(qx.data.marshal.Json.createModel(rsp.data));
+          qx.core.Init.getApplication().getRouting().executeGet("/overview");
+        } else {
+          alert(this.tr("Could not log in."));
+        }
+      }, this );
 
+    },
     /**
      * Event handler for <code>tap</code> on the login button.
      */

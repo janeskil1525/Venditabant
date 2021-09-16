@@ -1,11 +1,13 @@
 package venditabant::Model::Users;
 use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures, -async_await;
 
-has 'pg';
+use Digest::SHA qw{sha512_base64};
+
 has 'db';
 
 sub upsert ($self, $data) {
 
+    $data->{password} = sha512_base64($data->{password});
     my $users_stmt = qq{
         INSERT INTO users (userid, username, passwd, active) VALUES (?,?,?,?)
             ON CONFLICT (userid)
@@ -18,10 +20,10 @@ sub upsert ($self, $data) {
         (
             $data->{userid},
             $data->{username},
-            $data->{passwd},
+            $data->{password},
             $data->{active},
             $data->{username},
-            $data->{passwd},
+            $data->{password},
             $data->{active},
         )
     )->hash->{users_pkey};
@@ -51,12 +53,12 @@ sub upsert_user_companies ($self, $companies_pkey, $users_pkey) {
 
 sub load_list ($self, $companies_pkey) {
     my $load_stmt = qq {
-        SELECT stockitems_pkey, stockitem, description
-            FROM stockitems
-        WHERE companies_fkey = ?
+        SELECT users_pkey, userid, username, active
+            FROM users, users_companies
+        WHERE users_pkey = users_fkey AND companies_fkey = ?
     };
 
-    my $list = $self->pg->db->query($load_stmt,($companies_pkey));
+    my $list = $self->db->query($load_stmt,($companies_pkey));
 
     my $hashes;
     $hashes = $list->hashes if $list->rows > 0;

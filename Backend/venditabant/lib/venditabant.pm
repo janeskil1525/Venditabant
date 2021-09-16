@@ -8,7 +8,9 @@ use venditabant::Helpers::Stockitems;
 use venditabant::Helpers::Jwt;
 use venditabant::Helpers::Pricelists;
 use venditabant::Helpers::Customers;
+use venditabant::Helpers::Users;
 
+use Data::Dumper;
 use File::Share;
 use Mojo::File;
 
@@ -38,6 +40,9 @@ sub startup ($self) {
   $self->helper(jwt => sub {state $jwt = venditabant::Helpers::Jwt->new()});
   $self->helper(pricelists => sub {state $pricelists = venditabant::Helpers::Pricelists->new(pg => shift->pg)});
   $self->helper(customers => sub {state  $customers = venditabant::Helpers::Customers->new(pg => shift->pg)});
+  $self->helper(users => sub {
+    state $users = venditabant::Helpers::Users->new(pg => shift->pg)
+  });
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -86,6 +91,8 @@ sub startup ($self) {
   );
   $auth->put('/customers/save/')->to('customers#save_customer');
   $auth->get('/customers/load_list/')->to('customers#load_list');
+  $auth->put('/users/save/')->to('users#save_user');
+  $auth->get('/users/load_list/')->to('users#load_list');
 
 }
 

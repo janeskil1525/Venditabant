@@ -14,7 +14,7 @@ async sub upsert ($self, $companies_pkey, $stockitem) {
 
     my $err;
     eval {
-        my $stockitems_pkey = venditabant::Model::Stockitems->new(
+        my $stockitems_pkey = venditabant::Model::Users->new(
             db => $db
         )->upsert(
             $companies_pkey, $stockitem

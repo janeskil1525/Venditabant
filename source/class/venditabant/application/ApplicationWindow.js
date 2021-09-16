@@ -188,6 +188,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
             getAdminMenu: function () {
                 let menu = new qx.ui.menu.Menu();
 
+                let usersButton = new qx.ui.menu.Button("Users");
                 let stockitemButton = new qx.ui.menu.Button("Stockitems");
                 let pricelistButton = new qx.ui.menu.Button("Pricelists");
                 let customerButton = new qx.ui.menu.Button("Customers");
@@ -197,6 +198,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 //previousButton.setEnabled(false);
 
+                usersButton.addListener("execute", this.usersButton);
                 stockitemButton.addListener("execute", this.stockitemsButton);
                 pricelistButton.addListener("execute", this.pricelistButton);
                 customerButton.addListener("execute", this.customerButton);
@@ -204,6 +206,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 searchFilesButton.addListener("execute", this.debugButton);
                 replaceFilesButton.addListener("execute", this.debugButton);*/
 
+                menu.add(usersButton);
                 menu.add(stockitemButton);
                 menu.add(pricelistButton);
                 menu.add(customerButton);
@@ -213,6 +216,9 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 menu.add(replaceFilesButton);*/
 
                 return menu;
+            },
+            usersButton:function() {
+                let userwindow = new venditabant.users.management.views.Definition();
             },
             customerButton: function() {
                 let customerswindow = new venditabant.sales.customers.views.Definition();

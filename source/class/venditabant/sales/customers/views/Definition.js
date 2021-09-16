@@ -125,6 +125,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 this.loadCustomers();
             },
             saveCustomer:function() {
+                let that = this;
                 let customer = this._customer.getValue();
                 let name  = this._name.getValue();
                 let registrationnumber = this._registrationnumber.getValue();
@@ -140,17 +141,14 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     phone: phone,
                     pricelist: pricelist,
                 }
-                let com = new venditabant.communication.Post ( );
-                com.send ( "http://192.168.1.134/", "api/v1/customers/save/", data, function ( success ) {
-                    if ( success )  {
-                        this.loadCustomers();
-                        alert("Saved item successfully");
+                let model = new venditabant.sales.customers.models.Customers();
+                model.saveCustomer(data,function ( success ) {
+                    if (success) {
+                        that.loadCustomers();
+                    } else {
+                        alert(this.tr('Something went wrong saving the customer'));
                     }
-                    else  {
-                        alert ( this.tr ( 'Something went wrong saving the customer' ) );
-                    }
-                }, this );
-
+                },this);
             },
             loadPricelists : function() {
                 let that = this;

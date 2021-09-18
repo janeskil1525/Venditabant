@@ -27,6 +27,8 @@ qx.Class.define("delivery.page.Overview",
   members :
   {
     // overridden
+    _selectedCustomer : null,
+    _selectedStockitem:null,
     _initialize : function()
     {
       this.base(arguments);
@@ -43,12 +45,27 @@ qx.Class.define("delivery.page.Overview",
       this._quantity.setPlaceholder(this.tr("Quantity"));
 
       let but = new qx.ui.mobile.form.Button(this.tr("Add"));
-      this.getContent().add(but);
       but.addListener("tap", function() {
+        if(this._quantity.getValue() > 0) {
+          let data = {
+            customer:this._selectedCustomer,
+            quantity:this._quantity.getValue(),
+            stockitem:this._selectedStockitem.getValue()
+          };
+
+          let sales = new venditabant.stock.stockitems.models.Salesorders();
+          sales.add(function() {
+            this._quantity.setVisibility('hidden');
+            this._quantity.setValue(0);
+            this._selectedStockitem.setValue('');
+          }, this, data);
+        }
+
 
         // sel.setSelection("item3");
       }, this);
 
+      this.getContent().add(but);
       this.loadStockitemList();
 
       but = new qx.ui.mobile.form.Button(this.tr("Save"));
@@ -66,7 +83,7 @@ qx.Class.define("delivery.page.Overview",
 
       let customers = new qx.ui.mobile.form.SelectBox();
       customers.addListener("changeSelection", function(evt) {
-        console.log(evt.getData());
+        this._selectedCustomer = evt.getData();
       }, this);
       let cust = new delivery.models.Customers();
       cust.loadList(function(response) {

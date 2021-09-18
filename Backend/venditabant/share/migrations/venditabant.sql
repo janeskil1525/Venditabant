@@ -1066,3 +1066,42 @@ DROP TABLE defined_settings_values;
 DROP TABLE settings;
 
 -- 10 down
+
+-- 11 up
+
+ALTER TABLE salesorders
+    ADD COLUMN open BOOLEAN NOT NULL DEFAULT true;
+
+CREATE INDEX idx_salesorders_customers_fkey_open
+    ON salesorders(customers_fkey, open);
+
+-- 11 down
+
+-- 12 up
+
+ALTER TABLE salesorders
+    ADD COLUMN orderno BIGINT UNIQUE NOT NULL;
+
+CREATE TABLE counter
+(
+    counter_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    name VARCHAR NOT NULL,
+    companies_fkey BIGINT NOT NULL,
+    counter BIGINT NOT NULL DEFAULT 0,
+    CONSTRAINT counter_counter_pkey PRIMARY KEY (counter_pkey),
+    CONSTRAINT counter_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE UNIQUE INDEX counter_name_companies_fkey
+    ON counter(name, companies_fkey);
+
+-- 12 down

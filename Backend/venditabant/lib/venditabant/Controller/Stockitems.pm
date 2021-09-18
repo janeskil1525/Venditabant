@@ -20,7 +20,7 @@ sub save_stockitem ($self) {
 
 }
 
-sub load_list ($self) {menu
+sub load_list ($self) {
 
     my $companies_pkey = $self->jwt->companise_pkey(
         $self->req->headers->header('X-Token-Check')

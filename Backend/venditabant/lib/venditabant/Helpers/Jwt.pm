@@ -44,4 +44,11 @@ sub companise_pkey ($self, $token) {
 
     return $jwt_hash->{companies_pkey};
 }
+
+sub companies_users_pkey ($self, $token) {
+
+    my $jwt_hash = $self->decode_jwt($token);
+
+    return ($jwt_hash->{companies_pkey}, $jwt_hash->{users_pkey});
+}
 1;

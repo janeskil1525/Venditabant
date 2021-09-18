@@ -21,17 +21,18 @@ CREATE UNIQUE INDEX idx_companies_company
         (company COLLATE pg_catalog."default");
 
 
-create table if not exists stockitems (
-                                          stockitems_pkey serial not null ,
-                                          editnum bigint NOT NULL DEFAULT 1,
-                                          insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                          insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                          modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                          moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                          stockitem varchar(100) not null default '',
-                                          description varchar(200) not null default '',
-                                          companies_fkey bigint DEFAULT 0,
-                                          CONSTRAINT stockitems_pkey PRIMARY KEY (stockitems_pkey)
+create table if not exists stockitems
+(
+      stockitems_pkey serial not null ,
+      editnum bigint NOT NULL DEFAULT 1,
+      insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+      insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+      modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+      moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+      stockitem varchar(100) not null default '',
+      description varchar(200) not null default '',
+      companies_fkey bigint DEFAULT 0,
+      CONSTRAINT stockitems_pkey PRIMARY KEY (stockitems_pkey)
 ) ;
 
 CREATE UNIQUE INDEX idx_stockitems_stockitem_companies_fkey
@@ -43,24 +44,24 @@ drop table if exists menu;
 drop table if exists menu_groups;
 
 create table if not exists menu (
-                                    menu_pkey bigint not null,
-                                    editnum bigint NOT NULL DEFAULT 1,
-                                    insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
-                                    insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                    modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
-                                    moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                    parent_menu_fkey bigint,
-                                    sortorder bigint not null default 0,
-                                    menu varchar(50) not null,
-                                    menuaction varchar (100) not null default '#',
-                                    orientation varchar(20),
-                                    is_admin int NOT NULL DEFAULT 0,
-                                    CONSTRAINT menu_pkey PRIMARY KEY (menu_pkey),
-                                    CONSTRAINT menu_fkey_fkey FOREIGN KEY (parent_menu_fkey)
-                                        REFERENCES public.menu (menu_pkey) MATCH SIMPLE
-                                        ON UPDATE NO ACTION
-                                        ON DELETE NO ACTION
-                                        DEFERRABLE
+    menu_pkey bigint not null,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
+    insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+    modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
+    moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+    parent_menu_fkey bigint,
+    sortorder bigint not null default 0,
+    menu varchar(50) not null,
+    menuaction varchar (100) not null default '#',
+    orientation varchar(20),
+    is_admin int NOT NULL DEFAULT 0,
+    CONSTRAINT menu_pkey PRIMARY KEY (menu_pkey),
+    CONSTRAINT menu_fkey_fkey FOREIGN KEY (parent_menu_fkey)
+        REFERENCES public.menu (menu_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
 ) ;
 
 CREATE  INDEX fki_menu_fkey_fkey
@@ -71,36 +72,38 @@ CREATE  INDEX idx_unique_menu
 
 DELETE FROM menu;
 
-create table if not exists users (
-                                     users_pkey serial not null,
-                                     editnum bigint NOT NULL DEFAULT 1,
-                                     insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                     insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                     modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                     moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                     userid varchar not null,
-                                     username varchar not null default '',
-                                     passwd varchar not null,
-                                     support bigint DEFAULT 0,
-                                     active bigint not null default 0,
-                                     is_admin bigint not null default 0,
-                                     CONSTRAINT users_pkey PRIMARY KEY (users_pkey)
+create table if not exists users
+(
+     users_pkey serial not null,
+     editnum bigint NOT NULL DEFAULT 1,
+     insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+     insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+     modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+     moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+     userid varchar not null,
+     username varchar not null default '',
+     passwd varchar not null,
+     support bigint DEFAULT 0,
+     active bigint not null default 0,
+     is_admin bigint not null default 0,
+     CONSTRAINT users_pkey PRIMARY KEY (users_pkey)
 ) ;
 
 CREATE UNIQUE INDEX  idx_users_userid
     ON public.users USING btree
         (userid );
 
-create table if not exists users_companies (
-                                               users_companies_pkey serial not null,
-                                               editnum bigint NOT NULL DEFAULT 1,
-                                               insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                               insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                               modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                               moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                               companies_fkey bigint not null,
-                                               users_fkey bigint not null,
-                                               CONSTRAINT users_companies_pkey PRIMARY KEY (users_companies_pkey)
+create table if not exists users_companies
+(
+   users_companies_pkey serial not null,
+   editnum bigint NOT NULL DEFAULT 1,
+   insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+   insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+   modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+   moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+   companies_fkey bigint not null,
+   users_fkey bigint not null,
+   CONSTRAINT users_companies_pkey PRIMARY KEY (users_companies_pkey)
 );
 
 CREATE INDEX idx_users_companies_companies
@@ -116,58 +119,61 @@ CREATE UNIQUE INDEX idx_users_companies_unique
         (users_fkey, companies_fkey);
 
 
-create table if not exists user_changepassword (
-                                                   user_changepassword_pkey serial not null,
-                                                   editnum bigint NOT NULL DEFAULT 1,
-                                                   insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                                   insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                                   modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                                   moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                                   token varchar,
-                                                   users_fkey BIGINT NOT NULL,
-                                                   expires timestamp without time zone NOT NULL DEFAULT NOW() + interval '24 hours',
-                                                   CONSTRAINT pki_user_changepassword_pkey PRIMARY KEY (user_changepassword_pkey),
-                                                   CONSTRAINT user_changepassword_users_fkey FOREIGN KEY (users_fkey)
-                                                       REFERENCES public.users (users_pkey) MATCH SIMPLE
-                                                       ON UPDATE NO ACTION
-                                                       ON DELETE NO ACTION
-                                                       DEFERRABLE
+create table if not exists user_changepassword
+(
+       user_changepassword_pkey serial not null,
+       editnum bigint NOT NULL DEFAULT 1,
+       insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+       insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+       modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+       moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+       token varchar,
+       users_fkey BIGINT NOT NULL,
+       expires timestamp without time zone NOT NULL DEFAULT NOW() + interval '24 hours',
+       CONSTRAINT pki_user_changepassword_pkey PRIMARY KEY (user_changepassword_pkey),
+       CONSTRAINT user_changepassword_users_fkey FOREIGN KEY (users_fkey)
+           REFERENCES public.users (users_pkey) MATCH SIMPLE
+           ON UPDATE NO ACTION
+           ON DELETE NO ACTION
+           DEFERRABLE
 ) ;
 
 CREATE UNIQUE INDEX if not exists idx_user_changepassword_users_fkey
     ON user_changepassword(users_fkey);
 
-create table if not exists users_token (
-                                           users_token_pkey serial not null,
-                                           editnum bigint NOT NULL DEFAULT 1,
-                                           insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                           insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                           modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                           moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                           token varchar(100),
-                                           expiers timestamp without time zone NOT NULL DEFAULT NOW() + interval '8 hour',
-                                           users_fkey bigint not null,
-                                           CONSTRAINT users_token_pkey PRIMARY KEY (users_token_pkey),
-                                           CONSTRAINT users_token FOREIGN KEY (users_fkey)
-                                               REFERENCES public.users (users_pkey) MATCH SIMPLE
-                                               ON UPDATE NO ACTION
-                                               ON DELETE NO ACTION
-                                               DEFERRABLE
+create table if not exists users_token
+(
+       users_token_pkey serial not null,
+       editnum bigint NOT NULL DEFAULT 1,
+       insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+       insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+       modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+       moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+       token varchar(100),
+       expiers timestamp without time zone NOT NULL DEFAULT NOW() + interval '8 hour',
+       users_fkey bigint not null,
+       CONSTRAINT users_token_pkey PRIMARY KEY (users_token_pkey),
+       CONSTRAINT users_token FOREIGN KEY (users_fkey)
+           REFERENCES public.users (users_pkey) MATCH SIMPLE
+           ON UPDATE NO ACTION
+           ON DELETE NO ACTION
+           DEFERRABLE
 ) ;
 
 CREATE UNIQUE INDEX users_token_users_fkey
     ON public.users_token(users_fkey);
 
-create table if not exists languages (
-                                         languages_pkey serial not null,
-                                         editnum bigint NOT NULL DEFAULT 1,
-                                         insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                         insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                         modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
-                                         moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                         lan character varying(10) NOT NULL,
-                                         lan_name character varying(100) NOT NULL,
-                                         CONSTRAINT languages_pkey PRIMARY KEY (languages_pkey)
+create table if not exists languages
+(
+     languages_pkey serial not null,
+     editnum bigint NOT NULL DEFAULT 1,
+     insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+     insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+     modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+     moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+     lan character varying(10) NOT NULL,
+     lan_name character varying(100) NOT NULL,
+     CONSTRAINT languages_pkey PRIMARY KEY (languages_pkey)
 );
 
 INSERT INTO languages (lan, lan_name) VALUES ('dan', 'Danish');
@@ -315,44 +321,46 @@ CREATE INDEX fki_stockitem_stock_stockitems_stock_trans_fkey
     ON public.stockitems_stock_trans USING btree
         (stockitems_stock_fkey);
 
-create table if not exists addresses (
-                                         addresses_pkey serial not null,
-                                         editnum bigint NOT NULL DEFAULT 1,
-                                         insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
-                                         insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                         modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
-                                         moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                         name varchar(200) default '',
-                                         address1 varchar(200) default '',
-                                         address2 varchar(200) default '',
-                                         address3 varchar(200) default '',
-                                         city varchar(200) default '',
-                                         zipcode varchar(200) default '',
-                                         country varchar(30) default '',
-                                         CONSTRAINT addresses_pkey PRIMARY KEY (addresses_pkey)
+create table if not exists addresses
+(
+     addresses_pkey serial not null,
+     editnum bigint NOT NULL DEFAULT 1,
+     insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
+     insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+     modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
+     moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+     name varchar(200) default '',
+     address1 varchar(200) default '',
+     address2 varchar(200) default '',
+     address3 varchar(200) default '',
+     city varchar(200) default '',
+     zipcode varchar(200) default '',
+     country varchar(30) default '',
+     CONSTRAINT addresses_pkey PRIMARY KEY (addresses_pkey)
 ) ;
 
-create table if not exists addresses_company (
-                                                 addresses_company_pkey serial not null,
-                                                 editnum bigint NOT NULL DEFAULT 1,
-                                                 insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
-                                                 insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                                 modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
-                                                 moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-                                                 companies_fkey bigint not null,
-                                                 addresses_fkey bigint not null,
-                                                 address_type varchar NOT NULL DEFAULT 'invoice',
-                                                 CONSTRAINT addresses_company_pkey PRIMARY KEY (addresses_company_pkey),
-                                                 CONSTRAINT address_company_companies_fkey_fkey_fkey FOREIGN KEY (companies_fkey)
-                                                     REFERENCES public.companies (companies_pkey) MATCH SIMPLE
-                                                     ON UPDATE NO ACTION
-                                                     ON DELETE NO ACTION
-                                                     DEFERRABLE,
-                                                 CONSTRAINT addresses_company_address_fkey_fkey FOREIGN KEY (addresses_fkey)
-                                                     REFERENCES public.addresses (addresses_pkey) MATCH SIMPLE
-                                                     ON UPDATE NO ACTION
-                                                     ON DELETE NO ACTION
-                                                     DEFERRABLE
+create table if not exists addresses_company
+(
+     addresses_company_pkey serial not null,
+     editnum bigint NOT NULL DEFAULT 1,
+     insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
+     insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+     modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'Unknown',
+     moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+     companies_fkey bigint not null,
+     addresses_fkey bigint not null,
+     address_type varchar NOT NULL DEFAULT 'invoice',
+     CONSTRAINT addresses_company_pkey PRIMARY KEY (addresses_company_pkey),
+     CONSTRAINT address_company_companies_fkey_fkey_fkey FOREIGN KEY (companies_fkey)
+         REFERENCES public.companies (companies_pkey) MATCH SIMPLE
+         ON UPDATE NO ACTION
+         ON DELETE NO ACTION
+         DEFERRABLE,
+     CONSTRAINT addresses_company_address_fkey_fkey FOREIGN KEY (addresses_fkey)
+         REFERENCES public.addresses (addresses_pkey) MATCH SIMPLE
+         ON UPDATE NO ACTION
+         ON DELETE NO ACTION
+         DEFERRABLE
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_address_company_address_type_unique
@@ -901,3 +909,160 @@ INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
 (6, 'MENU', 'Pricelists','Prislistor');
 
 -- 9 down
+
+--10 up
+CREATE TABLE salesorders
+(
+    salesorders_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    customers_fkey bigint NOT NULL,
+    users_fkey bigint NOT NULL,
+    companies_fkey bigint NOT NULL,
+    orderdate timestamp without time zone NOT NULL DEFAULT now(),
+    deliverydate timestamp without time zone NOT NULL DEFAULT now(),
+    CONSTRAINT salesorders_pkey PRIMARY KEY (salesorders_pkey),
+    CONSTRAINT salesorders_customers_fkey FOREIGN KEY (customers_fkey)
+        REFERENCES customers (customers_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT salesorders_users_fkey FOREIGN KEY (users_fkey)
+        REFERENCES users (users_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT salesorders_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE TABLE salesorder_items
+(
+    salesorder_items_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    salesorders_fkey bigint NOT NULL,
+    stockitems_fkey BIGINT NOT NULL,
+    quantity NUMERIC(10,2) NOT NULL DEFAULT 0.0,
+    price NUMERIC(10,2) NOT NULL DEFAULT 0.0,
+    CONSTRAINT salesorder_items_pkey PRIMARY KEY (salesorder_items_pkey),
+    CONSTRAINT salesorder_items_salesorders_fkey FOREIGN KEY (salesorders_fkey)
+        REFERENCES salesorders (salesorders_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT salesorder_items_stockitems_fkey FOREIGN KEY (stockitems_fkey)
+        REFERENCES stockitems (stockitems_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE TABLE salesorder_statistics
+(
+    salesorder_statistics_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    salesorders_fkey bigint NOT NULL,
+    stockitems_fkey BIGINT NOT NULL,
+    customers_fkey bigint NOT NULL,
+    users_fkey bigint NOT NULL,
+    companies_fkey bigint NOT NULL,
+    orderdate timestamp without time zone NOT NULL DEFAULT now(),
+    deliverydate timestamp without time zone NOT NULL DEFAULT now(),
+    quantity NUMERIC(10,2) NOT NULL DEFAULT 0.0,
+    price NUMERIC(10,2) NOT NULL DEFAULT 0.0,
+    CONSTRAINT salesorder_statistics_pkey PRIMARY KEY (salesorder_statistics_pkey),
+    CONSTRAINT salesorder_statistics_salesorders_fkey FOREIGN KEY (salesorders_fkey)
+        REFERENCES salesorders (salesorders_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT salesorder_statistics_stockitems_fkey FOREIGN KEY (stockitems_fkey)
+        REFERENCES stockitems (stockitems_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT salesorder_statistics_customers_fkey FOREIGN KEY (customers_fkey)
+        REFERENCES customers (customers_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT salesorder_statistics_users_fkey FOREIGN KEY (users_fkey)
+        REFERENCES users (users_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT salesorder_statistics_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+ALTER TABLE stockitems
+ALTER COLUMN insby SET DATA TYPE varchar,
+ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE pricelists
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE customers
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE pricelist_items
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE companies
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE users
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE users_companies
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE warehouses
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE stockitems_stock_trans
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE stockitems_stock_reservations
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE stockitems_stock
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+DROP TABLE users_token;
+DROP TABLE company_functions;
+DROP TABLE menu;
+DROP TABLE translations;
+DROP TABLE languages;
+DROP TABLE default_settings_values;
+DROP TABLE defined_settings_values;
+DROP TABLE settings;
+
+-- 10 down

@@ -17,7 +17,7 @@ qx.Class.define("delivery.communication.Get",
                 let rpc = new qx.io.request.Xhr (address);
                 rpc.setMethod("GET");
 
-                let jwt = new venditabant.utils.UserJwt();
+                let jwt = new delivery.utils.UserJwt();
                 let user_jwt = jwt.getUserJwt();
 
                 if(typeof user_jwt !== 'undefined' && user_jwt !== '') {

@@ -11,7 +11,7 @@ qx.Class.define("delivery.models.Customers",
         },
         members: {
             loadList:function(cb, ctx) {
-                let get = new venditabant.communication.Get;
+                let get = new delivery.communication.Get;
                 get.load("http://192.168.1.134/", "api/v1/customers/load_list/", '',function(response){
                     cb.call ( ctx,(response));
                 },this);

@@ -1,10 +1,11 @@
-package venditabant::Controller::Stockitems;
+package venditabant::Controller::Salesorders;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 use Data::Dumper;
 use Mojo::JSON qw {from_json};
 
-sub save_stockitem ($self) {
+
+sub save_salesorder ($self) {
 
     $self->render_later;
     my $companies_pkey = $self->jwt->companise_pkey(
@@ -18,20 +19,5 @@ sub save_stockitem ($self) {
         $self->render(json => {'result' => $err});
     })->wait;
 
-}
-
-sub load_list ($self) {menu
-
-    my $companies_pkey = $self->jwt->companise_pkey(
-        $self->req->headers->header('X-Token-Check')
-    );
-
-    $self->stockitems->load_list($companies_pkey)->then(sub ($result) {
-
-        $self->render(json => {'result' => 'success', data => $result});
-    })->catch( sub ($err) {
-
-        $self->render(json => {'result' => 'failed', data => $err});
-    })->wait;
 }
 1;

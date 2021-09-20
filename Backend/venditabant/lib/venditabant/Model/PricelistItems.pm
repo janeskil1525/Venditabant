@@ -54,6 +54,19 @@ sub insert_item ($self, $companies_pkey, $pricelists_item) {
     return $ppricelist_items_pkey;
 }
 
-1;
+async sub load_list_items_raw_p ($self, $pricelists_pkey, $pricelisthead) {
+
+    my $result = $self->db->query_p(
+        'pricelist_items',
+        undef,
+            {
+                pricelists_fkey => $pricelists_pkey
+            }
+    );
+
+    my $hash;
+    $hash = $result->hashes if $result->rows;
+    return $hash;
+}
 
 1;

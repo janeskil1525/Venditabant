@@ -33,51 +33,65 @@ qx.Class.define("delivery.page.Overview",
     {
       this.base(arguments);
 
-      this.getContent().add(new qx.ui.mobile.basic.Label(this.tr("Select customer")));
+      let layout = new qx.ui.mobile.layout.HBox();
 
-      this.setupCustomerList();
-      this._selectedStockitem = new qx.ui.mobile.basic.Label("");
-      this._quantity = new qx.ui.mobile.form.NumberField(0);
+      let lbl = new qx.ui.mobile.basic.Label(this.tr("Select customer : "));
+      let cust = this.setupCustomerList();
+      let container = new qx.ui.mobile.container.Composite(layout);
+      container.add(lbl,{flex:1});
+      container.add(cust);
 
+      this.getContent().add(container);
+
+      this._selectedStockitem = new qx.ui.mobile.basic.Label("No stockitem selected");
       this.getContent().add(this._selectedStockitem);
-      this.getContent().add(this._quantity);
-      this._quantity.setVisibility('hidden');
+
+      let layout1 = new qx.ui.mobile.layout.HBox();
+      this._quantity = new qx.ui.mobile.form.NumberField(0);
+      let container1 = new qx.ui.mobile.container.Composite(layout1);
+      container1.add(this._quantity);
       this._quantity.setPlaceholder(this.tr("Quantity"));
 
       let but = new qx.ui.mobile.form.Button(this.tr("Add"));
       but.addListener("tap", function() {
         if(this._quantity.getValue() > 0) {
           let data = {
-            customer:this._selectedCustomer,
+            customer:this._selectedCustomer.item,
             quantity:this._quantity.getValue(),
-            stockitem:this._selectedStockitem.getValue()
+            stockitem:this._selectedStockitem.getValue(),
+            price:10
           };
 
-          let sales = new venditabant.stock.stockitems.models.Salesorders();
-          sales.add(function() {
-            this._quantity.setVisibility('hidden');
-            this._quantity.setValue(0);
-            this._selectedStockitem.setValue('');
+          let sales = new delivery.models.Salesorders();
+          sales.add(function(success) {
+            if (success) {
+              this._quantity.setValue(0);
+              this._selectedStockitem.setValue('No stockitem selected');
+            } else {
+              alert(this.tr("Could not save item, please try again"));
+            }
           }, this, data);
         }
-
-
-        // sel.setSelection("item3");
       }, this);
+      container1.add(but)
+      this.getContent().add(container1);
 
       this.getContent().add(but);
       this.loadStockitemList();
 
-      but = new qx.ui.mobile.form.Button(this.tr("Save"));
-      this.getContent().add(but);
-      but.addListener("tap", function(){
-        // sel.setSelection("item3");
-      }, this);
+
 
       //var title = new qx.ui.mobile.form.Title("item2");
       // title.bind("value",sel,"value");
       // this._customers.bind("value",title,"value");
       //this.getContent().add(title);
+    },
+    addSaveButton:function() {
+      let but = new qx.ui.mobile.form.Button(this.tr("Save"));
+      this.getContent().add(but);
+      but.addListener("tap", function(){
+        // sel.setSelection("item3");
+      }, this);
     },
     setupCustomerList:function() {
 
@@ -93,7 +107,8 @@ qx.Class.define("delivery.page.Overview",
         }
         customers.setModel(tableData);
       }, this);
-      this.getContent().add(customers);
+      return customers;
+      //this.getContent().add(customers);
       // this._customers = customers;
       // this._loadCustomers();
     },
@@ -108,21 +123,20 @@ qx.Class.define("delivery.page.Overview",
         }, this);
       },
     loadStockitemList:function() {
-      var data = [
-        {title : "Row1", subtitle : "Sub1"},
-        {title : "Row2", subtitle : "Sub2"},
-        {title : "Row3", subtitle : "Sub3"},
-        {title : "Row4", subtitle : "Sub4"},
-        {title : "Row5", subtitle : "Sub5"},
-        {title : "Row6", subtitle : "Sub6"},
-        {title : "Row7", subtitle : "Sub7"},
-        {title : "Row8", subtitle : "Sub8"},
-        {title : "Row9", subtitle : "Sub9"},
-        {title : "Row10", subtitle : "Sub10"},
-        {title : "Row11", subtitle : "Sub11"},
-      ];
+      let that = this;
+      let stock = new delivery.models.Stockitems();
+      let data = [];
 
-      this.createUiList(data)
+      stock.loadList(function(response) {
+          for(let i = 0; i < response.data.length; i++) {
+            data.push({
+              title:response.data[i].stockitem,
+              subtitle:response.data[i].description
+            })
+          }
+        that.createUiList(data);
+        that.addSaveButton();
+      });
     },
     createUiList:function(data) {
       let list = new qx.ui.mobile.list.List({

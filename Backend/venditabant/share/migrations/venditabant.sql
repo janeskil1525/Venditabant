@@ -1105,3 +1105,9 @@ CREATE UNIQUE INDEX counter_name_companies_fkey
     ON counter(name, companies_fkey);
 
 -- 12 down
+
+-- 13 up
+CREATE UNIQUE INDEX idx_salesorder_item_salesorder_stockitem
+    ON salesorder_items(salesorders_fkey, stockitems_fkey);
+
+-- 13 down

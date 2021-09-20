@@ -1,4 +1,4 @@
-qx.Class.define("venditabant.stock.stockitems.models.Salesorders",
+qx.Class.define("delivery.models.Salesorders",
     {
         extend: qx.core.Object,
         construct : function() {
@@ -9,8 +9,8 @@ qx.Class.define("venditabant.stock.stockitems.models.Salesorders",
         },
         members: {
             add:function(cb, ctx, data) {
-                let post = new venditabant.communication.Post;
-                post.send("http://192.168.1.134/", "api/v1/salesorders/add/", data,function(response){
+                let post = new delivery.communication.Post;
+                post.send("http://192.168.1.134/", "api/v1/salesorders/save/", data,function(response){
                     cb.call ( ctx, (response));
                 },this)
 

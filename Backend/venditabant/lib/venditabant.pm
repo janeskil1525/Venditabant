@@ -9,6 +9,7 @@ use venditabant::Helpers::Jwt;
 use venditabant::Helpers::Pricelists;
 use venditabant::Helpers::Customers;
 use venditabant::Helpers::Users;
+use venditabant::Helpers::Salesorders;
 
 use Data::Dumper;
 use File::Share;
@@ -42,7 +43,14 @@ sub startup ($self) {
   $self->helper(stockitems => sub {state $stockitems = venditabant::Helpers::Stockitems->new(pg => shift->pg)});
   $self->helper(jwt => sub {state $jwt = venditabant::Helpers::Jwt->new()});
   $self->helper(pricelists => sub {state $pricelists = venditabant::Helpers::Pricelists->new(pg => shift->pg)});
-  $self->helper(customers => sub {
+  $self->helper(
+      salesorders => sub {
+        state $salesorders = venditabant::Helpers::Salesorders->new(pg => shift->pg)
+      }
+  );
+
+  $self->helper(
+      customers => sub {
     state  $customers = venditabant::Helpers::Customers->new(pg => shift->pg)
   });
 
@@ -53,7 +61,7 @@ sub startup ($self) {
 
   $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-  )->migrate(12);
+  )->migrate(13);
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -81,8 +89,10 @@ sub startup ($self) {
 
   $r->put('/api/login/')->to('login#login_user');
   $r->put('/api/signup/')->to('signup#signup_company');
+
   $auth->put('/stockitem/save/')->to('stockitems#save_stockitem');
   $auth->get('/stockitem/load_list/')->to('stockitems#load_list');
+  $auth->get('/stockitem/load_list/mobile')->to('stockitems#load_list_mobile');
 
   $auth->get('/pricelists/heads/load_list/')->to('pricelists#load_list_heads');
   $auth->put('/pricelists/heads/save/')->to('pricelists#upsert_head');
@@ -96,7 +106,8 @@ sub startup ($self) {
   $auth->get('/customers/load_list/')->to('customers#load_list');
   $auth->put('/users/save/')->to('users#save_user');
   $auth->get('/users/load_list/')->to('users#load_list');
-
+  $auth->put('/salesorders/save/')->to('salesorders#save_salesorder');
+  $auth->get('/salesorders/load_list/')->to('salesorders#load_list');
 }
 
 1;

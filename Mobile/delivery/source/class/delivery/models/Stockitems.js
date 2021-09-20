@@ -1,4 +1,4 @@
-qx.Class.define("venditabant.stock.stockitems.models.Stockitem",
+qx.Class.define("delivery.models.Stockitems",
     {
         extend: qx.core.Object,
         construct : function() {
@@ -9,7 +9,7 @@ qx.Class.define("venditabant.stock.stockitems.models.Stockitem",
         },
         members: {
             loadList:function(cb, ctx) {
-                let get = new venditabant.communication.Get;
+                let get = new delivery.communication.Get;
                 get.load("http://192.168.1.134/", "api/v1/stockitem/load_list/", '',function(response){
                     cb.call ( ctx, (response));
                 },this)

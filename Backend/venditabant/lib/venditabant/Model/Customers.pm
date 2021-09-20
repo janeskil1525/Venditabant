@@ -44,4 +44,20 @@ sub upsert ($self, $companies_pkey, $company) {
     return $customers_pkey;
 }
 
+async sub load_customer ($self, $companies_pkey, $customer) {
+
+    my $result = $self->db->select(
+        'customers',
+        undef,
+            {
+                companies_pkey => $companies_pkey,
+                customer       => $customer
+            }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash;
+}
 1;

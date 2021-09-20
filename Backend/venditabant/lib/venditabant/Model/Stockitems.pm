@@ -26,4 +26,35 @@ sub upsert ($self, $companies_pkey, $stockitem) {
     return $stockitems_pkey;
 }
 
+async sub load_list_p ($self, $companies_pkey) {
+
+    my $load_stmt = qq {
+        SELECT stockitems_pkey, stockitem, description
+            FROM stockitems
+        WHERE companies_fkey = ?
+    };
+
+    my $list = $self->db->query($load_stmt,($companies_pkey));
+
+    my $hashes;
+    $hashes = $list->hashes if $list->rows > 0;
+
+    return $hashes;
+}
+
+async sub load_list_mobile_p ($self, $companies_pkey, $company) {
+
+    my $load_stmt = qq {
+        SELECT stockitems_pkey, stockitem, description, 0 as quantity, 0.0 as price
+            FROM stockitems
+        WHERE companies_fkey = ?
+    };
+
+    my $list = $self->db->query($load_stmt,($companies_pkey));
+
+    my $hashes;
+    $hashes = $list->hashes if $list->rows > 0;
+
+    return $hashes;
+}
 1;

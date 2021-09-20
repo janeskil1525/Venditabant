@@ -2,7 +2,7 @@ package venditabant::Model::Counter;
 use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures, -async_await;
 
 
-has 'pg';
+has 'db';
 
 async sub nextid ($self, $company_fkey, $users_pkey, $name) {
 
@@ -12,12 +12,12 @@ async sub nextid ($self, $company_fkey, $users_pkey, $name) {
         (SELECT userid FROM users WHERE users_pkey = ?),
         (SELECT userid FROM users WHERE users_pkey = ?),?,1,?)
             ON CONFLICT (name, companies_fkey)
-        DO UPDATE SET counter = counter + 1,
+        DO UPDATE SET counter = counter.counter + 1,
                         modby = (SELECT userid FROM users WHERE users_pkey = ?)
             RETURNING counter
     };
 
-    my $nextid = $self->pg->db->query(
+    my $nextid = $self->db->query(
         $counter_stmt,
             (
                 $users_pkey,

@@ -92,7 +92,7 @@ sub startup ($self) {
 
   $auth->put('/stockitem/save/')->to('stockitems#save_stockitem');
   $auth->get('/stockitem/load_list/')->to('stockitems#load_list');
-  $auth->get('/stockitem/load_list/mobile')->to('stockitems#load_list_mobile');
+  $auth->get('/stockitem/load_list/mobile/:customer')->to('stockitems#load_list_mobile');
 
   $auth->get('/pricelists/heads/load_list/')->to('pricelists#load_list_heads');
   $auth->put('/pricelists/heads/save/')->to('pricelists#upsert_head');

@@ -43,9 +43,18 @@ async sub load_list_p ($self, $companies_pkey) {
     return $result;
 }
 
-async sub load_list_mobile_p ($self, $companies_pkey, $customer) {
+async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
 
     my $db = $self->pg->db;
+
+    my $customer = $self->pg->db->select(
+        'customers',
+        undef,
+            {
+                customer       => $cust,
+                companies_fkey => $companies_pkey,
+            }
+    )->hash;
 
     my $mobilelist_stmt = qq{
         SELECT stockitems_pkey, stockitem, description, 0 as quantity,  price
@@ -78,7 +87,7 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customer) {
         FROM stockitems JOIN salesorder_items
             ON stockitems_pkey = stockitems_fkey
         JOIN salesorders ON salesorders_fkey = salesorders_pkey
-        AND open = true AND companies_fkey = ? AND customers_fkey = ?
+        AND open = true AND salesorders.companies_fkey = ? AND customers_fkey = ?
     };
 
     $result = $self->pg->db->query(
@@ -101,7 +110,7 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customer) {
     };
 
     $result = $self->pg->db->query(
-        $salesorders_stmt,
+        $history_stmt,
         (
             $companies_pkey,
             $customer->{customers_pkey},
@@ -110,9 +119,6 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customer) {
 
     $response->{history} = [];
     $response->{history} = $result->hashes if $result and $result->rows > 0;
-
-
-
 
     return $response;
 }

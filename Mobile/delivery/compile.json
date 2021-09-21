@@ -6,7 +6,8 @@
       "outputPath": "compiled/source",
       "bundle": {
         "include": "qx.*"
-      }
+      },
+      "deployPath": "deploy"
     },
     {
       "type": "build",
@@ -14,6 +15,7 @@
     }
   ],
   "defaultTarget": "source",
+
   "locales": ["en"],
   "environment": {
       "qx.icontheme": "Tango"

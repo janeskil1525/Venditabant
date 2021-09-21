@@ -2,7 +2,7 @@
  "$schema": "https://qooxdoo.org/schema/Manifest-1-0-0.json",
   "info" :
   {
-    "name" : "venditabant",
+    "name" : "desktop_delivery",
 
     "summary" : "undefined",
     "description" : "undefined",
@@ -17,7 +17,7 @@
 
   "provides" :
   {
-    "namespace"   : "venditabant",
+    "namespace"   : "desktop_delivery",
     "encoding"    : "utf-8",
     "class"       : "source/class",
     "resource"    : "source/resource",

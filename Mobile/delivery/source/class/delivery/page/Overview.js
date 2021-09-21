@@ -45,12 +45,16 @@ qx.Class.define("delivery.page.Overview",
 
       this._selectedStockitem = new qx.ui.mobile.basic.Label("No stockitem selected");
       this.getContent().add(this._selectedStockitem);
+      let row = new qx.ui.mobile.form.Row();
+      this.getContent().add(row);
 
       let layout1 = new qx.ui.mobile.layout.HBox();
       this._quantity = new qx.ui.mobile.form.NumberField(0);
       let container1 = new qx.ui.mobile.container.Composite(layout1);
       container1.add(this._quantity);
       this._quantity.setPlaceholder(this.tr("Quantity"));
+      row = new qx.ui.mobile.form.Row();
+      this.getContent().add(row);
 
       let but = new qx.ui.mobile.form.Button(this.tr("Add"));
       but.addListener("tap", function() {
@@ -80,7 +84,8 @@ qx.Class.define("delivery.page.Overview",
       container1.add(but)
       this.getContent().add(container1);
       this.getContent().add(but);
-
+      row = new qx.ui.mobile.form.Row();
+      this.getContent().add(row);
       //var title = new qx.ui.mobile.form.Title("item2");
       // title.bind("value",sel,"value");
       // this._customers.bind("value",title,"value");

@@ -20,9 +20,9 @@
   },
   "applications": [
     {
-      "class": "venditabant.Application",
-      "theme": "venditabant.theme.Theme",
-      "name": "venditabant",
+      "class": "desktop_delivery.Application",
+      "theme": "desktop_delivery.theme.Theme",
+      "name": "desktop_delivery",
       "bootPath": "source/boot"
     }
   ]

@@ -53,20 +53,27 @@ qx.Class.define("desktop_delivery.Application",
       -------------------------------------------------------------------------
       */
 
-      // Create a button
-      var button1 = new qx.ui.form.Button("Click me", "desktop_delivery/test.png");
+      let root = this.getRoot ( );
+      let decorator = new qx.ui.decoration.Decorator ( );
+      decorator.setBackgroundImage ( "http://localhost:3000/kaffebonor-fotona.jpg" );
+      decorator.setBackgroundRepeat( "scale" );
 
-      // Document is the application root
-      var doc = this.getRoot();
-
-      // Add button to document at fixed coordinates
-      doc.add(button1, {left: 100, top: 50});
-
-      // Add an event listener
-      button1.addListener("execute", function() {
-        /* eslint no-alert: "off" */
-        alert("Hello World!");
-      });
+      this.getRoot ( ).setDecorator( decorator );
+      let jwt = new qx.data.store.Offline('userid','local');
+      let jwt_model = jwt.getModel();
+      let win;
+      if(typeof jwt_model === 'undefined' || jwt_model === null) {
+        win = new desktop_delivery.users.login.LoginWindow ( );
+        win.show ( );
+      } else {
+        if(typeof jwt_model.getUserid === 'function' && jwt_model.getUserid() !== '') {
+          win = new desktop_delivery.delivery.DeliveryWindow();
+          win.show();
+        } else {
+          win = new desktop_delivery.users.login.LoginWindow ( );
+          win.show ( );
+        }
+      }
     }
   }
 });

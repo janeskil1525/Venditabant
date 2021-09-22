@@ -21,39 +21,66 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
         },
         members  : {
             _buildDeliveryWindow:function() {
-                var semi = new qx.ui.core.Widget ( );
+                let semi = new qx.ui.core.Widget ( );
                 semi.set ( { opacity: 0.9, backgroundColor: "#404040" } );
                 this.add ( semi, { top: 1, left: 1, right: 1, bottom: 1 } );
 
-                var font = new qx.bom.Font ( 18, [ "Arial" ] );
+                let font = new qx.bom.Font ( 18, [ "Arial" ] );
                 font.setBold ( true );
 
-                font.setColor ( "#FFFFFF" );
-                let colour = font.getColor();
-
-                var lbl = new qx.ui.basic.Label ( "<center><b style='color: #FFFFFF'>" + this.tr ( "Delivery" ) + "</b></center>" );
+                let lbl = new qx.ui.basic.Label ( "<center><b style='color: #FFFFFF'>" + this.tr ( "Delivery" ) + "</b></center>" );
                 lbl.setFont ( font );
                 lbl.setRich ( true );
                 //lbl.setWidth( this.getWidth ( ) - 20  );
                 this.add ( lbl, { top: 10, left: 10 } );
 
                 this.customerList();
-                this._createTable()
+                this._createAddButton();
+                this._createQuantityField();
+                this._createStockitemLabel();
+                this._createTable();
+                this._createSaveButton();
+            },
+            _createSaveButton:function(){
+                let save = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 400, function ( ) {
+                    this.saveSalesorder ( );
+                }, this );
+                this.add ( save, { top:570, left: 10 } );
+            },
+            saveSalesorder:function() {
+
+            },
+            _createStockitemLabel: function(){
+                let lbl = this._createLbl(this.tr( "No stockitem selected ..." ), 200);
+                lbl.setTextColor ( "#FFFFFF" );
+                let font = new qx.bom.Font ( 16, [ "Arial" ] );
+                // font.setBold ( true );
+                lbl.setFont ( font );
+                this.add ( lbl, { top: 100, left: 10 } );
+            },
+            _createQuantityField:function(){
+                let quantity = this._createTxt(this.tr("Quantity"), 70, false);
+                this.add ( quantity, { top: 100, left: 250 } );
+                this._quantity = quantity
+            },
+            saveSalesorderItem:function(){
+
+            },
+            _createAddButton:function(){
+                let add = this._createBtn ( this.tr ( "Add" ), "rgba(239,170,255,0.44)", 80, function ( ) {
+                    this.saveSalesorderItem ( );
+                }, this );
+                this.add ( add, { top:100, left: 330 } );
             },
             customerList : function() {
                 let that = this;
                 let cust = new desktop_delivery.models.Customers();
-                var container = new qx.ui.container.Composite(new qx.ui.layout.VBox(2));
-                var customers = new qx.ui.form.SelectBox();
+                let container = new qx.ui.container.Composite(new qx.ui.layout.VBox(2));
+                let customers = new qx.ui.form.SelectBox();
 
                 customers.addListener("changeSelection", function(evt) {
                     that._selectedCustomer = evt.getData()[0].getLabel();
-                    /*if(this._list === null || typeof this._list === 'undefined') {
-                        // recreate = false;
-                    } else {
-                        // recreate = true;
-                    }*/
-                    // this.loadStockitemList(this._selectedCustomer.item, recreate);
+                    that.loadStockitemList(that._selectedCustomer);
                 }, this);
 
                 cust.loadList(function(response) {
@@ -65,16 +92,60 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
 
                 }, this);
 
-                var font = new qx.bom.Font ( 18, [ "Arial" ] );
+                let font = new qx.bom.Font ( 18, [ "Arial" ] );
                 font.setColor ( "white" );
-                font.setBold ( true );
-                var lbl = new qx.ui.basic.Label ( this.tr ( "Select customer" ) );
+                let lbl = new qx.ui.basic.Label ( this.tr ( "Select customer" ) );
                 // var lbl = new qx.ui.basic.Label ( "<b style='color: #FFFFFF'>" + this.tr ( "Delivery" ) + "</b>" );
                 lbl.setFont(font);
                 lbl.setTextColor ( "#FFFFFF" );
                 container.add(lbl);
                 container.add(customers);
-                this.add(container,{left : 20, top : 40});
+                this.add(container,{left : 10, top : 40});
+            },
+            loadStockitemList : function(customer, recreate) {
+                let that = this;
+                let stock = new desktop_delivery.models.Stockitems();
+                let tableData = [];
+                stock.loadListSales(function(response) {
+                    let groupCount = response.data.salesorders.length;
+                    for(let i = 0; i < response.data.salesorders.length; i++) {
+                        tableData.push([
+                            response.data.salesorders[i].stockitems_pkey,
+                            response.data.salesorders[i].stockitem,
+                            response.data.salesorders[i].quantity,
+                            response.data.salesorders[i].price,
+                            "Salesorders",
+                        ]);
+                    }
+                    groupCount += response.data.history.length;
+                    for(let i = 0; i < response.data.history.length; i++) {
+                        tableData.push([
+                            response.data.history[i].stockitems_pkey,
+                            response.data.history[i].stockitem,
+                            response.data.history[i].quantity,
+                            response.data.history[i].price,
+                            "History",
+                        ]);
+                    }
+                    groupCount += response.data.stockitems.length;
+                    for(let i = 0; i < response.data.stockitems.length; i++) {
+                        tableData.push([
+                            response.data.stockitems[i].stockitems_pkey,
+                            response.data.stockitems[i].stockitem,
+                            response.data.stockitems[i].quantity,
+                            response.data.stockitems[i].price,
+                            "Stockitems"
+                        ]);
+                    }
+                    if(recreate === true) {
+                        // that.recreateUIList(data);
+                    } else {
+                        // that.createUiList(data);
+                        // that.addSaveButton();
+                    }
+                    this._table.getTableModel().setData(tableData);
+                }, this, customer);
+
             },
             _createTable : function() {
                 // Create the initial data
@@ -83,8 +154,9 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Stockitem", "Quantity", "Price" ]);
+                tableModel.setColumns([ "ID", "Stockitem", "Quantity", "Price", "Type" ]);
                 tableModel.setData(rowData);
+                // tableModel.sortByColumn()
                 //tableModel.setColumnEditable(1, true);
                 //tableModel.setColumnEditable(2, true);
                 //tableModel.setColumnSortable(3, false);
@@ -94,7 +166,8 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
 
                 table.set({
                     width: 400,
-                    height: 200
+                    height: 400,
+                    rowHeight:30
                 });
 
                 table.getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.SINGLE_SELECTION);
@@ -115,7 +188,10 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 });
                 var tcm = table.getTableColumnModel();
 
-                tcm.setColumnWidth(0,20)
+                tcm.setColumnWidth(0,50);
+                tcm.setColumnWidth(1,150);
+                tcm.setColumnWidth(2,50);
+                tcm.setColumnWidth(3,50);
                 // Display a checkbox in column 3
                 //tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
 
@@ -126,5 +202,18 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 this.add(table,{top:150, left:10});
                 return ;
             },
+            _createBtn : function (txt, clr, width, cb, ctx) {
+                let btn = new desktop_delivery.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
+
+                return btn;
+            },
+            _createTxt:function(placeholder, width, required, requiredTxt) {
+                let txt = new desktop_delivery.widget.textfield.Standard().createTxt(placeholder, width, required, requiredTxt);
+                return txt;
+            },
+            _createLbl:function(label, width, required, requiredTxt) {
+                let lbl = new desktop_delivery.widget.label.Standard().createLbl(label, width, required, requiredTxt);
+                return lbl;
+            }
         }
     });

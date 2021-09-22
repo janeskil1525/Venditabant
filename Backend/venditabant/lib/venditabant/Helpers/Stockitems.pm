@@ -68,6 +68,13 @@ async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
 				AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
 								WHERE stockitems_pkey = stockitems_fkey AND todate >= now()))
 				AND todate >= now()
+				AND stockitems_pkey NOT IN(
+				    SELECT stockitems_pkey
+                    FROM stockitems JOIN salesorder_items
+                        ON stockitems_pkey = stockitems_fkey
+                    JOIN salesorders ON salesorders_fkey = salesorders_pkey
+                    AND open = true AND salesorders.companies_fkey = ? AND customers_fkey = ?
+				)
     };
 
     my $result = $self->pg->db->query(
@@ -75,7 +82,9 @@ async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
             (
                 $companies_pkey,
                 $customer->{pricelists_fkey},
-                $customer->{pricelists_fkey}
+                $customer->{pricelists_fkey},
+                $companies_pkey,
+                $customer->{customers_pkey},
             )
     );
 
@@ -106,12 +115,21 @@ async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
             quantity,  price, deliverydate
 	FROM stockitems JOIN salesorder_statistics ON stockitems_pkey = stockitems_fkey
 		AND stockitems.companies_fkey = ? AND customers_fkey = ?
+		AND stockitems_pkey NOT IN(
+				    SELECT stockitems_pkey
+                    FROM stockitems JOIN salesorder_items
+                        ON stockitems_pkey = stockitems_fkey
+                    JOIN salesorders ON salesorders_fkey = salesorders_pkey
+                    AND open = true AND salesorders.companies_fkey = ? AND customers_fkey = ?
+				)
 	ORDER BY deliverydate DESC
     };
 
     $result = $self->pg->db->query(
         $history_stmt,
         (
+            $companies_pkey,
+            $customer->{customers_pkey},
             $companies_pkey,
             $customer->{customers_pkey},
         )

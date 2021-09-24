@@ -33,13 +33,24 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 lbl.setRich ( true );
                 //lbl.setWidth( this.getWidth ( ) - 20  );
                 this.add ( lbl, { top: 10, left: 10 } );
-
+                this._createLogoutButton();
                 this.customerList();
                 this._createAddButton();
                 this._createQuantityField();
                 this._createStockitemLabel();
                 this._createTable();
                 this._createSaveButton();
+            },
+            _createLogoutButton:function() {
+                let that = this;
+                let logout = this._createBtn ( this.tr ( "Logout" ), "rgba(239,170,255,0.44)", 80, function ( ) {
+                    let jwt = new qx.data.store.Offline('userid','local');
+                    jwt.setModel('');
+                    let win = new desktop_delivery.users.login.LoginWindow ( );
+                    win.show ( );
+                    that.destroy();
+                }, this );
+                this.add ( logout, { top:18, left: 330 } );
             },
             _createSaveButton:function(){
                 let save = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 400, function ( ) {
@@ -49,6 +60,23 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
             },
             saveSalesorder:function() {
 
+                if(this._selectedCustomer === null || this._selectedCustomer === ''){
+                    return;
+                }
+
+                let data = {
+                    customer:this._selectedCustomer,
+                };
+
+                let sales = new desktop_delivery.models.Salesorders();
+                sales.close(function(success) {
+                    if (success) {
+                        this.loadStockitemList(this._selectedCustomer, true);
+                    } else {
+                        alert(this.tr("Could not save order, please try again"));
+                    }
+                }, this, data);
+
             },
             _createStockitemLabel: function(){
                 let lbl = this._createLbl(this.tr( "No stockitem selected ..." ), 200);
@@ -56,6 +84,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 let font = new qx.bom.Font ( 16, [ "Arial" ] );
                 // font.setBold ( true );
                 lbl.setFont ( font );
+                this._selectedStockitem = lbl;
                 this.add ( lbl, { top: 100, left: 10 } );
             },
             _createQuantityField:function(){
@@ -64,7 +93,28 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 this._quantity = quantity
             },
             saveSalesorderItem:function(){
+                if(this._selectedCustomer !== '') {
+                    let stockitem = this._selectedStockitem.getValue();
+                    //let stockitem = stock.substring(0,stock.indexOf(' - '));
 
+                    let data = {
+                        customer:this._selectedCustomer,
+                        quantity:this._quantity.getValue(),
+                        stockitem:stockitem,
+                        price:10
+                    };
+
+                    let sales = new desktop_delivery.models.Salesorders();
+                    sales.add(function(success) {
+                        if (success) {
+                            this._quantity.setValue('0');
+                            this._selectedStockitem.setValue('No stockitem selected');
+                            this.loadStockitemList(this._selectedCustomer, true);
+                        } else {
+                            alert(this.tr("Could not save item, please try again"));
+                        }
+                    }, this, data);
+                }
             },
             _createAddButton:function(){
                 let add = this._createBtn ( this.tr ( "Add" ), "rgba(239,170,255,0.44)", 80, function ( ) {
@@ -80,7 +130,9 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
 
                 customers.addListener("changeSelection", function(evt) {
                     that._selectedCustomer = evt.getData()[0].getLabel();
-                    that.loadStockitemList(that._selectedCustomer);
+                    //if(that._selectedCustomer !== null && that._selectedCustomer !== '') {
+                        that.loadStockitemList(that._selectedCustomer);
+                    //}
                 }, this);
 
                 cust.loadList(function(response) {
@@ -173,20 +225,15 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 table.getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.SINGLE_SELECTION);
                 table.getSelectionModel().addListener('changeSelection', function(e){
                     var selectionModel = e.getTarget();
-                   /* var selectedRows = [];
+                    var selectedRows = [];
                     selectionModel.iterateSelection(function(index) {
                         selectedRows.push(table.getTableModel().getRowData(index));
                     });
-
-                    that._customer.setValue(selectedRows[0][1]);
-                    that._name.setValue(selectedRows[0][2]);
-                    that._registrationnumber.setValue(selectedRows[0][4]);
-                    that._homepage.setValue(selectedRows[0][6]);
-                    that._phone.setValue(selectedRows[0][5]);
-                    that._selectedPricelistHead = selectedRows[0][3];*/
-
+                    that._selectedStockitem.setValue(selectedRows[0][1]);
+                    let quantity = selectedRows[0][2] ? selectedRows[0][2] : "0";
+                    that._quantity.setValue(quantity);
                 });
-                var tcm = table.getTableColumnModel();
+                let tcm = table.getTableColumnModel();
 
                 tcm.setColumnWidth(0,50);
                 tcm.setColumnWidth(1,150);
@@ -200,7 +247,6 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
 
                 this._table = table;
                 this.add(table,{top:150, left:10});
-                return ;
             },
             _createBtn : function (txt, clr, width, cb, ctx) {
                 let btn = new desktop_delivery.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)

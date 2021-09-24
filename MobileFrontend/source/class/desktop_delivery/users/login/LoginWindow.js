@@ -66,8 +66,8 @@ qx.Class.define ( "desktop_delivery.users.login.LoginWindow",
                 },this );
                 this.add ( btnForgot, { top: 130, right: 10 } );
 
-                var width = parseInt ( ( this.getWidth ( ) - 30 ) / 2, 10 );
-                var btnLogin = this._createBtn ( this.tr ( "Log in" ), "#AAAAFF70", width, function ( ) {
+                let width = parseInt ( ( this.getWidth ( ) - 20 ), 10 );
+                let btnLogin = this._createBtn ( this.tr ( "Log in" ), "#AAAAFF70", width, function ( ) {
                     this.login ( );
                 }, this );
                 this.add ( btnLogin, { bottom: 10, left: 10 } );

@@ -83,4 +83,31 @@ async sub get_open_so_pkey ($self, $companies_pkey, $customer) {
     }
     return 0;
 }
+
+async sub close ($self, $companies_pkey, $users_pkey, $customer) {
+
+    my $soclose_stmt = qq {
+        UPDATE salesorders SET open = false,
+            modby = (SELECT userid FROM users WHERE users_pkey = ?),
+            moddatetime = now()
+            WHERE open = true AND
+            companies_fkey = ?
+            AND customers_fkey = (SELECT customers_pkey
+                                    FROM customers WHERE customer = ?
+                                        AND companies_fkey = ?)
+        RETURNING salesorders_pkey
+    };
+
+    my $result = $self->db->query(
+        $soclose_stmt,
+        ($users_pkey, $companies_pkey, $customer, $companies_pkey)
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows;
+    if (defined $hash) {
+        return $hash->{salesorders_pkey};
+    }
+    return 0;
+}
 1;

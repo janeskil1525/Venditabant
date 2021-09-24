@@ -5,6 +5,19 @@ use Data::Dumper;
 
 has 'db';
 
+async sub delete_item ($self, $companies_pkey, $salesorders_pkey, $data) {
+    my $salesorder_item_stmt = qq{
+        DELETE FROM salesorder_items WHERE salesorders_fkey = ?
+            AND stockitems_fkey = (SELECT stockitems_pkey FROM stockitems
+                        WHERE companies_fkey = ? AND stockitem = ?)
+    };
+
+    $self->db->query(
+        $salesorder_item_stmt,
+            ($salesorders_pkey, $companies_pkey, $data->{stockitem})
+    );
+}
+
 async sub upsert ($self, $companies_pkey, $salesorders_pkey, $users_pkey, $data) {
 
     my $salesorder_item_stmt = qq{

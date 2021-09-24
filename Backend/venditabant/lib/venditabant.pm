@@ -93,6 +93,7 @@ sub startup ($self) {
   $auth->put('/stockitem/save/')->to('stockitems#save_stockitem');
   $auth->get('/stockitem/load_list/')->to('stockitems#load_list');
   $auth->get('/stockitem/load_list/mobile/:customer')->to('stockitems#load_list_mobile');
+  $auth->get('/stockitem/load_list/mobile/')->to('stockitems#load_list_mobile_nocust');
 
   $auth->get('/pricelists/heads/load_list/')->to('pricelists#load_list_heads');
   $auth->put('/pricelists/heads/save/')->to('pricelists#upsert_head');
@@ -106,7 +107,9 @@ sub startup ($self) {
   $auth->get('/customers/load_list/')->to('customers#load_list');
   $auth->put('/users/save/')->to('users#save_user');
   $auth->get('/users/load_list/')->to('users#load_list');
+
   $auth->put('/salesorders/save/')->to('salesorders#save_salesorder');
+  $auth->put('/salesorders/close/')->to('salesorders#close_salesorder');
   $auth->get('/salesorders/load_list/')->to('salesorders#load_list');
 }
 

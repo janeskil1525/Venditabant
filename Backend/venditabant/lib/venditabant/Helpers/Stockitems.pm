@@ -43,6 +43,47 @@ async sub load_list_p ($self, $companies_pkey) {
     return $result;
 }
 
+async sub load_list_mobile_nocust_p ($self, $companies_pkey) {
+
+    my $response = $self->mobile_list_response();
+
+    my $pricelists_pkey = $self->pg->db->select(
+        'pricelists',
+        ['pricelists_pkey'],
+            {
+                pricelist      => 'DEFAULT',
+                companies_fkey => $companies_pkey,
+            }
+    )->hash->{pricelists_pkey};
+
+    say "load_list_mobile_nocust_p " . $pricelists_pkey;
+    my $mobilelist_stmt = qq{
+        SELECT stockitems_pkey, stockitem, description, 0 as quantity,  price
+            FROM stockitems JOIN pricelist_items
+            ON stockitems_pkey = stockitems_fkey AND companies_fkey = ?
+				AND pricelists_fkey = ?
+			AND pricelist_items_pkey = (
+				SELECT pricelist_items_pkey FROM pricelist_items
+					WHERE stockitems_pkey = stockitems_fkey
+						AND pricelists_fkey = ?
+				AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
+								WHERE stockitems_pkey = stockitems_fkey AND todate >= now()))
+				AND todate >= now()
+
+    };
+
+    my $result = $self->pg->db->query(
+        $mobilelist_stmt,
+            ($companies_pkey, $pricelists_pkey, $pricelists_pkey)
+    );
+
+    my $hash;
+    $hash = $result->hashes if $result and $result->rows;
+
+    $response->{stockitems} = $hash;
+    return $response;
+}
+
 async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
 
     my $db = $self->pg->db;
@@ -88,7 +129,7 @@ async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
             )
     );
 
-    my $response->{stockitems} = [];
+    my $response = $self->mobile_list_response();
     $response->{stockitems} = $result->hashes if $result and $result->rows > 0;
 
     my $salesorders_stmt = qq{
@@ -107,7 +148,6 @@ async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
         )
     );
 
-    $response->{salesorders} = [];
     $response->{salesorders} = $result->hashes if $result and $result->rows > 0;
 
     my $history_stmt = qq {
@@ -135,8 +175,16 @@ async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
         )
     );
 
-    $response->{history} = [];
     $response->{history} = $result->hashes if $result and $result->rows > 0;
+
+    return $response;
+}
+
+sub mobile_list_response ($self) {
+
+    my $response->{history} = [];
+    $response->{salesorders} = [];
+    $response->{stockitems} = [];
 
     return $response;
 }

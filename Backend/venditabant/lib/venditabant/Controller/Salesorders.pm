@@ -23,4 +23,23 @@ sub save_salesorder ($self) {
     })->wait;
 
 }
+
+sub close_salesorder ($self) {
+
+    $self->render_later;
+    my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+    my $json_hash = from_json ($self->req->body);
+
+    $self->salesorders->close(
+        $companies_pkey, $users_pkey, $json_hash
+    )->then(sub ($result) {
+        $self->render(json => {'result' => $result});
+    })->catch( sub ($err) {
+
+        $self->render(json => {'result' => $err});
+    })->wait;
+
+}
 1;

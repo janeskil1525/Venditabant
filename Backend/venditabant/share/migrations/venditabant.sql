@@ -1111,3 +1111,28 @@ CREATE UNIQUE INDEX idx_salesorder_item_salesorder_stockitem
     ON salesorder_items(salesorders_fkey, stockitems_fkey);
 
 -- 13 down
+
+-- 14 up
+
+CREATE TABLE company_version
+(
+    company_version_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    companies_fkey bigint NOT NULL,
+    version BIGINT NOT NULL,
+    CONSTRAINT company_version_pkey PRIMARY KEY (company_version_pkey),
+    CONSTRAINT company_version_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE UNIQUE INDEX idx_company_version_companies_fkey_version
+    ON company_version(companies_fkey, version)
+
+-- 14 down

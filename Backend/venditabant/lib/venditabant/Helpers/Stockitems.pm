@@ -56,7 +56,6 @@ async sub load_list_mobile_nocust_p ($self, $companies_pkey) {
             }
     )->hash->{pricelists_pkey};
 
-    say "load_list_mobile_nocust_p " . $pricelists_pkey;
     my $mobilelist_stmt = qq{
         SELECT stockitems_pkey, stockitem, description, 0 as quantity,  price
             FROM stockitems JOIN pricelist_items

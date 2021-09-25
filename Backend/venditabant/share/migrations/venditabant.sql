@@ -1136,3 +1136,24 @@ CREATE UNIQUE INDEX idx_company_version_companies_fkey_version
     ON company_version(companies_fkey, version)
 
 -- 14 down
+
+-- 15 up
+CREATE TABLE if not exists sentinel
+(
+    sentinel_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+    organisation varchar,
+    source varchar,
+    method varchar,
+    message varchar,
+    recipients varchar,
+    mailed bool NOT NULL DEFAULT false,
+    closed bool NOT NULL DEFAULT false,
+    CONSTRAINT pk_idx_sentinel_pkey PRIMARY KEY (sentinel_pkey)
+);
+
+-- 15 down

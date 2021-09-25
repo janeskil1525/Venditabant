@@ -1,5 +1,5 @@
 package venditabant::Model::Pricelists;
-use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 has 'db';
 

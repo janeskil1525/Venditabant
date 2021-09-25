@@ -1,5 +1,5 @@
 package venditabant::Helpers::Stockitems;
-use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::Stockitems;
 use venditabant::Model::SalesorderItem;

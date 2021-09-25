@@ -1,5 +1,5 @@
 package venditabant::Model::SalesorderItem;
-use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;
 

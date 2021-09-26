@@ -7,21 +7,42 @@ use venditabant::Model::Company;
 use Data::Dumper;
 
 has 'pg';
+has 'db';
 
-async sub release ($self, $companies_pkey =  0) {
+my $current_version = 1;
 
-    my $current_vesrion = 1;
+async sub release_single_company ($self, $companies_pkey =  0) {
+
+    $self->db($self->pg->db) unless $self->db;
+
     my $releaser = venditabant::Helpers::Companies::Release::ReleaseSteps->new(
         pg => $self->pg
     );
 
     if ($companies_pkey > 0) {
-        $releaser->release($companies_pkey, $current_vesrion);
-    } else {
-        my $companies = venditabant::Model::Company->new(db => $self->pg->db);
-        foreach my $company ($companies) {
-            $releaser->release($companies->{companies_pkey}, $current_vesrion);
-        }
+        await $releaser->release($companies_pkey, $current_version);
     }
+}
+
+async sub release ($self) {
+
+    my $db = $self->pg->db;
+    my $tx = $db->begin();
+
+    my $err;
+    eval {
+        my $companies = venditabant::Model::Company->new(db => $self->pg->db);
+        my $releaser = venditabant::Helpers::Companies::Release::ReleaseSteps->new(
+            pg => $db
+        );
+        foreach my $company ($companies) {
+            await $releaser->release($companies->{companies_pkey}, $current_version);
+        }
+        $tx->commit();
+    };
+    $self->capture_message ($self, $self->pg, ,
+        'venditabant::Helpers::Companies::Release::Release;', 'release', $@
+    ) if $@;
+
 }
 1;

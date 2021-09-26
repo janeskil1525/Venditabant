@@ -6,9 +6,11 @@ use venditabant::Helpers::Factory::Loader;;
 
 use Data::Dumper;
 
-has 'pg';
+
+has 'db';
 
 async sub release ($self, $companies_pkey, $current_version) {
+
 
     my $class = 'venditabant::Helpers::Companies::Release::ReleaseStep_';
     my $version = await $self->get_version($companies_pkey);
@@ -16,7 +18,7 @@ async sub release ($self, $companies_pkey, $current_version) {
     return unless $current_version > $version;
 
     my $load = venditabant::Helpers::Factory::Loader->new(
-        db => $self->pg->db
+        db => $self->db
     );
 
     for(my $i = $version; $i < $current_version; $i++) {
@@ -29,7 +31,7 @@ async sub release ($self, $companies_pkey, $current_version) {
 async sub get_version($self, $companies_pkey) {
 
     my $version = venditabant::Model::CompanyVersion->new(
-        db => $self->pg->db
+        db => $self->db
     )->get_version(
         $companies_pkey
     );

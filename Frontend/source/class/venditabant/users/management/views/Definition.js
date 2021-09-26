@@ -17,7 +17,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
         destruct: function () {
         },
         properties : {
-            support : { nullable : true, check: "Boolean" }
+            support : { nullable : true, check: "Boolean", apply:"loadUsers" }
         },
         members: {
             // Public functions ...
@@ -101,8 +101,6 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 tabView.add(page3);*/
                 this._createTable();
                 win.add(this._table);
-
-                this.loadUsers();
             },
             saveUser:function() {
                 let that = this;
@@ -207,6 +205,10 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
             },
             loadUsers:function () {
                 let users = new venditabant.users.management.models.Users();
+                let support = this.isSupport();
+                users.set({
+                    support:this.isSupport()
+                });
                 users.loadList(function(response) {
                     let tableData = [];
                     for(let i = 0; i < response.data.length; i++) {

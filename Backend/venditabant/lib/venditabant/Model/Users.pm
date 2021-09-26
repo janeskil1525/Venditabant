@@ -57,7 +57,7 @@ sub load_list ($self, $companies_pkey) {
             FROM users, users_companies
         WHERE users_pkey = users_fkey AND companies_fkey = ?
     };
-
+    say "load_list";
     my $list = $self->db->query($load_stmt,($companies_pkey));
 
     my $hashes;
@@ -71,7 +71,7 @@ sub load_list_support ($self) {
         SELECT users_pkey, userid, username, active
             FROM users ORDER BY userid
     };
-
+say "load_list_support";
     my $list = $self->db->query($load_stmt);
 
     my $hashes;

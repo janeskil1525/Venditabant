@@ -19,7 +19,6 @@ sub login_user ($self) {
 	})->catch(sub ($err) {
 		$self->render(json => {'result' => $err});
 	})->wait;
-
 }
 
 1;

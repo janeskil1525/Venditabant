@@ -6,17 +6,16 @@ use venditabant::Model::Company;
 
 use Data::Dumper;
 
-has 'pg';
 has 'db';
 
 my $current_version = 1;
 
 async sub release_single_company ($self, $companies_pkey =  0) {
 
-    $self->db($self->pg->db) unless $self->db;
+    # $self->db($self->pg->db) unless $self->db;
 
     my $releaser = venditabant::Helpers::Companies::Release::ReleaseSteps->new(
-        pg => $self->pg
+        db => $self->db
     );
 
     if ($companies_pkey > 0) {
@@ -26,7 +25,7 @@ async sub release_single_company ($self, $companies_pkey =  0) {
 
 async sub release ($self) {
 
-    my $db = $self->pg->db;
+    my $db = $self->db;
     my $tx = $db->begin();
 
     my $err;

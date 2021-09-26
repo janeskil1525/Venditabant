@@ -1,7 +1,7 @@
 package venditabant::Helpers::Signup::Signup;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Helpers::Companies::Release::ReleaseSteps;;
+use venditabant::Helpers::Companies::Release::Release;
 
 use Digest::SHA qw{sha512_base64};
 
@@ -10,7 +10,7 @@ has 'pg';
 async sub signup ($self, $data) {
 
     my $db = $self->pg->db;
-
+    my $tx = $db->begin;
     my $company_stmt = qq {
         INSERT INTO companies (company, registrationnumber) VALUES (?, ?) RETURNING companies_pkey;
     };
@@ -27,13 +27,13 @@ async sub signup ($self, $data) {
     my $err = '';
        # company_address:company_address,
     eval {
-        my $tx = $db->begin;
+
         my $companies_pkey = $db->query($company_stmt,($data->{company_name}, $data->{company_orgnr}))->hash->{companies_pkey};
         my $users_pkey = $db->query($users_stmt,($data->{email}, $data->{user_name},$data->{password},1))->hash->{users_pkey};
         $db->query($users_companies_stmt,($companies_pkey, $users_pkey));
-        await venditabant::Helpers::Companies::Release::ReleaseSteps->new(
+        await venditabant::Helpers::Companies::Release::Release->new(
             db => $db
-        )->release($companies_pkey);
+        )->release_single_company($companies_pkey);
 
         $tx->commit;
     };
@@ -41,6 +41,7 @@ async sub signup ($self, $data) {
     $self->capture_message ($self, $self->pg, ,
         'venditabant::Helpers::Signup::Signup', 'release', $@
     ) if $err;
+
 
     if($err) {
         return $err;

@@ -1132,8 +1132,8 @@ CREATE TABLE company_version
         DEFERRABLE
 );
 
-CREATE UNIQUE INDEX idx_company_version_companies_fkey_version
-    ON company_version(companies_fkey, version)
+CREATE UNIQUE INDEX idx_company_companies_fkey_version
+    ON company_version(companies_fkey);
 
 -- 14 down
 

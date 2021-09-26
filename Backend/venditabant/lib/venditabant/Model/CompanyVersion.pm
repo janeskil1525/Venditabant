@@ -18,7 +18,7 @@ async sub get_version($self, $companies_pkey) {
             ($companies_pkey)
     )->hash->{version};
 
-    return $version;
+    return $version ? $version : 0;
 }
 
 async sub set_version ($self, $companies_fkey, $version) {

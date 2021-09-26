@@ -5,12 +5,11 @@ has 'pg';
 
 sub insert ($self, $data) {
 
-    $self->pg->insert (
+    $self->pg->db->insert (
         'sentinel',
             {
                 $data
             }
     );
-
 }
 1;

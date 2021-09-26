@@ -49,7 +49,7 @@ sub capture_message ($self, $pg, $organisation = 'venditabant', $source = '', $m
     venditabant::Model::Sentinel->new(pg => $pg)->insert($data);
 }
 
-sub get_format ($self, $organisation, $source, $method, $message, $recipients, $errtype) {
+sub get_format ($self, $organisation, $source, $method, $message, $recipients) {
 
     $organisation 	= '' unless $organisation;
     $source 		= '' unless $source;

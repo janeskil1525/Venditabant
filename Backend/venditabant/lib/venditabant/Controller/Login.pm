@@ -7,11 +7,10 @@ use Data::Dumper;
 sub login_user ($self) {
 
 	$self->render_later;
-	say 'login_user';
+
 	my $data = from_json($self->req->body);
 
 	$self->login->login_user($data->{username}, $data->{password})->then(sub ($result) {
-		say Dumper($result);
 		if($result) {
 			$self->render(json => {'result' => "success", data => $result});
 		} else {

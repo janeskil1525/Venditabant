@@ -33,8 +33,6 @@ async sub upsert ($self, $companies_pkey, $user) {
 
 async sub load_list ($self, $companies_pkey) {
 
-    say Dumper($companies_pkey);
-
     my $result = venditabant::Model::Users->new(
         db => $self->pg->db
     )->load_list($companies_pkey);

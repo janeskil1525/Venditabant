@@ -7,6 +7,7 @@ use venditabant::Model::Company;
 use Data::Dumper;
 
 has 'db';
+has 'pg';
 
 my $current_version = 1;
 
@@ -30,18 +31,24 @@ async sub release ($self) {
 
     my $err;
     eval {
-        my $companies = venditabant::Model::Company->new(db => $self->pg->db);
+        my $companies = await venditabant::Model::Company->new(
+            db => $self->db
+        )->load_list();
         my $releaser = venditabant::Helpers::Companies::Release::ReleaseSteps->new(
-            pg => $db
+            db => $db
         );
-        foreach my $company ($companies) {
-            await $releaser->release($companies->{companies_pkey}, $current_version);
+        foreach my $company (@{$companies}) {
+            await $releaser->release(
+                $company->{companies_pkey}, $current_version
+            );
         }
         $tx->commit();
     };
-    $self->capture_message ($self, $self->pg, ,
+    $self->capture_message (
+        $self->pg, ,
         'venditabant::Helpers::Companies::Release::Release;', 'release', $@
     ) if $@;
+
 
 }
 1;

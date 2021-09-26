@@ -1,5 +1,5 @@
 package venditabant;
-use Mojo::Base 'Mojolicious', -signatures;
+use Mojo::Base 'Mojolicious', -signatures, -async_await;;
 
 use Mojo::Pg;
 
@@ -10,6 +10,8 @@ use venditabant::Helpers::Pricelists;
 use venditabant::Helpers::Customers;
 use venditabant::Helpers::Users;
 use venditabant::Helpers::Salesorders;
+use venditabant::Helpers::Companies::Release::Release;
+use venditabant::Helpers::Sentinel::Sentinelsender;
 
 use Data::Dumper;
 use File::Share;
@@ -69,6 +71,16 @@ sub startup ($self) {
   $self->static->paths([
       $self->dist_dir->child('public'),
   ]);
+
+  venditabant::Helpers::Companies::Release::Release->new(
+      db => $self->pg->db,
+      pg => $self->pg,
+  )->release()->catch(sub ($err) {
+    venditabant::Helpers::Sentinel::Sentinelsender->new(
+    )->capture_message(
+        $self->pg,'','venditabant 11', 'startup', $err
+    );
+  })->wait;
 
   # Normal route to controller
   my $r = $self->routes;

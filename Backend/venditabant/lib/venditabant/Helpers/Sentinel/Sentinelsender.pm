@@ -41,6 +41,7 @@ use Try::Tiny;
 
 sub capture_message ($self, $pg, $organisation = 'venditabant', $source = '', $method = '', $message ='', $recipients = '') {
 
+    say "capture_message $organisation , $source , $method , $message , $recipients";
     $recipients = 'janeskil1525@gmail.com';
 
     my $data = $self->get_format(
@@ -52,6 +53,7 @@ sub capture_message ($self, $pg, $organisation = 'venditabant', $source = '', $m
 sub get_format ($self, $organisation, $source, $method, $message, $recipients) {
 
     $organisation 	= '' unless $organisation;
+
     $source 		= '' unless $source;
     $method 		= '' unless $method;
     $message 		= '' unless $message;

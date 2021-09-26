@@ -13,12 +13,15 @@ async sub get_version($self, $companies_pkey) {
         WHERE companies_fkey = ?
     };
 
-    my $version = $self->db->query(
+    my $result = $self->db->query(
         $company_version_stmt,
             ($companies_pkey)
-    )->hash->{version};
+    );
 
-    return $version ? $version : 0;
+    my $hash;
+    $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash->{version} ? $hash->{version} : 0;
 }
 
 async sub set_version ($self, $companies_fkey, $version) {

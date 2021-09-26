@@ -15,7 +15,6 @@ sub signup_user{
     my $result;
     delete $user->{password} unless $user->{password};
 
-    say Dumper($user);
     if (exists $user->{password}){
         $user->{passwd} = sha512_base64($user->{password});
         $stmt = qq{INSERT INTO users (username, userid, active, passwd) VALUES (?,?,?,?,?)

@@ -10,7 +10,7 @@ async sub upsert ($self, $companies_pkey, $customers ) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
-say "upsert $companies_pkey " . Dumper($customers);
+
     my $err;
     eval {
         my $customers_pkey = venditabant::Model::Customers->new(

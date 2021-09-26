@@ -9,7 +9,7 @@ async sub step ($self, $companies_pkey) {
         INSERT INTO pricelists (pricelist, companies_fkey)
             VALUES ('DEFAULT',?)
         ON CONFLICT (pricelist, companies_fkey)
-        DO NOTHING
+        DO UPDATE SET moddatetime = now();
     };
 
     $self->db->query($stmt,($companies_pkey));

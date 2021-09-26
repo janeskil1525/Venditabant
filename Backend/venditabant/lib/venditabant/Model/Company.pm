@@ -15,6 +15,7 @@ async sub load_list ($self) {
     );
 
     my $hash;
+
     $hash = $result->hashes if $result and $result->rows > 0;
 
     return $hash

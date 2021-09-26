@@ -39,4 +39,13 @@ async sub load_list ($self, $companies_pkey) {
 
     return $result;
 }
+
+async sub load_list_support ($self) {
+
+    my $result = venditabant::Model::Users->new(
+        db => $self->pg->db
+    )->load_list_support();
+
+    return $result;
+}
 1;

@@ -119,6 +119,7 @@ sub startup ($self) {
   $auth->get('/customers/load_list/')->to('customers#load_list');
   $auth->put('/users/save/')->to('users#save_user');
   $auth->get('/users/load_list/')->to('users#load_list');
+  $auth->get('/users/load_list/support/')->to('users#load_list_support');
 
   $auth->put('/salesorders/save/')->to('salesorders#save_salesorder');
   $auth->put('/salesorders/close/')->to('salesorders#close_salesorder');

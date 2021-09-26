@@ -83,4 +83,19 @@ sub load_list ($self) {
         $self->render(json => {'result' => 'failed', data => $err});
     })->wait;
 }
+
+sub load_list_support ($self) {
+
+    $self->render_later;
+    my $companies_pkey = $self->jwt->companise_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+    $self->users->load_list_support()->then(sub ($result) {
+
+        $self->render(json => {'result' => 'success', data => $result});
+    })->catch( sub ($err) {
+
+        $self->render(json => {'result' => 'failed', data => $err});
+    })->wait;
+}
 1;

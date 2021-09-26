@@ -65,4 +65,18 @@ sub load_list ($self, $companies_pkey) {
 
     return $hashes;
 }
+
+sub load_list_support ($self) {
+    my $load_stmt = qq {
+        SELECT users_pkey, userid, username, active
+            FROM users ORDER BY userid
+    };
+
+    my $list = $self->db->query($load_stmt);
+
+    my $hashes;
+    $hashes = $list->hashes if $list->rows > 0;
+
+    return $hashes;
+}
 1;

@@ -15,6 +15,7 @@ qx.Class.define ( "venditabant.users.login.LoginWindow",
         destruct : function ( )  {
         },
         members  :  {
+            _address: new venditabant.application.Const().venditabant_endpoint(),
             _buildLogin : function ( )  {
                 var semi = new qx.ui.core.Widget ( );
                 semi.set ( { opacity: 0.6, backgroundColor: "#404040" } );
@@ -101,12 +102,19 @@ qx.Class.define ( "venditabant.users.login.LoginWindow",
                 let data = {
                     username:name, password:pass
                 };
-                app.send ( "http://192.168.1.134/", "api/login/", data, function ( success, rsp ) {
+                app.send ( this._address, "/api/login/", data, function ( success, rsp ) {
                     if (success) {
                         let jwt = new qx.data.store.Offline('userid','local');
                         jwt.setModel(qx.data.marshal.Json.createModel(rsp.data));
+                        let support = false;
+                        if(rsp.data.support === 1) {
+                            support = true;
+                        }
 
                         let win = new venditabant.application.ApplicationWindow();
+                        win.set({
+                            support:support
+                        });
                         win.show();
                         this.destroy();
                     } else {

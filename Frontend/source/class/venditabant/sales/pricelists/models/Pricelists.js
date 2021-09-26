@@ -10,15 +10,16 @@ qx.Class.define("venditabant.sales.pricelists.models.Pricelists",
 
         },
         members: {
+            _address: new venditabant.application.Const().venditabant_endpoint(),
             loadList:function(cb, ctx) {
                 let get = new venditabant.communication.Get;
-                get.load("http://192.168.1.134/", "api/v1/pricelists/heads/load_list/", '',function(response){
+                get.load(this._address, "/api/v1/pricelists/heads/load_list/", '',function(response){
                     cb.call ( ctx,(response));
                 },this);
             },
             savePricelistHead:function(data, cb, ctx) {
                 let com = new venditabant.communication.Post();
-                com.send("http://192.168.1.134/", "api/v1/pricelists/heads/save/", data, function (success) {
+                com.send(this._address, "/api/v1/pricelists/heads/save/", data, function (success) {
                     let win = null;
                     if (success) {
                         cb.call(ctx,(data.pricelist));

@@ -9,7 +9,7 @@ sub login ($self, $userid, $password) {
 
     my $login_stmt = qq{
         SELECT users_pkey, userid, username, is_admin, companies_pkey, company,
-            passwd as password
+            passwd as password, support
             FROM users, companies, users_companies
            WHERE companies_pkey = companies_fkey AND users_pkey = users_fkey
             AND userid = ? AND passwd = ? AND active = 1

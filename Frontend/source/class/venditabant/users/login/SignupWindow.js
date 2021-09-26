@@ -18,6 +18,7 @@ qx.Class.define("venditabant.users.login.SignupWindow",
 
         },
         members : {
+            _address: new venditabant.application.Const().venditabant_endpoint(),
             signup : function () {
                 var email = this._email.getValue ( );
                 var user_name = this._user_name.getValue ( );
@@ -46,7 +47,7 @@ qx.Class.define("venditabant.users.login.SignupWindow",
                 };
                 let app = new venditabant.communication.Post ( );
 
-                app.send ( "http://192.168.1.134/", "api/signup/", data, function ( success ) {
+                app.send ( this._address, "/api/signup/", data, function ( success ) {
                     let win = null;
                     if ( success )  {
                         this.login ( );

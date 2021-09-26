@@ -20,6 +20,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
         members: {
             // Public functions ...
             __table : null,
+            _address: new venditabant.application.Const().venditabant_endpoint(),
             setParams: function (params) {
             },
             _buildWindow: function () {
@@ -105,7 +106,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                     description: description
                 }
                 let com = new venditabant.communication.Post ( );
-                com.send ( "http://192.168.1.134/", "api/v1/stockitem/save/", data, function ( success ) {
+                com.send ( this._address, "/api/v1/stockitem/save/", data, function ( success ) {
                     let win = null;
                     if ( success )  {
                         this.loadStockitems();

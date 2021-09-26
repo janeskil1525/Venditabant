@@ -27,9 +27,10 @@ async sub login_user ($self, $userid, $password) {
         #my $json = encode_json($login);
         $jwt = await venditabant::Helpers::Jwt->new()->encode_jwt_p($login);
         $result = {
-            userid  => $userid,
-            jwt     => $jwt,
-            expires => '',
+            userid   => $userid,
+            jwt      => $jwt,
+            expires  => '',
+            support => $login->{support}
         };
     }
 

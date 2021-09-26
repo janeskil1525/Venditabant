@@ -2,13 +2,13 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
     {
         extend : qx.ui.window.Window,
 
-        construct : function ( ) {
+        construct : function (  ) {
             this.base ( arguments );
             this.createCommands();
             this.setLayout ( new qx.ui.layout.Canvas ( ) );
             this.setWidth  ( 800 );
             this.setHeight ( 550 );
-            this._buildWindow  ( );
+
             var app  = qx.core.Init.getApplication ( );
             var root = app.getRoot ( );
             root.add ( this, { top: 10, left: 10 } );
@@ -16,12 +16,14 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
         },
         destruct : function ( )  {
         },
-
+        properties : {
+            support : { nullable : true, check: "Boolean", apply:"supportWorks" }
+        },
         members  : {
+            _support:null,
             // Public functions ...
             setParams: function (params) {
             },
-
             start: function () {
                 // virtual function to kick off exection.
                 this.show();
@@ -46,7 +48,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 var bar = this.getMenuBar();
                 container.add(bar, {left: 52, top: 0});
-
+                this._menubar = bar;
                 var lbl = new qx.ui.basic.Label(this.tr("Hello World"));
                 lbl.setFont(font);
                 this.add(lbl, {top: "50%", left: "40%"});
@@ -82,9 +84,14 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 menubar.add(fileMenu);
                 menubar.add(editMenu);
                 menubar.add(adminhMenu);
+
                 /* menubar.add(viewMenu);
                  menubar.add(formatMenu);
                  menubar.add(helpMenu);*/
+                if(this.isSupport() === true) {
+                    var supportMenu = new qx.ui.menubar.Button("Support", null, this.getSupportMenu());
+                    menubar.add(supportMenu);
+                }
 
                 return frame;
             },
@@ -130,7 +137,6 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 this._pasteCommand.setEnabled(false);
             },
-
             getFileMenu: function () {
                 var menu = new qx.ui.menu.Menu();
 
@@ -186,6 +192,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
             },
 
             getAdminMenu: function () {
+                let that = this;
                 let menu = new qx.ui.menu.Menu();
 
                 let usersButton = new qx.ui.menu.Button("Users");
@@ -198,13 +205,21 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 //previousButton.setEnabled(false);
 
-                usersButton.addListener("execute", this.usersButton);
+                usersButton.addListener("execute", function() {
+                    let userwindow = new venditabant.users.management.views.Definition();
+                    let support = that.isSupport();
+
+                    userwindow.set({
+                        support:support
+                    });
+                });
                 stockitemButton.addListener("execute", this.stockitemsButton);
                 pricelistButton.addListener("execute", this.pricelistButton);
                 customerButton.addListener("execute", this.customerButton);
                 /* replaceButton.addListener("execute", this.debugButton);
                 searchFilesButton.addListener("execute", this.debugButton);
                 replaceFilesButton.addListener("execute", this.debugButton);*/
+
 
                 menu.add(usersButton);
                 menu.add(stockitemButton);
@@ -217,8 +232,24 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 return menu;
             },
-            usersButton:function() {
-                let userwindow = new venditabant.users.management.views.Definition();
+            getSupportMenu:function() {
+                let menu = new qx.ui.menu.Menu();
+                let that = this;
+                let usersButton = new qx.ui.menu.Button("Users");
+                usersButton.addListener("execute", function() {
+                    let userwindow = new venditabant.users.management.views.Definition();
+                    let support = that.isSupport();
+
+                    userwindow.set({
+                        support:support
+                    });
+                });
+                menu.add(usersButton);
+
+                return menu;
+            },
+            supportWorks:function(value) {
+                this._buildWindow  ( );
             },
             customerButton: function() {
                 let customerswindow = new venditabant.sales.customers.views.Definition();

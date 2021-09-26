@@ -27,6 +27,7 @@ qx.Class.define("venditabant.Application",
 
   members :
   {
+      _address: new venditabant.application.Const().venditabant_endpoint(),
     main : function ( )  {
       this.base ( arguments );
       if ( qx.core.Environment.get ( "qx.debug" ) )  {
@@ -35,7 +36,8 @@ qx.Class.define("venditabant.Application",
       }
       let root = this.getRoot ( );
       let decorator = new qx.ui.decoration.Decorator ( );
-      decorator.setBackgroundImage ( "http://localhost:3000/kaffebonor-fotona.jpg" );
+      let adress = new venditabant.application.Const()
+      decorator.setBackgroundImage ( this._address + ":3000/kaffebonor-fotona.jpg" );
       decorator.setBackgroundRepeat( "scale" );
 
       this.getRoot ( ).setDecorator( decorator );
@@ -48,6 +50,9 @@ qx.Class.define("venditabant.Application",
         } else {
             if(typeof jwt_model.getUserid === 'function' && jwt_model.getUserid() !== '') {
                 win = new venditabant.application.ApplicationWindow();
+                win.set({
+                    support:true
+                });
                 win.show();
             } else {
                 win = new venditabant.users.login.LoginWindow ( );
@@ -67,7 +72,7 @@ qx.Class.define("venditabant.Application",
       },this );*/
     },
     rpc : function ( str, cb, ctx )  {
-     let rpc = new qx.io.request.Xhr ( "http://192.168.1.134/api/v1/login");
+     let rpc = new qx.io.request.Xhr ( "_address/api/v1/login");
      rpc.setMethod("POST");
      rpc.setRequestHeader("Access-Control-Allow-Origin");
         //rpc.setRequestHeader("content-type","application/json");

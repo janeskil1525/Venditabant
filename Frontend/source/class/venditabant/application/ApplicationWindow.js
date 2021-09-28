@@ -77,6 +77,8 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 var fileMenu = new qx.ui.menubar.Button("File", null, this.getFileMenu());
                 var editMenu = new qx.ui.menubar.Button("Edit", null, this.getEditMenu());
                 var adminhMenu = new qx.ui.menubar.Button("Administration", null, this.getAdminMenu());
+                let salesMenu = new qx.ui.menubar.Button("Sales", null, this.getSalesMenu());
+
                 /* var viewMenu = new qx.ui.menubar.Button("View", null, this.getViewMenu());
                  var formatMenu = new qx.ui.menubar.Button("Format", null, this.getFormatMenu());
                  var helpMenu = new qx.ui.menubar.Button("Help", null, this.getHelpMenu());*/
@@ -84,6 +86,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 menubar.add(fileMenu);
                 menubar.add(editMenu);
                 menubar.add(adminhMenu);
+                menubar.add(salesMenu);
 
                 /* menubar.add(viewMenu);
                  menubar.add(formatMenu);
@@ -232,6 +235,21 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 return menu;
             },
+            getSalesMenu:function() {
+                let that = this;
+                let menu = new qx.ui.menu.Menu();
+
+                let userssalesorderButton = new qx.ui.menu.Button("Salesorders");
+                userssalesorderButton.addListener("execute", this.salesordersButton);
+
+                let invoiceButton = new qx.ui.menu.Button("Invoices");
+                invoiceButton.addListener("execute", this.invoiceButton);
+
+                menu.add(userssalesorderButton);
+                menu.add(invoiceButton);
+
+                return menu;
+            },
             getSupportMenu:function() {
                 let menu = new qx.ui.menu.Menu();
                 let that = this;
@@ -247,6 +265,12 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 menu.add(usersButton);
 
                 return menu;
+            },
+            invoiceButton:function() {
+                let invoicewindow = new venditabant.sales.invoices.views.Definition();
+            },
+            salesordersButton:function() {
+                let salesorderswindow = new venditabant.sales.orders.views.Definition();
             },
             supportWorks:function(value) {
                 this._buildWindow  ( );

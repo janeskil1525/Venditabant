@@ -1157,3 +1157,88 @@ CREATE TABLE if not exists sentinel
 );
 
 -- 15 down
+
+-- 16 up
+
+CREATE TABLE if not exists units
+(
+    units_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+    unit varchar UNIQUE,
+    description varchar,
+    companies_fkey bigint NOT NULL,
+    CONSTRAINT pk_idx_units_pkey PRIMARY KEY (units_pkey),
+    CONSTRAINT units_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+ALTER TABLE stockitems
+    ADD COLUMN purchaseprice NUMERIC(10,2) NOT NULL DEFAULT 0.0;
+
+ALTER TABLE stockitems
+    ADD COLUMN active BOOLEAN NOT NULL DEFAULT true;
+
+ALTER TABLE stockitems
+    ADD COLUMN stocked BOOLEAN NOT NULL DEFAULT true;
+
+ALTER TABLE stockitems
+    ADD COLUMN units_fkey BIGINT NOT NULL DEFAULT 0;
+
+CREATE TABLE invoice
+(
+    invoice_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    customers_fkey bigint NOT NULL,
+    companies_fkey bigint NOT NULL,
+    invoicedate timestamp without time zone NOT NULL DEFAULT now(),
+    paydate timestamp without time zone NOT NULL DEFAULT now(),
+    CONSTRAINT invoice_pkey PRIMARY KEY (invoice_pkey),
+    CONSTRAINT invoice_customers_fkey FOREIGN KEY (customers_fkey)
+        REFERENCES customers (customers_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT salesorders_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE TABLE invoice_items
+(
+    invoice_items_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    invoice_fkey bigint NOT NULL,
+    stockitems_fkey BIGINT NOT NULL,
+    quantity NUMERIC(10,2) NOT NULL DEFAULT 0.0,
+    price NUMERIC(10,2) NOT NULL DEFAULT 0.0,
+    CONSTRAINT invoice_items_pkey PRIMARY KEY (invoice_items_pkey),
+    CONSTRAINT invoice_items_salesorders_fkey FOREIGN KEY (invoice_fkey)
+        REFERENCES invoice (invoice_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT invoice_items_stockitems_fkey FOREIGN KEY (stockitems_fkey)
+        REFERENCES stockitems (stockitems_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+-- 16 down

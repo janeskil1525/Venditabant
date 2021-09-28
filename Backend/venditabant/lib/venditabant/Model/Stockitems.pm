@@ -29,7 +29,7 @@ sub upsert ($self, $companies_pkey, $stockitem) {
 async sub load_list_p ($self, $companies_pkey) {
 
     my $load_stmt = qq {
-        SELECT stockitems_pkey, stockitem, description
+        SELECT stockitems_pkey, stockitem, description, active, stocked, purchaseprice
             FROM stockitems
         WHERE companies_fkey = ?
     };

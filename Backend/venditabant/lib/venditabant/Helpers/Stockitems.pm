@@ -2,10 +2,7 @@ package venditabant::Helpers::Stockitems;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::Stockitems;
-use venditabant::Model::SalesorderItem;
-use venditabant::Model::SalesorderHead;
-use venditabant::Model::Customers;
-use venditabant::Model::SalesorderItem;
+use venditabant::Model::Pricelists;
 use venditabant::Model::PricelistItems;
 
 use Data::Dumper;
@@ -18,29 +15,63 @@ async sub upsert ($self, $companies_pkey, $stockitem) {
     my $tx = $db->begin();
 
     my $err;
+    my $pricelist_item;
+
     eval {
-        my $stockitems_pkey = venditabant::Model::Users->new(
+        $pricelist_item = venditabant::Model::PricelistItems->new(db => $db);
+    };
+    say "Error 1 " . $@ if $@;
+
+
+    eval {
+        my $stockitems_pkey = venditabant::Model::Stockitems->new(
             db => $db
         )->upsert(
             $companies_pkey, $stockitem
         );
+
+        $stockitem->{pricelist} = 'DEFAULT';
+
+        $pricelist_item->insert_item(
+            $companies_pkey, $stockitem
+        );
+
         $tx->commit();
     };
     $err = $@ if $@;
     say "error '$err'" if $err;
 
-    return $err ? $err : 'success';
+    return 'success' unless $err;
+    return $err;
 }
 
 async sub load_list_p ($self, $companies_pkey) {
 
-    my $result = venditabant::Model::Stockitems->new(
-        db => $self->pg->db
-    )->load_list_p(
-        $companies_pkey
+    my $stmt = qq {
+        SELECT stockitems_pkey, stockitem, description, active, stocked, price, purchaseprice
+             FROM stockitems JOIN pricelist_items ON stockitems_pkey = stockitems_fkey
+				AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists WHERE pricelist = 'DEFAULT'
+									  AND stockitems.companies_fkey = companies_fkey)
+			AND pricelist_items_pkey = (
+				SELECT pricelist_items_pkey FROM pricelist_items
+					WHERE stockitems_pkey = stockitems_fkey
+						AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists
+											   WHERE pricelist = 'DEFAULT' AND stockitems.companies_fkey = companies_fkey)
+				AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
+								WHERE stockitems_pkey = stockitems_fkey AND todate >= now()))
+				AND todate >= now()
+        WHERE stockitems.companies_fkey = ?
+    };
+
+    my $result = $self->pg->db->query(
+        $stmt,
+        ($companies_pkey)
     );
 
-    return $result;
+    my $hash;
+    $hash = $result->hashes if $result and $result->rows;
+
+    return $hash;
 }
 
 async sub load_list_mobile_nocust_p ($self, $companies_pkey) {

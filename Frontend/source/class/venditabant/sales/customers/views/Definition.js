@@ -114,11 +114,15 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                 tabView.add(page1);
 
-                /*var page2 = new qx.ui.tabview.Page("Page 2");
+                var page2 = new qx.ui.tabview.Page("Addresses");
                 tabView.add(page2);
 
-                var page3 = new qx.ui.tabview.Page("Page 3");
-                tabView.add(page3);*/
+                var page3 = new qx.ui.tabview.Page("Mails");
+                tabView.add(page3);
+
+                var page4 = new qx.ui.tabview.Page("Sales");
+                tabView.add(page4);
+
                 this._createTable();
                 win.add(this._table);
 

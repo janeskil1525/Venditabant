@@ -49,9 +49,9 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 var bar = this.getMenuBar();
                 container.add(bar, {left: 52, top: 0});
                 this._menubar = bar;
-                var lbl = new qx.ui.basic.Label(this.tr("Hello World"));
+               /* var lbl = new qx.ui.basic.Label(this.tr("Hello World"));
                 lbl.setFont(font);
-                this.add(lbl, {top: "50%", left: "40%"});
+                this.add(lbl, {top: "50%", left: "40%"});*/
 
                 var btn = new qx.ui.form.Button(this.tr("Logout"));
                 btn.setWidth(90);
@@ -78,6 +78,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 var editMenu = new qx.ui.menubar.Button("Edit", null, this.getEditMenu());
                 var adminhMenu = new qx.ui.menubar.Button("Administration", null, this.getAdminMenu());
                 let salesMenu = new qx.ui.menubar.Button("Sales", null, this.getSalesMenu());
+                let stockMenu = new qx.ui.menubar.Button("Stock", null, this.getStockMenu());
 
                 /* var viewMenu = new qx.ui.menubar.Button("View", null, this.getViewMenu());
                  var formatMenu = new qx.ui.menubar.Button("Format", null, this.getFormatMenu());
@@ -87,6 +88,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 menubar.add(editMenu);
                 menubar.add(adminhMenu);
                 menubar.add(salesMenu);
+                menubar.add(stockMenu);
 
                 /* menubar.add(viewMenu);
                  menubar.add(formatMenu);
@@ -249,6 +251,9 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 menu.add(invoiceButton);
 
                 return menu;
+            },
+            getStockMenu:function() {
+
             },
             getSupportMenu:function() {
                 let menu = new qx.ui.menu.Menu();

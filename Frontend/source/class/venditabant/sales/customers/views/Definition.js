@@ -12,7 +12,6 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
             var app = qx.core.Init.getApplication();
             var root = app.getRoot();
             root.add(this, {top: 10, left: 10});
-
         },
         destruct: function () {
         },

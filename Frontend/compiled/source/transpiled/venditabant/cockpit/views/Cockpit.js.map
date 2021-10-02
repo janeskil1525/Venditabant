@@ -1,0 +1,36 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/jan/Project/Venditabant/Frontend/source/class/venditabant/cockpit/views/Cockpit.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "core",
+    "Object",
+    "construct",
+    "destruct",
+    "members",
+    "getView",
+    "stack",
+    "ui",
+    "container",
+    "Composite",
+    "layout",
+    "Canvas",
+    "setBackgroundColor",
+    "venditabant",
+    "cockpit",
+    "views",
+    "Cockpit"
+  ],
+  "mappings": ";;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;AAAAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAkB,mCAAlB,EACI;AACIC,IAAAA,MAAM,EAAEN,EAAE,CAACO,IAAH,CAAQC,MADpB;AAEIC,IAAAA,SAAS,EAAE,qBAAY,CAEtB,CAJL;AAKIC,IAAAA,QAAQ,EAAE,oBAAY,CACrB,CANL;AAOIC,IAAAA,OAAO,EAAE;AACLC,MAAAA,OAAO,EAAC,mBAAW;AACf,YAAIC,KAAK,GAAG,IAAIb,EAAE,CAACc,EAAH,CAAMC,SAAN,CAAgBC,SAApB,CAA8B,IAAIhB,EAAE,CAACc,EAAH,CAAMG,MAAN,CAAaC,MAAjB,EAA9B,CAAZ,CADe,CAEf;;AACAL,QAAAA,KAAK,CAACM,kBAAN,CAAyB,OAAzB,EAHe,CAIf;;AAEA,eAAON,KAAP;AAEH;AATI;AAPb,GADJ;AAAAO,EAAAA,WAAW,CAACC,OAAZ,CAAoBC,KAApB,CAA0BC,OAA1B,CAAkCpB,aAAlC,GAAkDA,aAAlD",
+  "sourcesContent": [
+    "qx.Class.define ( \"venditabant.cockpit.views.Cockpit\",\n    {\n        extend: qx.core.Object,\n        construct: function () {\n\n        },\n        destruct: function () {\n        },\n        members: {\n            getView:function() {\n                var stack = new qx.ui.container.Composite(new qx.ui.layout.Canvas());\n                //this.add(stack, {left: 5, top: 50, right: 5, height:\"86%\"});\n                stack.setBackgroundColor(\"green\");\n                //this._stack = stack;\n\n                return stack;\n\n            }\n        }\n    });"
+  ]
+}

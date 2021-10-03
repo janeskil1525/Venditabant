@@ -1,50 +1,26 @@
 
 qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
     {
-        extend: qx.ui.window.Window,
-
+        extend: venditabant.application.base.views.Base,
+        include:[qx.locale.MTranslation],
         construct: function () {
-            this.base(arguments);
-            this.setLayout(new qx.ui.layout.Canvas());
-            this.setWidth(1000);
-            this.setHeight(1000);
-            this._buildWindow();
-            var app = qx.core.Init.getApplication();
-            var root = app.getRoot();
-            root.add(this, {top: 10, left: 10});
-
         },
         destruct: function () {
         },
-
+        properties : {
+            support : { nullable : true, check: "Boolean"}
+        },
         members: {
             // Public functions ...
             __table : null,
             _address: new venditabant.application.Const().venditabant_endpoint(),
             setParams: function (params) {
             },
-            _buildWindow: function () {
-                var win = new qx.ui.window.Window("Stockitems", "icon/16/apps/internet-feed-reader.png");
-                win.setLayout(new qx.ui.layout.VBox(10));
-                win.setStatus("Application is ready");
-                win.open();
-                let app = qx.core.Init.getApplication();
-                let root = app.getRoot();
-                root.add(win, {left: 350, top: 120});
-
-                var atom = new qx.ui.basic.Atom("Manage stockitems", "icon/22/apps/utilities-calculator.png");
-                win.add(atom);
-                win.setShowStatusbar(true);
-
-                /*var box = new qx.ui.container.Composite();
-                box.setLayout(new qx.ui.layout.HBox(10));
-                win.add(box, {flex: 1});*/
-
+            getView: function () {
+                let view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
                 // Add a TabView
                 var tabView = new qx.ui.tabview.TabView();
-                tabView.setWidth(800);
-                tabView.setHeight(300);
-                win.add(tabView, {flex:1});
+                view.add(tabView, {top: 0, left: 5, right: 5, height: "50%"});
 
                 var page1 = new qx.ui.tabview.Page("Definition");
                 //page1.setLayout(new qx.ui.layout.VBox(4));
@@ -111,19 +87,14 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
                     this.cancel ( );
                 }, this );
-                page1.add ( btnCancel, { bottom: 10, right: 10 } );
-
+                page1.add ( btnCancel, { bottom: 10, right: 10 } )
                 tabView.add(page1);
-
-                /*var page2 = new qx.ui.tabview.Page("Page 2");
-                tabView.add(page2);
-
-                var page3 = new qx.ui.tabview.Page("Page 3");
-                tabView.add(page3);*/
                 this._createTable();
-                win.add(this._table);
+
+                view.add(this._table,{top:"52%", left:5, right:5,height:"45%"});
 
                 this.loadStockitems();
+                return view;
             },
             saveStockitem:function() {
                 let stockitem = this._stockitem.getValue();

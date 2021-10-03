@@ -1,39 +1,23 @@
 
 qx.Class.define ( "venditabant.sales.invoices.views.Definition",
     {
-        extend: qx.ui.window.Window,
-
+        extend: venditabant.application.base.views.Base,
+        include:[qx.locale.MTranslation],
         construct: function () {
-            this.base(arguments);
-            this.setLayout(new qx.ui.layout.Canvas());
-            this.setWidth(1000);
-            this.setHeight(1000);
-            this._buildWindow();
-            var app = qx.core.Init.getApplication();
-            var root = app.getRoot();
-            root.add(this, {top: 10, left: 10});
-
         },
         destruct: function () {
         },
-
+        properties : {
+            support : { nullable : true, check: "Boolean" }
+        },
         members: {
             // Public functions ...
 
             setParams: function (params) {
             },
-            _buildWindow: function () {
-                var win = new qx.ui.window.Window("Invoices", "icon/16/apps/internet-feed-reader.png");
-                win.setLayout(new qx.ui.layout.VBox(10));
-                win.setStatus("Application is ready");
-                win.open();
-                let app = qx.core.Init.getApplication();
-                let root = app.getRoot();
-                root.add(win, {left: 350, top: 120});
-
-                var atom = new qx.ui.basic.Atom("Manage invoices", "icon/22/apps/utilities-calculator.png");
-                win.add(atom);
-                win.setShowStatusbar(true);
+            getView: function () {
+                let view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
+                view.setBackgroundColor("white");
 
                 /*var box = new qx.ui.container.Composite();
                 box.setLayout(new qx.ui.layout.HBox(10));
@@ -41,17 +25,14 @@ qx.Class.define ( "venditabant.sales.invoices.views.Definition",
 
                 // Add a TabView
                 var tabView = new qx.ui.tabview.TabView();
-                tabView.setWidth(800);
-                tabView.setHeight(400);
-                win.add(tabView, {flex:1});
+
 
                 var page1 = new qx.ui.tabview.Page("Invoices");
-                page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
 
-                this._createSoTable();
+                this._createInvTable();
 
-                page1.add(this._sotable);
+                page1.add(this._invtable,{left:5, right:5, height:"95%"});
                 tabView.add(page1);
 
                 var page2 = new qx.ui.tabview.Page("Invoice");
@@ -144,7 +125,9 @@ qx.Class.define ( "venditabant.sales.invoices.views.Definition",
                 tabView.add(page3);*/
 
 
-                //this.loadStockitems();
+                view.add(tabView, {top:5, left:5, right:5,height:"95%"});
+                return view;
+
             },
             saveStockitem:function() {
                 let stockitem = this._stockitem.getValue();
@@ -181,12 +164,7 @@ qx.Class.define ( "venditabant.sales.invoices.views.Definition",
                 }, this );
 
             },
-            _createBtn : function (txt, clr, width, cb, ctx) {
-                let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
-
-                return btn;
-            },
-            _createSoTable : function() {
+            _createInvTable : function() {
                 // Create the initial data
                 let rowData =  '';
                 let that = this;
@@ -214,7 +192,7 @@ qx.Class.define ( "venditabant.sales.invoices.views.Definition",
                 });
                 var tcm = table.getTableColumnModel();
 
-                this._sotable = table;
+                this._invtable = table;
             },
             loadStockitems:function () {
                 let stockitems = new venditabant.stock.stockitems.models.Stockitem();
@@ -237,19 +215,6 @@ qx.Class.define ( "venditabant.sales.invoices.views.Definition",
                     //alert("Set table data here");
                 }, this);
                 //return ;//list;
-            },
-            _createTxt:function(placeholder, width, required, requiredTxt) {
-                let txt = new venditabant.widget.textfield.Standard().createTxt(placeholder, width, required, requiredTxt);
-                return txt;
-            },
-            _createLbl:function(label, width, required, requiredTxt) {
-                let lbl = new venditabant.widget.label.Standard().createLbl(label, width, required, requiredTxt);
-                return lbl;
-            },
-            _createBtn : function (txt, clr, width, cb, ctx) {
-                let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
-
-                return btn;
             },
         }
     });

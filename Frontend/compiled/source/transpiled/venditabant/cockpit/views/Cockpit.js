@@ -8,6 +8,9 @@
       "venditabant.application.base.views.Base": {
         "require": true
       },
+      "qx.locale.MTranslation": {
+        "require": true
+      },
       "qx.ui.container.Composite": {},
       "qx.ui.layout.Canvas": {},
       "qx.ui.tabview.TabView": {},
@@ -17,14 +20,21 @@
   qx.Bootstrap.executePendingDefers($$dbClassInfo);
   qx.Class.define("venditabant.cockpit.views.Cockpit", {
     extend: venditabant.application.base.views.Base,
+    include: [qx.locale.MTranslation],
     construct: function construct() {},
     destruct: function destruct() {},
+    properties: {
+      support: {
+        nullable: true,
+        check: "Boolean"
+      }
+    },
     members: {
       getView: function getView() {
         var view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
-        var tabView = new qx.ui.tabview.TabView();
-        tabView.setWidth(800);
-        tabView.setHeight(300);
+        var tabView = new qx.ui.tabview.TabView(); // tabView.setWidth(800);
+        // tabView.setHeight(300);
+
         view.add(tabView, {
           top: 0,
           left: 5,
@@ -44,4 +54,4 @@
   venditabant.cockpit.views.Cockpit.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Cockpit.js.map?dt=1633188849708
+//# sourceMappingURL=Cockpit.js.map?dt=1633253291074

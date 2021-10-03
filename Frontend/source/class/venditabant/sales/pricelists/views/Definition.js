@@ -1,48 +1,26 @@
 
 qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
     {
-        extend: qx.ui.window.Window,
-
+        extend: venditabant.application.base.views.Base,
+        include:[qx.locale.MTranslation],
         construct: function () {
-            this.base(arguments);
-            this.setLayout(new qx.ui.layout.Canvas());
-            this.setWidth(1000);
-            this.setHeight(1000);
-            this._buildWindow();
-            var app = qx.core.Init.getApplication();
-            var root = app.getRoot();
-            root.add(this, {top: 10, left: 10});
-
         },
         destruct: function () {
         },
-
+        properties : {
+            support : { nullable : true, check: "Boolean" }
+        },
         members: {
             // Public functions ...
             __table : null,
             _selectedPricelistHead : null,
             setParams: function (params) {
             },
-            _buildWindow: function () {
-                var win = new qx.ui.window.Window("Pricelists", "icon/16/apps/internet-feed-reader.png");
-                win.setLayout(new qx.ui.layout.VBox(10));
-                win.setStatus("Application is ready");
-                /*win.setWidth(800);
-                win.setHeight(500);*/
-                win.setCenterOnAppear(true);
-                win.open();
-                let app = qx.core.Init.getApplication();
-                let root = app.getRoot();
-                root.add(win, {left: 350, top: 120});
-
-                var atom = new qx.ui.basic.Atom("Manage pricelists", "icon/22/apps/utilities-calculator.png");
-                win.add(atom);
-                win.setShowStatusbar(true);
+            getView: function () {
+                let view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
 
                 var tabView = new qx.ui.tabview.TabView();
-                tabView.setWidth(800);
-                tabView.setHeight(300);
-                win.add(tabView, {flex:1});
+                view.add(tabView, {top: 0, left: 5, right: 5, height: "50%"});
 
                 var page1 = new qx.ui.tabview.Page("Definition");
                 //page1.setLayout(new qx.ui.layout.VBox(4));
@@ -84,13 +62,6 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 this.loadStockitems();
 
                 page1.add ( stockitems, { top: 80, left: 90 } );
-
-                /*var stockitem = new qx.ui.form.TextField ( );
-                stockitem.setPlaceholder (  ( "Stockitem" ) );
-                stockitem.setWidth( 150 );
-
-                page1.add ( stockitem, { top: 80, left: 90 } );
-                this._stockitem = stockitem;*/
 
                 lbl = new qx.ui.basic.Label ( ( "Price" )  );
                 lbl.setRich ( true );
@@ -144,8 +115,10 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 tabView.add(page1);
 
                 this._createTable();
-                win.add(this._table);
+                view.add(this._table,{top:"52%", left:5, right:5,height:"45%"});
                 this.loadPricelistItems();
+
+                return view;
             },
             loadPricelistItems:function() {
                 let pricelistitems = new venditabant.sales.pricelists.models.PricelistItems();

@@ -1,48 +1,27 @@
 
 qx.Class.define ( "venditabant.sales.customers.views.Definition",
     {
-        extend: qx.ui.window.Window,
-
+        extend: venditabant.application.base.views.Base,
+        include:[qx.locale.MTranslation],
         construct: function () {
-            this.base(arguments);
-            this.setLayout(new qx.ui.layout.Canvas());
-            this.setWidth(1000);
-            this.setHeight(1000);
-            this._buildWindow();
-            var app = qx.core.Init.getApplication();
-            var root = app.getRoot();
-            root.add(this, {top: 10, left: 10});
         },
         destruct: function () {
         },
-
+        properties : {
+            support : { nullable : true, check: "Boolean" }
+        },
         members: {
             // Public functions ...
             __table : null,
             setParams: function (params) {
             },
-            _buildWindow: function () {
-                var win = new qx.ui.window.Window("Customers", "icon/16/apps/internet-feed-reader.png");
-                win.setLayout(new qx.ui.layout.VBox(10));
-                win.setStatus("Application is ready");
-                win.open();
-                let app = qx.core.Init.getApplication();
-                let root = app.getRoot();
-                root.add(win, {left: 350, top: 120});
-
-                var atom = new qx.ui.basic.Atom("Manage customers", "icon/22/apps/utilities-calculator.png");
-                win.add(atom);
-                win.setShowStatusbar(true);
-
-                /*var box = new qx.ui.container.Composite();
-                box.setLayout(new qx.ui.layout.HBox(10));
-                win.add(box, {flex: 1});*/
+            getView: function () {
+                let view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
+                view.setBackgroundColor("white");
 
                 // Add a TabView
                 var tabView = new qx.ui.tabview.TabView();
-                tabView.setWidth(800);
-                tabView.setHeight(300);
-                win.add(tabView, {flex:1});
+                view.add(tabView, {top: 0, left: 5, right: 5, height: "50%"});
 
                 var page1 = new qx.ui.tabview.Page("Definition");
                 //page1.setLayout(new qx.ui.layout.VBox(4));
@@ -123,9 +102,10 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 tabView.add(page4);
 
                 this._createTable();
-                win.add(this._table);
-
+                view.add(this._table,{top:"52%", left:5, right:5,height:"45%"});
                 this.loadCustomers();
+
+                return view;
             },
             saveCustomer:function() {
                 let that = this;
@@ -174,19 +154,6 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     this._pricelists.setSelection([tempItem]);
                 }
             },
-            _createBtn : function (txt, clr, width, cb, ctx) {
-                let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
-
-                return btn;
-            },
-            _createTxt:function(placeholder, width, required, requiredTxt) {
-                let txt = new venditabant.widget.textfield.Standard().createTxt(placeholder, width, required, requiredTxt);
-                return txt;
-            },
-            _createLbl:function(label, width, required, requiredTxt) {
-                let lbl = new venditabant.widget.label.Standard().createLbl(label, width, required, requiredTxt);
-                return lbl;
-            },
             _createTable : function() {
                 // Create the initial data
                 let rowData =  '';
@@ -196,9 +163,6 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 var tableModel = new qx.ui.table.model.Simple();
                 tableModel.setColumns([ "ID", "Customer", "Name", "Pricelist", "Org. nr.", "Phone", "Homepage" ]);
                 tableModel.setData(rowData);
-                //tableModel.setColumnEditable(1, true);
-                //tableModel.setColumnEditable(2, true);
-                //tableModel.setColumnSortable(3, false);
 
                 // table
                 var table = new qx.ui.table.Table(tableModel);
@@ -225,12 +189,6 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                 });
                 var tcm = table.getTableColumnModel();
-
-                // Display a checkbox in column 3
-                //tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
-
-                // use a different header renderer
-                //tcm.setHeaderCellRenderer(2, new qx.ui.table.headerrenderer.Icon("icon/16/apps/office-calendar.png", "A date"));
 
                 this._table = table;
 

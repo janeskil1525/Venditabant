@@ -16,8 +16,15 @@
     "base",
     "views",
     "Base",
+    "include",
+    "locale",
+    "MTranslation",
     "construct",
     "destruct",
+    "properties",
+    "support",
+    "nullable",
+    "check",
     "members",
     "getView",
     "view",
@@ -29,8 +36,6 @@
     "tabView",
     "tabview",
     "TabView",
-    "setWidth",
-    "setHeight",
     "add",
     "top",
     "left",
@@ -43,8 +48,8 @@
     "cockpit",
     "Cockpit"
   ],
-  "mappings": ";;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;AAAAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAkB,mCAAlB,EACI;AACIC,IAAAA,MAAM,EAAEC,WAAW,CAACC,WAAZ,CAAwBC,IAAxB,CAA6BC,KAA7B,CAAmCC,IAD/C;AAEIC,IAAAA,SAAS,EAAE,qBAAY,CAEtB,CAJL;AAKIC,IAAAA,QAAQ,EAAE,oBAAY,CACrB,CANL;AAOIC,IAAAA,OAAO,EAAE;AACLC,MAAAA,OAAO,EAAE,mBAAY;AACjB,YAAIC,IAAI,GAAG,IAAIhB,EAAE,CAACiB,EAAH,CAAMC,SAAN,CAAgBC,SAApB,CAA8B,IAAInB,EAAE,CAACiB,EAAH,CAAMG,MAAN,CAAaC,MAAjB,EAA9B,CAAX;AAEA,YAAIC,OAAO,GAAG,IAAItB,EAAE,CAACiB,EAAH,CAAMM,OAAN,CAAcC,OAAlB,EAAd;AACAF,QAAAA,OAAO,CAACG,QAAR,CAAiB,GAAjB;AACAH,QAAAA,OAAO,CAACI,SAAR,CAAkB,GAAlB;AACAV,QAAAA,IAAI,CAACW,GAAL,CAASL,OAAT,EAAkB;AAACM,UAAAA,GAAG,EAAE,CAAN;AAASC,UAAAA,IAAI,EAAE,CAAf;AAAkBC,UAAAA,KAAK,EAAE,CAAzB;AAA4BC,UAAAA,MAAM,EAAE;AAApC,SAAlB;AAEA,YAAIC,KAAK,GAAG,IAAIhC,EAAE,CAACiB,EAAH,CAAMM,OAAN,CAAcU,IAAlB,CAAuB,MAAvB,CAAZ;AAEAD,QAAAA,KAAK,CAACE,SAAN,CAAgB,IAAIlC,EAAE,CAACiB,EAAH,CAAMG,MAAN,CAAaC,MAAjB,EAAhB;AAEA,YAAIc,KAAK,GAAG,IAAInC,EAAE,CAACiB,EAAH,CAAMM,OAAN,CAAcU,IAAlB,CAAuB,QAAvB,CAAZ;AACAE,QAAAA,KAAK,CAACD,SAAN,CAAgB,IAAIlC,EAAE,CAACiB,EAAH,CAAMG,MAAN,CAAaC,MAAjB,EAAhB;AACAC,QAAAA,OAAO,CAACK,GAAR,CAAYK,KAAZ;AACAV,QAAAA,OAAO,CAACK,GAAR,CAAYQ,KAAZ;AAEA,eAAOnB,IAAP;AACH;AAnBI;AAPb,GADJ;AAAAT,EAAAA,WAAW,CAAC6B,OAAZ,CAAoB1B,KAApB,CAA0B2B,OAA1B,CAAkClC,aAAlC,GAAkDA,aAAlD",
+  "mappings": ";;;;;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;AAAAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAkB,mCAAlB,EACI;AACIC,IAAAA,MAAM,EAAEC,WAAW,CAACC,WAAZ,CAAwBC,IAAxB,CAA6BC,KAA7B,CAAmCC,IAD/C;AAEIC,IAAAA,OAAO,EAAC,CAACZ,EAAE,CAACa,MAAH,CAAUC,YAAX,CAFZ;AAGIC,IAAAA,SAAS,EAAE,qBAAY,CAEtB,CALL;AAMIC,IAAAA,QAAQ,EAAE,oBAAY,CACrB,CAPL;AAQIC,IAAAA,UAAU,EAAG;AACTC,MAAAA,OAAO,EAAG;AAAEC,QAAAA,QAAQ,EAAG,IAAb;AAAmBC,QAAAA,KAAK,EAAE;AAA1B;AADD,KARjB;AAWIC,IAAAA,OAAO,EAAE;AACLC,MAAAA,OAAO,EAAE,mBAAY;AACjB,YAAIC,IAAI,GAAG,IAAIvB,EAAE,CAACwB,EAAH,CAAMC,SAAN,CAAgBC,SAApB,CAA8B,IAAI1B,EAAE,CAACwB,EAAH,CAAMG,MAAN,CAAaC,MAAjB,EAA9B,CAAX;AAEA,YAAIC,OAAO,GAAG,IAAI7B,EAAE,CAACwB,EAAH,CAAMM,OAAN,CAAcC,OAAlB,EAAd,CAHiB,CAIjB;AACA;;AACAR,QAAAA,IAAI,CAACS,GAAL,CAASH,OAAT,EAAkB;AAACI,UAAAA,GAAG,EAAE,CAAN;AAASC,UAAAA,IAAI,EAAE,CAAf;AAAkBC,UAAAA,KAAK,EAAE,CAAzB;AAA4BC,UAAAA,MAAM,EAAE;AAApC,SAAlB;AAEA,YAAIC,KAAK,GAAG,IAAIrC,EAAE,CAACwB,EAAH,CAAMM,OAAN,CAAcQ,IAAlB,CAAuB,MAAvB,CAAZ;AAEAD,QAAAA,KAAK,CAACE,SAAN,CAAgB,IAAIvC,EAAE,CAACwB,EAAH,CAAMG,MAAN,CAAaC,MAAjB,EAAhB;AAEA,YAAIY,KAAK,GAAG,IAAIxC,EAAE,CAACwB,EAAH,CAAMM,OAAN,CAAcQ,IAAlB,CAAuB,QAAvB,CAAZ;AACAE,QAAAA,KAAK,CAACD,SAAN,CAAgB,IAAIvC,EAAE,CAACwB,EAAH,CAAMG,MAAN,CAAaC,MAAjB,EAAhB;AACAC,QAAAA,OAAO,CAACG,GAAR,CAAYK,KAAZ;AACAR,QAAAA,OAAO,CAACG,GAAR,CAAYQ,KAAZ;AAEA,eAAOjB,IAAP;AACH;AAnBI;AAXb,GADJ;AAAAhB,EAAAA,WAAW,CAACkC,OAAZ,CAAoB/B,KAApB,CAA0BgC,OAA1B,CAAkCvC,aAAlC,GAAkDA,aAAlD",
   "sourcesContent": [
-    "qx.Class.define ( \"venditabant.cockpit.views.Cockpit\",\n    {\n        extend: venditabant.application.base.views.Base,\n        construct: function () {\n\n        },\n        destruct: function () {\n        },\n        members: {\n            getView: function () {\n                var view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());\n\n                var tabView = new qx.ui.tabview.TabView();\n                tabView.setWidth(800);\n                tabView.setHeight(300);\n                view.add(tabView, {top: 0, left: 5, right: 5, height: \"100%\"});\n\n                var page1 = new qx.ui.tabview.Page(\"Todo\");\n\n                page1.setLayout(new qx.ui.layout.Canvas());\n\n                var page2 = new qx.ui.tabview.Page(\"Status\");\n                page2.setLayout(new qx.ui.layout.Canvas());\n                tabView.add(page1);\n                tabView.add(page2);\n\n                return view\n            }\n        }\n    });"
+    "qx.Class.define ( \"venditabant.cockpit.views.Cockpit\",\n    {\n        extend: venditabant.application.base.views.Base,\n        include:[qx.locale.MTranslation],\n        construct: function () {\n\n        },\n        destruct: function () {\n        },\n        properties : {\n            support : { nullable : true, check: \"Boolean\" }\n        },\n        members: {\n            getView: function () {\n                var view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());\n\n                var tabView = new qx.ui.tabview.TabView();\n                // tabView.setWidth(800);\n                // tabView.setHeight(300);\n                view.add(tabView, {top: 0, left: 5, right: 5, height: \"100%\"});\n\n                var page1 = new qx.ui.tabview.Page(\"Todo\");\n\n                page1.setLayout(new qx.ui.layout.Canvas());\n\n                var page2 = new qx.ui.tabview.Page(\"Status\");\n                page2.setLayout(new qx.ui.layout.Canvas());\n                tabView.add(page1);\n                tabView.add(page2);\n\n                return view\n            }\n        }\n    });"
   ]
 }

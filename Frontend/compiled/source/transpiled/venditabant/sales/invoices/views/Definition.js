@@ -1,5 +1,3 @@
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 (function () {
   var $$dbClassInfo = {
     "dependsOn": {
@@ -7,84 +5,57 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         "usage": "dynamic",
         "require": true
       },
-      "qx.ui.window.Window": {
-        "construct": true,
+      "venditabant.application.base.views.Base": {
         "require": true
       },
-      "qx.ui.layout.Canvas": {
-        "construct": true
+      "qx.locale.MTranslation": {
+        "require": true
       },
-      "qx.core.Init": {
-        "construct": true
-      },
-      "qx.ui.layout.VBox": {},
-      "qx.ui.basic.Atom": {},
+      "qx.ui.container.Composite": {},
+      "qx.ui.layout.Canvas": {},
       "qx.ui.tabview.TabView": {},
       "qx.ui.tabview.Page": {},
       "venditabant.communication.Post": {},
-      "venditabant.widget.button.Standard": {},
       "qx.ui.table.model.Simple": {},
       "qx.ui.table.Table": {},
       "qx.ui.table.selection.Model": {},
-      "venditabant.stock.stockitems.models.Stockitem": {},
-      "venditabant.widget.textfield.Standard": {},
-      "venditabant.widget.label.Standard": {}
+      "venditabant.stock.stockitems.models.Stockitem": {}
     }
   };
   qx.Bootstrap.executePendingDefers($$dbClassInfo);
   qx.Class.define("venditabant.sales.invoices.views.Definition", {
-    extend: qx.ui.window.Window,
-    construct: function construct() {
-      qx.ui.window.Window.constructor.call(this);
-      this.setLayout(new qx.ui.layout.Canvas());
-      this.setWidth(1000);
-      this.setHeight(1000);
-
-      this._buildWindow();
-
-      var app = qx.core.Init.getApplication();
-      var root = app.getRoot();
-      root.add(this, {
-        top: 10,
-        left: 10
-      });
-    },
+    extend: venditabant.application.base.views.Base,
+    include: [qx.locale.MTranslation],
+    construct: function construct() {},
     destruct: function destruct() {},
-    members: _defineProperty({
+    properties: {
+      support: {
+        nullable: true,
+        check: "Boolean"
+      }
+    },
+    members: {
       // Public functions ...
       setParams: function setParams(params) {},
-      _buildWindow: function _buildWindow() {
-        var win = new qx.ui.window.Window("Invoices", "icon/16/apps/internet-feed-reader.png");
-        win.setLayout(new qx.ui.layout.VBox(10));
-        win.setStatus("Application is ready");
-        win.open();
-        var app = qx.core.Init.getApplication();
-        var root = app.getRoot();
-        root.add(win, {
-          left: 350,
-          top: 120
-        });
-        var atom = new qx.ui.basic.Atom("Manage invoices", "icon/22/apps/utilities-calculator.png");
-        win.add(atom);
-        win.setShowStatusbar(true);
+      getView: function getView() {
+        var view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
+        view.setBackgroundColor("white");
         /*var box = new qx.ui.container.Composite();
         box.setLayout(new qx.ui.layout.HBox(10));
         win.add(box, {flex: 1});*/
         // Add a TabView
 
         var tabView = new qx.ui.tabview.TabView();
-        tabView.setWidth(800);
-        tabView.setHeight(400);
-        win.add(tabView, {
-          flex: 1
-        });
         var page1 = new qx.ui.tabview.Page("Invoices");
-        page1.setLayout(new qx.ui.layout.VBox(4));
         page1.setLayout(new qx.ui.layout.Canvas());
 
-        this._createSoTable();
+        this._createInvTable();
 
-        page1.add(this._sotable);
+        page1.add(this._invtable, {
+          left: 5,
+          right: 5,
+          height: "95%"
+        });
         tabView.add(page1);
         var page2 = new qx.ui.tabview.Page("Invoice");
         page2.setLayout(new qx.ui.layout.Canvas());
@@ -170,7 +141,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         tabView.add(page2);
          var page3 = new qx.ui.tabview.Page("Page 3");
         tabView.add(page3);*/
-        //this.loadStockitems();
+
+        view.add(tabView, {
+          top: 5,
+          left: 5,
+          right: 5,
+          height: "95%"
+        });
+        return view;
       },
       saveStockitem: function saveStockitem() {
         var stockitem = this._stockitem.getValue();
@@ -210,11 +188,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }, this);
       },
-      _createBtn: function _createBtn(txt, clr, width, cb, ctx) {
-        var btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx);
-        return btn;
-      },
-      _createSoTable: function _createSoTable() {
+      _createInvTable: function _createInvTable() {
         // Create the initial data
         var rowData = '';
         var that = this; // table model
@@ -237,7 +211,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
         });
         var tcm = table.getTableColumnModel();
-        this._sotable = table;
+        this._invtable = table;
       },
       loadStockitems: function loadStockitems() {
         var stockitems = new venditabant.stock.stockitems.models.Stockitem();
@@ -253,21 +227,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           this._table.getTableModel().setData(tableData); //alert("Set table data here");
 
         }, this); //return ;//list;
-      },
-      _createTxt: function _createTxt(placeholder, width, required, requiredTxt) {
-        var txt = new venditabant.widget.textfield.Standard().createTxt(placeholder, width, required, requiredTxt);
-        return txt;
-      },
-      _createLbl: function _createLbl(label, width, required, requiredTxt) {
-        var lbl = new venditabant.widget.label.Standard().createLbl(label, width, required, requiredTxt);
-        return lbl;
       }
-    }, "_createBtn", function _createBtn(txt, clr, width, cb, ctx) {
-      var btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx);
-      return btn;
-    })
+    }
   });
   venditabant.sales.invoices.views.Definition.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Definition.js.map?dt=1632848848797
+//# sourceMappingURL=Definition.js.map?dt=1633264829734

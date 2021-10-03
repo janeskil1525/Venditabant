@@ -57,15 +57,50 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 this.cockpitButton();
                 this.setStatus("Application is ready");
             },
-            cockpitButton:function(){
+            invoicesButton:function() {
                 let root  = qx.core.Init.getApplication ( ).getRoot();
-                let view = new venditabant.cockpit.views.Cockpit().getView();
+                let view = new venditabant.sales.invoices.views.Definition();
                 root._basewin.addView(root, view);
             },
-            addView:function(root, view) {
+            salesordersButton:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.sales.orders.views.Definition();
+                root._basewin.addView(root, view);
+            },
+            customersButton:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.sales.customers.views.Definition();
+                root._basewin.addView(root, view);
+            },
+            pricelistsButton:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.sales.pricelists.views.Definition();
+                root._basewin.addView(root, view);
+            },
+            stockitemsButton:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.stock.stockitems.views.Definition();
+                root._basewin.addView(root, view);
+            },
+            usersButton:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.users.management.views.Definition();
+                root._basewin.addView(root, view);
+            },
+            cockpitButton:function(){
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.cockpit.views.Cockpit();
+                root._basewin.addView(root, view);
+            },
+            addView:function(root, obj) {
                 if(typeof root._basewin._view !== "undefined" || root._basewin._view === null){
                     root._basewin._view.destroy();
                 }
+                let support = root._basewin.isSupport();
+                obj.set({
+                    support:support
+                });
+                let view = obj.getView();
                 root._basewin.add(view, {left: 0, top: 50, right: 0, height:"92%"});
                 root._basewin._view = view;
             },
@@ -73,7 +108,6 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 var frame = new qx.ui.container.Composite(new qx.ui.layout.Grow());
 
                 var menubar = new qx.ui.menubar.MenuBar();
-                //menubar.setWidth(600);
                 frame.add(menubar);
 
                 var homeMenu = new qx.ui.menubar.Button(this.tr("Home"), null, this.getHomeMenu());
@@ -81,42 +115,16 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let salesMenu = new qx.ui.menubar.Button("Sales", null, this.getSalesMenu());
                 let stockMenu = new qx.ui.menubar.Button("Stock", null, this.getStockMenu());
 
-                /* var viewMenu = new qx.ui.menubar.Button("View", null, this.getViewMenu());
-                 var formatMenu = new qx.ui.menubar.Button("Format", null, this.getFormatMenu());
-                 var helpMenu = new qx.ui.menubar.Button("Help", null, this.getHelpMenu());*/
-
                 menubar.add(homeMenu);
                 menubar.add(adminhMenu);
                 menubar.add(salesMenu);
                 menubar.add(stockMenu);
-
-                /* menubar.add(viewMenu);
-                 menubar.add(formatMenu);
-                 menubar.add(helpMenu);*/
                 if(this.isSupport() === true) {
                     var supportMenu = new qx.ui.menubar.Button("Support", null, this.getSupportMenu());
                     menubar.add(supportMenu);
                 }
 
                 return frame;
-            },
-            debugRadio: function (e) {
-                this.debug("Change selection: " + e.getData()[0].getLabel());
-            },
-
-            debugCommand: function (e) {
-                this.debug("Execute command: " + this.getShortcut());
-            },
-
-            debugButton: function (e) {
-                this.debug("Execute button: " + this.getLabel());
-            },
-
-            debugCheckBox: function (e) {
-                this.debug("Change checked: " + this.getLabel() + " = " + e.getData());
-            },
-            homeButton:function() {
-
             },
             getHomeMenu: function () {
                 let menu = new qx.ui.menu.Menu();
@@ -147,17 +155,10 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 //previousButton.setEnabled(false);
 
-                usersButton.addListener("execute", function() {
-                    let userwindow = new venditabant.users.management.views.Definition();
-                    let support = that.isSupport();
-
-                    userwindow.set({
-                        support:support
-                    });
-                });
+                usersButton.addListener("execute", this.usersButton);
                 stockitemButton.addListener("execute", this.stockitemsButton);
-                pricelistButton.addListener("execute", this.pricelistButton);
-                customerButton.addListener("execute", this.customerButton);
+                pricelistButton.addListener("execute", this.pricelistsButton);
+                customerButton.addListener("execute", this.customersButton);
                 settingsButton.addListener("execute", this.settingsButton);
 
                 menu.add(usersButton);
@@ -178,7 +179,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 userssalesorderButton.addListener("execute", this.salesordersButton);
 
                 let invoiceButton = new qx.ui.menu.Button("Invoices");
-                invoiceButton.addListener("execute", this.invoiceButton);
+                invoiceButton.addListener("execute", this.invoicesButton);
 
                 menu.add(userssalesorderButton);
                 menu.add(invoiceButton);
@@ -200,14 +201,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let menu = new qx.ui.menu.Menu();
                 let that = this;
                 let usersButton = new qx.ui.menu.Button("Users");
-                usersButton.addListener("execute", function() {
-                    let userwindow = new venditabant.users.management.views.Definition();
-                    let support = that.isSupport();
-
-                    userwindow.set({
-                        support:support
-                    });
-                });
+                usersButton.addListener("execute", this.usersButton);
                 menu.add(usersButton);
 
                 return menu;
@@ -227,23 +221,8 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 root._basewin.add(stack,{left: 5, top:50, right:5, height:"86%"});
                 root._basewin._stack = stack;
             },
-            invoiceButton:function() {
-                let invoicewindow = new venditabant.sales.invoices.views.Definition();
-            },
-            salesordersButton:function() {
-                let salesorderswindow = new venditabant.sales.orders.views.Definition();
-            },
             supportWorks:function(value) {
                 this._buildWindow  ( );
-            },
-            customerButton: function() {
-                let customerswindow = new venditabant.sales.customers.views.Definition();
-            },
-            stockitemsButton: function () {
-                let stockitemswindow = new venditabant.stock.stockitems.views.Definition();
-            },
-            pricelistButton: function() {
-                let pricelistwindow = new venditabant.sales.pricelists.views.Definition();
             }
         }
     });

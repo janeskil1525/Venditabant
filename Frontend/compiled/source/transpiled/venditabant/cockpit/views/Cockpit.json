@@ -2,7 +2,7 @@
   "className": "venditabant.cockpit.views.Cockpit",
   "packageName": "venditabant.cockpit.views",
   "name": "Cockpit",
-  "superClass": "qx.core.Object",
+  "superClass": "venditabant.application.base.views.Base",
   "interfaces": [],
   "mixins": [],
   "functionName": null,
@@ -13,7 +13,7 @@
         "column": 0
       },
       "end": {
-        "line": 20,
+        "line": 30,
         "column": 7
       }
     }
@@ -53,7 +53,7 @@
           "column": 12
         },
         "end": {
-          "line": 18,
+          "line": 28,
           "column": 13
         }
       },

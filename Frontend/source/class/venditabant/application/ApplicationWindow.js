@@ -51,60 +51,23 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 container.add(bar, {left: 0, top: 0, right:0});
                 this._menubar = bar;
 
-                /* var stack = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
-                this.add(stack, {left: 5, top: 50, right: 5, height:"86%"});
-                stack.setBackgroundColor("green");
-                this._stack = stack;
-                var app  = qx.core.Init.getApplication ( );
-                var root = app.getRoot ( );
-                this._stack = stack;*/
-
                 let app  = qx.core.Init.getApplication ( );
                 let root = app.getRoot ( );
                 root._basewin = this;
-
                 this.cockpitButton();
-               /* // name
-                var nameLabel = new qx.ui.basic.Label("Name:");
-                page1.add(nameLabel, {row: 0, column: 0});
-                var name = new qx.ui.form.TextField();
-                name.setRequired(true);
-                page1.add(name, {row: 0, column: 1});*/
-
-               /* var lbl = new qx.ui.basic.Label(this.tr("Hello World"));
-                lbl.setFont(font);
-                this.add(lbl, {top: "50%", left: "40%"});*/
-
-                var lbl = new qx.ui.basic.Label(this.tr("Hello World"));
-                lbl.setFont(font);
-                this.add(lbl, {top: 300, left: 100});
-
-                var btn = new qx.ui.form.Button(this.tr("Logout"));
-                btn.setWidth(90);
-                btn.addListener("execute", function (e) {
-                    this.logout();
-                }, this);
-                this.add(btn, {bottom: 5, right: 100});
-                btn = new qx.ui.form.Button(this.tr("Cancel"));
-                btn.setWidth(90);
-                btn.addListener("execute", function (e) {
-                    alert("Don't close me ... Please ...");
-//         this.close ( );
-                }, this);
-                this.add(btn, {bottom: 5, right: 5});
                 this.setStatus("Application is ready");
             },
             cockpitButton:function(){
-                var app  = qx.core.Init.getApplication ( );
-                var root = app.getRoot ( );
-                if(typeof root._basewin._stack !== "undefined" || root._basewin._stack === null){
-                    root._basewin._stack.destroy();
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.cockpit.views.Cockpit().getView();
+                root._basewin.addView(root, view);
+            },
+            addView:function(root, view) {
+                if(typeof root._basewin._view !== "undefined" || root._basewin._view === null){
+                    root._basewin._view.destroy();
                 }
-                let stack = new venditabant.cockpit.views.Cockpit().getView();
-                root._basewin.add(stack, {left: 5, top: 50, right: 5, height:"86%"});
-
-                root._basewin._stack = stack;
-
+                root._basewin.add(view, {left: 0, top: 50, right: 0, height:"92%"});
+                root._basewin._view = view;
             },
             getMenuBar: function () {
                 var frame = new qx.ui.container.Composite(new qx.ui.layout.Grow());
@@ -114,7 +77,6 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 frame.add(menubar);
 
                 var homeMenu = new qx.ui.menubar.Button(this.tr("Home"), null, this.getHomeMenu());
-                var editMenu = new qx.ui.menubar.Button("Edit", null, this.getEditMenu());
                 var adminhMenu = new qx.ui.menubar.Button("Administration", null, this.getAdminMenu());
                 let salesMenu = new qx.ui.menubar.Button("Sales", null, this.getSalesMenu());
                 let stockMenu = new qx.ui.menubar.Button("Stock", null, this.getStockMenu());
@@ -124,7 +86,6 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                  var helpMenu = new qx.ui.menubar.Button("Help", null, this.getHelpMenu());*/
 
                 menubar.add(homeMenu);
-                menubar.add(editMenu);
                 menubar.add(adminhMenu);
                 menubar.add(salesMenu);
                 menubar.add(stockMenu);
@@ -171,39 +132,6 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 return menu;
             },
-            getNewMenu:function() {
-                var menu = new qx.ui.menu.Menu();
-
-                var newStockitem = new qx.ui.menu.Button("New stockitem", null, this._newCommand);
-                newStockitem.addListener("execute", this.debugButton);
-                menu.add(newStockitem);
-
-                return menu;
-            },
-            getEditMenu: function () {
-                var menu = new qx.ui.menu.Menu();
-
-                var undoButton = new qx.ui.menu.Button("Undo", "icon/16/actions/edit-undo.png", this._undoCommand);
-                var redoButton = new qx.ui.menu.Button("Redo", "icon/16/actions/edit-redo.png", this._redoCommand);
-                var cutButton = new qx.ui.menu.Button("Cut", "icon/16/actions/edit-cut.png", this._cutCommand);
-                var copyButton = new qx.ui.menu.Button("Copy", "icon/16/actions/edit-copy.png", this._copyCommand);
-                var pasteButton = new qx.ui.menu.Button("Paste", "icon/16/actions/edit-paste.png", this._pasteCommand);
-
-                undoButton.addListener("execute", this.debugButton);
-                redoButton.addListener("execute", this.debugButton);
-                cutButton.addListener("execute", this.debugButton);
-                copyButton.addListener("execute", this.debugButton);
-                pasteButton.addListener("execute", this.debugButton);
-
-                menu.add(undoButton);
-                menu.add(redoButton);
-                menu.addSeparator();
-                menu.add(cutButton);
-                menu.add(copyButton);
-                menu.add(pasteButton);
-
-                return menu;
-            },
             getAdminMenu: function () {
                 let that = this;
                 let menu = new qx.ui.menu.Menu();
@@ -212,6 +140,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let stockitemButton = new qx.ui.menu.Button("Stockitems");
                 let pricelistButton = new qx.ui.menu.Button("Pricelists");
                 let customerButton = new qx.ui.menu.Button("Customers");
+                let settingsButton = new qx.ui.menu.Button("Settings");
                 /* var replaceButton = new qx.ui.menu.Button("Replace");
                 var searchFilesButton = new qx.ui.menu.Button("Search in files", "icon/16/actions/system-search.png");
                 var replaceFilesButton = new qx.ui.menu.Button("Replace in files");*/
@@ -229,19 +158,15 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 stockitemButton.addListener("execute", this.stockitemsButton);
                 pricelistButton.addListener("execute", this.pricelistButton);
                 customerButton.addListener("execute", this.customerButton);
-                /* replaceButton.addListener("execute", this.debugButton);
-                searchFilesButton.addListener("execute", this.debugButton);
-                replaceFilesButton.addListener("execute", this.debugButton);*/
-
+                settingsButton.addListener("execute", this.settingsButton);
 
                 menu.add(usersButton);
                 menu.add(stockitemButton);
                 menu.add(pricelistButton);
                 menu.add(customerButton);
-                /*menu.add(replaceButton);
+
                 menu.addSeparator();
-                menu.add(searchFilesButton);
-                menu.add(replaceFilesButton);*/
+                menu.add(settingsButton);
 
                 return menu;
             },
@@ -287,7 +212,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
 
                 return menu;
             },
-            closeButton:function() {
+            settingsButton:function() {
                 var app  = qx.core.Init.getApplication ( );
                 var root = app.getRoot ( );
                 root._basewin._stack.destroy();

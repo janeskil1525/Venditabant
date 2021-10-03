@@ -1242,3 +1242,51 @@ CREATE TABLE invoice_items
 );
 
 -- 16 down
+
+-- 17 up
+CREATE TABLE parameters
+(
+    parameters_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    companies_fkey bigint NOT NULL,
+    parameter varchar NOT NULL DEFAULT '',
+    description varchar NOT NULL DEFAULT '',
+    CONSTRAINT parameters_pkey PRIMARY KEY (parameters_pkey),
+        CONSTRAINT parameters_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE TABLE parameters_items
+(
+    parameters_items_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    parameters_fkey bigint NOT NULL,
+    param_value varchar NOT NULL DEFAULT '',
+    param_description varchar NOT NULL DEFAULT '',
+    CONSTRAINT parameters_items_pkey PRIMARY KEY (parameters_items_pkey),
+    CONSTRAINT parameters_fkey FOREIGN KEY (parameters_fkey)
+    REFERENCES parameters_items_parameters_fkey (parameters_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+
+CREATE UNIQUE INDEX idx_parameters
+    ON parameters(companies_fkey, parameter);
+
+CREATE INDEX idx_parameters_items_parameters_fkey
+    ON parameters_items(parameters_fkey);
+
+-- 17 down

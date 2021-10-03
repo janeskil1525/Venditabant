@@ -57,6 +57,11 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 this.cockpitButton();
                 this.setStatus("Application is ready");
             },
+            settingsButton:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.settings.views.Definition();
+                root._basewin.addView(root, view);
+            },
             invoicesButton:function() {
                 let root  = qx.core.Init.getApplication ( ).getRoot();
                 let view = new venditabant.sales.invoices.views.Definition();
@@ -205,12 +210,6 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 menu.add(usersButton);
 
                 return menu;
-            },
-            settingsButton:function() {
-                var app  = qx.core.Init.getApplication ( );
-                var root = app.getRoot ( );
-                root._basewin._stack.destroy();
-
             },
             stockButton:function() {
                 var app  = qx.core.Init.getApplication ( );

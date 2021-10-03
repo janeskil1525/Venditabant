@@ -1,0 +1,50 @@
+{
+  "version": 3,
+  "sources": [
+    "/home/jan/Project/Venditabant/Frontend/source/class/venditabant/application/base/views/Base.js"
+  ],
+  "names": [
+    "qx",
+    "Bootstrap",
+    "executePendingDefers",
+    "$$dbClassInfo",
+    "Class",
+    "define",
+    "extend",
+    "core",
+    "Object",
+    "construct",
+    "destruct",
+    "members",
+    "_createBtn",
+    "txt",
+    "clr",
+    "width",
+    "cb",
+    "ctx",
+    "btn",
+    "venditabant",
+    "widget",
+    "button",
+    "Standard",
+    "createBtn",
+    "_createTxt",
+    "placeholder",
+    "required",
+    "requiredTxt",
+    "textfield",
+    "createTxt",
+    "_createLbl",
+    "label",
+    "lbl",
+    "createLbl",
+    "application",
+    "base",
+    "views",
+    "Base"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;AAAAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAkB,yCAAlB,EACI;AACIC,IAAAA,MAAM,EAAEN,EAAE,CAACO,IAAH,CAAQC,MADpB;AAEIC,IAAAA,SAAS,EAAE,qBAAY,CAEtB,CAJL;AAKIC,IAAAA,QAAQ,EAAE,oBAAY,CACrB,CANL;AAOIC,IAAAA,OAAO,EAAE;AACLC,MAAAA,UAAU,EAAE,oBAAUC,GAAV,EAAeC,GAAf,EAAoBC,KAApB,EAA2BC,EAA3B,EAA+BC,GAA/B,EAAoC;AAC5C,YAAIC,GAAG,GAAG,IAAIC,WAAW,CAACC,MAAZ,CAAmBC,MAAnB,CAA0BC,QAA9B,GAAyCC,SAAzC,CAAmDV,GAAnD,EAAwDC,GAAxD,EAA6DC,KAA7D,EAAoEC,EAApE,EAAwEC,GAAxE,CAAV;AACA,eAAOC,GAAP;AACH,OAJI;AAKLM,MAAAA,UAAU,EAAE,oBAAUC,WAAV,EAAuBV,KAAvB,EAA8BW,QAA9B,EAAwCC,WAAxC,EAAqD;AAC7D,YAAId,GAAG,GAAG,IAAIM,WAAW,CAACC,MAAZ,CAAmBQ,SAAnB,CAA6BN,QAAjC,GAA4CO,SAA5C,CAAsDJ,WAAtD,EAAmEV,KAAnE,EAA0EW,QAA1E,EAAoFC,WAApF,CAAV;AACA,eAAOd,GAAP;AACH,OARI;AASLiB,MAAAA,UAAU,EAAE,oBAAUC,KAAV,EAAiBhB,KAAjB,EAAwBW,QAAxB,EAAkCC,WAAlC,EAA+C;AACvD,YAAIK,GAAG,GAAG,IAAIb,WAAW,CAACC,MAAZ,CAAmBW,KAAnB,CAAyBT,QAA7B,GAAwCW,SAAxC,CAAkDF,KAAlD,EAAyDhB,KAAzD,EAAgEW,QAAhE,EAA0EC,WAA1E,CAAV;AACA,eAAOK,GAAP;AACH;AAZI;AAPb,GADJ;AAAAb,EAAAA,WAAW,CAACe,WAAZ,CAAwBC,IAAxB,CAA6BC,KAA7B,CAAmCC,IAAnC,CAAwClC,aAAxC,GAAwDA,aAAxD",
+  "sourcesContent": [
+    "qx.Class.define ( \"venditabant.application.base.views.Base\",\n    {\n        extend: qx.core.Object,\n        construct: function () {\n\n        },\n        destruct: function () {\n        },\n        members: {\n            _createBtn: function (txt, clr, width, cb, ctx) {\n                let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)\n                return btn;\n            },\n            _createTxt: function (placeholder, width, required, requiredTxt) {\n                let txt = new venditabant.widget.textfield.Standard().createTxt(placeholder, width, required, requiredTxt);\n                return txt;\n            },\n            _createLbl: function (label, width, required, requiredTxt) {\n                let lbl = new venditabant.widget.label.Standard().createLbl(label, width, required, requiredTxt);\n                return lbl;\n            },\n        }\n    });"
+  ]
+}

@@ -12,6 +12,7 @@ use venditabant::Helpers::Users;
 use venditabant::Helpers::Salesorders;
 use venditabant::Helpers::Companies::Release::Release;
 use venditabant::Helpers::Sentinel::Sentinelsender;
+use venditabant::Helpers::Parameter::Parameters;
 
 use Data::Dumper;
 use File::Share;
@@ -50,12 +51,14 @@ sub startup ($self) {
         state $salesorders = venditabant::Helpers::Salesorders->new(pg => shift->pg)
       }
   );
-
   $self->helper(
       customers => sub {
     state  $customers = venditabant::Helpers::Customers->new(pg => shift->pg)
   });
-
+  $self->helper(
+      parameters => sub {
+        state  $parameters= venditabant::Helpers::Parameter::Parameters->new(pg => shift->pg)
+      });
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -124,6 +127,10 @@ sub startup ($self) {
   $auth->put('/salesorders/save/')->to('salesorders#save_salesorder');
   $auth->put('/salesorders/close/')->to('salesorders#close_salesorder');
   $auth->get('/salesorders/load_list/')->to('salesorders#load_list');
+
+  $auth->get('/parameters/load_list/:parameter')->to('parameters#load_list');
+
+
 }
 
 1;

@@ -48,11 +48,15 @@ qx.Class.define ( "venditabant.settings.views.VatBox",
                         },this)
 
                         oneList.set({ height: 100, width: 150, selectionMode : "one" });
-                        var item;
-                        for (var i=1; i<=25; i++) {
-                            item = new qx.ui.form.ListItem("Item No " + i, null);
-                            oneList.add(item);
-                        }
+                        let get = new venditabant.settings.models.Settings();
+                        get.loadList(function(response) {
+                            var item;
+                            for (let i=0; i < response.data.length; i++) {
+                                let row = response.data[i].param_value + ' ' + response.data[i].param_description;
+                                item = new qx.ui.form.ListItem(row, null);
+                                oneList.add(item);
+                            }
+                        },this,'VAT');
 
                         box1.add(oneList);
 

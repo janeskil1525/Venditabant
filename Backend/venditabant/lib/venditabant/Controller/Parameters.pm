@@ -27,7 +27,7 @@ sub load_list ($self) {
     );
 
     my $parameter = $self->param('parameter');
-    $self->parameters->load_list($companies_pkey, $parameter)->then(sub ($result) {
+    $self->parameters->load_parameter_list($companies_pkey, $parameter)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {

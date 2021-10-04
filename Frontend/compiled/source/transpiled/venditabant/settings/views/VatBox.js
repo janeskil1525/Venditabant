@@ -16,6 +16,7 @@
       "qx.ui.container.Composite": {},
       "qx.ui.layout.HBox": {},
       "qx.ui.form.List": {},
+      "venditabant.settings.models.Settings": {},
       "qx.ui.form.ListItem": {}
     }
   };
@@ -75,13 +76,16 @@
           width: 150,
           selectionMode: "one"
         });
-        var item;
+        var get = new venditabant.settings.models.Settings();
+        get.loadList(function (response) {
+          var item;
 
-        for (var i = 1; i <= 25; i++) {
-          item = new qx.ui.form.ListItem("Item No " + i, null);
-          oneList.add(item);
-        }
-
+          for (var i = 0; i < response.data.length; i++) {
+            var row = response.data[i].param_value + ' ' + response.data[i].param_description;
+            item = new qx.ui.form.ListItem(row, null);
+            oneList.add(item);
+          }
+        }, this, 'VAT');
         box1.add(oneList);
         return box1;
       }
@@ -90,4 +94,4 @@
   venditabant.settings.views.VatBox.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=VatBox.js.map?dt=1633343323171
+//# sourceMappingURL=VatBox.js.map?dt=1633348292696

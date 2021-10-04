@@ -20,7 +20,7 @@ async sub load_parameter_list ($self, $companies_pkey, $parameter) {
         $parameters = await venditabant::Model::ParameterItems->new(
             db => $self->pg->db
         )->load_parameter_p(
-            $parameters_pkey
+            $parameters_pkey, $parameter
         );
     }
 

@@ -9,7 +9,7 @@ use Data::Dumper;
 has 'db';
 has 'pg';
 
-my $current_version = 2;
+my $current_version = 3;
 
 async sub release_single_company ($self, $companies_pkey =  0) {
 

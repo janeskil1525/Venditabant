@@ -8,11 +8,15 @@ has 'pg';
 sub insert ($self, $data) {
 
     say "insert";
-
+say "Sentinel inser " . Dumper($data);
     $self->pg->db->insert (
         'sentinel',
             {
-                $data
+                organisation => $data->{organisation},
+                source       => $data->{source},
+                method       => $data->{method},
+                message      => $data->{message},
+                recipients   => $data->{recipients}
             }
     );
 }

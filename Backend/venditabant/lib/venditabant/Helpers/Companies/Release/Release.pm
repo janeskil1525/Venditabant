@@ -9,7 +9,7 @@ use Data::Dumper;
 has 'db';
 has 'pg';
 
-my $current_version = 1;
+my $current_version = 2;
 
 async sub release_single_company ($self, $companies_pkey =  0) {
 
@@ -44,10 +44,11 @@ async sub release ($self) {
         }
         $tx->commit();
     };
+    $err = $@ if $@;
     $self->capture_message (
         $self->pg, ,
         'venditabant::Helpers::Companies::Release::Release;', 'release', $@
-    ) if $@;
+    ) if $err;
 
 
 }

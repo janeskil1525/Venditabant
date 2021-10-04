@@ -1256,7 +1256,7 @@ CREATE TABLE parameters
     parameter varchar NOT NULL DEFAULT '',
     description varchar NOT NULL DEFAULT '',
     CONSTRAINT parameters_pkey PRIMARY KEY (parameters_pkey),
-        CONSTRAINT parameters_companies_fkey FOREIGN KEY (companies_fkey)
+    CONSTRAINT parameters_companies_fkey FOREIGN KEY (companies_fkey)
         REFERENCES companies (companies_pkey) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -1275,8 +1275,8 @@ CREATE TABLE parameters_items
     param_value varchar NOT NULL DEFAULT '',
     param_description varchar NOT NULL DEFAULT '',
     CONSTRAINT parameters_items_pkey PRIMARY KEY (parameters_items_pkey),
-    CONSTRAINT parameters_fkey FOREIGN KEY (parameters_fkey)
-    REFERENCES parameters_items_parameters_fkey (parameters_pkey) MATCH SIMPLE
+    CONSTRAINT parameters_items_parameters_fkey FOREIGN KEY (parameters_fkey)
+        REFERENCES parameters (parameters_pkey) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         DEFERRABLE
@@ -1288,5 +1288,8 @@ CREATE UNIQUE INDEX idx_parameters
 
 CREATE INDEX idx_parameters_items_parameters_fkey
     ON parameters_items(parameters_fkey);
+
+CREATE UNIQUE INDEX idx_parameters_parameters_items
+    ON parameters_items(parameters_fkey, param_value);
 
 -- 17 down

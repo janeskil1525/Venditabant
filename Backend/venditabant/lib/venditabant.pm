@@ -63,7 +63,7 @@ sub startup ($self) {
 
   $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-  )->migrate(16);
+  )->migrate(17);
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),

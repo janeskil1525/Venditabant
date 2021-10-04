@@ -233,6 +233,7 @@
     "venditabant.sales.orders.views.Definition",
     "venditabant.sales.invoices.views.Definition",
     "venditabant.cockpit.views.Cockpit",
-    "venditabant.settings.views.Definition"
+    "venditabant.settings.views.Definition",
+    "venditabant.settings.views.VatBox"
   ]
 }

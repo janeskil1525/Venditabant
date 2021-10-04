@@ -28,6 +28,9 @@ qx.Class.define ( "venditabant.settings.views.Definition",
                 let box1 = new venditabant.settings.views.VatBox().getView();
                 page1.add ( box1, { top: 0, left: 10 } );
 
+                let box2 = new venditabant.settings.views.ProdGrpBox().getView();
+                page1.add ( box2, { top: 0, left: 200 } );
+
                 tabView.add(page1);
 
                 var page2 = new qx.ui.tabview.Page("Stock");

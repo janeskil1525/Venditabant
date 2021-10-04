@@ -234,6 +234,7 @@
     "venditabant.sales.invoices.views.Definition",
     "venditabant.cockpit.views.Cockpit",
     "venditabant.settings.views.Definition",
-    "venditabant.settings.views.VatBox"
+    "venditabant.settings.views.VatBox",
+    "venditabant.settings.views.ProdGrpBox"
   ]
 }

@@ -66,10 +66,12 @@
         var oneList = new qx.ui.form.List();
         oneList.addListener("changeSelection", function (e) {
           var selection = e.getData()[0].getLabel();
+          var vat_txt = selection.substring(0, selection.indexOf(' '));
+          var vat_desc = selection.substring(selection.indexOf(' '));
 
-          this._vat_txt.setValue(selection);
+          this._vat_txt.setValue(vat_txt);
 
-          this._vat_desc.setValue(selection);
+          this._vat_desc.setValue(vat_desc);
         }, this);
         oneList.set({
           height: 100,
@@ -94,4 +96,4 @@
   venditabant.settings.views.VatBox.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=VatBox.js.map?dt=1633348292696
+//# sourceMappingURL=VatBox.js.map?dt=1633353818268

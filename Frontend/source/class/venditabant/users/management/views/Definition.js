@@ -8,7 +8,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
         destruct: function () {
         },
         properties : {
-            support : { nullable : true, check: "Boolean" }
+            support : { nullable : true, check: "Boolean", apply:"loadUsers" }
         },
         members: {
             getView: function() {

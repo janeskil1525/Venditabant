@@ -22,8 +22,163 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 // Add a TabView
                 var tabView = new qx.ui.tabview.TabView();
                 view.add(tabView, {top: 0, left: 5, right: 5, height: "50%"});
+                let page1 = this.getDefinition();
+                tabView.add(page1);
 
-                var page1 = new qx.ui.tabview.Page("Definition");
+
+                let page2 = this.getInvoice();
+                tabView.add(page2);
+
+                let page3 = this.getDelivery();
+                tabView.add(page3);
+
+
+                let page4 = this.getDiscounts();
+                tabView.add(page4);
+
+                this._createTable();
+                view.add(this._table,{top:"52%", left:5, right:5,height:"45%"});
+                this.loadCustomers();
+
+                return view;
+            },
+            getDiscounts:function() {
+                var page4 = new qx.ui.tabview.Page("Discounts");
+                page4.setLayout(new qx.ui.layout.Canvas());
+
+
+                let box1 = new venditabant.sales.customers.views.StockitemDiscounts().getView();
+                page4.add ( box1, { top: 0, left: 10 } );
+
+                let box2 = new venditabant.sales.customers.views.ProductGroupDiscounts().getView();
+                page4.add ( box2, { top: 0, left: 250 } );
+
+                let box3 = new venditabant.sales.customers.views.GeneralDiscounts().getView();
+                page4.add ( box3, { top: 0, left: 490 } );
+                return page4;
+            },
+            getDelivery:function() {
+                let page3 = new qx.ui.tabview.Page("Delivery");
+                page3.setLayout(new qx.ui.layout.Canvas());
+
+                let lbl = this._createLbl(this.tr( "Address" ), 70);
+                page3.add ( lbl, { top: 10, left: 10 } );
+
+                let lev_address = new qx.ui.form.SelectBox();
+                lev_address.setWidth( 250 );
+                lev_address.addListener("changeSelection", function(e) {
+                    let selection = e.getData()[0].getLabel();
+                    this._selectedLev_address = selection;
+                },this);
+                page3.add ( lev_address, { top: 10, left: 90 } );
+
+                let address1 = this._createTxt("Street", 250, false, '');
+                page3.add ( address1, { top: 45, left: 90 } );
+                this._del_address1 = address1;
+
+                let address2 = this._createTxt("Address", 250, false, '');
+                page3.add ( address2, { top: 80, left: 90 } );
+                this._del_address2 = address2;
+
+                let address3 = this._createTxt("City Zipcode", 250, false, '');
+                page3.add ( address3, { top: 115, left: 90 } );
+                this._del_address3 = address3
+
+                let address4 = this._createTxt("Country", 250, false, '');
+                page3.add ( address4, { top: 150, left: 90 } );
+                this._del_address4 = address4;
+
+                lbl = this._createLbl(this.tr( "Mail addressses" ), 120);
+                page3.add ( lbl, { top: 10, left: 380 } );
+
+                let deliverymails = this._createTxt(this.tr("Comma separated mail adresses"), 420, false, '');
+                page3.add ( deliverymails, { top: 10, left: 500 } );
+                this._deliverymails = deliverymails;
+
+                let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
+                    this.saveInvoiceData ( );
+                }, this );
+                page3.add ( btnSignup, { bottom: 10, left: 10 } );
+
+                let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
+                    this.cancel ( );
+                }, this );
+                page3.add ( btnCancel, { bottom: 10, right: 10 } );
+                return page3;
+            },
+            getInvoice:function() {
+                var page2 = new qx.ui.tabview.Page(this.tr("Invoice"));
+                page2.setLayout(new qx.ui.layout.Canvas());
+
+                let lbl = this._createLbl(this.tr( "Address" ), 70);
+                page2.add ( lbl, { top: 10, left: 10 } );
+
+                let address1 = this._createTxt("Street", 250, false, '');
+                page2.add ( address1, { top: 10, left: 90 } );
+                this._address1 = address1;
+
+                let address2 = this._createTxt("Address", 250, false, '');
+                page2.add ( address2, { top: 50, left: 90 } );
+                this._address2 = address2;
+
+                let address3 = this._createTxt("City Zipcode", 250, false, '');
+                page2.add ( address3, { top: 90, left: 90 } );
+                this._address3 = address3
+
+                let address4 = this._createTxt("Country", 250, false, '');
+                page2.add ( address4, { top: 130, left: 90 } );
+                this._address4 = address4;
+
+                lbl = this._createLbl(this.tr( "Mail addressses" ), 120);
+                page2.add ( lbl, { top: 10, left: 380 } );
+
+                let inviceemails = this._createTxt(this.tr("Comma separated mail adresses"), 420, false, '');
+                page2.add ( inviceemails, { top: 10, left: 500 } );
+                this._inviceemails = inviceemails;
+
+                lbl = this._createLbl(this.tr( "Invoice time" ), 120);
+                page2.add ( lbl, { top: 50, left: 380 } );
+
+                let invoicetime = new qx.ui.form.SelectBox();
+                invoicetime.setWidth( 150 );
+                invoicetime.addListener("changeSelection", function(e) {
+                    let selection = e.getData()[0].getLabel();
+                    this._selectedInvoicetime = selection;
+                },this);
+
+                let get = new venditabant.settings.models.Settings();
+                get.loadList(function(response) {
+                    var item;
+                    for (let i=0; i < response.data.length; i++) {
+                        let row = response.data[i].param_value + ' ' + response.data[i].param_description;
+                        item = new qx.ui.form.ListItem(row, null);
+                        invoicetime.add(item);
+                    }
+                },this,'INVOICEDAYS');
+                this._invoicetime = invoicetime;
+                page2.add ( invoicetime, { top: 50, left: 500 } );
+
+
+                let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
+                    this.saveInvoiceData ( );
+                }, this );
+                page2.add ( btnSignup, { bottom: 10, left: 10 } );
+
+                let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
+                    this.cancel ( );
+                }, this );
+                page2.add ( btnCancel, { bottom: 10, right: 10 } );
+
+
+
+                return page2;
+            },
+            saveInvoiceData:function() {
+
+            },
+
+            getDefinition:function () {
+                var page1 = new qx.ui.tabview.Page(this.tr("Definition"));
                 //page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
 
@@ -90,22 +245,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 }, this );
                 page1.add ( btnCancel, { bottom: 10, right: 10 } );
 
-                tabView.add(page1);
-
-                var page2 = new qx.ui.tabview.Page("Addresses");
-                tabView.add(page2);
-
-                var page3 = new qx.ui.tabview.Page("Mails");
-                tabView.add(page3);
-
-                var page4 = new qx.ui.tabview.Page("Sales");
-                tabView.add(page4);
-
-                this._createTable();
-                view.add(this._table,{top:"52%", left:5, right:5,height:"45%"});
-                this.loadCustomers();
-
-                return view;
+                return page1;
             },
             saveCustomer:function() {
                 let that = this;

@@ -72,23 +72,10 @@ qx.Class.define("venditabant.users.login.SignupWindow",
                     dom.style.setProperty("backgroundImage",img);
                 }
             },
-            _createBtn : function (txt, clr, width, cb, ctx) {
-                let btn = new qx.ui.form.Button ( "<b style='color: white'>" + txt + "</b>" );
-                btn.set ( { width: width, cursor: 'pointer' } );
-                let lbl = btn.getChildControl ( "label" );
-                lbl.setRich ( true );
-                btn.addListenerOnce ( "appear", function ( )  {
-                    this.setBGColor ( btn, "#AAAAAA00", "#AAAAAA00" );
-                },this );
-                btn.addListener ( "mouseover", function ( )  {
-                    this.setBGColor ( btn, clr, clr );
-                },this );
-                btn.addListener ( "mouseout", function ( )  {
-                    this.setBGColor ( btn, "#AAAAAA00", "#AAAAAA00" );
-                },this );
-                btn.addListener ( "execute", function ( e )  {
-                    cb.call ( this );
-                }, ctx );
+            _createBtn : function ( txt, clr, width, cb, ctx )  {
+
+                let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
+
                 return btn;
             },
             _buildSignup : function () {
@@ -147,7 +134,7 @@ qx.Class.define("venditabant.users.login.SignupWindow",
                 this._pass2 = pass2;
 
 
-                let btnSignup = this._createBtn ( this.tr ( "Sign Up" ), "rgba(239,170,255,0.44)", 135, function ( ) {
+                let btnSignup = this._createBtn ( this.tr ( "Sign Up" ), "#AAAAFF70", 135, function ( ) {
                     this.signup ( );
                 }, this );
                 this.add ( btnSignup, { bottom: 10, left: 10 } );

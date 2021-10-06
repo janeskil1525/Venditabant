@@ -45,6 +45,17 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( descriptn, { top: 10, left: 350 } );
                 this._description = descriptn;
 
+                let productgroups = new qx.ui.form.SelectBox();
+                productgroups.setWidth( 180 );
+                productgroups.addListener("changeSelection", function(e) {
+                    let selection = e.getData()[0].getLabel();
+                    this._selectedProductgroup = selection;
+                },this);
+                this._productgroups = productgroups;
+                this.loadProductgroups();
+
+                page1.add ( productgroups, { top: 10, left: 630 } );
+
                 lbl = this._createLbl(this.tr( "Price" ),70);
                 page1.add ( lbl, { top: 50, left: 10 } );
 
@@ -64,6 +75,16 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 page1.add ( purchprice, { top: 50, left: 350 } );
                 this._purchaseprice = purchprice;
+
+                let vat = new qx.ui.form.SelectBox();
+                vat.setWidth( 180 );
+                vat.addListener("changeSelection", function(e) {
+                    let selection = e.getData()[0].getLabel();
+                    this._selectedVat = selection;
+                },this);
+                this._vat = vat;
+                this.loadVat();
+                page1.add ( vat, { top: 50, left: 630 } );
 
                 lbl = this._createLbl(this.tr( "Active" ),70);
                 page1.add ( lbl, { top: 90, left: 10 } );
@@ -95,6 +116,28 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 this.loadStockitems();
                 return view;
+            },
+            loadVat:function() {
+                let get = new venditabant.settings.models.Settings();
+                get.loadList(function(response) {
+                    var item;
+                    for (let i=0; i < response.data.length; i++) {
+                        let row = response.data[i].param_value + ' ' + response.data[i].param_description;
+                        item = new qx.ui.form.ListItem(row, null);
+                        this._vat.add(item);
+                    }
+                },this,'VAT');
+            },
+            loadProductgroups:function() {
+                let get = new venditabant.settings.models.Settings();
+                get.loadList(function(response) {
+                    var item;
+                    for (let i=0; i < response.data.length; i++) {
+                        let row = response.data[i].param_value + ' ' + response.data[i].param_description;
+                        item = new qx.ui.form.ListItem(row, null);
+                        this._productgroups.add(item);
+                    }
+                },this,'PRODUCTGROUPS');
             },
             saveStockitem:function() {
                 let stockitem = this._stockitem.getValue();

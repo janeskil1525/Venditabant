@@ -40,10 +40,15 @@ qx.Class.define ( "venditabant.settings.views.Definition",
 
                 tabView.add(page2);
 
-                var page3 = new qx.ui.tabview.Page("Mails");
+                var page3 = new qx.ui.tabview.Page("Accounting");
+                page3.setLayout(new qx.ui.layout.Canvas());
+
+                let box4 = new venditabant.settings.views.Accounts().getView();
+                page3.add ( box4, { top: 0, left: 10 } );
+
                 tabView.add(page3);
 
-                var page4 = new qx.ui.tabview.Page("Sales");
+                var page4 = new qx.ui.tabview.Page("Mails");
                 tabView.add(page4);
 
                 return view;

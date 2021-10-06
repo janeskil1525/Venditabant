@@ -8,7 +8,7 @@ qx.Class.define("venditabant.widget.textfield.Standard",
 
         },
         members: {
-            createTxt : function (placeholder, width, required, requiredTxt) {
+            createTxt : function (placeholder, width, required, requiredTxt, tooltipTxt) {
                 var txt = new qx.ui.form.TextField ( );
                 txt.setPlaceholder ( placeholder );
                 txt.setWidth( width );
@@ -17,6 +17,9 @@ qx.Class.define("venditabant.widget.textfield.Standard",
                     if(typeof requiredTxt !== 'undefined') {
                         txt.setRequiredInvalidMessage(requiredTxt);
                     }
+                }
+                if(typeof tooltipTxt !== 'undefined' && tooltipTxt !== null) {
+                    txt.setToolTip(tooltipTxt);
                 }
                 return txt;
             },

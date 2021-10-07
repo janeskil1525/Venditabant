@@ -8,15 +8,16 @@ qx.Class.define("desktop_delivery.models.Stockitems",
 
         },
         members: {
+            _address: new desktop_delivery.utils.Const().venditabant_endpoint(),
             loadList:function(cb, ctx) {
                 let get = new desktop_delivery.communication.Get;
-                get.load("http://192.168.1.134/", "api/v1/stockitem/load_list/", '',function(response){
+                get.load(this._address, "api/v1/stockitem/load_list/", '',function(response){
                     cb.call ( ctx, (response));
                 },this)
             },
             loadListSales:function(cb, ctx, customer) {
                 let get = new desktop_delivery.communication.Get;
-                get.load("http://192.168.1.134/", "api/v1/stockitem/load_list/mobile/", customer,function(response){
+                get.load(this._address, "api/v1/stockitem/load_list/mobile/", customer,function(response){
                     cb.call ( ctx, (response));
                 },this)
             }

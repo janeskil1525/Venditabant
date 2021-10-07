@@ -427,41 +427,6 @@ CREATE  INDEX if not exists idx_translations_languages_fkey
     ON translations USING btree
         (languages_fkey);
 
-INSERT INTO menu (menu_pkey, parent_menu_fkey, sortorder, menu, menuaction, orientation)
-VALUES (1,null, 10, 'Home','/home','left'),
-       (2,null, 20, 'Sales','/sales','left'),
-       (3,2, 10, 'Salesorder','/salesorder','left'),
-       (5,2, 20, 'Purchaseorder','/purchaseorders','left'),
-       (4,null, 40, 'Administration','#','left');
-
-INSERT INTO menu (menu_pkey, parent_menu_fkey, sortorder, menu, menuaction, orientation, is_admin)
-VALUES (6,4, 10, 'All users','/allusers','left', 1),
-       (7,4, 20, 'All companies','/companies','left', 1);
-
-INSERT INTO menu (menu_pkey, parent_menu_fkey, sortorder, menu, menuaction, orientation)
-VALUES (9,4, 10, 'User','/user','left'),
-       (10,4, 20, 'Company','/company','left'),
-       (11,4, 30, 'Customers','/customers','left'),
-       (12,4, 30, 'Suppliers','/suppliers','left'),
-       (26,null, 60, 'Stock','#','right'),
-       (27,26, 10, 'Stockitems','/stockitems','left');
-
-INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
-(6, 'MENU', 'Home','Hem'),
-(6, 'MENU', 'Sales','Försäljning'),
-(6, 'MENU', 'Administration','Administration'),
-(6, 'MENU', 'All users','Alla användare'),
-(6, 'MENU', 'All companies','Alla företag'),
-(6, 'MENU', 'User','Användare'),
-(6, 'MENU', 'Company','Företag'),
-(6, 'MENU', 'Customers','Kunder'),
-(6, 'MENU', 'Salesorder','Kundorder'),
-(6, 'MENU', 'Purchaseorder','Inköpsorder'),
-(6, 'MENU', 'Stock','Lager'),
-(6, 'MENU', 'Stockitems','Artiklar'),
-(6, 'MENU', 'Suppliers','Leverantörer');
-
-
 -- 1 down
 
 -- 2 up
@@ -501,16 +466,6 @@ create index idx_company_functions_function
 -- 2 down
 
 -- 3 up
-INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
-(6, 'NewUser', 'email','Email...'),
-(6, 'NewUser', 'username','Namn...'),
-(6, 'NewUser', 'companyname','Företag...'),
-(6, 'NewUser', 'registrationmber','Organisationsnummer...'),
-(6, 'NewUser', 'password1','Lösenord...'),
-(6, 'NewUser', 'password2','Lösenord igen...'),
-(6, 'NewUser', 'savebutton','Spara...'),
-(6, 'NewUser', 'passworderror','Något är fel med lösenordet, antingen är de inte lika eller så är det kortare än 7 tecken'),
-(6, 'NewUser', 'registerheader','Registrera dig och ditt företag');
 
 DROP TABLE IF EXISTS company_functions;
 
@@ -822,91 +777,9 @@ CREATE UNIQUE INDEX idx_settings_fkey_setting_no
 
 -- 8 up
 
-
-INSERT INTO settings (setting_name) values ('pricelists_grid_header');
-INSERT INTO settings (setting_name) values ('pricelist_items_grid_header');
-INSERT INTO settings (setting_name) values ('tockitems_grid_header');
-
-INSERT INTO default_settings_values (settings_fkey, setting_no, setting_value, setting_order, setting_properties) VALUES
-((SELECT settings_pkey FROM settings WHERE setting_name = 'pricelists_grid_header'),
- 1, 'pricelists_pkey', 0, '{"visible":"false"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'pricelists_grid_header'),
- 2, 'pricelist', 0, '{"visible":"true"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'pricelist_items_grid_header'),
- 1, 'pricelist_items_pkey', 0, '{"visible":"false"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'pricelist_items_grid_header'),
- 2, 'pricelist', 1, '{"visible":"true"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'pricelist_items_grid_header'),
- 3, 'stockitem', 2, '{"visible":"true"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'pricelist_items_grid_header'),
- 4, 'description', 3, '{"visible":"true"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'pricelist_items_grid_header'),
- 5, 'price', 4, '{"visible":"true"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'pricelist_items_grid_header'),
- 6, 'fromdate', 5, '{"visible":"true"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'pricelist_items_grid_header'),
- 7, 'todate', 6, '{"visible":"true"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'pricelist_items_grid_header'),
- 8, 'companies_fkey', 0, '{"visible":"false"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'stockitems_grid_header'),
- 0, 'stockitems_pkey', 0, '{"visible":"false"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'stockitems_grid_header'),
- 1, 'stockitem', 1, '{"visible":"true"}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'stockitems_grid_header'),
- 2, 'description', 2, '{visible:true}'),
-((SELECT settings_pkey FROM settings WHERE setting_name = 'stockitems_grid_header'),
- 3, 'companies_fkey', 2, '{"visible":"false"}');
-
-INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
-(6, 'pricelist_grid_header', 'pricelists_pkey','Primär nyckel'),
-(6, 'pricelist_grid_header', 'pricelist','Prislista'),
-(6, 'pricelist_items_grid_header', 'pricelist_items_pkey','Primär nyckel'),
-(6, 'pricelist_items_grid_header', 'pricelist','Prislista'),
-(6, 'pricelist_items_grid_header', 'stockitem','Artikel'),
-(6, 'pricelist_items_grid_header', 'description','Beskrivning'),
-(6, 'pricelist_items_grid_header', 'price','Pris'),
-(6, 'pricelist_items_grid_header', 'fromdate','Från datum'),
-(6, 'pricelist_items_grid_header', 'todate','Till datum'),
-(6, 'stockitems_grid_header', 'stockitem_pkey','Primär nyckel'),
-(6, 'stockitems_grid_header', 'stockitem','Artikel'),
-(6, 'stockitems_grid_header', 'description','Beskrivning'),
-
-(6, 'pricelists', 'pricelists_pkey','Primär nyckel'),
-(6, 'pricelists', 'pricelist','Prislista'),
-(6, 'pricelist_items', 'pricelist_items_pkey','Primär nyckel'),
-(6, 'pricelist_items', 'pricelists_pkey','Prislista'),
-(6, 'pricelist_items', 'stockitem','Artikel'),
-(6, 'pricelist_items', 'description','Beskrivning'),
-(6, 'pricelist_items', 'price','Pris'),
-(6, 'pricelist_items', 'fromdate','Från datum'),
-(6, 'pricelist_items', 'todate','Till datum'),
-(6, 'stockitem_', 'stockitem_pkey','Primär nyckel'),
-(6, 'stockitem_', 'stockitem','Artikel'),
-(6, 'stockitem_', 'description','Beskrivning');
-
-CREATE OR REPLACE VIEW public."pricelist_items_grid"
-AS
-SELECT pricelist_items.pricelist_items_pkey,
-       pricelists.pricelist,
-       stockitems.stockitem,
-       stockitems.description,
-       pricelist_items.price,
-       pricelist_items.fromdate,
-       pricelist_items.todate,
-       pricelists.companies_fkey
-FROM ((pricelist_items
-    JOIN stockitems ON ((pricelist_items.stockitems_fkey = stockitems.stockitems_pkey)))
-         JOIN pricelists ON ((pricelist_items.pricelists_fkey = pricelists.pricelists_pkey)));
-
-
 -- 8 down
 
 -- 9 up
-INSERT INTO menu (menu_pkey, parent_menu_fkey, sortorder, menu, menuaction, orientation)
-VALUES (28,26, 20, 'Pricelists','/pricelists','left');
-
-INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
-(6, 'MENU', 'Pricelists','Prislistor');
 
 -- 9 down
 

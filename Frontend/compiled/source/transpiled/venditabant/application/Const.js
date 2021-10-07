@@ -22,7 +22,7 @@
         if (this._mode === 'test') {
           return 'http://192.168.1.134';
         } else {
-          return 'live address';
+          return 'https://www.venditabant.net';
         }
       }
     }
@@ -30,4 +30,4 @@
   venditabant.application.Const.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Const.js.map?dt=1632655047205
+//# sourceMappingURL=Const.js.map?dt=1633607130302

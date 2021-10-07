@@ -96,7 +96,8 @@ qx.Class.define ( "desktop_delivery.users.login.LoginWindow",
                 let data = {
                     username:name, password:pass
                 };
-                app.send ( "http://192.168.1.134/", "api/login/", data, function ( success, rsp ) {
+                let _address = new desktop_delivery.utils.Const().venditabant_endpoint();
+                app.send ( _address, "/api/login/", data, function ( success, rsp ) {
                     if (success) {
                         let jwt = new qx.data.store.Offline('userid','local');
                         jwt.setModel(qx.data.marshal.Json.createModel(rsp.data));

@@ -8,15 +8,16 @@ qx.Class.define("desktop_delivery.models.Salesorders",
 
         },
         members: {
+            _address: new desktop_delivery.utils.Const().venditabant_endpoint(),
             add:function(cb, ctx, data) {
                 let post = new desktop_delivery.communication.Post;
-                post.send("http://192.168.1.134/", "api/v1/salesorders/save/", data,function(response){
+                post.send(this._address, "/api/v1/salesorders/save/", data,function(response){
                     cb.call ( ctx, (response));
                 },this)
             },
             close:function(cb, ctx, data){
                 let post = new desktop_delivery.communication.Post;
-                post.send("http://192.168.1.134/", "api/v1/salesorders/close/", data,function(response){
+                post.send(this._address, "/api/v1/salesorders/close/", data,function(response){
                     cb.call ( ctx, (response));
                 },this)
             }

@@ -21,11 +21,11 @@ async sub step ($self, $companies_pkey) {
 
     $stmt = qq {
         INSERT INTO parameters_items (parameters_fkey, param_value, param_description)
-        VALUES (?, 'Ingredients', 'Ingredients'),
-                (?, 'Accessories', 'Accessories'),
-                (?, 'Machines', 'Machines'),
-                (?, 'Service', 'Service'),
-                (?, 'Transport', 'Transport')
+        VALUES (?, '10', 'Ingredients'),
+                (?, '20', 'Accessories'),
+                (?, '30', 'Machines'),
+                (?, '40', 'Service'),
+                (?, '50', 'Transport')
         ON CONFLICT (parameters_fkey, param_value)
             DO UPDATE SET moddatetime = now();
     };

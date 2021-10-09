@@ -9,7 +9,7 @@ qx.Class.define("desktop_delivery.utils.Const",
 
         },
             members: {
-                _mode : 'live',
+                _mode : 'test',
                 venditabant_endpoint: function() {
                         if (this._mode === 'test') {
                                 return 'http://192.168.1.134';

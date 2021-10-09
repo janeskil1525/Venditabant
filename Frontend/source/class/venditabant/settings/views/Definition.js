@@ -25,26 +25,86 @@ qx.Class.define ( "venditabant.settings.views.Definition",
                 //page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
 
-                let box1 = new venditabant.settings.views.VatBox().getView();
-                page1.add ( box1, { top: 0, left: 10 } );
+                let vat = new venditabant.settings.views.SettingListBox().set({
+                    width: 100,
+                    height: 200,
+                    savebuttonwidth:40,
+                    parameter: 'VAT',
+                    groupboxheader: this.tr("VAT"),
+                    valuelabel: this.tr("Percentage"),
+                    valueplaceholder: this.tr("0-9 %"),
+                    invalidmessage: this.tr("Percentage is required"),
+                    descriptionplaceholder: this.tr("Description"),
+                    descriptioninvalidmessage: this.tr("Description is required"),
+                    valuefilter: /[0-9\%]/,
+                    savebutton: this.tr("Save"),
+                    deletebutton: this.tr("Delete"),
+                    newbutton: this.tr("New"),
+                }).getView();
+                page1.add ( vat, { top: 0, left: 10 } );
 
-                let box3 = new venditabant.settings.views.InvoiceDays().getView();
-                page1.add ( box3, { top: 0, left: 190 } );
+                let invoicedays = new venditabant.settings.views.SettingListBox().set({
+                    width: 100,
+                    height: 200,
+                    savebuttonwidth:40,
+                    parameter: 'INVOICEDAYS',
+                    groupboxheader: this.tr("Invoice days"),
+                    valuelabel: this.tr("Days"),
+                    valueplaceholder: this.tr("Ds"),
+                    invalidmessage: this.tr("Days are required"),
+                    descriptionplaceholder: this.tr("Description"),
+                    descriptioninvalidmessage: this.tr("Description is required"),
+                    valuefilter: /[0-9]/,
+                    savebutton: this.tr("Save"),
+                    deletebutton: this.tr("Delete"),
+                    newbutton: this.tr("New"),
+                }).getView();
+                page1.add ( invoicedays, { top: 0, left: 230 } );
                 tabView.add(page1);
 
                 var page2 = new qx.ui.tabview.Page("Stock");
                 page2.setLayout(new qx.ui.layout.Canvas());
 
-                let box2 = new venditabant.settings.views.ProdGrpBox().getView();
-                page2.add ( box2, { top: 0, left: 10 } );
+                let productgroups = new venditabant.settings.views.SettingListBox().set({
+                    width: 200,
+                    height: 200,
+                    savebuttonwidth:40,
+                    parameter: 'PRODUCTGROUPS',
+                    groupboxheader: this.tr("Product groups"),
+                    valuelabel: this.tr("Group"),
+                    valueplaceholder: this.tr("Group"),
+                    invalidmessage: this.tr("Group is required"),
+                    descriptionplaceholder: this.tr("Description"),
+                    descriptioninvalidmessage: this.tr("Description is required"),
+                    valuefilter: /[0-9]/,
+                    savebutton: this.tr("Save"),
+                    deletebutton: this.tr("Delete"),
+                    newbutton: this.tr("New"),
+                }).getView();
+                page2.add ( productgroups, { top: 0, left: 10 } );
 
                 tabView.add(page2);
 
                 var page3 = new qx.ui.tabview.Page("Accounting");
                 page3.setLayout(new qx.ui.layout.Canvas());
 
-                let box4 = new venditabant.settings.views.Accounts().getView();
-                page3.add ( box4, { top: 0, left: 10 } );
+                let accounts = new venditabant.settings.views.SettingListBox().set({
+                    width: 200,
+                    height: 200,
+                    savebuttonwidth:40,
+                    parameter: 'ACCOUNTS',
+                    groupboxheader: this.tr("Accounts"),
+                    valuelabel: this.tr("Account"),
+                    valueplaceholder: this.tr("Account"),
+                    invalidmessage: this.tr("Account is required"),
+                    descriptionplaceholder: this.tr("Description"),
+                    descriptioninvalidmessage: this.tr("Description is required"),
+                    valuefilter: /[0-9]/,
+                    savebutton: this.tr("Save"),
+                    deletebutton: this.tr("Delete"),
+                    newbutton: this.tr("New"),
+                }).getView();
+                page3.add ( accounts, { top: 0, left: 10 } );
 
                 tabView.add(page3);
 
@@ -52,74 +112,6 @@ qx.Class.define ( "venditabant.settings.views.Definition",
                 tabView.add(page4);
 
                 return view;
-            },
-            saveVAT:function() {
-                let that = this;
-                let customer = this._customer.getValue();
-                let name  = this._name.getValue();
-                let registrationnumber = this._registrationnumber.getValue();
-                let homepage = this._homepage.getValue();
-                let phone = this._phone.getValue();
-                let pricelist = this._selectedPricelistHead;
-
-                let data = {
-                    customer: customer,
-                    name: name,
-                    registrationnumber: registrationnumber,
-                    homepage: homepage,
-                    phone: phone,
-                    pricelist: pricelist,
-                }
-                let model = new venditabant.sales.customers.models.Customers();
-                model.saveCustomer(data,function ( success ) {
-                    if (success) {
-                        that.loadCustomers();
-                    } else {
-                        alert(this.tr('Something went wrong saving the customer'));
-                    }
-                },this);
-            },
-            loadPricelists : function() {
-                let that = this;
-                let pricelist_heads = new venditabant.sales.pricelists.models.Pricelists();
-
-                pricelist_heads.loadList(function(response){
-                    if(response.data !== null) {
-                        for(let i= 0; i < response.data.length ;i++) {
-                            let pricelist = response.data[i].pricelist;
-                            that.addPricelistHead(pricelist);
-                        }
-                    }
-                }, this);
-            },
-            addPricelistHead:function(pricelist) {
-                let tempItem = new qx.ui.form.ListItem(pricelist);
-                this._pricelists.add(tempItem);
-                if(pricelist === 'DEFAULT'){
-                    this._selectedPricelistHead = 'DEFAULT';
-                    this._pricelists.setSelection([tempItem]);
-                }
-            },
-            loadCustomers:function () {
-                let customers = new venditabant.sales.customers.models.Customers();
-                customers.loadList(function(response) {
-                    let tableData = [];
-                    for(let i = 0; i < response.data.length; i++) {
-
-                        tableData.push([
-                            response.data[i].customers_pkey,
-                            response.data[i].customer,
-                            response.data[i].name,
-                            response.data[i].pricelist,
-                            response.data[i].registrationnumber,
-                            response.data[i].phone,
-                            response.data[i].homepage,
-                        ]);
-                    }
-                    this._table.getTableModel().setData(tableData);
-                    //alert("Set table data here");
-                }, this);
-                //return ;//list;
             }
         }
     });

@@ -7,14 +7,29 @@ use Mojo::JSON qw {from_json};
 sub save_parameter ($self) {
 
     $self->render_later;
-    my $companies_pkey = $self->jwt->companise_pkey(
+    my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
         $self->req->headers->header('X-Token-Check')
     );
     my $json_hash = from_json ($self->req->body);
-    $self->parameters->upsert($companies_pkey, $json_hash)->then(sub ($result) {
+    $self->parameters->upsert($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => $result});
     })->catch( sub ($err) {
 
+        $self->render(json => {'result' => $err});
+    })->wait;
+
+}
+
+sub delete_parameter ($self) {
+
+    $self->render_later;
+    my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+    my $json_hash = from_json ($self->req->body);
+    $self->parameters->delete($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
+        $self->render(json => {'result' => $result});
+    })->catch( sub ($err) {
         $self->render(json => {'result' => $err});
     })->wait;
 

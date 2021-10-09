@@ -129,7 +129,8 @@ sub startup ($self) {
   $auth->get('/salesorders/load_list/')->to('salesorders#load_list');
 
   $auth->get('/parameters/load_list/:parameter')->to('parameters#load_list');
-
+  $auth->put('/parameters/save/')->to('parameters#save_parameter');
+  $auth->put('/parameters/delete/')->to('parameters#delete_parameter');
 
 }
 

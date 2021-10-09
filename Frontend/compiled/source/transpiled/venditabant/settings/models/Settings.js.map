@@ -13,6 +13,9 @@
     "extend",
     "core",
     "Object",
+    "include",
+    "locale",
+    "MTranslation",
     "construct",
     "destruct",
     "members",
@@ -31,12 +34,21 @@
     "load",
     "response",
     "call",
+    "saveSetting",
+    "data",
+    "com",
+    "Post",
+    "send",
+    "success",
+    "alert",
+    "tr",
+    "deleteSetting",
     "settings",
     "models",
     "Settings"
   ],
-  "mappings": ";;;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;AAEAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,sCAAhB,EACI;AACIC,IAAAA,MAAM,EAAEN,EAAE,CAACO,IAAH,CAAQC,MADpB;AAEIC,IAAAA,SAAS,EAAG,qBAAW,CAEtB,CAJL;AAKIC,IAAAA,QAAQ,EAAG,oBAAW,CAErB,CAPL;AAQIC,IAAAA,OAAO,EAAE;AACLC,MAAAA,QAAQ,EAAE,IAAIC,WAAW,CAACC,WAAZ,CAAwBC,KAA5B,GAAoCC,oBAApC,EADL;AAELC,MAAAA,QAAQ,EAAC,kBAASC,EAAT,EAAaC,GAAb,EAAkBC,OAAlB,EAA2B;AAChC,YAAIC,GAAG,GAAG,IAAIR,WAAW,CAACS,aAAZ,CAA0BC,GAA9B,EAAV;AACAF,QAAAA,GAAG,CAACG,IAAJ,CAAS,KAAKZ,QAAd,EAAwB,+BAAxB,EAAyDQ,OAAzD,EAAiE,UAASK,QAAT,EAAkB;AAC/EP,UAAAA,EAAE,CAACQ,IAAH,CAAUP,GAAV,EAAgBM,QAAhB;AACH,SAFD,EAEE,IAFF;AAIH;AARI;AARb,GADJ;AAFAZ,EAAAA,WAAW,CAACc,QAAZ,CAAqBC,MAArB,CAA4BC,QAA5B,CAAqC1B,aAArC,GAAqDA,aAArD",
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;AAAAA,EAAAA,EAAE,CAACC,SAAH,CAAaC,oBAAb,CAAkCC,aAAlC;AAEAH,EAAAA,EAAE,CAACI,KAAH,CAASC,MAAT,CAAgB,sCAAhB,EACI;AACIC,IAAAA,MAAM,EAAEN,EAAE,CAACO,IAAH,CAAQC,MADpB;AAEIC,IAAAA,OAAO,EAAE,CAACT,EAAE,CAACU,MAAH,CAAUC,YAAX,CAFb;AAGIC,IAAAA,SAAS,EAAG,qBAAW,CAEtB,CALL;AAMIC,IAAAA,QAAQ,EAAG,oBAAW,CAErB,CARL;AASIC,IAAAA,OAAO,EAAE;AACLC,MAAAA,QAAQ,EAAE,IAAIC,WAAW,CAACC,WAAZ,CAAwBC,KAA5B,GAAoCC,oBAApC,EADL;AAELC,MAAAA,QAAQ,EAAC,kBAASC,EAAT,EAAaC,GAAb,EAAkBC,OAAlB,EAA2B;AAChC,YAAIC,GAAG,GAAG,IAAIR,WAAW,CAACS,aAAZ,CAA0BC,GAA9B,EAAV;AACAF,QAAAA,GAAG,CAACG,IAAJ,CAAS,KAAKZ,QAAd,EAAwB,+BAAxB,EAAyDQ,OAAzD,EAAiE,UAASK,QAAT,EAAkB;AAC/EP,UAAAA,EAAE,CAACQ,IAAH,CAAUP,GAAV,EAAgBM,QAAhB;AACH,SAFD,EAEE,IAFF;AAIH,OARI;AASLE,MAAAA,WAAW,EAAC,qBAASC,IAAT,EAAeV,EAAf,EAAmBC,GAAnB,EAAwB;AAChC,YAAIU,GAAG,GAAG,IAAIhB,WAAW,CAACS,aAAZ,CAA0BQ,IAA9B,EAAV;AACAD,QAAAA,GAAG,CAACE,IAAJ,CAAS,KAAKnB,QAAd,EAAwB,0BAAxB,EAAoDgB,IAApD,EAA0D,UAAUI,OAAV,EAAmB;AACzE,cAAIA,OAAJ,EAAa;AACTd,YAAAA,EAAE,CAACQ,IAAH,CAAQP,GAAR,EAAaS,IAAb;AACH,WAFD,MAEO;AACHK,YAAAA,KAAK,CAAC,KAAKC,EAAL,CAAQ,SAAR,CAAD,CAAL;AACH;AACJ,SAND,EAMG,IANH;AAOH,OAlBI;AAmBLC,MAAAA,aAAa,EAAC,uBAASP,IAAT,EAAeV,EAAf,EAAmBC,GAAnB,EAAwB;AAClC,YAAIU,GAAG,GAAG,IAAIhB,WAAW,CAACS,aAAZ,CAA0BQ,IAA9B,EAAV;AACAD,QAAAA,GAAG,CAACE,IAAJ,CAAS,KAAKnB,QAAd,EAAwB,4BAAxB,EAAsDgB,IAAtD,EAA4D,UAAUI,OAAV,EAAmB;AAC3E,cAAIA,OAAJ,EAAa;AACTd,YAAAA,EAAE,CAACQ,IAAH,CAAQP,GAAR,EAAcS,IAAd;AACH,WAFD,MAEO;AACHK,YAAAA,KAAK,CAAC,KAAKC,EAAL,CAAQ,SAAR,CAAD,CAAL;AACH;AACJ,SAND,EAMG,IANH;AAOH;AA5BI;AATb,GADJ;AAFArB,EAAAA,WAAW,CAACuB,QAAZ,CAAqBC,MAArB,CAA4BC,QAA5B,CAAqCtC,aAArC,GAAqDA,aAArD",
   "sourcesContent": [
-    "\n\nqx.Class.define(\"venditabant.settings.models.Settings\",\n    {\n        extend: qx.core.Object,\n        construct : function() {\n\n        },\n        destruct : function() {\n\n        },\n        members: {\n            _address: new venditabant.application.Const().venditabant_endpoint(),\n            loadList:function(cb, ctx, setting) {\n                let get = new venditabant.communication.Get;\n                get.load(this._address, \"/api/v1/parameters/load_list/\", setting,function(response){\n                    cb.call ( ctx, (response));\n                },this)\n\n            }\n        }\n    });"
+    "\n\nqx.Class.define(\"venditabant.settings.models.Settings\",\n    {\n        extend: qx.core.Object,\n        include: [qx.locale.MTranslation],\n        construct : function() {\n\n        },\n        destruct : function() {\n\n        },\n        members: {\n            _address: new venditabant.application.Const().venditabant_endpoint(),\n            loadList:function(cb, ctx, setting) {\n                let get = new venditabant.communication.Get;\n                get.load(this._address, \"/api/v1/parameters/load_list/\", setting,function(response){\n                    cb.call ( ctx, (response));\n                },this)\n\n            },\n            saveSetting:function(data, cb, ctx) {\n                let com = new venditabant.communication.Post();\n                com.send(this._address, \"/api/v1/parameters/save/\", data, function (success) {\n                    if (success) {\n                        cb.call(ctx,(data));\n                    } else {\n                        alert(this.tr('success'));\n                    }\n                }, this);\n            },\n            deleteSetting:function(data, cb, ctx) {\n                let com = new venditabant.communication.Post();\n                com.send(this._address, \"/api/v1/parameters/delete/\", data, function (success) {\n                    if (success) {\n                        cb.call(ctx, (data));\n                    } else {\n                        alert(this.tr('success'));\n                    }\n                }, this);\n            }\n        }\n    });"
   ]
 }

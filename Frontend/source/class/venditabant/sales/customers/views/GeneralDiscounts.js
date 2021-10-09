@@ -51,7 +51,7 @@ qx.Class.define ( "venditabant.sales.customers.views.GeneralDiscounts",
 
                         //box1.add(invoicedays_desc);
                         let save_invoicedays = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 120, function ( ) {
-                            this.save_invoicedays ( );
+                            //this.save_invoicedays ( );
                         }, this );
                         box1.add(save_invoicedays);
 

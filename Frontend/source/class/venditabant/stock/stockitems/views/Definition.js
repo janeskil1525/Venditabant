@@ -100,6 +100,16 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( stocked, { top: 90, left: 350 } );
                 this._stocked = stocked;
 
+                let accounts = new qx.ui.form.SelectBox();
+                accounts.setWidth( 180 );
+                accounts.addListener("changeSelection", function(e) {
+                    let selection = e.getData()[0].getLabel();
+                    this._selectedAccounts = selection;
+                },this);
+                page1.add ( accounts, { top: 90, left: 630 } );
+                this._accounts = accounts;
+                this.loadAccounts();
+
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveStockitem ( );
                 }, this );
@@ -116,6 +126,21 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 this.loadStockitems();
                 return view;
+            },
+            loadAccounts:function() {
+                let get = new venditabant.settings.models.Settings();
+                get.loadList(function(response) {
+                    var item;
+                    item = new qx.ui.form.ListItem(' ', null, '');
+                    if(response.data !== null) {
+                        this._accounts.add(item);
+                        for (let i=0; i < response.data.length; i++) {
+                            let row = response.data[i].param_value + ' ' + response.data[i].param_description;
+                            item = new qx.ui.form.ListItem(row, null, response.data[i]);
+                            this._accounts.add(item);
+                        }
+                    }
+                },this,'ACCOUNTS');
             },
             loadVat:function() {
                 let get = new venditabant.settings.models.Settings();

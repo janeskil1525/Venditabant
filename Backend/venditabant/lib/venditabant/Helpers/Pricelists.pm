@@ -25,7 +25,6 @@ async sub upsert_head ($self, $companies_pkey, $pricelist) {
 
     my $err;
     eval {
-        say "upsert ";
         my $pricelists_pkey = venditabant::Model::Pricelists->new(
             db => $db
         )->upsert(

@@ -50,11 +50,11 @@
       "location": {
         "start": {
           "line": 12,
-          "column": 16
+          "column": 12
         },
         "end": {
           "line": 12,
-          "column": 30
+          "column": 26
         }
       },
       "type": "variable",
@@ -64,11 +64,11 @@
       "location": {
         "start": {
           "line": 13,
-          "column": 16
+          "column": 12
         },
         "end": {
           "line": 19,
-          "column": 17
+          "column": 13
         }
       },
       "type": "function",

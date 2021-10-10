@@ -45,14 +45,13 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( descriptn, { top: 10, left: 350 } );
                 this._description = descriptn;
 
-                let productgroups = new qx.ui.form.SelectBox();
-                productgroups.setWidth( 180 );
-                productgroups.addListener("changeSelection", function(e) {
-                    let selection = e.getData()[0].getLabel();
-                    this._selectedProductgroup = selection;
-                },this);
+                let productgroups = new venditabant.settings.views.SettingsSelectBox().set({
+                    width:180,
+                    parameter:'PRODUCTGROUPS',
+                    emptyrow:true,
+                }).getView();
+
                 this._productgroups = productgroups;
-                this.loadProductgroups();
 
                 page1.add ( productgroups, { top: 10, left: 630 } );
 
@@ -76,14 +75,12 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( purchprice, { top: 50, left: 350 } );
                 this._purchaseprice = purchprice;
 
-                let vat = new qx.ui.form.SelectBox();
-                vat.setWidth( 180 );
-                vat.addListener("changeSelection", function(e) {
-                    let selection = e.getData()[0].getLabel();
-                    this._selectedVat = selection;
-                },this);
+                let vat = new venditabant.settings.views.SettingsSelectBox().set({
+                    width:180,
+                    parameter:'VAT',
+                    emptyrow:true,
+                }).getView();
                 this._vat = vat;
-                this.loadVat();
                 page1.add ( vat, { top: 50, left: 630 } );
 
                 lbl = this._createLbl(this.tr( "Active" ),70);
@@ -100,15 +97,21 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( stocked, { top: 90, left: 350 } );
                 this._stocked = stocked;
 
-                let accounts = new qx.ui.form.SelectBox();
-                accounts.setWidth( 180 );
-                accounts.addListener("changeSelection", function(e) {
-                    let selection = e.getData()[0].getLabel();
-                    this._selectedAccounts = selection;
-                },this);
+                let accounts = new venditabant.settings.views.SettingsSelectBox().set({
+                    width:180,
+                    parameter:'ACCOUNTS',
+                    emptyrow:true,
+                }).getView();
                 page1.add ( accounts, { top: 90, left: 630 } );
                 this._accounts = accounts;
-                this.loadAccounts();
+
+                let units = new venditabant.settings.views.SettingsSelectBox().set({
+                    width:180,
+                    parameter:'SALESUNITS',
+                    emptyrow:true,
+                });
+                page1.add ( units.getView(), { top: 130, left: 630 } );
+                this._units = units;
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveStockitem ( );
@@ -127,43 +130,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 this.loadStockitems();
                 return view;
             },
-            loadAccounts:function() {
-                let get = new venditabant.settings.models.Settings();
-                get.loadList(function(response) {
-                    var item;
-                    item = new qx.ui.form.ListItem(' ', null, '');
-                    if(response.data !== null) {
-                        this._accounts.add(item);
-                        for (let i=0; i < response.data.length; i++) {
-                            let row = response.data[i].param_value + ' ' + response.data[i].param_description;
-                            item = new qx.ui.form.ListItem(row, null, response.data[i]);
-                            this._accounts.add(item);
-                        }
-                    }
-                },this,'ACCOUNTS');
-            },
-            loadVat:function() {
-                let get = new venditabant.settings.models.Settings();
-                get.loadList(function(response) {
-                    var item;
-                    for (let i=0; i < response.data.length; i++) {
-                        let row = response.data[i].param_value + ' ' + response.data[i].param_description;
-                        item = new qx.ui.form.ListItem(row, null);
-                        this._vat.add(item);
-                    }
-                },this,'VAT');
-            },
-            loadProductgroups:function() {
-                let get = new venditabant.settings.models.Settings();
-                get.loadList(function(response) {
-                    var item;
-                    for (let i=0; i < response.data.length; i++) {
-                        let row = response.data[i].param_value + ' ' + response.data[i].param_description;
-                        item = new qx.ui.form.ListItem(row, null);
-                        this._productgroups.add(item);
-                    }
-                },this,'PRODUCTGROUPS');
-            },
+
             saveStockitem:function() {
                 let stockitem = this._stockitem.getValue();
                 let description  = this._description.getValue();
@@ -175,6 +142,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 var date = new Date();
                 var today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
                 var fiveyears = (date.getFullYear()+5)+'-'+(date.getMonth()+1)+'-'+date.getDate();
+                let units_fkey = this._units.getKey();
 
                 let data = {
                     stockitem: stockitem,
@@ -184,7 +152,8 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                     active:active,
                     stocked:stocked,
                     fromdate: today,
-                    todate:fiveyears
+                    todate:fiveyears,
+                    units_fkey: units_fkey,
                 }
                 let com = new venditabant.communication.Post ( );
                 com.send ( this._address, "/api/v1/stockitem/save/", data, function ( success ) {
@@ -211,7 +180,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Stockitem", "Description", "Price","Purchase Price","Active", "Stocked" ]);
+                tableModel.setColumns([ "ID", "Stockitem", "Description", "Price","Purchase Price","Active", "Stocked", "Unit" ]);
                 tableModel.setData(rowData);
                 //tableModel.setColumnEditable(1, true);
                 //tableModel.setColumnEditable(2, true);
@@ -242,6 +211,8 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                     that._active.setValue(active);
                     that._stocked.setValue(stocked);
+
+                    that._units.setSelectedModel()
                 });
                 var tcm = table.getTableColumnModel();
 
@@ -271,6 +242,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                             response.data[i].purchaseprice,
                             active,
                             stocked,
+                            response.data[i].unit,
                             ]);
                     }
                     this._table.getTableModel().setData(tableData);
@@ -278,18 +250,6 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 }, this);
                 //return ;//list;
             },
-            _createTxt:function(placeholder, width, required, requiredTxt) {
-                let txt = new venditabant.widget.textfield.Standard().createTxt(placeholder, width, required, requiredTxt);
-                return txt;
-            },
-            _createLbl:function(label, width, required, requiredTxt) {
-                let lbl = new venditabant.widget.label.Standard().createLbl(label, width, required, requiredTxt);
-                return lbl;
-            },
-            _createBtn : function (txt, clr, width, cb, ctx) {
-                let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
 
-                return btn;
-            },
         }
     });

@@ -22,6 +22,7 @@ qx.Class.define ( "venditabant.settings.views.SettingListBox",
                 savebutton: {nullable:true, check:"String"},
                 deletebutton: {nullable:true, check:"String"},
                 newbutton: {nullable:true, check:"String"},
+                emptyrow:{nullable: true, check: "Boolean"},
             },
             members: {
                     // Public functions ...
@@ -120,25 +121,17 @@ qx.Class.define ( "venditabant.settings.views.SettingListBox",
                     }
                 },
                 loadList:function() {
-                    let get = new venditabant.settings.models.Settings();
-                    this._model = null;
-                    get.loadList(function(response) {
-                        var item;
-                        if(response.data !== null) {
-                            this._oneList.removeAll();
-                            for (let i=0; i < response.data.length; i++) {
-                                let row = response.data[i].param_value + ' ' + response.data[i].param_description;
-                                item = new qx.ui.form.ListItem(row, null, response.data[i]);
-                                this._oneList.add(item);
-                            }
-                        }
-                    },this,this.getParameter());
+                    new venditabant.settings.helpers.LoadList().set({
+                        list: this._oneList,
+                        parameter: this.getParameter(),
+                        emptyrow:this.isEmptyrow()
+                    }).loadList();
                 },
                 savePrameter:function() {
 
                     let that = this;
                     let parameters_items_pkey = 0;
-                    if(this._model !== null) {
+                    if(typeof this._model !== 'undefined' && this._model !== null) {
                         parameters_items_pkey = this._model.parameters_items_pkey;
                     }
 

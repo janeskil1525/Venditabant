@@ -5,21 +5,35 @@ use Data::Dumper;
 
 has 'db';
 
-sub upsert ($self, $companies_pkey, $stockitem) {
+sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
 
     my $stockitem_stmt = qq{
-        INSERT INTO stockitems (stockitem, description, companies_fkey) VALUES (?,?, ?)
-            ON CONFLICT (stockitem, companies_fkey) DO UPDATE SET description = ?
+        INSERT INTO stockitems (insby, modby, stockitem, description, companies_fkey, units_fkey, active, stocked) VALUES (
+                    (SELECT userid FROM users WHERE users_pkey = ?),
+                    (SELECT userid FROM users WHERE users_pkey = ?),?,?,?, ?,?,?)
+            ON CONFLICT (stockitem, companies_fkey)
+            DO UPDATE SET description = ?, moddatetime = now(),
+                modby = (SELECT userid FROM users WHERE users_pkey = ?),
+                units_fkey = ?, active = ?, stocked = ?
         RETURNING stockitems_pkey
     };
 
     my $stockitems_pkey = $self->db->query(
         $stockitem_stmt,
             (
+                $users_pkey,
+                $users_pkey,
                 $stockitem->{stockitem},
                 $stockitem->{description},
                 $companies_pkey,
-                $stockitem->{description}
+                $stockitem->{units_fkey},
+                $stockitem->{active},
+                $stockitem->{stocked},
+                $stockitem->{description},
+                $users_pkey,
+                $stockitem->{units_fkey},
+                $stockitem->{active},
+                $stockitem->{stocked},
             )
     )->hash->{stockitems_pkey};
 

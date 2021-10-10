@@ -9,7 +9,7 @@ use Data::Dumper;
 
 has 'pg';
 
-async sub upsert ($self, $companies_pkey, $stockitem) {
+async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -27,7 +27,7 @@ async sub upsert ($self, $companies_pkey, $stockitem) {
         my $stockitems_pkey = venditabant::Model::Stockitems->new(
             db => $db
         )->upsert(
-            $companies_pkey, $stockitem
+            $companies_pkey, $users_pkey, $stockitem
         );
 
         $stockitem->{pricelist} = 'DEFAULT';
@@ -48,7 +48,7 @@ async sub upsert ($self, $companies_pkey, $stockitem) {
 async sub load_list_p ($self, $companies_pkey) {
 
     my $stmt = qq {
-        SELECT stockitems_pkey, stockitem, description, active, stocked, price, purchaseprice
+        SELECT stockitems_pkey, stockitem, description, active, stocked, price, purchaseprice, units.param_value as unit
              FROM stockitems JOIN pricelist_items ON stockitems_pkey = stockitems_fkey
 				AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists WHERE pricelist = 'DEFAULT'
 									  AND stockitems.companies_fkey = companies_fkey)
@@ -60,6 +60,7 @@ async sub load_list_p ($self, $companies_pkey) {
 				AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
 								WHERE stockitems_pkey = stockitems_fkey AND todate >= now()))
 				AND todate >= now()
+			JOIN parameters_items as units ON parameters_items_pkey = units_fkey
         WHERE stockitems.companies_fkey = ?
     };
 

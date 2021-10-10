@@ -240,6 +240,7 @@
     "venditabant.sales.customers.views.StockitemDiscounts",
     "venditabant.sales.customers.views.ProductGroupDiscounts",
     "venditabant.sales.customers.views.GeneralDiscounts",
-    "venditabant.settings.views.Accounts"
+    "venditabant.settings.views.Accounts",
+    "venditabant.settings.views.SettingListBox"
   ]
 }

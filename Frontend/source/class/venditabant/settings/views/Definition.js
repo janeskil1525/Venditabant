@@ -40,6 +40,7 @@ qx.Class.define ( "venditabant.settings.views.Definition",
                     savebutton: this.tr("Save"),
                     deletebutton: this.tr("Delete"),
                     newbutton: this.tr("New"),
+                    emptyrow:false,
                 }).getView();
                 page1.add ( vat, { top: 0, left: 10 } );
 
@@ -58,8 +59,29 @@ qx.Class.define ( "venditabant.settings.views.Definition",
                     savebutton: this.tr("Save"),
                     deletebutton: this.tr("Delete"),
                     newbutton: this.tr("New"),
+                    emptyrow:false,
                 }).getView();
                 page1.add ( invoicedays, { top: 0, left: 230 } );
+
+                let salesunits = new venditabant.settings.views.SettingListBox().set({
+                    width: 200,
+                    height: 200,
+                    savebuttonwidth:40,
+                    parameter: 'SALESUNITS',
+                    groupboxheader: this.tr("Sales units"),
+                    valuelabel: this.tr("Unit"),
+                    valueplaceholder: this.tr("Unit"),
+                    invalidmessage: this.tr("Unit is required"),
+                    descriptionplaceholder: this.tr("Description"),
+                    descriptioninvalidmessage: this.tr("Description is required"),
+                    valuefilter: null,
+                    savebutton: this.tr("Save"),
+                    deletebutton: this.tr("Delete"),
+                    newbutton: this.tr("New"),
+                    emptyrow:false,
+                }).getView();
+                page1.add ( salesunits, { top: 0, left: 450 } );
+
                 tabView.add(page1);
 
                 var page2 = new qx.ui.tabview.Page("Stock");
@@ -80,6 +102,7 @@ qx.Class.define ( "venditabant.settings.views.Definition",
                     savebutton: this.tr("Save"),
                     deletebutton: this.tr("Delete"),
                     newbutton: this.tr("New"),
+                    emptyrow:false,
                 }).getView();
                 page2.add ( productgroups, { top: 0, left: 10 } );
 
@@ -103,6 +126,7 @@ qx.Class.define ( "venditabant.settings.views.Definition",
                     savebutton: this.tr("Save"),
                     deletebutton: this.tr("Delete"),
                     newbutton: this.tr("New"),
+                    emptyrow:false,
                 }).getView();
                 page3.add ( accounts, { top: 0, left: 10 } );
 

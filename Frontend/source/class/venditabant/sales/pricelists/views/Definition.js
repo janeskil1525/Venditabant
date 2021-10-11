@@ -211,11 +211,6 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                     }
                 }, this);
             },
-            _createBtn : function (txt, clr, width, cb, ctx) {
-                let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
-
-                return btn;
-            },
             _createTable : function() {
                 // Create the initial data
                 let rowData =  '';

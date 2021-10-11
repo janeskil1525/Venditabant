@@ -45,15 +45,18 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( descriptn, { top: 10, left: 350 } );
                 this._description = descriptn;
 
+                lbl = this._createLbl(this.tr( "Group" ),70);
+                page1.add ( lbl, { top: 10, left: 630 } );
+                
                 let productgroups = new venditabant.settings.views.SettingsSelectBox().set({
                     width:180,
                     parameter:'PRODUCTGROUPS',
                     emptyrow:true,
-                }).getView();
-
+                });
+                let productgroupssview = productgroups.getView()
                 this._productgroups = productgroups;
 
-                page1.add ( productgroups, { top: 10, left: 630 } );
+                page1.add ( productgroupssview, { top: 10, left: 700 } );
 
                 lbl = this._createLbl(this.tr( "Price" ),70);
                 page1.add ( lbl, { top: 50, left: 10 } );
@@ -75,13 +78,17 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( purchprice, { top: 50, left: 350 } );
                 this._purchaseprice = purchprice;
 
+                lbl = this._createLbl(this.tr( "VAT" ),70);
+                page1.add ( lbl, { top: 50, left: 630 } );
                 let vat = new venditabant.settings.views.SettingsSelectBox().set({
                     width:180,
                     parameter:'VAT',
                     emptyrow:true,
-                }).getView();
+                });
+                
+                let vatsview = vat.getView()
                 this._vat = vat;
-                page1.add ( vat, { top: 50, left: 630 } );
+                page1.add ( vatsview, { top: 50, left: 700 } );
 
                 lbl = this._createLbl(this.tr( "Active" ),70);
                 page1.add ( lbl, { top: 90, left: 10 } );
@@ -97,20 +104,28 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( stocked, { top: 90, left: 350 } );
                 this._stocked = stocked;
 
+                lbl = this._createLbl(this.tr( "Account" ),70);
+                page1.add ( lbl, { top: 90, left: 630 } );
+                
                 let accounts = new venditabant.settings.views.SettingsSelectBox().set({
                     width:180,
                     parameter:'ACCOUNTS',
                     emptyrow:true,
-                }).getView();
-                page1.add ( accounts, { top: 90, left: 630 } );
+                });
+                let accountsview = accounts.getView()
+                page1.add ( accountsview, { top: 90, left: 700 } );
                 this._accounts = accounts;
 
+                lbl = this._createLbl(this.tr( "Unit" ),70);
+                page1.add ( lbl, { top: 130, left: 630 } );
                 let units = new venditabant.settings.views.SettingsSelectBox().set({
                     width:180,
                     parameter:'SALESUNITS',
                     emptyrow:true,
                 });
-                page1.add ( units.getView(), { top: 130, left: 630 } );
+                let unitsview = units.getView()
+                page1.add ( unitsview, { top: 130, left: 700 } );
+                this._unitsview = unitsview;
                 this._units = units;
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
@@ -119,7 +134,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( btnSignup, { bottom: 10, left: 10 } );
 
                 let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
-                    this.cancel ( );
+                    this.clearScreen ( );
                 }, this );
                 page1.add ( btnCancel, { bottom: 10, right: 10 } )
                 tabView.add(page1);
@@ -140,9 +155,13 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 let stocked  = this._stocked.getValue();
 
                 var date = new Date();
-                var today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+                let today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate() + ' ' +
+                            date.getHours() +':' + date.getMinutes() + ':' +date.getSeconds();
                 var fiveyears = (date.getFullYear()+5)+'-'+(date.getMonth()+1)+'-'+date.getDate();
                 let units_fkey = this._units.getKey();
+                let accounts_fkey = this._accounts.getKey();
+                let vat_fkey = this._vat.getKey();
+                let productgroup_fkey = this._productgroups.getKey();
 
                 let data = {
                     stockitem: stockitem,
@@ -154,24 +173,34 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                     fromdate: today,
                     todate:fiveyears,
                     units_fkey: units_fkey,
+                    accounts_fkey:accounts_fkey,
+                    vat_fkey:vat_fkey,
+                    productgroup_fkey:productgroup_fkey
                 }
                 let com = new venditabant.communication.Post ( );
                 com.send ( this._address, "/api/v1/stockitem/save/", data, function ( success ) {
                     let win = null;
                     if ( success )  {
                         this.loadStockitems();
-                        alert("Saved item successfully");
+                        this.clearScreen();
                     }
                     else  {
-                        alert ( this.tr ( 'success' ) );
+                        alert ( this.tr ( 'Something went wront with the save, please try again' ) );
                     }
                 }, this );
 
             },
-            _createBtn : function (txt, clr, width, cb, ctx) {
-                let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
-
-                return btn;
+            clearScreen:function() {
+                this._stockitem.setValue('');
+                this._description.setValue('');
+                this._price.setValue('');
+                this._purchaseprice.setValue('');
+                this._active.setValue(false);
+                this._stocked.setValue(false);
+                this._units.setSelectedModel();
+                this._accounts.setSelectedModel();
+                this._vat.setSelectedModel();
+                this._productgroups.setSelectedModel();
             },
             _createTable : function() {
                 // Create the initial data
@@ -180,7 +209,8 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Stockitem", "Description", "Price","Purchase Price","Active", "Stocked", "Unit" ]);
+                tableModel.setColumns([
+                    "ID", "Stockitem", "Description", "Price","Purchase Price","Active", "Stocked", "Unit", "Account","VAT", "Product group" ]);
                 tableModel.setData(rowData);
                 //tableModel.setColumnEditable(1, true);
                 //tableModel.setColumnEditable(2, true);
@@ -212,7 +242,11 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                     that._active.setValue(active);
                     that._stocked.setValue(stocked);
 
-                    that._units.setSelectedModel()
+                    that._units.setSelectedModel(selectedRows[0][7]);
+                    that._accounts.setSelectedModel(selectedRows[0][8]);
+                    that._vat.setSelectedModel(selectedRows[0][9]);
+                    that._productgroups.setSelectedModel(selectedRows[0][10]);
+
                 });
                 var tcm = table.getTableColumnModel();
 
@@ -231,19 +265,24 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 let stockitems = new venditabant.stock.stockitems.models.Stockitem();
                 stockitems.loadList(function(response) {
                     let tableData = [];
-                    for(let i = 0; i < response.data.length; i++) {
-                        let active = response.data[i].active ? true : false;
-                        let stocked = response.data[i].stocked ? true : false;
-                        tableData.push([
-                            response.data[i].stockitems_pkey,
-                            response.data[i].stockitem,
-                            response.data[i].description,
-                            response.data[i].price,
-                            response.data[i].purchaseprice,
-                            active,
-                            stocked,
-                            response.data[i].unit,
+                    if(response.data !== null){
+                        for(let i = 0; i < response.data.length; i++) {
+                            let active = response.data[i].active ? true : false;
+                            let stocked = response.data[i].stocked ? true : false;
+                            tableData.push([
+                                response.data[i].stockitems_pkey,
+                                response.data[i].stockitem,
+                                response.data[i].description,
+                                response.data[i].price,
+                                response.data[i].purchaseprice,
+                                active,
+                                stocked,
+                                response.data[i].unit,
+                                response.data[i].account,
+                                response.data[i].vat,
+                                response.data[i].productgroup,
                             ]);
+                        }
                     }
                     this._table.getTableModel().setData(tableData);
                     //alert("Set table data here");

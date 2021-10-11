@@ -37,6 +37,7 @@ sub delete_parameter ($self) {
 
 sub load_list ($self) {
 
+    $self->render_later;
     my $companies_pkey = $self->jwt->companise_pkey(
         $self->req->headers->header('X-Token-Check')
     );

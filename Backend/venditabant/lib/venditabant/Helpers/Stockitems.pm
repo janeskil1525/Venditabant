@@ -40,6 +40,10 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
     };
     $err = $@ if $@;
     say "error '$err'" if $err;
+    $self->capture_message (
+        $self->pg, ,
+        'venditabant::Helpers::Stockitems', 'upsert', $@
+    ) if $err;
 
     return 'success' unless $err;
     return $err;
@@ -48,29 +52,42 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
 async sub load_list_p ($self, $companies_pkey) {
 
     my $stmt = qq {
-        SELECT stockitems_pkey, stockitem, description, active, stocked, price, purchaseprice, units.param_value as unit
+        SELECT stockitems_pkey, stockitem, description, active, stocked, price, purchaseprice
+            ,units.param_value as unit, accounts.param_value as account
+            ,vat.param_value as vat, productgroup.param_value as productgroup
              FROM stockitems JOIN pricelist_items ON stockitems_pkey = stockitems_fkey
 				AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists WHERE pricelist = 'DEFAULT'
 									  AND stockitems.companies_fkey = companies_fkey)
 			AND pricelist_items_pkey = (
-				SELECT pricelist_items_pkey FROM pricelist_items
+				SELECT MAX(pricelist_items_pkey) FROM pricelist_items
 					WHERE stockitems_pkey = stockitems_fkey
-						AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists
+						AND pricelists_fkey = (SELECT MAX(pricelists_pkey) FROM pricelists
 											   WHERE pricelist = 'DEFAULT' AND stockitems.companies_fkey = companies_fkey)
 				AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
 								WHERE stockitems_pkey = stockitems_fkey AND todate >= now()))
 				AND todate >= now()
-			JOIN parameters_items as units ON parameters_items_pkey = units_fkey
+			JOIN parameters_items as units ON units.parameters_items_pkey = units_fkey
+			JOIN parameters_items as accounts ON accounts.parameters_items_pkey = accounts_fkey
+			JOIN parameters_items as vat ON vat.parameters_items_pkey = vat_fkey
+			JOIN parameters_items as productgroup ON productgroup.parameters_items_pkey = productgroup_fkey
         WHERE stockitems.companies_fkey = ?
     };
 
-    my $result = $self->pg->db->query(
-        $stmt,
-        ($companies_pkey)
-    );
-
+    my $err;
     my $hash;
-    $hash = $result->hashes if $result and $result->rows;
+    eval {
+        my $result = $self->pg->db->query(
+            $stmt,
+            ($companies_pkey)
+        );
+
+        $hash = $result->hashes if $result and $result->rows > 0;
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, ,
+        'venditabant::Helpers::Stockitems;', 'load_list_p', $@
+    ) if $err;
 
     return $hash;
 }

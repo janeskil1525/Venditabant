@@ -25,8 +25,7 @@ qx.Class.define("venditabant.settings.views.SettingsSelectBox",
                                 list: selectbox,
                                 parameter: this.getParameter(),
                                 emptyrow: this.isEmptyrow(),
-                        }).loadList();
-
+                        }).loadList('');
                         this._selectbox = selectbox;
                         return selectbox;
                 },
@@ -34,10 +33,20 @@ qx.Class.define("venditabant.settings.views.SettingsSelectBox",
                         return this._model;
                 },
                 getKey:function() {
-                        return this._model.getModel().parameters_items_pkey
+                        if(this._model.getModel() === null) {
+                                return 0;
+                        } else {
+                                return this._model.getModel().parameters_items_pkey ? this._model.getModel().parameters_items_pkey : 0;
+                        }
                 },
-                setSelectedModel:function(pasrameter) {
-
+                setSelectedModel:function(value) {
+                        let listitems = new qx.data.Array();
+                        new venditabant.settings.helpers.LoadList().set({
+                                list: this._selectbox,
+                                parameter: this.getParameter(),
+                                emptyrow: this.isEmptyrow(),
+                        }).loadList(value);
                 }
+
         }
     });

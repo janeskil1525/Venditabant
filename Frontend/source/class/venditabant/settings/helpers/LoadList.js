@@ -14,7 +14,7 @@ qx.Class.define("venditabant.settings.helpers.LoadList",
             emptyrow: {nullable: true, check: "Boolean"},
         },
         members: {
-            loadList: function () {
+            loadList: function (selected_value) {
                 let get = new venditabant.settings.models.Settings();
                 this._model = null;
                 get.loadList(function(response) {
@@ -29,6 +29,9 @@ qx.Class.define("venditabant.settings.helpers.LoadList",
                             let row = response.data[i].param_value + ' ' + response.data[i].param_description;
                             item = new qx.ui.form.ListItem(row, null, response.data[i]);
                             this.getList().add(item);
+                            if(selected_value === response.data[i].param_value){
+                                this.getList().setSelection([item])
+                            }
                         }
                     }
                 },this,this.getParameter());

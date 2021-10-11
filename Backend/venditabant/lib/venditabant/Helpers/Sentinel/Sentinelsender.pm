@@ -47,7 +47,7 @@ sub capture_message ($self, $pg, $organisation = 'venditabant', $source = '', $m
 
     my $mess;
     say "before blessed";
-    if(blesses($message) eq 'Mojo::Exception') {
+    if(blessed($message) eq 'Mojo::Exception') {
         $mess  = $message->message();
     } else {
         $mess = $message;

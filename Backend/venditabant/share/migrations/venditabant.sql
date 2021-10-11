@@ -1166,3 +1166,14 @@ CREATE UNIQUE INDEX idx_parameters_parameters_items
     ON parameters_items(parameters_fkey, param_value);
 
 -- 17 down
+
+-- 18 up
+
+ALTER TABLE stockitems
+    ADD COLUMN accounts_fkey BIGINT NOT NULL DEFAULT 0;
+ALTER TABLE stockitems
+    ADD COLUMN vat_fkey BIGINT NOT NULL DEFAULT 0;
+ALTER TABLE stockitems
+    ADD COLUMN productgroup_fkey BIGINT NOT NULL DEFAULT 0;
+
+-- 18 down

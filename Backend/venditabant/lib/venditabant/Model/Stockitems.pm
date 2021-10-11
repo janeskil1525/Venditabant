@@ -21,7 +21,7 @@ sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
     };
 
     my $stockitems_pkey;
-say Dumper($stockitem);
+
     $stockitems_pkey = $self->db->query(
         $stockitem_stmt,
         (

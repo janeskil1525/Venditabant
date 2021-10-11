@@ -3,6 +3,7 @@
 qx.Class.define("venditabant.sales.customers.models.Customers",
     {
         extend: qx.core.Object,
+        include:[qx.locale.MTranslation],
         construct : function() {
 
         },
@@ -24,7 +25,7 @@ qx.Class.define("venditabant.sales.customers.models.Customers",
                     if (success) {
                         cb.call(ctx,(data));
                     } else {
-                        alert(this.tr('success'));
+                        alert(this.tr('Could not save customer, please try again'));
                     }
                 }, this);
             },

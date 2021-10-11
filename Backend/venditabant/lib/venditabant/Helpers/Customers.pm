@@ -6,7 +6,7 @@ use Data::Dumper;
 
 has 'pg';
 
-async sub upsert ($self, $companies_pkey, $customers ) {
+async sub upsert ($self, $companies_pkey, $users_pkey, $customers ) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -16,12 +16,16 @@ async sub upsert ($self, $companies_pkey, $customers ) {
         my $customers_pkey = venditabant::Model::Customers->new(
             db => $db
         )->upsert(
-            $companies_pkey, $customers
+            $companies_pkey, $users_pkey, $customers
         );
         $tx->commit();
     };
     $err = $@ if $@;
     say "error '$err'" if $err;
+    $self->capture_message (
+        $self->pg, ,
+        'venditabant::Helpers::Stockitems', 'upsert', $@
+    ) if $err;
 
     return $err ? $err : 'success';
 }

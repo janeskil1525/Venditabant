@@ -7,11 +7,11 @@ use Mojo::JSON qw {from_json};
 sub save_customer ($self) {
 
     $self->render_later;
-    my $companies_pkey = $self->jwt->companise_pkey(
+    my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
         $self->req->headers->header('X-Token-Check')
     );
     my $json_hash = from_json ($self->req->body);
-    $self->customers->upsert($companies_pkey, $json_hash)->then(sub ($result) {
+    $self->customers->upsert($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => $result});
     })->catch( sub ($err) {
 

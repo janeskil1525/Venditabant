@@ -207,19 +207,12 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 lbl = this._createLbl(this.tr( "Pricelist" ), 70);
                 page1.add ( lbl, { top: 50, left: 10 } );
 
-                let pricelists = new qx.ui.form.SelectBox();
-
-                pricelists.addListener("changeSelection", function(e) {
-                    let selection = e.getData()[0].getLabel();
-
-                    this._selectedPricelistHead = selection;
-                },this);
-
-                pricelists.setWidth( 150 );
+                let pricelists = new venditabant.sales.pricelists.views.PricelistsSelectBox().set({
+                    width:150,
+                    emptyrow:false,
+                });
                 this._pricelists = pricelists;
-                this.loadPricelists();
-
-                page1.add ( pricelists, { top: 50, left: 90 } );
+                page1.add ( pricelists.getView(), { top: 50, left: 90 } );
 
                 lbl = this._createLbl(this.tr( "Phone" ), 70);
                 page1.add ( lbl, { top: 90, left: 10 } );
@@ -241,11 +234,19 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 page1.add ( btnSignup, { bottom: 10, left: 10 } );
 
                 let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
-                    this.cancel ( );
+                    this.clearScreen();
                 }, this );
                 page1.add ( btnCancel, { bottom: 10, right: 10 } );
 
                 return page1;
+            },
+            clearScreen:function() {
+                this._customer.setValue('');
+                this._name.setValue('');
+                this._registrationnumber.setValue('')
+                this._homepage.setValue('');
+                this._phone.setValue('');
+                this._pricelists.setSelectedModel();
             },
             saveCustomer:function() {
                 let that = this;
@@ -254,7 +255,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let registrationnumber = this._registrationnumber.getValue();
                 let homepage = this._homepage.getValue();
                 let phone = this._phone.getValue();
-                let pricelist = this._selectedPricelistHead;
+                let pricelists_fkey = this._pricelists.getKey();;
 
                 let data = {
                     customer: customer,
@@ -262,12 +263,13 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     registrationnumber: registrationnumber,
                     homepage: homepage,
                     phone: phone,
-                    pricelist: pricelist,
+                    pricelists_fkey: pricelists_fkey,
                 }
                 let model = new venditabant.sales.customers.models.Customers();
                 model.saveCustomer(data,function ( success ) {
                     if (success) {
                         that.loadCustomers();
+                        this.clearScreen();
                     } else {
                         alert(this.tr('Something went wrong saving the customer'));
                     }
@@ -325,7 +327,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     that._registrationnumber.setValue(selectedRows[0][4]);
                     that._homepage.setValue(selectedRows[0][6]);
                     that._phone.setValue(selectedRows[0][5]);
-                    that._selectedPricelistHead = selectedRows[0][3];
+                    that._pricelists.setSelectedModel(selectedRows[0][3]);
 
                 });
                 var tcm = table.getTableColumnModel();

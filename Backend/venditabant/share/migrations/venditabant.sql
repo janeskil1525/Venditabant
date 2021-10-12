@@ -1177,3 +1177,31 @@ ALTER TABLE stockitems
     ADD COLUMN productgroup_fkey BIGINT NOT NULL DEFAULT 0;
 
 -- 18 down
+
+-- 19 up
+CREATE TABLE IF NOT EXISTS customer_addresses
+(
+    customer_addresses_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    customers_fkey BIGINT NOT NULL,
+    type varchar NOT NULL DEFAULT '',
+    name varchar NOT NULL DEFAULT '',
+    address1 varchar NOT NULL DEFAULT '',
+    address2 varchar NOT NULL DEFAULT '',
+    address3 varchar NOT NULL DEFAULT '',
+    city varchar NOT NULL DEFAULT '',
+    zipcode varchar NOT NULL DEFAULT '',
+    country varchar NOT NULL DEFAULT '',
+    mailadresses varchar NOT NULL DEFAULT '',
+    CONSTRAINT customer_addresses_pkey PRIMARY KEY (customer_addresses_pkey),
+    CONSTRAINT customer_addresses_customers_fkey FOREIGN KEY (customers_fkey)
+        REFERENCES customers (customers_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+-- 19 down

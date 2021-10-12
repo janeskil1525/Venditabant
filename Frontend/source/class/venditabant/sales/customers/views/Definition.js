@@ -139,24 +139,14 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 lbl = this._createLbl(this.tr( "Invoice time" ), 120);
                 page2.add ( lbl, { top: 50, left: 380 } );
 
-                let invoicetime = new qx.ui.form.SelectBox();
-                invoicetime.setWidth( 150 );
-                invoicetime.addListener("changeSelection", function(e) {
-                    let selection = e.getData()[0].getLabel();
-                    this._selectedInvoicetime = selection;
-                },this);
-
-                let get = new venditabant.settings.models.Settings();
-                get.loadList(function(response) {
-                    var item;
-                    for (let i=0; i < response.data.length; i++) {
-                        let row = response.data[i].param_value + ' ' + response.data[i].param_description;
-                        item = new qx.ui.form.ListItem(row, null);
-                        invoicetime.add(item);
-                    }
-                },this,'INVOICEDAYS');
+                let invoicetime = new venditabant.settings.views.SettingsSelectBox().set({
+                    width:150,
+                    parameter:'INVOICEDAYS',
+                    emptyrow:true,
+                });
+                let invoicetimeview = invoicetime.getView()
                 this._invoicetime = invoicetime;
-                page2.add ( invoicetime, { top: 50, left: 500 } );
+                page2.add ( invoicetimeview, { top: 50, left: 500 } );
 
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
@@ -176,7 +166,6 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
             saveInvoiceData:function() {
 
             },
-
             getDefinition:function () {
                 var page1 = new qx.ui.tabview.Page(this.tr("Definition"));
                 //page1.setLayout(new qx.ui.layout.VBox(4));

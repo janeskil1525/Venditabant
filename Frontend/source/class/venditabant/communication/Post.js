@@ -26,7 +26,7 @@ qx.Class.define("venditabant.communication.Post",
                 rpc.addListener ( "success", function ( e, x, y ) {
                     var req = e.getTarget ( );
                     var rsp = req.getResponse ( );
-                    cb.call ( ctx, ( rsp.result === "success" ), rsp );
+                    cb.call ( ctx, ( rsp.result ), rsp );
                 }, this );
                 rpc.send ( );
 

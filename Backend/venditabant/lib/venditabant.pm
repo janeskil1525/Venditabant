@@ -13,6 +13,7 @@ use venditabant::Helpers::Salesorders;
 use venditabant::Helpers::Companies::Release::Release;
 use venditabant::Helpers::Sentinel::Sentinelsender;
 use venditabant::Helpers::Parameter::Parameters;
+use venditabant::Helpers::Customers::Address;
 
 use Data::Dumper;
 use File::Share;
@@ -59,6 +60,10 @@ sub startup ($self) {
       parameters => sub {
         state  $parameters= venditabant::Helpers::Parameter::Parameters->new(pg => shift->pg)
       });
+  $self->helper(
+      customeraddress => sub {
+        state  $customeraddress = venditabant::Helpers::Customers::Address->new(pg => shift->pg)
+      });
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -66,7 +71,7 @@ sub startup ($self) {
 
   $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-  )->migrate(19);
+  )->migrate(20);
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -120,6 +125,9 @@ sub startup ($self) {
   );
   $auth->put('/customers/save/')->to('customers#save_customer');
   $auth->get('/customers/load_list/')->to('customers#load_list');
+  $auth->put('/customers/invoice/address/save/')->to('customeraddresses#save_address');
+  $auth->get('/customers/invoice/address/load/:customers_fkey')->to('customeraddresses#load_invoice_address');
+
   $auth->put('/users/save/')->to('users#save_user');
   $auth->get('/users/load_list/')->to('users#load_list');
   $auth->get('/users/load_list/support/')->to('users#load_list_support');

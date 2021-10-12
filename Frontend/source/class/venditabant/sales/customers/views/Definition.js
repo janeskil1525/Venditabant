@@ -26,8 +26,11 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 tabView.add(page1);
 
 
-                let page2 = this.getInvoice();
-                tabView.add(page2);
+                //let page2 = this.getInvoice();
+                this._invoice = new venditabant.sales.customers.views.Invoice().set({
+                    support:this.isSupport(),
+                });
+                tabView.add(this._invoice.getView());
 
                 let page3 = this.getDelivery();
                 tabView.add(page3);
@@ -106,66 +109,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 page3.add ( btnCancel, { bottom: 10, right: 10 } );
                 return page3;
             },
-            getInvoice:function() {
-                var page2 = new qx.ui.tabview.Page(this.tr("Invoice"));
-                page2.setLayout(new qx.ui.layout.Canvas());
 
-                let lbl = this._createLbl(this.tr( "Address" ), 70);
-                page2.add ( lbl, { top: 10, left: 10 } );
-
-                let address1 = this._createTxt("Street", 250, false, '');
-                page2.add ( address1, { top: 10, left: 90 } );
-                this._address1 = address1;
-
-                let address2 = this._createTxt("Address", 250, false, '');
-                page2.add ( address2, { top: 50, left: 90 } );
-                this._address2 = address2;
-
-                let address3 = this._createTxt("City Zipcode", 250, false, '');
-                page2.add ( address3, { top: 90, left: 90 } );
-                this._address3 = address3
-
-                let address4 = this._createTxt("Country", 250, false, '');
-                page2.add ( address4, { top: 130, left: 90 } );
-                this._address4 = address4;
-
-                lbl = this._createLbl(this.tr( "Mail addressses" ), 120);
-                page2.add ( lbl, { top: 10, left: 380 } );
-
-                let inviceemails = this._createTxt(this.tr("Comma separated mail adresses"), 420, false, '');
-                page2.add ( inviceemails, { top: 10, left: 500 } );
-                this._inviceemails = inviceemails;
-
-                lbl = this._createLbl(this.tr( "Invoice time" ), 120);
-                page2.add ( lbl, { top: 50, left: 380 } );
-
-                let invoicetime = new venditabant.settings.views.SettingsSelectBox().set({
-                    width:150,
-                    parameter:'INVOICEDAYS',
-                    emptyrow:true,
-                });
-                let invoicetimeview = invoicetime.getView()
-                this._invoicetime = invoicetime;
-                page2.add ( invoicetimeview, { top: 50, left: 500 } );
-
-
-                let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
-                    this.saveInvoiceData ( );
-                }, this );
-                page2.add ( btnSignup, { bottom: 10, left: 10 } );
-
-                let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
-                    this.cancel ( );
-                }, this );
-                page2.add ( btnCancel, { bottom: 10, right: 10 } );
-
-
-
-                return page2;
-            },
-            saveInvoiceData:function() {
-
-            },
             getDefinition:function () {
                 var page1 = new qx.ui.tabview.Page(this.tr("Definition"));
                 //page1.setLayout(new qx.ui.layout.VBox(4));
@@ -318,6 +262,8 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     that._phone.setValue(selectedRows[0][5]);
                     that._pricelists.setSelectedModel(selectedRows[0][3]);
 
+                    that._invoice.setCustomersFkey(selectedRows[0][0]);
+                    that._invoice.setCustomerName(selectedRows[0][2]);
                 });
                 var tcm = table.getTableColumnModel();
 

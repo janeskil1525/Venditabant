@@ -1205,3 +1205,8 @@ CREATE TABLE IF NOT EXISTS customer_addresses
         DEFERRABLE
 );
 -- 19 down
+
+-- 20 up
+ALTER TABLE customer_addresses
+    ADD COLUMN invoicedays_fkey BIGINT NOT NULL DEFAULT 0;
+-- 20 down

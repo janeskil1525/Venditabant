@@ -40,12 +40,20 @@ qx.Class.define("venditabant.settings.views.SettingsSelectBox",
                         }
                 },
                 setSelectedModel:function(value) {
-                        let listitems = new qx.data.Array();
                         new venditabant.settings.helpers.LoadList().set({
                                 list: this._selectbox,
                                 parameter: this.getParameter(),
                                 emptyrow: this.isEmptyrow(),
+                                key:false,
                         }).loadList(value);
+                },
+                setKey:function(key) {
+                        new venditabant.settings.helpers.LoadList().set({
+                                list: this._selectbox,
+                                parameter: this.getParameter(),
+                                emptyrow: this.isEmptyrow(),
+                                key:true,
+                        }).loadList(key);
                 }
 
         }

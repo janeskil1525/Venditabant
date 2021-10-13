@@ -113,7 +113,7 @@ async sub load_delivery_address_list_p($self, $customers_pkey) {
     );
 
     my $hash;
-    $hash = $result->hash if $result and $result->rows > 0;
+    $hash = $result->hashes if $result and $result->rows > 0;
 
     return $hash;
 }

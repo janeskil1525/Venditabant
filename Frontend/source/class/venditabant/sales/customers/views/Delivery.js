@@ -68,6 +68,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 let deliveryaddress = new venditabant.sales.customers.views.DeliveryAddressSelectBox().set({
                     width:250,
                     emptyrow:true,
+                    delivery:this,
                 });
                 let deliveryaddressview = deliveryaddress.getView()
                 this._deliveryaddress = deliveryaddress;
@@ -111,7 +112,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                     type:'DELIVERY',
                     customer_addresses_pkey: this.getCustomerAddressFkey(),
                 }
-                let put = new venditabant.sales.customers.models.InvoiceAddress();
+                let put = new venditabant.sales.customers.models.DeliveryAddress();
                 put.saveDeliveryAddress(data,function(success) {
                     if(success.status !== 'success'){
                         alert(this.tr('Something went wrong saving the invoice address'));
@@ -121,8 +122,8 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 }, this)
             },
             loadDeliveryData:function() {
-                let get = new venditabant.sales.customers.models.InvoiceAddress();
-                get.load_invoice_address(function(response) {
+                let get = new venditabant.sales.customers.models.DeliveryAddress();
+                get.loadDeliveryAddress(function(response) {
                     if(response.data !== null) {
                         this._address1.setValue(response.data.address1);
                         this._address2.setValue(response.data.address2);
@@ -132,14 +133,16 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                         this._country.setValue(response.data.country);
                         this._deliverymails.setValue(response.data.mailadresses);
                         this.setCustomerAddressFkey(response.data.customer_addresses_pkey);
+                        this._deliveryaddress.setKey(response.data.customer_addresses_pkey)
                     } else {
                         this.clearScreen();
                     }
 
-                },this,this.getCustomersFkey());
+                },this,this.getCustomerAddressFkey());
 
             },
-            clearScreen:function(){
+            clearScreen:function() {
+                this._name.setValue('');
                 this._address1.setValue('');
                 this._address2.setValue('');
                 this._address3.setValue('');
@@ -151,7 +154,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
             },
             setCustomersFkey:function(customers_fkey) {
                 this._customers_fkey = customers_fkey;
-                this.loadDeliveryData();
+                this._deliveryaddress.setCustomersFkey(customers_fkey) ;
             },
             getCustomersFkey:function() {
                 return this._customers_fkey;
@@ -167,6 +170,9 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
             },
             getCustomerName:function() {
                 return this._customer_name;
+            },
+            loadDeliveryAddresses:function() {
+                this._deliveryaddress.setSelectedModel(this.getCustomersFkey())
             }
         }
     });

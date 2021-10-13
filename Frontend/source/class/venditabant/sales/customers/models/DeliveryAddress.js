@@ -12,15 +12,15 @@ qx.Class.define("venditabant.sales.customers.models.DeliveryAddress",
         },
         members: {
             _address: new venditabant.application.Const().venditabant_endpoint(),
-            loadDeliveryAddress:function(cb, ctx, customers_fkey) {
+            loadDeliveryAddress:function(cb, ctx, customer_addresses_pkey) {
                 let get = new venditabant.communication.Get;
-                get.load(this._address, "/api/v1/customers/delivery/address/load/", customers_fkey,function(response){
+                get.load(this._address, "/api/v1/customers/delivery/address/load/", customer_addresses_pkey,function(response){
                     cb.call ( ctx,(response));
                 },this);
             },
-            loadDeliveryAddressList:function(cb, ctx) {
+            loadDeliveryAddressList:function(cb, ctx, customers_fkey) {
                 let get = new venditabant.communication.Get;
-                get.load(this._address, "/api/v1/customers/delivery/address/load_list/", '',function(response){
+                get.load(this._address, "/api/v1/customers/delivery/address/load_list/", customers_fkey,function(response){
                     cb.call ( ctx,(response));
                 },this);
             },

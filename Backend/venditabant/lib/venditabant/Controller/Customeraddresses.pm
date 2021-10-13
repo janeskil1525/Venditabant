@@ -27,7 +27,7 @@ sub load_delivery_address_list ($self) {
         $self->req->headers->header('X-Token-Check')
     );
     my $customers_fkey = $self->param('customers_fkey');
-    $self->customeraddress->load_delivery_address_list($companies_pkey, $users_pkey, $customers_fkey)->then(sub ($result) {
+    $self->customeraddress->load_delivery_address_list_p($companies_pkey, $users_pkey, $customers_fkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {

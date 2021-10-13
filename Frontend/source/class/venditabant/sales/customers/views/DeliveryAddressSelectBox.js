@@ -12,6 +12,7 @@ qx.Class.define("venditabant.sales.customers.views.DeliveryAddressSelectBox",
         properties: {
             width: {nullable: true, check: "Number"},
             emptyrow: {nullable: true, check: "Boolean"},
+            delivery:{nullable: true},
         },
         members: {
             _selectbox:null,
@@ -19,11 +20,18 @@ qx.Class.define("venditabant.sales.customers.views.DeliveryAddressSelectBox",
                 let selectbox = new qx.ui.form.SelectBox();
                 selectbox.setWidth(this.getWidth());
                 selectbox.addListener("changeSelection", function (e) {
-                    this._model = e.getData()[0];
+                    if(typeof e.getData()[0] !== 'undefined') {
+                        this._model = e.getData()[0];
+                        if(this._model.getModel() !== null) {
+                            this.getDelivery().setCustomerAddressFkey(this._model.getModel().customer_addresses_pkey)
+                            this.getDelivery().loadDeliveryData();
+                        }
+                    }
                 }, this);
                 new venditabant.sales.customers.helpers.LoadList().set({
                     list: selectbox,
                     emptyrow: this.isEmptyrow(),
+                    customers_fkey: this.getCustomersFkey(),
                 }).loadList('');
                 this._selectbox = selectbox;
                 return selectbox;
@@ -38,12 +46,27 @@ qx.Class.define("venditabant.sales.customers.views.DeliveryAddressSelectBox",
                     return this._model.getModel().customer_addresses_pkey ? this._model.getModel().customer_addresses_pkey : 0;
                 }
             },
+            setKey:function(key) {
+                new venditabant.sales.customers.helpers.LoadList().set({
+                    list: this._selectbox,
+                    emptyrow: this.isEmptyrow(),
+                    key:true,
+                }).loadList(key);
+            },
             setSelectedModel:function(value) {
                 new venditabant.sales.customers.helpers.LoadList().set({
                     list: this._selectbox,
                     emptyrow: this.isEmptyrow(),
+                    customers_fkey: this.getCustomersFkey(),
+                    key:false,
                 }).loadList(value);
-            }
-
+            },
+            setCustomersFkey:function(customers_fkey) {
+                this._customers_fkey = customers_fkey;
+                this.setSelectedModel('');
+            },
+            getCustomersFkey:function() {
+                return this._customers_fkey ? this._customers_fkey : 0;
+            },
         }
     });

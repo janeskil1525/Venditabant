@@ -1,9 +1,26 @@
 (function () {
   var $$dbClassInfo = {
     "dependsOn": {
+      "qx.core.Environment": {
+        "defer": "load",
+        "usage": "dynamic",
+        "require": true
+      },
       "qx.Theme": {
         "usage": "dynamic",
         "require": true
+      },
+      "qx.bom.client.Css": {
+        "require": true
+      }
+    },
+    "environment": {
+      "provided": [],
+      "required": {
+        "css.rgba": {
+          "load": true,
+          "className": "qx.bom.client.Css"
+        }
       }
     }
   };
@@ -23,61 +40,100 @@
        See the LICENSE file in the project's top-level directory for details.
   
      Authors:
-     * Martin Wittemann (martinwittemann)
+       * Martin Wittemann (martinwittemann)
+       * Tristan Koch (trkoch)
   
-  ************************************************************************* */
-
-  /* ************************************************************************
-  
-  
-  ************************************************************************* */
+  ************************************************************************ */
 
   /**
-   * The simple qooxdoo font theme.
-   *
-   * @asset(qx/decoration/Indigo/font/JosefinSlab-SemiBold.woff)
-   * @asset(qx/decoration/Indigo/font/JosefinSlab-SemiBold.ttf)
+   * Indigo color theme
    */
-  qx.Theme.define("qx.theme.indigo.Font", {
-    fonts: {
-      "default": {
-        size: 12,
-        family: ["Lucida Grande", "DejaVu Sans", "Verdana", "sans-serif"],
-        color: "font",
-        lineHeight: 1.8
-      },
-      "bold": {
-        size: 12,
-        family: ["Lucida Grande", "DejaVu Sans", "Verdana", "sans-serif"],
-        bold: true,
-        color: "font",
-        lineHeight: 1.8
-      },
-      "headline": {
-        size: 22,
-        family: ["serif"],
-        sources: [{
-          family: "JosefinSlab",
-          source: ["qx/decoration/Indigo/font/JosefinSlab-SemiBold.woff", "qx/decoration/Indigo/font/JosefinSlab-SemiBold.ttf"]
-        }]
-      },
-      "small": {
-        size: 11,
-        family: ["Lucida Grande", "DejaVu Sans", "Verdana", "sans-serif"],
-        color: "font",
-        lineHeight: 1.8
-      },
-      "monospace": {
-        size: 11,
-        family: ["DejaVu Sans Mono", "Courier New", "monospace"],
-        color: "font",
-        lineHeight: 1.8
-      }
+  qx.Theme.define("qx.theme.indigo.Color", {
+    colors: {
+      // main
+      "background": "white",
+      "dark-blue": "#323335",
+      "light-background": "#F4F4F4",
+      "font": "#262626",
+      "highlight": "#3D72C9",
+      // bright blue
+      "highlight-shade": "#5583D0",
+      // bright blue
+      // backgrounds
+      "background-selected": "#3D72C9",
+      "background-selected-disabled": "#CDCDCD",
+      "background-selected-dark": "#323335",
+      "background-disabled": "#F7F7F7",
+      "background-disabled-checked": "#BBBBBB",
+      "background-pane": "white",
+      // tabview
+      "tabview-unselected": "#1866B5",
+      "tabview-button-border": "#134983",
+      "tabview-label-active-disabled": "#D9D9D9",
+      // text colors
+      "link": "#24B",
+      // scrollbar
+      "scrollbar-bright": "#F1F1F1",
+      "scrollbar-dark": "#EBEBEB",
+      // form
+      "button": "#E8F0E3",
+      "button-border": "#BBB",
+      "button-border-hovered": "#939393",
+      "invalid": "#C00F00",
+      "button-box-bright": "#F9F9F9",
+      "button-box-dark": "#E3E3E3",
+      "button-box-bright-pressed": "#BABABA",
+      "button-box-dark-pressed": "#EBEBEB",
+      "border-lead": "#888888",
+      // window
+      "window-border": "#dddddd",
+      "window-border-inner": "#F4F4F4",
+      // group box
+      "white-box-border": "#dddddd",
+      // shadows
+      "shadow": qx.core.Environment.get("css.rgba") ? "rgba(0, 0, 0, 0.4)" : "#666666",
+      // borders
+      "border-main": "#dddddd",
+      "border-light": "#B7B7B7",
+      "border-light-shadow": "#686868",
+      // separator
+      "border-separator": "#808080",
+      // text
+      "text": "#262626",
+      "text-disabled": "#A7A6AA",
+      "text-selected": "white",
+      "text-placeholder": "#CBC8CD",
+      // tooltip
+      "tooltip": "#FE0",
+      "tooltip-text": "black",
+      // table
+      "table-header": [242, 242, 242],
+      "table-focus-indicator": "#3D72C9",
+      // used in table code
+      "table-header-cell": [235, 234, 219],
+      "table-row-background-focused-selected": "#3D72C9",
+      "table-row-background-focused": "#F4F4F4",
+      "table-row-background-selected": [51, 94, 168],
+      "table-row-background-even": "white",
+      "table-row-background-odd": "white",
+      "table-row-selected": [255, 255, 255],
+      "table-row": [0, 0, 0],
+      "table-row-line": "#EEE",
+      "table-column-line": "#EEE",
+      // used in progressive code
+      "progressive-table-header": "#AAAAAA",
+      "progressive-table-row-background-even": [250, 248, 243],
+      "progressive-table-row-background-odd": [255, 255, 255],
+      "progressive-progressbar-background": "gray",
+      "progressive-progressbar-indicator-done": "#CCCCCC",
+      "progressive-progressbar-indicator-undone": "white",
+      "progressive-progressbar-percent-background": "gray",
+      "progressive-progressbar-percent-text": "white"
     }
   });
-  qx.theme.indigo.Font.$$dbClassInfo = $$dbClassInfo;
+  qx.theme.indigo.Color.$$dbClassInfo = $$dbClassInfo;
 })();
-//# sourceMappingURL=package-37.js.map?dt=1634056771859
+//# sourceMappingURL=package-37.js.map?dt=1634127745746
 qx.$$packageData['37'] = {
   "locales": {},
   "resources": {},

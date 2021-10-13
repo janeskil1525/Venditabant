@@ -7,7 +7,7 @@ use venditabant::Helpers::Login;
 use venditabant::Helpers::Stockitems;
 use venditabant::Helpers::Jwt;
 use venditabant::Helpers::Pricelists;
-use venditabant::Helpers::Customers;
+use venditabant::Helpers::Customers::Customers;
 use venditabant::Helpers::Users;
 use venditabant::Helpers::Salesorders;
 use venditabant::Helpers::Companies::Release::Release;
@@ -54,7 +54,7 @@ sub startup ($self) {
   );
   $self->helper(
       customers => sub {
-    state  $customers = venditabant::Helpers::Customers->new(pg => shift->pg)
+    state  $customers = venditabant::Helpers::Customers::Customers->new(pg => shift->pg)
   });
   $self->helper(
       parameters => sub {
@@ -127,6 +127,10 @@ sub startup ($self) {
   $auth->get('/customers/load_list/')->to('customers#load_list');
   $auth->put('/customers/invoice/address/save/')->to('customeraddresses#save_address');
   $auth->get('/customers/invoice/address/load/:customers_fkey')->to('customeraddresses#load_invoice_address');
+
+  $auth->put('/customers/delivery/address/save/')->to('customeraddresses#save_address');
+  $auth->get('/customers/delivery/address/load/:customer_addresses_pkey')->to('customeraddresses#load_delivery_address');
+  $auth->get('/customers/delivery/address/load_list/:customers_fkey')->to('customeraddresses#load_delivery_address_list');
 
   $auth->put('/users/save/')->to('users#save_user');
   $auth->get('/users/load_list/')->to('users#load_list');

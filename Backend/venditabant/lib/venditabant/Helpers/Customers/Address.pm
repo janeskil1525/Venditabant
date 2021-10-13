@@ -51,4 +51,16 @@ async sub load_invoice_address_p($self, $companies_pkey, $users_pkey, $customers
 
     return $result;
 }
+
+async sub load_delivery_address_list_p($self, $companies_pkey, $users_pkey, $customers_pkey) {
+
+    my $result = venditabant::Model::CustomerAddress->new(
+        db => $self->pg->db
+    )->load_delivery_address_list_p(
+        $customers_pkey
+    );
+
+    return $result;
+}
+
 1;

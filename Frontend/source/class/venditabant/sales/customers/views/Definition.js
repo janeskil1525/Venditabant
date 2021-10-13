@@ -32,8 +32,10 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 });
                 tabView.add(this._invoice.getView());
 
-                let page3 = this.getDelivery();
-                tabView.add(page3);
+                this._delivery = new venditabant.sales.customers.views.Delivery();
+
+                //let page3 = this.getDelivery();
+                tabView.add(this._delivery.getView());
 
 
                 let page4 = this.getDiscounts();
@@ -264,6 +266,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                     that._invoice.setCustomersFkey(selectedRows[0][0]);
                     that._invoice.setCustomerName(selectedRows[0][2]);
+                    that._delivery.setCustomersFkey(selectedRows[0][0]);
                 });
                 var tcm = table.getTableColumnModel();
 

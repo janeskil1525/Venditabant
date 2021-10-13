@@ -242,6 +242,7 @@
     "venditabant.sales.customers.views.GeneralDiscounts",
     "venditabant.settings.views.Accounts",
     "venditabant.settings.views.SettingListBox",
-    "venditabant.sales.customers.views.Invoice"
+    "venditabant.sales.customers.views.Invoice",
+    "venditabant.sales.customers.views.Delivery"
   ]
 }

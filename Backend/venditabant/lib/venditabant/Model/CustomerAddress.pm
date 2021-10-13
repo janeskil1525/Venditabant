@@ -84,4 +84,39 @@ async sub load_invoice_address_p($self, $customers_pkey) {
 
     return $hash;
 }
+
+async sub load_delivery_address_p ($self, $customer_addresses_pkey) {
+
+    my $result = $self->db->select(
+        'customer_addresses',
+        undef,
+        {
+            customer_addresses_pkey => $customer_addresses_pkey
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash;
+}
+
+async sub load_delivery_address_list_p($self, $customers_pkey) {
+
+    my $result = $self->db->select(
+        'customer_addresses',
+        undef,
+        {
+            customers_fkey => $customers_pkey,
+            type           => 'DELIVERY'
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash;
+}
+
+
 1;

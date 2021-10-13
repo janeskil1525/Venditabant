@@ -1,4 +1,4 @@
-package venditabant::Helpers::Customers;
+package venditabant::Helpers::Customers::Customers;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::Customers;

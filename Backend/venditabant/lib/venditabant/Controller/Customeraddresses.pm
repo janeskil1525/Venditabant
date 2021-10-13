@@ -43,8 +43,9 @@ sub load_invoice_address ($self) {
     );
 
     my $customers_fkey = $self->param('customers_fkey');
-    $self->customeraddress->load_invoice_address_p($companies_pkey, $users_pkey, $customers_fkey)->then(sub ($result) {
-        say Dumper($result);
+    $self->customeraddress->load_invoice_address_p(
+        $companies_pkey, $users_pkey, $customers_fkey
+    )->then(sub ($result) {
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
 

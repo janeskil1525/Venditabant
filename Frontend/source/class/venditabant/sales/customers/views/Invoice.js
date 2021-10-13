@@ -77,7 +77,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
                 page2.add ( btnSignup, { bottom: 10, left: 10 } );
 
                 let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
-                    this.cancel ( );
+                    this.clearScreen ( );
                 }, this );
                 page2.add ( btnCancel, { bottom: 10, right: 10 } );
 
@@ -122,18 +122,31 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
                 get.load_invoice_address(function(response) {
                     if(response.data !== null) {
                         this._address1.setValue(response.data.address1);
-                        this._address2.setValue(response.data.address1);
-                        this._address3.setValue(response.data.address1);
+                        this._address2.setValue(response.data.address2);
+                        this._address3.setValue(response.data.address3);
                         this._zipcode.setValue(response.data.zipcode);
                         this._city.setValue(response.data.city);
                         this._country.setValue(response.data.country);
                         this._inviceemails.setValue(response.data.mailadresses);
                         this._invoicetime.setKey(response.data.invoicedays_fkey);
                         this.setCustomerAddressFkey(response.data.customer_addresses_pkey);
+                    } else {
+                       this.clearScreen();
                     }
 
                 },this,this.getCustomersFkey());
 
+            },
+            clearScreen:function(){
+                this._address1.setValue('');
+                this._address2.setValue('');
+                this._address3.setValue('');
+                this._zipcode.setValue('');
+                this._city.setValue('');
+                this._country.setValue('');
+                this._inviceemails.setValue('');
+                this._invoicetime.setKey(0);
+                this.setCustomerAddressFkey(0);
             },
             setCustomersFkey:function(customers_fkey) {
                 this._customers_fkey = customers_fkey;

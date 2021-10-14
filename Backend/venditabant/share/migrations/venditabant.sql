@@ -1210,3 +1210,11 @@ CREATE TABLE IF NOT EXISTS customer_addresses
 ALTER TABLE customer_addresses
     ADD COLUMN invoicedays_fkey BIGINT NOT NULL DEFAULT 0;
 -- 20 down
+
+-- 21 up
+ALTER TABLE customer_addresses
+    ADD COLUMN comment TEXT NOT NULL DEFAULT '';
+
+ALTER TABLE customers
+    ADD COLUMN comment TEXT NOT NULL DEFAULT '';
+-- 21 down

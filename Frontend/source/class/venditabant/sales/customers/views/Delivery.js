@@ -40,6 +40,14 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 page2.add ( address3, { top: 150, left: 120 } );
                 this._address3 = address3
 
+                lbl = this._createLbl(this.tr( "Comment" ), 120);
+                page2.add ( lbl, { top: 45, left: 380 } );
+
+                let comment = this._createTextArea(this.tr("Comment"), 420, 60);
+                this._comment = comment;
+
+                page2.add ( comment, { top: 45, left: 510 } );
+
                 lbl = this._createLbl(this.tr( "Zipcode / City" ), 100);
                 page2.add ( lbl, { top: 115, left: 380 } );
 
@@ -97,6 +105,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 let city = this._city.getValue();
                 let country = this._country.getValue();
                 let deliverymails = this._deliverymails.getValue();
+                let comment = this._comment.getValue();
 
                 let data = {
                     name: name,
@@ -111,12 +120,14 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                     customers_fkey: this.getCustomersFkey(),
                     type:'DELIVERY',
                     customer_addresses_pkey: this.getCustomerAddressFkey(),
+                    comment:comment,
                 }
                 let put = new venditabant.sales.customers.models.DeliveryAddress();
                 put.saveDeliveryAddress(data,function(success) {
                     if(success.status !== 'success'){
                         alert(this.tr('Something went wrong saving the invoice address'));
                     } else {
+                        that._deliveryaddress.setCustomersFkey(this.getCustomersFkey()) ;
                         that.setCustomerAddressFkey(success.data);
                     }
                 }, this)
@@ -125,6 +136,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 let get = new venditabant.sales.customers.models.DeliveryAddress();
                 get.loadDeliveryAddress(function(response) {
                     if(response.data !== null) {
+                        this._name.setValue(response.data.name);
                         this._address1.setValue(response.data.address1);
                         this._address2.setValue(response.data.address2);
                         this._address3.setValue(response.data.address3);
@@ -133,7 +145,8 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                         this._country.setValue(response.data.country);
                         this._deliverymails.setValue(response.data.mailadresses);
                         this.setCustomerAddressFkey(response.data.customer_addresses_pkey);
-                        this._deliveryaddress.setKey(response.data.customer_addresses_pkey)
+                        this._deliveryaddress.setKey(response.data.customer_addresses_pkey);
+                        this._comment.setValue(response.data.comment);
                     } else {
                         this.clearScreen();
                     }
@@ -151,8 +164,10 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 this._country.setValue('');
                 this._deliverymails.setValue('');
                 this.setCustomerAddressFkey(0);
+                this._comment.setValue('')
             },
             setCustomersFkey:function(customers_fkey) {
+                this.clearScreen();
                 this._customers_fkey = customers_fkey;
                 this._deliveryaddress.setCustomersFkey(customers_fkey) ;
             },

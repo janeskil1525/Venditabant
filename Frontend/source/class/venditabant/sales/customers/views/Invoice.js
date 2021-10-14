@@ -70,6 +70,13 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
                 this._invoicetime = invoicetime;
                 page2.add ( invoicetimeview, { top: 50, left: 510 } );
 
+                lbl = this._createLbl(this.tr( "Comment" ), 120);
+                page2.add ( lbl, { top: 85, left: 380 } );
+
+                let comment = this._createTextArea(this.tr("Comment"), 420);
+                this._comment = comment;
+
+                page2.add ( comment, { top: 85, left: 510 } );
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveInvoiceData ( );
@@ -93,6 +100,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
                 let country = this._country.getValue();
                 let inviceemails = this._inviceemails.getValue();
                 let invoicedays_fkey = this._invoicetime.getKey();
+                let comment = this._comment.getValue();
 
                 let data = {
                     name:this.getCustomerName(),
@@ -107,6 +115,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
                     customers_fkey:this.getCustomersFkey(),
                     type:'INVOICE',
                     customer_addresses_pkey: this.getCustomerAddressFkey(),
+                    comment:comment,
                 }
                 let put = new venditabant.sales.customers.models.InvoiceAddress();
                 put.saveInvoiceAddress(data,function(success) {
@@ -130,6 +139,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
                         this._inviceemails.setValue(response.data.mailadresses);
                         this._invoicetime.setKey(response.data.invoicedays_fkey);
                         this.setCustomerAddressFkey(response.data.customer_addresses_pkey);
+                        this._comment.setValue(response.data.comment);
                     } else {
                        this.clearScreen();
                     }
@@ -147,6 +157,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
                 this._inviceemails.setValue('');
                 this._invoicetime.setKey(0);
                 this.setCustomerAddressFkey(0);
+                this._comment.setValue('')
             },
             setCustomersFkey:function(customers_fkey) {
                 this._customers_fkey = customers_fkey;

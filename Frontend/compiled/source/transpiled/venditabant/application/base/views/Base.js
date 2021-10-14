@@ -10,7 +10,8 @@
       },
       "venditabant.widget.button.Standard": {},
       "venditabant.widget.textfield.Standard": {},
-      "venditabant.widget.label.Standard": {}
+      "venditabant.widget.label.Standard": {},
+      "venditabant.widget.textarea.Standard": {}
     }
   };
   qx.Bootstrap.executePendingDefers($$dbClassInfo);
@@ -30,10 +31,15 @@
       _createLbl: function _createLbl(label, width, required, requiredTxt) {
         var lbl = new venditabant.widget.label.Standard().createLbl(label, width, required, requiredTxt);
         return lbl;
+      },
+      _createTextArea: function _createTextArea(placeholder, width, required, requiredTxt) {
+        var txt = new venditabant.widget.textarea.Standard();
+        var txtarea = txt.createTxt(placeholder, width, required, requiredTxt);
+        return txtarea;
       }
     }
   });
   venditabant.application.base.views.Base.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Base.js.map?dt=1633266123239
+//# sourceMappingURL=Base.js.map?dt=1634201629225

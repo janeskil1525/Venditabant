@@ -19,5 +19,10 @@ qx.Class.define ( "venditabant.application.base.views.Base",
                 let lbl = new venditabant.widget.label.Standard().createLbl(label, width, required, requiredTxt);
                 return lbl;
             },
+            _createTextArea:function (placeholder, width, required, requiredTxt) {
+                let txt = new venditabant.widget.textarea.Standard()
+                let txtarea = txt.createTxt(placeholder, width, required, requiredTxt);
+                return txtarea;
+            },
         }
     });

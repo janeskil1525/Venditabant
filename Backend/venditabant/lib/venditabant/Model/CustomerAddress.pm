@@ -7,11 +7,11 @@ async sub insert_p ($self, $companies_pkey, $users_pkey, $data) {
 
     my $stmt = qq {
         INSERT INTO customer_addresses (insby, modby, customers_fkey, type, name, address1, address2, address3,
-                                        city, zipcode, country, mailadresses, invoicedays_fkey)
+                                        city, zipcode, country, mailadresses, invoicedays_fkey, comment)
             VALUES (
                     (SELECT userid FROM users WHERE users_pkey = ?),
                     (SELECT userid FROM users WHERE users_pkey = ?),
-                ?,?,?,?,?,?,?,?,?,?,?)
+                ?,?,?,?,?,?,?,?,?,?,?,?)
         RETURNING customer_addresses_pkey;
     };
 
@@ -31,6 +31,7 @@ async sub insert_p ($self, $companies_pkey, $users_pkey, $data) {
             $data->{country},
             $data->{mailadresses},
             $data->{invoicedays_fkey},
+            $data->{comment},
         )
     )->hash->{customer_addresses_pkey};
 
@@ -45,7 +46,8 @@ async sub update_p ($self, $companies_pkey, $users_pkey, $data) {
             modby = (SELECT userid FROM users WHERE users_pkey = ?),
             moddatetime = now(),
             name = ?, address1 = ?, address2 = ?, address3 = ?,
-            city = ?, zipcode = ?, country = ?, mailadresses = ?, invoicedays_fkey = ?
+            city = ?, zipcode = ?, country = ?, mailadresses = ?,
+            invoicedays_fkey = ?, comment = ?
         WHERE customer_addresses_pkey = ?
     };
 
@@ -62,7 +64,8 @@ async sub update_p ($self, $companies_pkey, $users_pkey, $data) {
             $data->{country},
             $data->{mailadresses},
             $data->{invoicedays_fkey},
-            $data->{customer_addresses_pkey}
+            $data->{comment},
+            $data->{customer_addresses_pkey},
         )
     );
     return $data->{customer_addresses_pkey};

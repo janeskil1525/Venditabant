@@ -31,17 +31,18 @@ qx.Class.define("venditabant.sales.customers.helpers.LoadList",
                                 let row = response.data[i].name;
                                 item = new qx.ui.form.ListItem(row, null, response.data[i]);
                                 this.getList().add(item);
-                                if(this.isKey() === true) {
-                                    if(selected_value === response.data[i].customer_addresses_pkey){
+                                if (this.isKey() === true) {
+                                    if (selected_value === response.data[i].customer_addresses_pkey) {
                                         this.getList().setSelection([item])
                                     }
                                 } else {
-                                    if(selected_value === response.data[i].name){
+                                    if (selected_value === response.data[i].name) {
                                         this.getList().setSelection([item])
                                     }
                                 }
                             }
-
+                        } else {
+                            this.getList().removeAll();
                         }
                     },this, this.getCustomers_fkey());
                 } else  {

@@ -39,9 +39,8 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
         $tx->commit();
     };
     $err = $@ if $@;
-    say "error '$err'" if $err;
     $self->capture_message (
-        $self->pg, ,
+        $self->pg, '',
         'venditabant::Helpers::Stockitems', 'upsert', $@
     ) if $err;
 
@@ -85,7 +84,7 @@ async sub load_list_p ($self, $companies_pkey) {
     };
     $err = $@ if $@;
     $self->capture_message (
-        $self->pg, ,
+        $self->pg, '',
         'venditabant::Helpers::Stockitems;', 'load_list_p', $@
     ) if $err;
 

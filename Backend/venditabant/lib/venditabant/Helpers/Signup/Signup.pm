@@ -38,7 +38,7 @@ async sub signup ($self, $data) {
         $tx->commit;
     };
     $err = $@ if $@;
-    $self->capture_message ($self, $self->pg, ,
+    $self->capture_message ($self->pg, '',
         'venditabant::Helpers::Signup::Signup', 'release', $@
     ) if $err;
 

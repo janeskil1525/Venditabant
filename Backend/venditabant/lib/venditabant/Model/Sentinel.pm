@@ -7,8 +7,6 @@ has 'pg';
 
 sub insert ($self, $data) {
 
-    say "insert";
-say "Sentinel inser " . Dumper($data);
     $self->pg->db->insert (
         'sentinel',
             {

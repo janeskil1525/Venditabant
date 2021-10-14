@@ -21,10 +21,9 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customers ) {
         $tx->commit();
     };
     $err = $@ if $@;
-    say "error '$err'" if $err;
-    $self->capture_message (
-        $self->pg, ,
-        'venditabant::Helpers::Stockitems', 'upsert', $@
+       $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Customers::Customers', 'upsert', $err
     ) if $err;
 
     return $err ? $err : 'success';

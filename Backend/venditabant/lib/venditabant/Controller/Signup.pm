@@ -21,7 +21,7 @@ sub signup_company ($self) {
     })->catch(sub ($err) {
         venditabant::Helpers::Sentinel::Sentinelsender->new(
         )->capture_message(
-            $self->pg,,'venditabant::Controller::Signup','signup_company',$err
+            $self->pg,'','venditabant::Controller::Signup','signup_company',$err
         );
         $self->render(json => {'result' => $err});
     })->wait;

@@ -32,7 +32,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
     $err = $@ if $@;
     say "error '$err'" if $err;
     $self->capture_message (
-        $self->pg, ,
+        $self->pg, '',
         'venditabant::Helpers::Customers::Address', 'upsert', $err
     ) if $err;
 

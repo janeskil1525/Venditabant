@@ -2,8 +2,9 @@ package venditabant::Helpers::Sentinel::Sentinelsender;
 use Mojo::Base -base, -strict, -signatures, -async_await;
 
 use venditabant::Model::Sentinel;
-use Scalar::Util qw{blessed};
 
+use Scalar::Util qw{blessed};
+use Data::Dumper;
 use Try::Tiny;
 
 # Sentinel sender
@@ -42,11 +43,10 @@ use Try::Tiny;
 
 sub capture_message ($self, $pg, $organisation = 'venditabant', $source = '', $method = '', $message ='', $recipients = '') {
 
-    say "capture_message $organisation , $source , $method , $message , $recipients";
+    $organisation = 'venditabant';
     $recipients = 'janeskil1525@gmail.com';
 
     my $mess;
-    say "before blessed";
     if(blessed($message) eq 'Mojo::Exception') {
         $mess  = $message->message();
     } else {

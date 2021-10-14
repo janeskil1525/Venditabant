@@ -46,7 +46,7 @@ async sub release ($self) {
     };
     $err = $@ if $@;
     $self->capture_message (
-        $self->pg, ,
+        $self->pg, '',
         'venditabant::Helpers::Companies::Release::Release;', 'release', $@
     ) if $err;
 

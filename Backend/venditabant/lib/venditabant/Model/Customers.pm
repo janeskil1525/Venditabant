@@ -9,7 +9,7 @@ sub upsert ($self, $companies_pkey, $users_pkey, $company) {
 
     my $customer_stmt = qq{
         INSERT INTO customers (insby, modby, customer, name, registrationnumber,
-                homepage, phone, pricelists_fkey, companies_fkey, comment)
+                homepage, phone, pricelists_fkey, companies_fkey, comment, abc)
             VALUES ((SELECT userid FROM users WHERE users_pkey = ?),
                     (SELECT userid FROM users WHERE users_pkey = ?),?,?,?, ?, ?, ?,?,?)
             ON CONFLICT (customer, companies_fkey)

@@ -15,6 +15,7 @@ use venditabant::Helpers::Sentinel::Sentinelsender;
 use venditabant::Helpers::Parameter::Parameters;
 use venditabant::Helpers::Customers::Address;
 use venditabant::Helpers::Companies::Company;
+use venditabant::Helpers::Sentinel::Sentinel;
 
 use Data::Dumper;
 use File::Share;
@@ -69,6 +70,11 @@ sub startup ($self) {
   $self->helper(
       companies => sub {
         state  $companies = venditabant::Helpers::Companies::Company->new(pg => shift->pg)
+      });
+
+  $self->helper(
+      sentinel => sub {
+        state  $sentinel = venditabant::Helpers::Sentinel::Sentinel->new(pg => shift->pg)
       });
 
   # Configure the application
@@ -153,6 +159,8 @@ sub startup ($self) {
   $auth->get('/company/load/')->to('companies#load');
   $auth->get('/company/load_list/')->to('companies#load_list');
   $auth->put('/company/save/')->to('companies#save_company');
+
+  $auth->get('/sentinel/load_list/')->to('sentinel#load_list');
 }
 
 1;

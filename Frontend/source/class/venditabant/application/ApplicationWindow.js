@@ -57,6 +57,11 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 this.cockpitButton();
                 this.setStatus("Application is ready");
             },
+            sentinelButton:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.support.views.Sentinel();
+                root._basewin.addView(root, view);
+            },
             companyButton:function() {
                 let root  = qx.core.Init.getApplication ( ).getRoot();
                 let view = new venditabant.company.views.Definition();
@@ -217,6 +222,10 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let usersButton = new qx.ui.menu.Button("Users");
                 usersButton.addListener("execute", this.usersButton);
                 menu.add(usersButton);
+
+                let sentinelButton = new qx.ui.menu.Button("Sentinel");
+                sentinelButton.addListener("execute", this.sentinelButton);
+                menu.add(sentinelButton);
 
                 return menu;
             },

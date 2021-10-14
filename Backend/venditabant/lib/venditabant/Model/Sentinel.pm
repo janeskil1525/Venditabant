@@ -3,19 +3,23 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 
 use Data::Dumper;
 
-has 'pg';
+has 'db';
 
-sub insert ($self, $data) {
 
-    $self->pg->db->insert (
-        'sentinel',
+sub load_list ($self) {
+    my $result = $self->db->select(
+        'sentinel', '*',
             {
-                organisation => $data->{organisation},
-                source       => $data->{source},
-                method       => $data->{method},
-                message      => $data->{message},
-                recipients   => $data->{recipients}
+            closed => 'false'
+        },
+            {
+                limit => 100, order_by => {-desc => 'sentinel_pkey'}
             }
     );
+
+    my $hash;
+    $hash = $result->hashes if $result and $result->rows > 0;
+
+    return $hash
 }
 1;

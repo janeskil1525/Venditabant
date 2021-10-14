@@ -2877,6 +2877,9 @@ sub first(&@) ;
 sub head($@) ;
 sub max(@) ;
 sub maxstr(@) ;
+sub mesh;
+sub mesh_longest;
+sub mesh_shortest;
 sub min(@) ;
 sub minstr(@) ;
 sub none(&@) ;
@@ -2900,6 +2903,9 @@ sub uniqint(@) ;
 sub uniqnum(@) ;
 sub uniqstr(@) ;
 sub unpairs(@) ;
+sub zip;
+sub zip_longest;
+sub zip_shortest;
 }
 package MIME::Base64 {
 sub decode($) ;

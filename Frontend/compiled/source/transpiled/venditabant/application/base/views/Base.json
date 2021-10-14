@@ -257,6 +257,7 @@
     "venditabant.settings.views.Accounts",
     "venditabant.settings.views.SettingListBox",
     "venditabant.sales.customers.views.Invoice",
-    "venditabant.sales.customers.views.Delivery"
+    "venditabant.sales.customers.views.Delivery",
+    "venditabant.company.views.Definition"
   ]
 }

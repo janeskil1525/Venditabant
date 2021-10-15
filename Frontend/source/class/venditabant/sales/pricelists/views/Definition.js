@@ -244,7 +244,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                     that._description.setValue(selectedRows[0][2]);*/
                 });
                 var tcm = table.getTableColumnModel();
-
+                tcm.setColumnVisible(0,false);
                 // Display a checkbox in column 3
                 //tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
 

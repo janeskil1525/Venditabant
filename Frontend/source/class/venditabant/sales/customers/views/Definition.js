@@ -113,6 +113,14 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 page1.add ( homepage, { top: 80, left: 350 } );
                 this._homepage = homepage
 
+                let languages = new venditabant.support.views.LanguageSelectBox().set({
+                    width:150,
+                    emptyrow:false,
+                });
+                let languagesview = languages.getView()
+                this._languages = languages;
+                page1.add ( languagesview, { top: 115, left: 90 } );
+
                 lbl = this._createLbl(this.tr( "Comment" ), 120);
                 page1.add ( lbl, { top: 115, left: 250 } );
 
@@ -151,6 +159,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let phone = this._phone.getValue();
                 let pricelists_fkey = this._pricelists.getKey();;
                 let comment = this._comment.getValue();
+                let languages_fkey = this._languages.getKey();
 
                 let data = {
                     customer: customer,
@@ -160,6 +169,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     phone: phone,
                     pricelists_fkey: pricelists_fkey,
                     comment:comment,
+                    languages_fkey:languages_fkey
                 }
                 let model = new venditabant.sales.customers.models.Customers();
                 model.saveCustomer(data,function ( success ) {
@@ -199,7 +209,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Customer", "Name", "Pricelist", "Org. nr.", "Phone", "Homepage", "Comment" ]);
+                tableModel.setColumns([ "ID", "Customer", "Name", "Pricelist", "Org. nr.", "Phone", "Homepage", "Comment", "languages_fkey" ]);
                 tableModel.setData(rowData);
 
                 // table
@@ -229,8 +239,13 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     that._invoice.setCustomerName(selectedRows[0][2]);
                     that._delivery.setCustomersFkey(selectedRows[0][0]);
                     that._comment.setValue(selectedRows[0][7]);
+                    that._languages.setKey(selectedRows[0][8])
                 });
                 var tcm = table.getTableColumnModel();
+                tcm.setColumnVisible(0,false);
+                tcm.setColumnVisible(8,false);
+                tcm.setColumnWidth(7,300)
+                tcm.setColumnWidth(2,200)
 
                 this._table = table;
 
@@ -251,6 +266,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                             response.data[i].phone,
                             response.data[i].homepage,
                             response.data[i].comment,
+                            response.data[i].languages_fkey,
                         ]);
                     }
                     this._table.getTableModel().setData(tableData);

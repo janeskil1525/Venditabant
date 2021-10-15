@@ -41,6 +41,14 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 page1.add ( company, { top: 10, left: 90 } );
                 this._company = company;
 
+                let languages = new venditabant.support.views.LanguageSelectBox().set({
+                    width:150,
+                    emptyrow:false,
+                });
+                let languagesview = languages.getView()
+                this._languages = languages;
+                page1.add ( languagesview, { top: 45, left: 90 } );
+
                 lbl = this._createLbl(this.tr( "Name" ), 70);
                 page1.add ( lbl, { top: 10, left: 250 } );
 
@@ -92,13 +100,14 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 let registrationnumber = this._registrationnumber.getValue();
                 let homepage = this._homepage.getValue();
                 let phone = this._phone.getValue();
-
+                let languages_fkey = this._languages.getKey();
                 let data = {
                     company: company,
                     name: name,
                     registrationnumber: registrationnumber,
                     homepage: homepage,
                     phone: phone,
+                    languages_fkey:languages_fkey,
                 }
                 let model = new venditabant.company.models.Company();
                 model.saveCompany(data,function ( success ) {
@@ -118,6 +127,7 @@ qx.Class.define ( "venditabant.company.views.Definition",
                     that._registrationnumber.setValue(response.data.registrationnumber);
                     that._homepage.setValue(response.data.homepage);
                     that._phone.setValue(response.data.phone);
+                    that._languages.setKey(response.data.languages_fkey);
                     //alert("Set table data here");
                 }, this);
                 //return ;//list;

@@ -93,6 +93,11 @@ qx.Class.define ( "venditabant.support.views.Sentinel",
             tcm.setDataCellRenderer(4, new qx.ui.table.cellrenderer.Boolean());
             tcm.setDataCellRenderer(5, new qx.ui.table.cellrenderer.Boolean());
 
+            tcm.setColumnVisible(0,false);
+            tcm.setColumnWidth(1,300)
+            tcm.setColumnWidth(2,150)
+            tcm.setColumnWidth(3,400)
+
             // use a different header renderer
 
             this._table = table;

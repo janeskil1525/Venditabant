@@ -249,7 +249,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 });
                 var tcm = table.getTableColumnModel();
-
+                tcm.setColumnVisible(0,false);
                 // Display a checkbox in column 3
                 tcm.setDataCellRenderer(5, new qx.ui.table.cellrenderer.Boolean());
                 tcm.setDataCellRenderer(6, new qx.ui.table.cellrenderer.Boolean());

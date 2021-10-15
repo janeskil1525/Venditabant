@@ -8,13 +8,14 @@ sub upsert ($self, $companies_pkey, $users_pkey, $company) {
 
     my $customer_stmt = qq{
         INSERT INTO companies (insby, modby, company, name, registrationnumber,
-                homepage, phone)
+                homepage, phone, languages_fkey)
             VALUES ((SELECT userid FROM users WHERE users_pkey = ?),
-                    (SELECT userid FROM users WHERE users_pkey = ?),?,?,?, ?, ?)
+                    (SELECT userid FROM users WHERE users_pkey = ?),?,?,?, ?,?,?)
             ON CONFLICT (company)
         DO UPDATE SET name = ?, registrationnumber = ?, homepage = ?, phone = ?,
             moddatetime = now(),
-            modby = (SELECT userid FROM users WHERE users_pkey = ?)
+            modby = (SELECT userid FROM users WHERE users_pkey = ?),
+            languages_fkey = ?
         RETURNING companies_pkey
     };
 
@@ -28,11 +29,13 @@ sub upsert ($self, $companies_pkey, $users_pkey, $company) {
             $company->{registrationnumber},
             $company->{homepage},
             $company->{phone},
+            $company->{languages_fkey},
             $company->{name},
             $company->{registrationnumber},
             $company->{homepage},
             $company->{phone},
             $users_pkey,
+            $company->{languages_fkey},
         )
     )->hash->{companies_pkey};
 

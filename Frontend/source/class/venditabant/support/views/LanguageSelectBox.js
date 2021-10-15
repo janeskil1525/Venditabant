@@ -35,7 +35,7 @@ qx.Class.define("venditabant.support.views.LanguageSelectBox",
                 if(this._model.getModel() === null) {
                     return 0;
                 } else {
-                    return this._model.getModel().parameters_items_pkey ? this._model.getModel().parameters_items_pkey : 0;
+                    return this._model.getModel().languages_pkey ? this._model.getModel().languages_pkey : 0;
                 }
             },
             setSelectedModel:function(value) {
@@ -46,7 +46,7 @@ qx.Class.define("venditabant.support.views.LanguageSelectBox",
                 }).loadList(value);
             },
             setKey:function(key) {
-                new venditabant.support.helpers.LanguagesList()().set({
+                new venditabant.support.helpers.LanguagesList().set({
                     list: this._selectbox,
                     emptyrow: this.isEmptyrow(),
                     key:true,

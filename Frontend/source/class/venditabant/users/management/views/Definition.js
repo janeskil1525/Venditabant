@@ -162,7 +162,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
 
                 // Display a checkbox in column 3
                 tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
-
+                tcm.setColumnVisible(0,false);
                 // use a different header renderer
                 //tcm.setHeaderCellRenderer(2, new qx.ui.table.headerrenderer.Icon("icon/16/apps/office-calendar.png", "A date"));
 

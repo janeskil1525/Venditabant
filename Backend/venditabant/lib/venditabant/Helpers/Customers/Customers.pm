@@ -34,7 +34,7 @@ async sub load_list ($self, $companies_pkey) {
     my $load_stmt = qq {
         SELECT customers_pkey, customer, name, registrationnumber, homepage, phone,
             (SELECT pricelist FROM pricelists WHERE pricelists_pkey = pricelists_fkey) as pricelist,
-            comment
+            comment, languages_fkey
             FROM customers
         WHERE companies_fkey = ?
     };

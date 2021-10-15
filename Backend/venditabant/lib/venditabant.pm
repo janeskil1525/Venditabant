@@ -16,6 +16,7 @@ use venditabant::Helpers::Parameter::Parameters;
 use venditabant::Helpers::Customers::Address;
 use venditabant::Helpers::Companies::Company;
 use venditabant::Helpers::Sentinel::Sentinel;
+use venditabant::Helpers::Parameter::Languages;
 
 use Data::Dumper;
 use File::Share;
@@ -76,6 +77,10 @@ sub startup ($self) {
       sentinel => sub {
         state  $sentinel = venditabant::Helpers::Sentinel::Sentinel->new(pg => shift->pg)
       });
+  $self->helper(
+      languages => sub {
+        state  $languages = venditabant::Helpers::Parameter::Languages->new(pg => shift->pg)
+      });
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -83,7 +88,7 @@ sub startup ($self) {
 
   $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-  )->migrate(21);
+  )->migrate(22);
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -161,6 +166,8 @@ sub startup ($self) {
   $auth->put('/company/save/')->to('companies#save_company');
 
   $auth->get('/sentinel/load_list/')->to('sentinel#load_list');
+
+  $auth->get('/languages/load_list/')->to('languages#load_list');
 }
 
 1;

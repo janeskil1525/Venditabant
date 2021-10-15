@@ -1218,3 +1218,121 @@ ALTER TABLE customer_addresses
 ALTER TABLE customers
     ADD COLUMN comment TEXT NOT NULL DEFAULT '';
 -- 21 down
+
+-- 22 up
+create table if not exists languages
+(
+     languages_pkey serial not null,
+     editnum bigint NOT NULL DEFAULT 1,
+     insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+     insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+     modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
+     moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+     lan character varying(10) NOT NULL,
+     lan_name character varying(100) NOT NULL,
+     CONSTRAINT languages_pkey PRIMARY KEY (languages_pkey)
+
+);
+
+INSERT INTO languages (lan, lan_name) VALUES ('swe', 'Swedish');
+INSERT INTO languages (lan, lan_name) VALUES ('fin', 'Finnish');
+INSERT INTO languages (lan, lan_name) VALUES ('deu', 'German');
+INSERT INTO languages (lan, lan_name) VALUES ('nor', 'Norwegian');
+INSERT INTO languages (lan, lan_name) VALUES ('eng', 'English');
+INSERT INTO languages (lan, lan_name) VALUES ('dan', 'Danish');
+
+
+CREATE TABLE if not exists mailer
+(
+    mailer_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    mailtemplate character varying(200) COLLATE pg_catalog."default" NOT NULL DEFAULT ''::character varying,
+    CONSTRAINT mailer_pkey PRIMARY KEY (mailer_pkey)
+
+) ;
+
+CREATE TABLE if not exists default_mailer_mails
+(
+    default_mailer_mails_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    mailer_fkey bigint NOT NULL,
+    header_value TEXT NOT NULL DEFAULT '',
+    body_value TEXT NOT NULL DEFAULT '',
+    footer_value TEXT NOT NULL DEFAULT '',
+    languages_fkey integer NOT NULL DEFAULT 0,
+    CONSTRAINT default_mailer_mails_pkey PRIMARY KEY (default_mailer_mails_pkey),
+    CONSTRAINT default_mailer_mails_mailer_fkey FOREIGN KEY (mailer_fkey)
+        REFERENCES mailer (mailer_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT default_mailer_mails_translations_fkey FOREIGN KEY (languages_fkey)
+        REFERENCES languages (languages_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+) ;
+
+CREATE TABLE if not exists defined_mailer_mails
+(
+    defined_mailer_mails_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    mailer_fkey bigint NOT NULL,
+    header_value TEXT NOT NULL DEFAULT '',
+    body_value TEXT NOT NULL DEFAULT '',
+    footer_value TEXT NOT NULL DEFAULT '',
+    companies_fkey bigint NOT NULL DEFAULT 0,
+    users_fkey bigint NOT NULL DEFAULT 0,
+    languages_fkey integer NOT NULL DEFAULT 0,
+    CONSTRAINT defined_mailer_mails_pkey PRIMARY KEY (defined_mailer_mails_pkey),
+    CONSTRAINT default_mailer_mails_mailer_fkey FOREIGN KEY (mailer_fkey)
+        REFERENCES mailer (mailer_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT defined_mailer_mails_translations_fkey FOREIGN KEY (languages_fkey)
+        REFERENCES languages (languages_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT defined_mailer_mails_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+ALTER TABLE customers
+    ADD COLUMN languages_fkey BIGINT NOT NULL DEFAULT 0;
+
+ALTER TABLE users
+    ADD COLUMN languages_fkey BIGINT NOT NULL DEFAULT 0;
+
+ALTER TABLE companies
+    ADD COLUMN languages_fkey BIGINT NOT NULL DEFAULT 0;
+
+UPDATE customers SET languages_fkey = (SELECT languages_pkey FROM languages WHERE lan = 'swe');
+UPDATE users SET languages_fkey = (SELECT languages_pkey FROM languages WHERE lan = 'swe');
+UPDATE companies SET languages_fkey = (SELECT languages_pkey FROM languages WHERE lan = 'swe');
+
+ALTER TABLE customers ADD CONSTRAINT customers_languages_fkey FOREIGN KEY (languages_fkey)
+    REFERENCES languages (languages_pkey) ;
+
+ALTER TABLE users ADD CONSTRAINT users_languages_fkey FOREIGN KEY (languages_fkey)
+    REFERENCES languages (languages_pkey) ;
+
+ALTER TABLE companies ADD CONSTRAINT companies_languages_fkey FOREIGN KEY (languages_fkey)
+    REFERENCES languages (languages_pkey) ;
+-- 22 down

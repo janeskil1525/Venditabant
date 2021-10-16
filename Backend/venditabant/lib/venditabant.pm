@@ -17,6 +17,7 @@ use venditabant::Helpers::Customers::Address;
 use venditabant::Helpers::Companies::Company;
 use venditabant::Helpers::Sentinel::Sentinel;
 use venditabant::Helpers::Parameter::Languages;
+use venditabant::Helpers::Mailer::Templates::Mailtemplates;
 
 use Data::Dumper;
 use File::Share;
@@ -81,6 +82,13 @@ sub startup ($self) {
       languages => sub {
         state  $languages = venditabant::Helpers::Parameter::Languages->new(pg => shift->pg)
       });
+
+    $self->helper(
+        mailtemplates => sub {
+            state  $mailtemplates = venditabant::Helpers::Mailer::Templates::Mailtemplates->new(pg => shift->pg)
+        });
+
+
 
   # Configure the application
   $self->secrets($config->{secrets});

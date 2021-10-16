@@ -39,6 +39,14 @@ async sub save_company ($self, $companies_pkey, $users_pkey, $company ) {
     return $err ? $err : 'success';
 }
 
+async sub load_list ($self) {
 
+    my $languages = await venditabant::Model::Company->new(
+        db => $self->pg->db
+    )->load_list_p();
+
+
+    return $languages;
+}
 
 1;

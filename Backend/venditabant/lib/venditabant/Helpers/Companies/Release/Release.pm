@@ -33,7 +33,7 @@ async sub release ($self) {
     eval {
         my $companies = await venditabant::Model::Company->new(
             db => $self->db
-        )->load_list();
+        )->load_list_p();
         my $releaser = venditabant::Helpers::Companies::Release::ReleaseSteps->new(
             db => $db
         );

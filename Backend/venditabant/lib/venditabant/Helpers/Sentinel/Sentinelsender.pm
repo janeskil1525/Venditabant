@@ -56,7 +56,7 @@ sub capture_message ($self, $pg, $organisation = 'venditabant', $source = '', $m
     my $data = $self->get_format(
         $organisation, $source, $method, $mess, $recipients
     );
-    venditabant::Model::Sentinel->new(pg => $pg)->insert($data);
+    venditabant::Model::Sentinel->new(db => $pg->db)->insert($data);
 }
 
 sub get_format ($self, $organisation, $source, $method, $message, $recipients) {

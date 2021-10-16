@@ -12,9 +12,9 @@ qx.Class.define("venditabant.support.models.MailTemplates",
         },
         members: {
             _address: new venditabant.application.Const().venditabant_endpoint(),
-            loadList:function(cb, ctx, setting) {
+            loadList:function(cb, ctx) {
                 let get = new venditabant.communication.Get;
-                get.load(this._address, "/api/v1/mailtemplates/load_list/", setting,function(response){
+                get.load(this._address, "/api/v1/mailtemplates/load_list/", '',function(response){
                     cb.call ( ctx, (response));
                 },this)
 

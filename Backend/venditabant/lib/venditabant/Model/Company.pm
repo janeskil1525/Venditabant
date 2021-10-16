@@ -42,8 +42,7 @@ sub upsert ($self, $companies_pkey, $users_pkey, $company) {
     return $customers_pkey;
 }
 
-
-async sub load_list ($self) {
+async sub load_list_p ($self) {
 
     my $result = $self->db->select(
         'companies', undef

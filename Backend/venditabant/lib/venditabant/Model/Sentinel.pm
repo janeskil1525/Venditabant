@@ -5,7 +5,6 @@ use Data::Dumper;
 
 has 'db';
 
-
 sub load_list ($self) {
     my $result = $self->db->select(
         'sentinel', '*',
@@ -21,5 +20,19 @@ sub load_list ($self) {
     $hash = $result->hashes if $result and $result->rows > 0;
 
     return $hash
+}
+
+sub insert ($self, $data) {
+
+    $self->db->insert (
+        'sentinel',
+        {
+            organisation => $data->{organisation},
+            source       => $data->{source},
+            method       => $data->{method},
+            message      => $data->{message},
+            recipients   => $data->{recipients}
+        }
+    );
 }
 1;

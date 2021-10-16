@@ -2,10 +2,9 @@ package venditabant::Helpers::Mailer::Templates::Mailtemplates;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 
+use venditabant::Model::Mailtemplates;
 
-use Scalar::Util qw{blessed};
 use Data::Dumper;
-use Try::Tiny;
 
 has 'pg';
 

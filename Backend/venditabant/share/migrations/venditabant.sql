@@ -1358,8 +1358,8 @@ ALTER TABLE mailer
     ADD COLUMN description VARCHAR NOT NULL DEFAULT '';
 
 INSERT INTO mailer (mailtemplate, description) VALUES('User invitation', 'Mail for user invitation');
-INSERT INTO mailer (mailtemplate, description) VALUES('Invoice', 'Mail for uinvoice');
-INSERT INTO mailer (mailtemplate, description) VALUES('Delivery not', 'Mail for delivery note');
+INSERT INTO mailer (mailtemplate, description) VALUES('Invoice', 'Mail for Invoice');
+INSERT INTO mailer (mailtemplate, description) VALUES('Delivery note', 'Mail for delivery note');
 
 CREATE INDEX default_mailer_mails_mailer_fkey
     ON default_mailer_mails(mailer_fkey);

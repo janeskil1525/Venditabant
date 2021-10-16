@@ -26,7 +26,7 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
 
                 this._createTable();
                 view.add(this._table,{top:"52%", left:5, right:5,height:"45%"});
-                this.loadSentinels();
+                this.loadTemplates();
 
                 return view;
             },
@@ -61,6 +61,20 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                 }, this );
                 page1.add ( btnSignup, { bottom: 5, left: 10 } );
 
+                let template = new venditabant.support.views.MailTemplatesSelectBox().set({
+                    width:250,
+                    emptyrow:true,
+                });
+                let templateview = template.getView();
+                this._template= template;
+                page1.add ( templateview, { bottom: 5, left: 150 } );
+                let companies = new venditabant.company.views.CompaniesSelectBox().set({
+                    width:180,
+                    emptyrow:true,
+                });
+                let companiessview = companies.getView()
+                this._companies = companies;
+                page1.add ( companiessview, { bottom: 5, right: 350 } );
 
                 let languages = new venditabant.support.views.LanguageSelectBox().set({
                     width:180,
@@ -68,7 +82,7 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                 });
                 let languagesview = languages.getView()
                 this._languages = languages;
-                page1.add ( languagesview, { bottom: 5, left: 150 } );
+                page1.add ( languagesview, { bottom: 5, right: 150 } );
 
                 let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
                     this.clearScreen ( );
@@ -84,7 +98,7 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Template", "Description", "Company" ]);
+                tableModel.setColumns([ "ID", "Template", "Description", "Company", "Language" ]);
                 tableModel.setData(rowData);
 
                 // table
@@ -108,30 +122,32 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                     that._message.setValue(selectedRows[0][3]);
                 });
                 var tcm = table.getTableColumnModel();
-
+                tcm.setColumnVisible(0,false);
+                tcm.setColumnWidth(1,200)
+                tcm.setColumnWidth(2,300)
                 // Display a checkbox in column 3
-                tcm.setDataCellRenderer(4, new qx.ui.table.cellrenderer.Boolean());
-                tcm.setDataCellRenderer(5, new qx.ui.table.cellrenderer.Boolean());
+                //tcm.setDataCellRenderer(4, new qx.ui.table.cellrenderer.Boolean());
+                //tcm.setDataCellRenderer(5, new qx.ui.table.cellrenderer.Boolean());
 
                 // use a different header renderer
 
                 this._table = table;
             },
-            loadSentinels:function () {
+            loadTemplates:function () {
                 let mailtemplates = new venditabant.support.models.MailTemplates();
                 mailtemplates.loadList(function(response) {
                     let tableData = [];
                     for(let i = 0; i < response.data.length; i++) {
-                        let mailed = response.data[i].mailed ? true : false;
-                        let closed = response.data[i].closed ? true : false;
-                        tableData.push([
+                        //let mailed = response.data[i].mailed ? true : false;
+                        //let closed = response.data[i].closed ? true : false;
+                        /*tableData.push([
                             response.data[i].sentinel_pkey,
                             response.data[i].source,
                             response.data[i].method,
                             response.data[i].message,
                             mailed,
                             closed,
-                        ]);
+                        ]);*/
                     }
                     this._table.getTableModel().setData(tableData);
                     //alert("Set table data here");

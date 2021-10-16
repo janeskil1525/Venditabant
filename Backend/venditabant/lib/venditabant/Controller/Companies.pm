@@ -27,7 +27,7 @@ sub load_list ($self) {
         $self->req->headers->header('X-Token-Check')
     );
 
-    $self->companies->load_list($companies_pkey)->then(sub ($result) {
+    $self->companies->load_list()->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {

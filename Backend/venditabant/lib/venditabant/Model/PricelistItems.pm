@@ -9,7 +9,7 @@ async sub load_list_items_p ($self, $companies_pkey, $pricelisthead) {
     my $pricelistitems_stmt = qq {
         SELECT pricelist_items_pkey, '$pricelisthead' as pricelist,
             (SELECT stockitem FROM stockitems WHERE stockitems_pkey = stockitems_fkey) as stockitem,
-            price, fromdate, todate
+            price, fromdate, todate, stockitems_fkey
         FROM pricelists, pricelist_items
         WHERE pricelists_fkey = pricelists_pkey
             AND pricelist = ?

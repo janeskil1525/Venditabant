@@ -136,6 +136,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                                     response.data[i].price,
                                     response.data[i].fromdate,
                                     response.data[i].todate,
+                                    response.data[i].stockitems_fkey
                                 ]);
                             }
                         }
@@ -216,7 +217,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Stockitem", "Price", "From", "To" ]);
+                tableModel.setColumns([ "ID", "Stockitem", "Price", "From", "To", "stockitems_fkey" ]);
                 tableModel.setData(rowData);
                 //tableModel.setColumnEditable(1, true);
                 //tableModel.setColumnEditable(2, true);
@@ -243,6 +244,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 });
                 var tcm = table.getTableColumnModel();
                 tcm.setColumnVisible(0,false);
+                tcm.setColumnVisible(5,false);
                 // Display a checkbox in column 3
                 //tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
 

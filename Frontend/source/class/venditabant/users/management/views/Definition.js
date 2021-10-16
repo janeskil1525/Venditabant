@@ -57,6 +57,14 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 page1.add ( active, { top: 90, left: 90 } );
                 this._active = active;
 
+                let languages = new venditabant.support.views.LanguageSelectBox().set({
+                    width:150,
+                    emptyrow:false,
+                });
+                let languagesview = languages.getView()
+                this._languages = languages;
+                page1.add ( languagesview, { top: 90, left: 350 } );
+
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveUser ( );
                 }, this );
@@ -89,7 +97,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 let active  = this._active.getValue();
                 let password1  = this._password1.getValue();
                 let password2  = this._password2.getValue();
-
+                let languages_fkey = this._languages.getKey();
                 if ( password1 === null )  {
                     alert ( this.tr ( "Password can't be empty" ) );
                     return;
@@ -110,6 +118,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                     username: username,
                     active:active,
                     password:password1,
+                    languages_fkey:languages_fkey,
                 }
                 
                 let model = new venditabant.users.management.models.Users();
@@ -129,7 +138,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "User", "Name", "Active" ]);
+                tableModel.setColumns([ "ID", "User", "Name", "Active", "languages_fkey" ]);
                 tableModel.setData(rowData);
                 //tableModel.setColumnEditable(1, true);
                 //tableModel.setColumnEditable(2, true);
@@ -157,12 +166,14 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                     that._active.setValue(active);
                     that._password1.setValue('');
                     that._password2.setValue('');
+                    that._languages.setKey(selectedRows[0][4])
                 });
                 var tcm = table.getTableColumnModel();
 
                 // Display a checkbox in column 3
                 tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
                 tcm.setColumnVisible(0,false);
+                tcm.setColumnWidth(2,300)
                 // use a different header renderer
                 //tcm.setHeaderCellRenderer(2, new qx.ui.table.headerrenderer.Icon("icon/16/apps/office-calendar.png", "A date"));
 
@@ -185,6 +196,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                             response.data[i].userid,
                             response.data[i].username,
                             active,
+                            response.data[i].languages_fkey
                         ]);
                     }
                     this._table.getTableModel().setData(tableData);

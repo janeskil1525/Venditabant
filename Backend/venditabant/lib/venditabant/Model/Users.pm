@@ -53,7 +53,7 @@ sub upsert_user_companies ($self, $companies_pkey, $users_pkey) {
 
 sub load_list ($self, $companies_pkey) {
     my $load_stmt = qq {
-        SELECT users_pkey, userid, username, active
+        SELECT users_pkey, userid, username, active, languages_fkey
             FROM users, users_companies
         WHERE users_pkey = users_fkey AND companies_fkey = ?
     };
@@ -68,10 +68,10 @@ sub load_list ($self, $companies_pkey) {
 
 sub load_list_support ($self) {
     my $load_stmt = qq {
-        SELECT users_pkey, userid, username, active
+        SELECT users_pkey, userid, username, active, languages_fkey
             FROM users ORDER BY userid
     };
-say "load_list_support";
+
     my $list = $self->db->query($load_stmt);
 
     my $hashes;

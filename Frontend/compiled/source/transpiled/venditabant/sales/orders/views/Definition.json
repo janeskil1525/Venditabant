@@ -421,7 +421,7 @@
       "mixin": false,
       "inherited": true,
       "access": "public",
-      "overriddenFrom": "qx.core.Object",
+      "overriddenFrom": "venditabant.application.base.views.Base",
       "property": "get",
       "jsdoc": {
         "@description": [
@@ -446,7 +446,7 @@
       "mixin": false,
       "inherited": true,
       "access": "public",
-      "overriddenFrom": "qx.core.Object",
+      "overriddenFrom": "venditabant.application.base.views.Base",
       "property": "set",
       "jsdoc": {
         "@description": [
@@ -472,7 +472,7 @@
       "mixin": false,
       "inherited": true,
       "access": "public",
-      "overriddenFrom": "qx.core.Object",
+      "overriddenFrom": "venditabant.application.base.views.Base",
       "property": "reset",
       "jsdoc": {
         "@description": [
@@ -490,7 +490,7 @@
       "mixin": false,
       "inherited": true,
       "access": "public",
-      "overriddenFrom": "qx.core.Object",
+      "overriddenFrom": "venditabant.application.base.views.Base",
       "property": "get",
       "jsdoc": {
         "@description": [
@@ -514,7 +514,7 @@
       "mixin": false,
       "inherited": true,
       "access": "public",
-      "overriddenFrom": "qx.core.Object",
+      "overriddenFrom": "venditabant.application.base.views.Base",
       "property": "set",
       "jsdoc": {
         "@description": [
@@ -539,7 +539,7 @@
       "mixin": false,
       "inherited": true,
       "access": "public",
-      "overriddenFrom": "qx.core.Object",
+      "overriddenFrom": "venditabant.application.base.views.Base",
       "property": "reset",
       "jsdoc": {
         "@description": [

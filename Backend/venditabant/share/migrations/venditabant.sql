@@ -1336,3 +1336,44 @@ ALTER TABLE users ADD CONSTRAINT users_languages_fkey FOREIGN KEY (languages_fke
 ALTER TABLE companies ADD CONSTRAINT companies_languages_fkey FOREIGN KEY (languages_fkey)
     REFERENCES languages (languages_pkey) ;
 -- 22 down
+
+-- 23 up
+ALTER TABLE languages
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE mailer
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE default_mailer_mails
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE defined_mailer_mails
+    ALTER COLUMN insby SET DATA TYPE varchar,
+    ALTER COLUMN modby SET DATA TYPE varchar;
+
+ALTER TABLE mailer
+    ADD COLUMN description VARCHAR NOT NULL DEFAULT '';
+
+INSERT INTO mailer (mailtemplate, description) VALUES('User invitation', 'Mail for user invitation');
+INSERT INTO mailer (mailtemplate, description) VALUES('Invoice', 'Mail for uinvoice');
+INSERT INTO mailer (mailtemplate, description) VALUES('Delivery not', 'Mail for delivery note');
+
+CREATE INDEX default_mailer_mails_mailer_fkey
+    ON default_mailer_mails(mailer_fkey);
+
+CREATE INDEX default_mailer_mails_languages_fkey
+    ON default_mailer_mails(languages_fkey);
+
+CREATE INDEX idx_customers_languages_fkey
+    ON customers(languages_fkey);
+
+CREATE INDEX idx_users_languages_fkey
+    ON users(languages_fkey);
+
+CREATE INDEX idx_companies_languages_fkey
+    ON companies(languages_fkey);
+
+-- 23 down

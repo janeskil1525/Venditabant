@@ -75,7 +75,6 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                 }, this );
                 page1.add ( btnCancel, { bottom: 5, right: 10 } );
 
-
                 return page1;
             },
             _createTable : function() {
@@ -85,7 +84,7 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Source", "Method", "Message", "Mailed", "Closed" ]);
+                tableModel.setColumns([ "ID", "Template", "Description", "Company" ]);
                 tableModel.setData(rowData);
 
                 // table
@@ -119,8 +118,8 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                 this._table = table;
             },
             loadSentinels:function () {
-                let sentinels = new venditabant.support.models.Sentinel();
-                sentinels.loadList(function(response) {
+                let mailtemplates = new venditabant.support.models.MailTemplates();
+                mailtemplates.loadList(function(response) {
                     let tableData = [];
                     for(let i = 0; i < response.data.length; i++) {
                         let mailed = response.data[i].mailed ? true : false;

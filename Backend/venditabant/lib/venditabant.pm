@@ -88,7 +88,7 @@ sub startup ($self) {
 
   $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-  )->migrate(22);
+  )->migrate(23);
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -168,6 +168,9 @@ sub startup ($self) {
   $auth->get('/sentinel/load_list/')->to('sentinel#load_list');
 
   $auth->get('/languages/load_list/')->to('languages#load_list');
+
+  $auth->get('/mailtemplates/load_list/')->to('mailtemplates#load_list');
+  $auth->put('/mailtemplates/save/')->to('mailtemplates#save_template');
 }
 
 1;

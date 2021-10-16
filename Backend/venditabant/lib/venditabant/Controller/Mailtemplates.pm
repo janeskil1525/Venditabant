@@ -27,8 +27,8 @@ sub load_list ($self) {
         $self->req->headers->header('X-Token-Check')
     );
 
-    my $parameter = $self->param('parameter');
-    $self->mailtemplates->load_list()->then(sub ($result) {
+    my $mailer_pkey= $self->param('mailer_fkey');
+    $self->mailtemplates->load_list($mailer_pkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
@@ -37,5 +37,20 @@ sub load_list ($self) {
     })->wait;
 }
 
+sub load_mailer_list ($self) {
+
+    $self->render_later;
+    my $companies_pkey = $self->jwt->companise_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+
+    $self->mailtemplates->load_mailer_list()->then(sub ($result) {
+
+        $self->render(json => {'result' => 'success', data => $result});
+    })->catch( sub ($err) {
+
+        $self->render(json => {'result' => 'failed', data => $err});
+    })->wait;
+}
 
 1;

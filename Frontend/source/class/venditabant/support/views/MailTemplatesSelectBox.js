@@ -12,6 +12,7 @@ qx.Class.define("venditabant.support.views.MailTemplatesSelectBox",
         properties: {
             width: {nullable: true, check: "Number"},
             emptyrow: {nullable: true, check: "Boolean"},
+            callback:{nullable: true},
         },
         members: {
             _selectbox:null,
@@ -20,6 +21,10 @@ qx.Class.define("venditabant.support.views.MailTemplatesSelectBox",
                 selectbox.setWidth(this.getWidth());
                 selectbox.addListener("changeSelection", function (e) {
                     this._model = e.getData()[0];
+                    if(e.getData()[0].getModel() !== null) {
+                        this.getCallback()._default_mailer_mails_pkey = 0;
+                        this.getCallback().loadTemplates(e.getData()[0].getModel().mailer_pkey);
+                    }
                 }, this);
 
                 new venditabant.support.helpers.MailTemplatesList().set({
@@ -36,7 +41,7 @@ qx.Class.define("venditabant.support.views.MailTemplatesSelectBox",
                 if(this._model.getModel() === null) {
                     return 0;
                 } else {
-                    return this._model.getModel().languages_pkey ? this._model.getModel().languages_pkey : 0;
+                    return this._model.getModel().mailer_pkey ? this._model.getModel().mailer_pkey : 0;
                 }
             },
             setSelectedModel:function(value) {

@@ -1377,3 +1377,9 @@ CREATE INDEX idx_companies_languages_fkey
     ON companies(languages_fkey);
 
 -- 23 down
+
+-- 24 up
+CREATE UNIQUE INDEX idx_default_mailer_mails_mailer_fkey_languages_fkey
+    ON default_mailer_mails(mailer_fkey, languages_fkey);
+
+-- 24 down

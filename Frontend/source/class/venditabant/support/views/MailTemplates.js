@@ -14,6 +14,7 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
         members: {
             // Public functions ...
             __table : null,
+            _default_mailer_mails_pkey: 0,
             getView: function () {
                 let view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
                 view.setBackgroundColor("white");
@@ -38,23 +39,23 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                 let lbl = this._createLbl(this.tr( "Headet" ), 70);
                 page1.add ( lbl, { top: 10, left: 10 } );
 
-                let source = this._createTextArea(this.tr("Header"), 770, 50);
-                page1.add ( source, { top: 10, left: 90 } );
-                this._source = source;
+                let header = this._createTextArea(this.tr("Header"), 770, 50);
+                page1.add ( header, { top: 10, left: 90 } );
+                this._header = header;
 
                 lbl = this._createLbl(this.tr( "Body" ), 70);
                 page1.add ( lbl, { top: 65, left: 10 } );
 
-                let method = this._createTextArea(this.tr("Body"), 770, 80);
-                page1.add ( method, { top: 65, left: 90 } );
-                this._method = method
+                let body = this._createTextArea(this.tr("Body"), 770, 80);
+                page1.add ( body, { top: 65, left: 90 } );
+                this._body = body
 
                 lbl = this._createLbl(this.tr( "Footer" ), 70);
                 page1.add ( lbl, { top: 150, left: 10 } );
 
-                let message =  this._createTextArea(this.tr("Footer"), 770, 50);
-                page1.add ( message, { top: 150, left: 90 } );
-                this._message = message;
+                let footer =  this._createTextArea(this.tr("Footer"), 770, 50);
+                page1.add ( footer, { top: 150, left: 90 } );
+                this._footer = footer;
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveTemplate( );
@@ -64,10 +65,12 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                 let template = new venditabant.support.views.MailTemplatesSelectBox().set({
                     width:250,
                     emptyrow:true,
+                    callback:this,
                 });
                 let templateview = template.getView();
-                this._template= template;
+                this._template = template;
                 page1.add ( templateview, { bottom: 5, left: 150 } );
+
                 let companies = new venditabant.company.views.CompaniesSelectBox().set({
                     width:180,
                     emptyrow:true,
@@ -91,6 +94,40 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
 
                 return page1;
             },
+            saveTemplate:function() {
+                let that = this;
+
+                let header  = this._header.getValue();
+                let body = this._body.getValue();
+                let footer = this._footer.getValue();
+                let languages_fkey = this._languages.getKey();
+                let companies_fkey = this._companies.getKey();
+                let mailer_fkey = this._template.getKey();
+                let data = {
+                    header_value: header,
+                    body_value: body,
+                    footer_value: footer,
+                    languages_fkey: languages_fkey,
+                    companies_fkey: companies_fkey,
+                    mailer_fkey: mailer_fkey,
+                    default_mailer_mails_pkey: that._default_mailer_mails_pkey,
+                }
+                let model = new venditabant.support.models.MailTemplates();
+                model.saveTemplate(data,function ( success ) {
+                    if (success === 'success') {
+                        that.loadTemplates(this._template.getKey());
+                        that.clearScreen();
+                    } else {
+                        alert(this.tr('Something went wrong saving the customer'));
+                    }
+                },this);
+
+            },
+            clearScreen:function() {
+                this._header.setValue('');
+                this._body.setValue('');
+                this._footer.setValue('');
+            },
             _createTable : function() {
                 // Create the initial data
                 let rowData =  '';
@@ -98,7 +135,7 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Template", "Description", "Company", "Language" ]);
+                tableModel.setColumns([ "ID", "Header", "Body", "Footer", "Language", 'languages_fkey' ]);
                 tableModel.setData(rowData);
 
                 // table
@@ -116,15 +153,18 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                     selectionModel.iterateSelection(function(index) {
                         selectedRows.push(table.getTableModel().getRowData(index));
                     });
-                    that._sentinel_pkey = selectedRows[0][0];
-                    that._source.setValue(selectedRows[0][1]);
-                    that._method.setValue(selectedRows[0][2]);
-                    that._message.setValue(selectedRows[0][3]);
+                    that._default_mailer_mails_pkey = selectedRows[0][0];
+                    that._header.setValue(selectedRows[0][1]);
+                    that._body.setValue(selectedRows[0][2]);
+                    that._footer.setValue(selectedRows[0][3]);
+                    that._languages.setKey(selectedRows[0][5])
                 });
                 var tcm = table.getTableColumnModel();
                 tcm.setColumnVisible(0,false);
+                tcm.setColumnVisible(5,false);
                 tcm.setColumnWidth(1,200)
-                tcm.setColumnWidth(2,300)
+                tcm.setColumnWidth(2,500)
+                tcm.setColumnWidth(2,200)
                 // Display a checkbox in column 3
                 //tcm.setDataCellRenderer(4, new qx.ui.table.cellrenderer.Boolean());
                 //tcm.setDataCellRenderer(5, new qx.ui.table.cellrenderer.Boolean());
@@ -133,25 +173,26 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
 
                 this._table = table;
             },
-            loadTemplates:function () {
+            loadTemplates:function (mailer_fkey) {
                 let mailtemplates = new venditabant.support.models.MailTemplates();
                 mailtemplates.loadList(function(response) {
                     let tableData = [];
-                    for(let i = 0; i < response.data.length; i++) {
-                        //let mailed = response.data[i].mailed ? true : false;
-                        //let closed = response.data[i].closed ? true : false;
-                        /*tableData.push([
-                            response.data[i].sentinel_pkey,
-                            response.data[i].source,
-                            response.data[i].method,
-                            response.data[i].message,
-                            mailed,
-                            closed,
-                        ]);*/
+                    if(response.data !== null) {
+                        for(let i = 0; i < response.data.length; i++) {
+                            tableData.push([
+                                response.data[i].default_mailer_mails_pkey,
+                                response.data[i].header_value,
+                                response.data[i].body_value,
+                                response.data[i].footer_value,
+                                response.data[i].lan,
+                                response.data[i].languages_fkey
+                            ]);
+                        }
                     }
+
                     this._table.getTableModel().setData(tableData);
                     //alert("Set table data here");
-                }, this);
+                }, this, mailer_fkey);
                 //return ;//list;
             }
         }

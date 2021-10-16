@@ -20,7 +20,7 @@ qx.Class.define("venditabant.support.helpers.MailTemplatesList",
                 let get = new venditabant.support.models.MailTemplates();
                 this._model = null;
 
-                get.loadList(function(response) {
+                get.loadMailerList(function(response) {
                     var item;
                     if(response.data !== null) {
                         this.getList().removeAll();

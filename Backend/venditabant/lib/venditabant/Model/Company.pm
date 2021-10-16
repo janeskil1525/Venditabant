@@ -49,9 +49,7 @@ async sub load_list_p ($self) {
     );
 
     my $hash;
-
     $hash = $result->hashes if $result and $result->rows > 0;
-
     return $hash
 }
 

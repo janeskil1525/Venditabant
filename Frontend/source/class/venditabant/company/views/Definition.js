@@ -28,7 +28,6 @@ qx.Class.define ( "venditabant.company.views.Definition",
 
                 return view;
             },
-
             getDefinition:function () {
                 var page1 = new qx.ui.tabview.Page(this.tr("Company"));
                 //page1.setLayout(new qx.ui.layout.VBox(4));
@@ -63,7 +62,6 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 page1.add ( orgnbr, { top: 45, left: 350 } );
                 this._registrationnumber = orgnbr
 
-
                 lbl = this._createLbl(this.tr( "Phone" ), 70);
                 page1.add ( lbl, { top: 80, left: 10 } );
 
@@ -77,7 +75,6 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 let homepage = this._createTxt("Homepage", 250, false);
                 page1.add ( homepage, { top: 80, left: 350 } );
                 this._homepage = homepage
-
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveCompany ( );

@@ -12,7 +12,7 @@ sub save_customer ($self) {
     );
     my $json_hash = from_json ($self->req->body);
     $self->customers->upsert($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
-        $self->render(json => {'result' => $result});
+        $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
 
         $self->render(json => {'result' => $err});

@@ -8,10 +8,58 @@ use Data::Dumper;
 
 has 'pg';
 
-async sub load_list ($self) {
+async sub upsert ($self, $companies_pkey, $users_pkey, $json_hash) {
+    my $db = $self->pg->db;
+    my $tx = $db->begin();
 
-    my $hashes = venditabant::Model::Mailtemplates->new(db => $self->pg->db)->load_list();
+    my $err;
+    eval {
+        if(exists $json_hash->{default_mailer_mails_pkey} and $json_hash->{default_mailer_mails_pkey} > 0) {
+            my $hashes = venditabant::Model::Mailtemplates->new(
+                db => $db
+            )->update (
+                $companies_pkey, $users_pkey, $json_hash
+            );
+        } else {
+            my $hashes = venditabant::Model::Mailtemplates->new(
+                db => $db
+            )->upsert (
+                $companies_pkey, $users_pkey, $json_hash
+            );
+        }
+
+        $tx->commit();
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Mailer::Templates::Mailtemplates', 'upsert', $err
+    ) if $err;
+
+    return 'success' unless $err;
+    return $err;
+}
+
+async sub load_list ($self, $mailer_pkey) {
+
+    my $hashes = venditabant::Model::Mailtemplates->new(
+        db => $self->pg->db
+    )->load_list(
+        $mailer_pkey
+    );
 
     return $hashes;
 }
+
+async sub load_mailer_list ($self) {
+
+    my $hashes = venditabant::Model::Mailtemplates->new(
+        db => $self->pg->db
+    )->load_mailer_list();
+
+    return $hashes;
+}
+
+
+
 1;

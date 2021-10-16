@@ -52,27 +52,25 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 lbl.setWidth( 70 );
                 page1.add ( lbl, { top: 80, left: 10 } );
 
-                let stockitems = new qx.ui.form.SelectBox();
-                stockitems.setWidth( 150 );
-                stockitems.addListener("changeSelection", function(e) {
-                    let selection = e.getData()[0].getLabel();
-                    this._selectedStockitem = selection;
-                },this);
-                this._stockitems = stockitems;
-                this.loadStockitems();
 
-                page1.add ( stockitems, { top: 80, left: 90 } );
+                let stockitems = new venditabant.stock.stockitems.views.StockitemsSelectBox().set({
+                    width:180,
+                    emptyrow:true,
+                });
+                let stockitemsview = stockitems.getView()
+                this._stockitems = stockitems;
+                page1.add ( stockitemsview, { top: 80, left: 90 } );
 
                 lbl = new qx.ui.basic.Label ( ( "Price" )  );
                 lbl.setRich ( true );
                 lbl.setWidth( 70 );
-                page1.add ( lbl, { top: 80, left: 250 } );
+                page1.add ( lbl, { top: 80, left: 350 } );
 
                 var price = new qx.ui.form.TextField ( );
                 price.setPlaceholder (  ( "Price" ) );
                 price.setWidth( 150 );
 
-                page1.add ( price, { top: 80, left: 350 } );
+                page1.add ( price, { top: 80, left: 450 } );
                 this._price = price;
 
                 var format = new qx.util.format.DateFormat("yyyy-MM-dd");

@@ -4,21 +4,22 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 has 'db';
 
 
-async sub load_list_items_p ($self, $companies_pkey, $pricelisthead) {
+async sub load_list_items_p ($self, $companies_pkey, $pricelists_fkey) {
 
     my $pricelistitems_stmt = qq {
-        SELECT pricelist_items_pkey, '$pricelisthead' as pricelist,
+        SELECT pricelist_items_pkey, pricelist,
             (SELECT stockitem FROM stockitems WHERE stockitems_pkey = stockitems_fkey) as stockitem,
             price, fromdate, todate, stockitems_fkey
         FROM pricelists, pricelist_items
         WHERE pricelists_fkey = pricelists_pkey
-            AND pricelist = ?
+            AND pricelists_pkey = ?
                 AND companies_fkey = ?
+        ORDER BY stockitem, fromdate, todate
     };
     my $result = await $self->db->query_p(
         $pricelistitems_stmt,
         (
-            $pricelisthead, $companies_pkey
+            $pricelists_fkey, $companies_pkey
         )
     );
 
@@ -31,20 +32,15 @@ sub insert_item ($self, $companies_pkey, $pricelists_item) {
 
     my $pricelist_stmt = qq{
         INSERT INTO pricelist_items (pricelists_fkey, stockitems_fkey, price, fromdate, todate)
-            VALUES (
-                (SELECT pricelists_pkey FROM pricelists WHERE pricelist = ? AND companies_fkey = ?),
-                (SELECT stockitems_pkey FROM stockitems WHERE stockitem = ? AND companies_fkey = ?),
-                ?,?, ?)
+            VALUES (?,?,?,?,?)
         RETURNING pricelist_items_pkey
     };
 
     my $ppricelist_items_pkey = $self->db->query(
         $pricelist_stmt,
         (
-            $pricelists_item->{pricelist},
-            $companies_pkey,
-            $pricelists_item->{stockitem},
-            $companies_pkey,
+            $pricelists_item->{pricelists_fkey},
+            $pricelists_item->{stockitems_fkey},
             $pricelists_item->{price},
             $pricelists_item->{fromdate},
             $pricelists_item->{todate}

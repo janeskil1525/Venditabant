@@ -26,26 +26,19 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 //page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
 
-                let pricelists = new qx.ui.form.SelectBox();
-
-                pricelists.addListener("changeSelection", function(e) {
-                    let selection = e.getData()[0].getLabel();
-
-                    this._selectedPricelistHead = selection;
-
-                    /*this.debug("Selected item: " + selection);
-                    alert("Selected item: " + selection);*/
-                },this);
+                let pricelists = new venditabant.sales.pricelists.views.PricelistsSelectBox().set({
+                    width:150,
+                    emptyrow:false,
+                    callback:this,
+                });
                 this._pricelists = pricelists;
-                this.loadPricelists();
-
-                page1.add ( pricelists, { top: 30, left: 10 } );
+                page1.add ( pricelists.getView(), { top: 30, left: 10 } );
 
                 let btnAddPricelist = this._createBtn ( this.tr ( "Add" ), "rgba(239,170,255,0.44)", 70, function ( ) {
                     this.addPricelist ( );
                 }, this );
 
-                page1.add ( btnAddPricelist, { top: 30, left: 140 } );
+                page1.add ( btnAddPricelist, { top: 30, left: 170 } );
 
                 let lbl = new qx.ui.basic.Label ( this.tr( "Stockitem" )  );
                 lbl.setRich ( true );
@@ -102,7 +95,8 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 this._to = to;
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
-                    this.savePricelistItem ( );
+                    this.savePricelistItem();
+                    this.loadPricelistItems();
                 }, this );
                 page1.add ( btnSignup, { bottom: 10, left: 10 } );
 
@@ -114,17 +108,11 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
 
                 this._createTable();
                 view.add(this._table,{top:"52%", left:5, right:5,height:"45%"});
-                this.loadPricelistItems();
 
                 return view;
             },
             loadPricelistItems:function() {
                 let pricelistitems = new venditabant.sales.pricelists.models.PricelistItems();
-
-                let pricelisthead = 'DEFAULT'
-                if(typeof this._selectedPricelistHead !== 'undefined' && this._selectedPricelistHead !== null){
-                    pricelisthead = this._selectedPricelistHead;
-                }
 
                 pricelistitems.loadList(function(response) {
                         let tableData = [];
@@ -144,7 +132,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                         this._table.getTableModel().setData(tableData);
                     },
                     this,
-                    pricelisthead
+                    this._pricelists.getKey()
                 );
             },
             loadStockitems:function () {
@@ -187,15 +175,15 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
             },
             savePricelistItem:function() {
                 let that = this;
-                let pricelist = this._selectedPricelistHead;
-                let stockitem = this._selectedStockitem;
+                let pricelists_fkey = this._pricelists.getKey();
+                let stockitems_fkey = this._stockitems.getKey();
                 let price  = this._price.getValue();
                 let from = this._from.getValue();
                 let to = this._to.getValue();
 
                 let data = {
-                    pricelist: pricelist,
-                    stockitem: stockitem,
+                    pricelists_fkey: pricelists_fkey,
+                    stockitems_fkey: stockitems_fkey,
                     price: price,
                     fromdate:from,
                     todate:to,
@@ -239,17 +227,19 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                         selectedRows.push(table.getTableModel().getRowData(index));
                     });
 
-                    /*that._stockitem.setValue(selectedRows[0][1]);
-                    that._description.setValue(selectedRows[0][2]);*/
+                    that._price.setValue(selectedRows[0][2]);
+                    let from_date = new Date(selectedRows[0][3]);
+                    that._from.setValue(from_date);
+                    let to_date = new Date(selectedRows[0][4]);
+                    that._to.setValue(to_date);
+                    that._stockitems.setKey(selectedRows[0][5]);
                 });
                 var tcm = table.getTableColumnModel();
                 tcm.setColumnVisible(0,false);
                 tcm.setColumnVisible(5,false);
-                // Display a checkbox in column 3
-                //tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
-
-                // use a different header renderer
-                //tcm.setHeaderCellRenderer(2, new qx.ui.table.headerrenderer.Icon("icon/16/apps/office-calendar.png", "A date"));
+                tcm.setColumnWidth(1,300);
+                tcm.setColumnWidth(3,300);
+                tcm.setColumnWidth(4,300);
 
                 this._table = table;
 

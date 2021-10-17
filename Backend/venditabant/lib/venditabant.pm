@@ -144,7 +144,7 @@ sub startup ($self) {
   $auth->put('/pricelists/heads/save/')->to('pricelists#upsert_head');
   $auth->put('/pricelists/items/save/')->to('pricelists#insert_item');
   $auth->get(
-      '/pricelists/items/load_list/:pricelist'
+      '/pricelists/items/load_list/:pricelists_fkey'
   )->to(
       'pricelists#load_list_items'
   );

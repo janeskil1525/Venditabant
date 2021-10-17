@@ -12,6 +12,7 @@ qx.Class.define("venditabant.sales.pricelists.views.PricelistsSelectBox",
             properties: {
                     width: {nullable: true, check: "Number"},
                     emptyrow: {nullable: true, check: "Boolean"},
+                    callback: {nullable:true},
             },
         members: {
                 _selectbox:null,
@@ -20,6 +21,9 @@ qx.Class.define("venditabant.sales.pricelists.views.PricelistsSelectBox",
                         selectbox.setWidth(this.getWidth());
                         selectbox.addListener("changeSelection", function (e) {
                                 this._model = e.getData()[0];
+                                if(this.getCallback() !== null) {
+                                        this.getCallback().loadPricelistItems();
+                                }
                         }, this);
                         new venditabant.sales.pricelists.helpers.LoadList().set({
                                 list: selectbox,

@@ -38,12 +38,12 @@ async sub upsert_head ($self, $companies_pkey, $pricelist) {
     return $err ? $err : 'success';
 }
 
-async sub load_list_items ($self, $companies_pkey, $pricelist) {
+async sub load_list_items ($self, $companies_pkey, $pricelists_fkey) {
 
     my $result = await venditabant::Model::PricelistItems->new(
         db => $self->pg->db
     )->load_list_items_p(
-        $companies_pkey, $pricelist
+        $companies_pkey, $pricelists_fkey
     );
 
     return $result;

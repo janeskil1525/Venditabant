@@ -58,8 +58,8 @@ sub load_list_items ($self) {
         $self->req->headers->header('X-Token-Check')
     );
 
-    my $pricelist = $self->param('pricelist');
-    $self->pricelists->load_list_items($companies_pkey, $pricelist)->then(sub ($result) {
+    my $pricelists_fkey = $self->param('pricelists_fkey');
+    $self->pricelists->load_list_items($companies_pkey, $pricelists_fkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {

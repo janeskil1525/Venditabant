@@ -36,7 +36,7 @@ qx.Class.define("venditabant.stock.stockitems.views.StockitemsSelectBox",
                 if(this._model.getModel() === null) {
                     return 0;
                 } else {
-                    return this._model.getModel().pricelists_pkey ? this._model.getModel().pricelists_pkey : 0;
+                    return this._model.getModel().stockitems_pkey ? this._model.getModel().stockitems_pkey : 0;
                 }
             },
             setSelectedModel:function(value) {

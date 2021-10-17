@@ -56,7 +56,6 @@ async sub insert_item ($self, $companies_pkey, $pricelist_item) {
 
     my $err;
     eval {
-        say "upsert ";
         my $pricelists_pkey = venditabant::Model::PricelistItems->new(
             db => $db
         )->insert_item(

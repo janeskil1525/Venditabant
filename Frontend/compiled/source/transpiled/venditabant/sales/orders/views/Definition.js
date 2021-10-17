@@ -15,11 +15,12 @@
       "qx.ui.layout.Canvas": {},
       "qx.ui.tabview.TabView": {},
       "qx.ui.tabview.Page": {},
-      "venditabant.communication.Post": {},
+      "qx.ui.form.CheckBox": {},
       "qx.ui.table.model.Simple": {},
       "qx.ui.table.Table": {},
       "qx.ui.table.selection.Model": {},
-      "venditabant.stock.stockitems.models.Stockitem": {}
+      "qx.ui.table.cellrenderer.Boolean": {},
+      "venditabant.sales.orders.models.Salesorders": {}
     }
   };
   qx.Bootstrap.executePendingDefers($$dbClassInfo);
@@ -38,6 +39,7 @@
       // Public functions ...
       setParams: function setParams(params) {},
       getView: function getView() {
+        var that = this;
         var view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
         view.setBackgroundColor("white"); // Add a TabView
 
@@ -46,19 +48,37 @@
         var page1 = new qx.ui.tabview.Page("Salesorders");
         page1.setLayout(new qx.ui.layout.Canvas());
 
+        var lbl = this._createLbl(this.tr("Open"), 70);
+
+        page1.add(lbl, {
+          top: 10,
+          left: 10
+        });
+        var open = new qx.ui.form.CheckBox("");
+        this._open = open;
+
+        this._open.setValue(true);
+
+        open.addListener('changeValue', function () {
+          that.loadSalesorderList();
+        });
+        page1.add(open, {
+          top: 10,
+          left: 90
+        });
+
         this._createSoTable();
 
         page1.add(this._sotable, {
+          top: 50,
           left: 5,
           right: 5,
-          height: "95%"
+          height: "90%"
         });
         tabView.add(page1);
         var page2 = new qx.ui.tabview.Page("Salesorder");
         page2.setLayout(new qx.ui.layout.Canvas());
-
-        var lbl = this._createLbl(this.tr("Customer"), 70);
-
+        lbl = this._createLbl(this.tr("Customer"), 70);
         page2.add(lbl, {
           top: 10,
           left: 10
@@ -145,45 +165,8 @@
           right: 5,
           height: "95%"
         });
+        this.loadSalesorderList();
         return view;
-      },
-      saveStockitem: function saveStockitem() {
-        var stockitem = this._stockitem.getValue();
-
-        var description = this._description.getValue();
-
-        var price = this._price.getValue();
-
-        var purchaseprice = this._purchaseprice.getValue();
-
-        var active = this._active.getValue();
-
-        var stocked = this._stocked.getValue();
-
-        var date = new Date();
-        var today = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-        var fiveyears = date.getFullYear() + 5 + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-        var data = {
-          stockitem: stockitem,
-          description: description,
-          price: price,
-          purchaseprice: purchaseprice,
-          active: active,
-          stocked: stocked,
-          fromdate: today,
-          todate: fiveyears
-        };
-        var com = new venditabant.communication.Post();
-        com.send(this._address, "/api/v1/stockitem/save/", data, function (success) {
-          var win = null;
-
-          if (success) {
-            this.loadStockitems();
-            alert("Saved item successfully");
-          } else {
-            alert(this.tr('success'));
-          }
-        }, this);
       },
       _createSoTable: function _createSoTable() {
         // Create the initial data
@@ -191,7 +174,7 @@
         var that = this; // table model
 
         var tableModel = new qx.ui.table.model.Simple();
-        tableModel.setColumns(["ID", "Customer", "Orderno", "Order date", "Delivery date", "Open"]);
+        tableModel.setColumns(["ID", "Customer", "Orderno", "Order date", "Delivery date", "Open", "customers_fkey", "users_fkey"]);
         tableModel.setData(rowData); // table
 
         var table = new qx.ui.table.Table(tableModel);
@@ -208,26 +191,30 @@
           });
         });
         var tcm = table.getTableColumnModel();
+        tcm.setColumnVisible(0, false);
+        tcm.setColumnVisible(6, false);
+        tcm.setColumnVisible(7, false);
+        tcm.setColumnWidth(1, 300);
+        tcm.setDataCellRenderer(5, new qx.ui.table.cellrenderer.Boolean());
         this._sotable = table;
       },
-      loadStockitems: function loadStockitems() {
-        var stockitems = new venditabant.stock.stockitems.models.Stockitem();
-        stockitems.loadList(function (response) {
+      loadSalesorderList: function loadSalesorderList() {
+        var salesorders = new venditabant.sales.orders.models.Salesorders();
+        salesorders.loadSalesorderList(function (response) {
           var tableData = [];
 
           for (var i = 0; i < response.data.length; i++) {
-            var active = response.data[i].active ? true : false;
-            var stocked = response.data[i].stocked ? true : false;
-            tableData.push([response.data[i].stockitems_pkey, response.data[i].stockitem, response.data[i].description, response.data[i].price, response.data[i].purchaseprice, active, stocked]);
+            var open = response.data[i].open ? true : false;
+            tableData.push([response.data[i].salesorders_pkey, response.data[i].customer, response.data[i].orderno, response.data[i].orderdate, response.data[i].deliverydate, open, response.data[i].customers_fkey, response.data[i].users_fkey]);
           }
 
-          this._table.getTableModel().setData(tableData); //alert("Set table data here");
+          this._sotable.getTableModel().setData(tableData); //alert("Set table data here");
 
-        }, this); //return ;//list;
+        }, this, this._open.getValue()); //return ;//list;
       }
     }
   });
   venditabant.sales.orders.views.Definition.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Definition.js.map?dt=1634319105719
+//# sourceMappingURL=Definition.js.map?dt=1634469810004

@@ -1,4 +1,4 @@
-package venditabant::Helpers::Salesorders;
+package venditabant::Helpers::Salesorder::Salesorders;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::SalesorderHead;
@@ -8,6 +8,26 @@ use venditabant::Model::SalesorderItem;
 use Data::Dumper;
 
 has 'pg';
+
+async sub load_salesorder_list ($self, $companies_pkey, $users_pkey, $data) {
+
+    my $result;
+    my $err;
+    eval {
+        $result = venditabant::Model::SalesorderHead->new(
+            db => $self->pg->db
+        )->load_salesorder_list (
+            $companies_pkey, $users_pkey, $data
+        );
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Salesorder::Salesorders', 'load_list_p', $err
+    ) if $err;
+
+    return $result;
+}
 
 async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
 

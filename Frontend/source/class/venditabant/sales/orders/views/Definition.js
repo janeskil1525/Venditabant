@@ -16,6 +16,7 @@ qx.Class.define ( "venditabant.sales.orders.views.Definition",
             setParams: function (params) {
             },
             getView: function () {
+                let that = this;
                 let view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
                 view.setBackgroundColor("white");
 
@@ -26,15 +27,28 @@ qx.Class.define ( "venditabant.sales.orders.views.Definition",
                 var page1 = new qx.ui.tabview.Page("Salesorders");
                 page1.setLayout(new qx.ui.layout.Canvas());
 
+                let lbl = this._createLbl(this.tr( "Open" ),70);
+                page1.add ( lbl, { top: 10, left: 10 } );
+
+                let open = new qx.ui.form.CheckBox("");
+                this._open = open;
+                this._open.setValue(true);
+                open.addListener('changeValue',function() {
+                    that.loadSalesorderList();
+                })
+                page1.add ( open, { top: 10, left: 90 } );
+
+
+
                 this._createSoTable();
 
-                page1.add(this._sotable,{left:5, right:5, height:"95%"});
+                page1.add(this._sotable,{top: 50, left:5, right:5, height:"90%"});
                 tabView.add(page1);
 
                 var page2 = new qx.ui.tabview.Page("Salesorder");
                 page2.setLayout(new qx.ui.layout.Canvas());
 
-                let lbl = this._createLbl(this.tr( "Customer" ),70);
+                lbl = this._createLbl(this.tr( "Customer" ),70);
                 page2.add ( lbl, { top: 10, left: 10 } );
 
                 lbl = this._createLbl(this.tr( "Customer" ),70);
@@ -121,42 +135,8 @@ qx.Class.define ( "venditabant.sales.orders.views.Definition",
                 tabView.add(page3);*/
 
                 view.add(tabView, {top:5, left:5, right:5,height:"95%"});
+                this.loadSalesorderList();
                 return view;
-
-            },
-            saveStockitem:function() {
-                let stockitem = this._stockitem.getValue();
-                let description  = this._description.getValue();
-                let price  = this._price.getValue();
-                let purchaseprice  = this._purchaseprice.getValue();
-                let active  = this._active.getValue();
-                let stocked  = this._stocked.getValue();
-
-                var date = new Date();
-                var today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
-                var fiveyears = (date.getFullYear()+5)+'-'+(date.getMonth()+1)+'-'+date.getDate();
-
-                let data = {
-                    stockitem: stockitem,
-                    description: description,
-                    price:price,
-                    purchaseprice:purchaseprice,
-                    active:active,
-                    stocked:stocked,
-                    fromdate: today,
-                    todate:fiveyears
-                }
-                let com = new venditabant.communication.Post ( );
-                com.send ( this._address, "/api/v1/stockitem/save/", data, function ( success ) {
-                    let win = null;
-                    if ( success )  {
-                        this.loadStockitems();
-                        alert("Saved item successfully");
-                    }
-                    else  {
-                        alert ( this.tr ( 'success' ) );
-                    }
-                }, this );
 
             },
             _createSoTable : function() {
@@ -166,7 +146,9 @@ qx.Class.define ( "venditabant.sales.orders.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Customer", "Orderno", "Order date","Delivery date","Open" ]);
+                tableModel.setColumns(
+                    [ "ID", "Customer", "Orderno", "Order date","Delivery date","Open", "customers_fkey", "users_fkey" ]
+                );
                 tableModel.setData(rowData);
                 // table
                 var table = new qx.ui.table.Table(tableModel);
@@ -186,29 +168,34 @@ qx.Class.define ( "venditabant.sales.orders.views.Definition",
 
                 });
                 var tcm = table.getTableColumnModel();
+                tcm.setColumnVisible(0,false);
+                tcm.setColumnVisible(6,false);
+                tcm.setColumnVisible(7,false);
+                tcm.setColumnWidth(1,300);
+                tcm.setDataCellRenderer(5, new qx.ui.table.cellrenderer.Boolean());
 
                 this._sotable = table;
             },
-            loadStockitems:function () {
-                let stockitems = new venditabant.stock.stockitems.models.Stockitem();
-                stockitems.loadList(function(response) {
+            loadSalesorderList:function () {
+                let salesorders = new venditabant.sales.orders.models.Salesorders();
+                salesorders.loadSalesorderList(function(response) {
                     let tableData = [];
                     for(let i = 0; i < response.data.length; i++) {
-                        let active = response.data[i].active ? true : false;
-                        let stocked = response.data[i].stocked ? true : false;
+                        let open = response.data[i].open ? true : false;
                         tableData.push([
-                            response.data[i].stockitems_pkey,
-                            response.data[i].stockitem,
-                            response.data[i].description,
-                            response.data[i].price,
-                            response.data[i].purchaseprice,
-                            active,
-                            stocked,
+                                response.data[i].salesorders_pkey,
+                                response.data[i].customer,
+                                response.data[i].orderno,
+                                response.data[i].orderdate,
+                                response.data[i].deliverydate,
+                                open,
+                                response.data[i].customers_fkey,
+                                response.data[i].users_fkey,
                             ]);
                     }
-                    this._table.getTableModel().setData(tableData);
+                    this._sotable.getTableModel().setData(tableData);
                     //alert("Set table data here");
-                }, this);
+                }, this, this._open.getValue());
                 //return ;//list;
             }
         }

@@ -15,7 +15,7 @@
         "column": 0
       },
       "end": {
-        "line": 215,
+        "line": 202,
         "column": 7
       }
     }
@@ -121,21 +121,7 @@
           "column": 12
         },
         "end": {
-          "line": 126,
-          "column": 13
-        }
-      },
-      "type": "function",
-      "access": "public"
-    },
-    "saveStockitem": {
-      "location": {
-        "start": {
-          "line": 127,
-          "column": 12
-        },
-        "end": {
-          "line": 161,
+          "line": 141,
           "column": 13
         }
       },
@@ -145,25 +131,25 @@
     "_createSoTable": {
       "location": {
         "start": {
-          "line": 162,
+          "line": 142,
           "column": 12
         },
         "end": {
-          "line": 191,
+          "line": 178,
           "column": 13
         }
       },
       "type": "function",
       "access": "protected"
     },
-    "loadStockitems": {
+    "loadSalesorderList": {
       "location": {
         "start": {
-          "line": 192,
+          "line": 179,
           "column": 12
         },
         "end": {
-          "line": 213,
+          "line": 200,
           "column": 13
         }
       },

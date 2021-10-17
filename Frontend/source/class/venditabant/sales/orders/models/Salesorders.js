@@ -11,15 +11,22 @@ qx.Class.define("venditabant.sales.orders.models.Salesorders",
             _address: new venditabant.application.Const().venditabant_endpoint(),
             add:function(cb, ctx, data) {
                 let post = new venditabant.communication.Post;
-                post.send(_address, "api/v1/salesorders/save/", data,function(response){
+                post.send(this._address, "api/v1/salesorders/save/", data,function(response){
                     cb.call ( ctx, (response));
                 },this)
             },
             close:function(cb, ctx, data){
                 let post = new venditabant.communication.Get();
-                post.send(_address, "api/v1/salesorders/close/", data,function(response){
+                post.send(this._address, "api/v1/salesorders/close/", data,function(response){
                     cb.call ( ctx, (response));
                 },this)
+            },
+            loadSalesorderList:function(cb, ctx, data) {
+                let get = new venditabant.communication.Get;
+                let open = data ? 1 : 0;
+                get.load(this._address, "/api/v1/salesorders/load_salesorder_list/", open, function(response){
+                    cb.call ( ctx,(response));
+                },this);
             }
         }
     });

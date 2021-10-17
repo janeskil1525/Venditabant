@@ -5,6 +5,26 @@ use Data::Dumper;
 
 has 'db';
 
+async sub load_salesorder_list ($self, $companies_pkey, $users_pkey, $open) {
+
+    my $stmt = qq{
+        SELECT salesorders_pkey, customers_fkey, users_fkey, orderdate, deliverydate, open, orderno, customer
+            FROM salesorders as a JOIN customers as b ON customers_fkey = customers_pkey
+        WHERE a.companies_fkey = ? and open = ?
+    };
+
+    my $result = await $self->db->query_p(
+        $stmt,
+        (
+            $companies_pkey, $open
+        )
+    );
+
+    my $hash;
+    $hash = $result->hashes if $result->rows;
+    return $hash;
+}
+
 async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
 
     my $salesorders_stmt = qq{

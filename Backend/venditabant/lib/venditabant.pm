@@ -9,7 +9,7 @@ use venditabant::Helpers::Jwt;
 use venditabant::Helpers::Pricelists;
 use venditabant::Helpers::Customers::Customers;
 use venditabant::Helpers::Users;
-use venditabant::Helpers::Salesorders;
+use venditabant::Helpers::Salesorder::Salesorders;
 use venditabant::Helpers::Companies::Release::Release;
 use venditabant::Helpers::Sentinel::Sentinelsender;
 use venditabant::Helpers::Parameter::Parameters;
@@ -53,7 +53,7 @@ sub startup ($self) {
   $self->helper(pricelists => sub {state $pricelists = venditabant::Helpers::Pricelists->new(pg => shift->pg)});
   $self->helper(
       salesorders => sub {
-        state $salesorders = venditabant::Helpers::Salesorders->new(pg => shift->pg)
+        state $salesorders = venditabant::Helpers::Salesorder::Salesorders->new(pg => shift->pg)
       }
   );
   $self->helper(
@@ -163,7 +163,7 @@ sub startup ($self) {
 
   $auth->put('/salesorders/save/')->to('salesorders#save_salesorder');
   $auth->put('/salesorders/close/')->to('salesorders#close_salesorder');
-  $auth->get('/salesorders/load_list/')->to('salesorders#load_list');
+  $auth->get('/salesorders/load_salesorder_list/:open')->to('salesorders#load_salesorder_list');
 
   $auth->get('/parameters/load_list/:parameter')->to('parameters#load_list');
   $auth->put('/parameters/save/')->to('parameters#save_parameter');

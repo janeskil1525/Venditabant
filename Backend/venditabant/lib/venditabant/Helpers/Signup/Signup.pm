@@ -12,11 +12,15 @@ async sub signup ($self, $data) {
     my $db = $self->pg->db;
     my $tx = $db->begin;
     my $company_stmt = qq {
-        INSERT INTO companies (company, registrationnumber) VALUES (?, ?) RETURNING companies_pkey;
+        INSERT INTO companies (company, registrationnumber, languages_fkey)
+        VALUES (?, ?,(SELECT languages_pkey FROM languages WHERE lan = 'swe'))
+        RETURNING companies_pkey;
     };
 
     my $users_stmt = qq {
-        INSERT INTO users (userid, username, passwd, active) VALUES (?,?,?,?) RETURNING users_pkey;
+        INSERT INTO users (userid, username, passwd, active, languages_fkey)
+        VALUES (?,?,?,?, (SELECT languages_pkey FROM languages WHERE lan = 'swe'))
+        RETURNING users_pkey;
     };
 
     my $users_companies_stmt = qq {

@@ -25,8 +25,8 @@ qx.Class.define("venditabant.users.login.SignupWindow",
                 var company_name = this._company_name.getValue  ( );
                 var company_orgnr = this._company_orgnr.getValue  ( );
                 var company_address = this._company_address.getValue  ( );
-                var pass1= this._pass1.getValue ( );
-                var pass2= this._pass2.getValue ( );
+                var pass1 = this._pass1.getValue ( );
+                var pass2 = this._pass2.getValue ( );
 
                 if ( company_name.length < 1 || email.length < 1 || pass1.length < 1 || company_orgnr.length < 1)  {
                     alert ( this.tr ( "Please provide username, password, and email" ) );

@@ -89,8 +89,7 @@ qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
                 this._price = price;
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 90, function ( ) {
-                    this.savePricelistItem();
-                    this.loadPricelistItems();
+                    this.saveOrderItem();
                 }, this );
                 page1.add ( btnSignup, { top: 200, left: 10 } );
 
@@ -153,25 +152,23 @@ qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
                 }
 
             },
-            savePricelistItem:function() {
+            saveOrderItem:function() {
                 let that = this;
-                let pricelists_fkey = this._pricelists.getKey();
+
                 let stockitems_fkey = this._stockitems.getKey();
                 let price  = this._price.getValue();
-                let from = this._from.getValue();
-                let to = this._to.getValue();
+                let quantity = this._quantity.getValue();
 
                 let data = {
-                    pricelists_fkey: pricelists_fkey,
                     stockitems_fkey: stockitems_fkey,
                     price: price,
-                    fromdate:from,
-                    todate:to,
+                    quantity:quantity,
+                    salesorders_fkey:this.getSalesorders_fkey(),
                 }
-                let model = new venditabant.sales.pricelists.models.PricelistItems();
-                model.savePricelistItem(data, function(success) {
+                let model = new venditabant.sales.orders.models.SalesorderItems();
+                model.saveOrderItem(data, function(success) {
                     if ( success )  {
-                        that.loadPricelistItems();
+                        that.loadSalesorderItems();
                     }
                     else  {
                         alert ( this.tr ( 'Something went bad during saving of pricelist item' ) );

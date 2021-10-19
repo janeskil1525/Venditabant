@@ -28,13 +28,12 @@ async sub delete_item ($self, $companies_pkey, $salesorders_pkey, $data) {
 
     my $salesorder_item_stmt = qq{
         DELETE FROM salesorder_items WHERE salesorders_fkey = ?
-            AND stockitems_fkey = (SELECT stockitems_pkey FROM stockitems
-                        WHERE companies_fkey = ? AND stockitem = ?)
+            AND stockitems_fkey = ?
     };
 
     $self->db->query(
         $salesorder_item_stmt,
-            ($salesorders_pkey, $companies_pkey, $data->{stockitem})
+            ($salesorders_pkey, $data->{stockitems_fkey})
     );
 }
 
@@ -45,9 +44,7 @@ async sub upsert ($self, $companies_pkey, $salesorders_pkey, $users_pkey, $data)
                 insby, modby, salesorders_fkey, stockitems_fkey, quantity, price
             ) VALUES (
                     (SELECT userid FROM users WHERE users_pkey = ?),
-                    (SELECT userid FROM users WHERE users_pkey = ?),?,
-                    (SELECT stockitems_pkey FROM stockitems
-                        WHERE companies_fkey = ? AND stockitem = ?), ?, ?)
+                    (SELECT userid FROM users WHERE users_pkey = ?),?,?, ?, ?)
             ON CONFLICT (salesorders_fkey, stockitems_fkey)
             DO UPDATE SET modby = (SELECT userid FROM users WHERE users_pkey = ?),
                         moddatetime = now(),
@@ -61,8 +58,7 @@ async sub upsert ($self, $companies_pkey, $salesorders_pkey, $users_pkey, $data)
             $users_pkey,
             $users_pkey,
             $salesorders_pkey,
-            $companies_pkey,
-            $data->{stockitem},
+            $data->{stockitems_fkey},
             $data->{quantity},
             $data->{price},
             $users_pkey,

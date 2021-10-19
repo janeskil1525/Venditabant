@@ -67,7 +67,37 @@ async sub load_salesorder_list ($self, $companies_pkey, $users_pkey, $data) {
 
     return $result;
 }
+async sub item_upsert($self, $companies_pkey, $users_pkey, $data) {
+    my $db = $self->pg->db;
+    my $tx = $db->begin();
 
+    my $err;
+    eval {
+
+        if($data->{quantity} > 0) {
+            await venditabant::Model::SalesorderItem->new(
+                db => $db
+            )->upsert(
+                $companies_pkey, $data->{salesorders_fkey}, $users_pkey, $data
+            );
+        } else {
+            await venditabant::Model::SalesorderItem->new(
+                db => $db
+            )->delete_item(
+                $companies_pkey, $data->{salesorders_fkey}, $data
+            );
+        }
+
+        $tx->commit();
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Salesorder::Salesorders', 'load_list_p', $err
+    ) if $err;
+
+    return $err ? $err : 'success';
+}
 async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
 
     my $db = $self->pg->db;

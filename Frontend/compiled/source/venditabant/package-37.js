@@ -983,7 +983,7 @@
   });
   qx.theme.indigo.Decoration.$$dbClassInfo = $$dbClassInfo;
 })();
-//# sourceMappingURL=package-37.js.map?dt=1634664978103
+//# sourceMappingURL=package-37.js.map?dt=1634666447882
 qx.$$packageData['37'] = {
   "locales": {},
   "resources": {},

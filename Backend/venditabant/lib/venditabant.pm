@@ -166,6 +166,7 @@ sub startup ($self) {
   $auth->get('/salesorders/load_salesorder_list/:open')->to('salesorders#load_salesorder_list');
   $auth->get('/salesorders/load_salesorder/:salesorders_pkey')->to('salesorders#load_salesorder');
   $auth->get('/salesorders/items/load_list/:salesorders_fkey')->to('salesorders#load_salesorder_items_list');
+  $auth->put('/salesorders/items/save/')->to('salesorders#item_save');
 
   $auth->get('/parameters/load_list/:parameter')->to('parameters#load_list');
   $auth->put('/parameters/save/')->to('parameters#save_parameter');

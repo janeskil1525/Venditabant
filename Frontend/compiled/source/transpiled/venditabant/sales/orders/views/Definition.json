@@ -15,7 +15,7 @@
         "column": 0
       },
       "end": {
-        "line": 202,
+        "line": 93,
         "column": 7
       }
     }
@@ -99,14 +99,14 @@
     }
   },
   "members": {
-    "setParams": {
+    "getView": {
       "location": {
         "start": {
           "line": 16,
           "column": 12
         },
         "end": {
-          "line": 17,
+          "line": 68,
           "column": 13
         }
       },
@@ -114,42 +114,42 @@
       "type": "function",
       "access": "public"
     },
-    "getView": {
+    "setSalesorder": {
       "location": {
         "start": {
-          "line": 18,
+          "line": 69,
           "column": 12
         },
         "end": {
-          "line": 141,
+          "line": 84,
           "column": 13
         }
       },
       "type": "function",
       "access": "public"
     },
-    "_createSoTable": {
+    "nextViev": {
       "location": {
         "start": {
-          "line": 142,
+          "line": 85,
           "column": 12
         },
         "end": {
-          "line": 178,
+          "line": 87,
           "column": 13
         }
       },
       "type": "function",
-      "access": "protected"
+      "access": "public"
     },
-    "loadSalesorderList": {
+    "previousView": {
       "location": {
         "start": {
-          "line": 179,
+          "line": 88,
           "column": 12
         },
         "end": {
-          "line": 200,
+          "line": 90,
           "column": 13
         }
       },

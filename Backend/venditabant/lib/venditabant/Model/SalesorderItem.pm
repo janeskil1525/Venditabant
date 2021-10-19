@@ -5,7 +5,27 @@ use Data::Dumper;
 
 has 'db';
 
+async sub load_items_list ($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
+
+    my $result = $self->db->select(
+        ['salesorder_items',['stockitems', stockitems_pkey => 'stockitems_fkey']],
+        ['salesorder_items_pkey', 'salesorders_fkey', 'stockitems_fkey', 'stockitem', 'quantity', 'price'],
+            {
+                salesorders_fkey => $salesorders_pkey
+            },
+            {
+                order_by => 'stockitem'
+            }
+    );
+
+    my $hash;
+    $hash = $result->hashes if $result and $result->rows > 0;
+
+    return $hash;
+}
+
 async sub delete_item ($self, $companies_pkey, $salesorders_pkey, $data) {
+
     my $salesorder_item_stmt = qq{
         DELETE FROM salesorder_items WHERE salesorders_fkey = ?
             AND stockitems_fkey = (SELECT stockitems_pkey FROM stockitems

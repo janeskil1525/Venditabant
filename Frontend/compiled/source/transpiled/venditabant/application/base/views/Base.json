@@ -260,6 +260,8 @@
     "venditabant.sales.customers.views.Delivery",
     "venditabant.company.views.Definition",
     "venditabant.support.views.Sentinel",
-    "venditabant.support.views.MailTemplates"
+    "venditabant.support.views.MailTemplates",
+    "venditabant.sales.orders.views.SalesordersList",
+    "venditabant.sales.orders.views.Salesorder"
   ]
 }

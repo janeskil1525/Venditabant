@@ -90,7 +90,7 @@ qx.Class.define ( "venditabant.company.views.Definition",
 
                 return page1;
             },
-            saveCompany:function() {
+            sav:function() {
                 let that = this;
                 let company = this._company.getValue();
                 let name  = this._name.getValue();

@@ -5,6 +5,21 @@ use Data::Dumper;
 
 has 'db';
 
+async sub load_salesorder ($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
+
+    my $result = await $self->db->select_p(
+        'salesorders', ['*'],
+            {
+                companies_fkey    => $companies_pkey,
+                salesorders_pkey => $salesorders_pkey,
+            }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result->rows;
+    return $hash;
+}
+
 async sub load_salesorder_list ($self, $companies_pkey, $users_pkey, $open) {
 
     my $stmt = qq{

@@ -9,6 +9,45 @@ use Data::Dumper;
 
 has 'pg';
 
+async sub load_salesorder_items_list ($self, $companies_pkey, $users_pkey, $salesorders_fkey) {
+
+    my $result;
+    my $err;
+    eval {
+        $result = await venditabant::Model::SalesorderItem->new(
+            db => $self->pg->db
+        )->load_items_list (
+            $companies_pkey, $users_pkey, $salesorders_fkey
+        );
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Salesorder::Salesorders', 'load_list_p', $err
+    ) if $err;
+
+    return $result;
+}
+
+async sub load_salesorder($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
+    my $result;
+    my $err;
+    eval {
+        $result = venditabant::Model::SalesorderHead->new(
+            db => $self->pg->db
+        )->load_salesorder (
+            $companies_pkey, $users_pkey, $salesorders_pkey
+        );
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Salesorder::Salesorders', 'load_salesorder', $err
+    ) if $err;
+
+    return $result;
+}
+
 async sub load_salesorder_list ($self, $companies_pkey, $users_pkey, $data) {
 
     my $result;

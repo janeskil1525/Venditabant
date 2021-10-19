@@ -164,6 +164,8 @@ sub startup ($self) {
   $auth->put('/salesorders/save/')->to('salesorders#save_salesorder');
   $auth->put('/salesorders/close/')->to('salesorders#close_salesorder');
   $auth->get('/salesorders/load_salesorder_list/:open')->to('salesorders#load_salesorder_list');
+  $auth->get('/salesorders/load_salesorder/:salesorders_pkey')->to('salesorders#load_salesorder');
+  $auth->get('/salesorders/items/load_list/:salesorders_fkey')->to('salesorders#load_salesorder_items_list');
 
   $auth->get('/parameters/load_list/:parameter')->to('parameters#load_list');
   $auth->put('/parameters/save/')->to('parameters#save_parameter');
@@ -177,7 +179,7 @@ sub startup ($self) {
 
   $auth->get('/languages/load_list/')->to('languages#load_list');
 
-    $auth->get('/mailtemplates/load_mailer_list/')->to('mailtemplates#load_mailer_list');
+  $auth->get('/mailtemplates/load_mailer_list/')->to('mailtemplates#load_mailer_list');
   $auth->get('/mailtemplates/load_list/:mailer_fkey')->to('mailtemplates#load_list');
   $auth->put('/mailtemplates/save/')->to('mailtemplates#save_template');
 

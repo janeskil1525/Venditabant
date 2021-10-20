@@ -262,6 +262,7 @@
     "venditabant.support.views.Sentinel",
     "venditabant.support.views.MailTemplates",
     "venditabant.sales.orders.views.SalesordersList",
-    "venditabant.sales.orders.views.Salesorder"
+    "venditabant.sales.orders.views.Salesorder",
+    "venditabant.sales.commission.views.Definition"
   ]
 }

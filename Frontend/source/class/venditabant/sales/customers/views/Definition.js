@@ -87,8 +87,6 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let orgnbr = this._createTxt("Org. nr", 250, false);
                 page1.add ( orgnbr, { top: 45, left: 350 } );
                 this._registrationnumber = orgnbr
-
-
                 lbl = this._createLbl(this.tr( "Pricelist" ), 70);
                 page1.add ( lbl, { top: 45, left: 10 } );
 
@@ -180,27 +178,6 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                         alert(this.tr('Something went wrong saving the customer'));
                     }
                 },this);
-            },
-            loadPricelists : function() {
-                let that = this;
-                let pricelist_heads = new venditabant.sales.pricelists.models.Pricelists();
-
-                pricelist_heads.loadList(function(response){
-                    if(response.data !== null) {
-                        for(let i= 0; i < response.data.length ;i++) {
-                            let pricelist = response.data[i].pricelist;
-                            that.addPricelistHead(pricelist);
-                        }
-                    }
-                }, this);
-            },
-            addPricelistHead:function(pricelist) {
-                let tempItem = new qx.ui.form.ListItem(pricelist);
-                this._pricelists.add(tempItem);
-                if(pricelist === 'DEFAULT'){
-                    this._selectedPricelistHead = 'DEFAULT';
-                    this._pricelists.setSelection([tempItem]);
-                }
             },
             _createTable : function() {
                 // Create the initial data

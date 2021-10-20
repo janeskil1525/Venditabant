@@ -9,8 +9,8 @@ async sub step ($self, $companies_pkey) {
 
     my $stmt = qq {
         INSERT INTO companies (companies_pkey, languages_fkey)
-            VALUES (0)
-        ON CONFLICT (companies_pkey,(SELECT languages_pkey FROM languages WHERE lan = 'swe'))
+            VALUES (0, (SELECT languages_pkey FROM languages WHERE lan = 'swe'))
+        ON CONFLICT (companies_pkey)
             DO UPDATE SET moddatetime = now();
     };
 

@@ -231,23 +231,23 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
             loadCustomers:function () {
                 let customers = new venditabant.sales.customers.models.Customers();
                 customers.loadList(function(response) {
-                    let tableData = [];
-                    for(let i = 0; i < response.data.length; i++) {
-
-                        tableData.push([
-                            response.data[i].customers_pkey,
-                            response.data[i].customer,
-                            response.data[i].name,
-                            response.data[i].pricelist,
-                            response.data[i].registrationnumber,
-                            response.data[i].phone,
-                            response.data[i].homepage,
-                            response.data[i].comment,
-                            response.data[i].languages_fkey,
-                        ]);
+                    if(response.data !== null) {
+                        let tableData = [];
+                        for(let i = 0; i < response.data.length; i++) {
+                            tableData.push([
+                                response.data[i].customers_pkey,
+                                response.data[i].customer,
+                                response.data[i].name,
+                                response.data[i].pricelist,
+                                response.data[i].registrationnumber,
+                                response.data[i].phone,
+                                response.data[i].homepage,
+                                response.data[i].comment,
+                                response.data[i].languages_fkey,
+                            ]);
+                        }
+                        this._table.getTableModel().setData(tableData);
                     }
-                    this._table.getTableModel().setData(tableData);
-                    //alert("Set table data here");
                 }, this);
                 //return ;//list;
             }

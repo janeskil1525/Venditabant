@@ -88,21 +88,24 @@ qx.Class.define ( "venditabant.sales.orders.views.SalesordersList",
             loadSalesorderList:function () {
                 let salesorders = new venditabant.sales.orders.models.Salesorders();
                 salesorders.loadSalesorderList(function(response) {
-                    let tableData = [];
-                    for(let i = 0; i < response.data.length; i++) {
-                        let open = response.data[i].open ? true : false;
-                        tableData.push([
-                            response.data[i].salesorders_pkey,
-                            response.data[i].customer,
-                            response.data[i].orderno,
-                            response.data[i].orderdate,
-                            response.data[i].deliverydate,
-                            open,
-                            response.data[i].customers_fkey,
-                            response.data[i].users_fkey,
-                        ]);
+                    if(response.data !== null) {
+                        let tableData = [];
+                        for(let i = 0; i < response.data.length; i++) {
+                            let open = response.data[i].open ? true : false;
+                            tableData.push([
+                                response.data[i].salesorders_pkey,
+                                response.data[i].customer,
+                                response.data[i].orderno,
+                                response.data[i].orderdate,
+                                response.data[i].deliverydate,
+                                open,
+                                response.data[i].customers_fkey,
+                                response.data[i].users_fkey,
+                            ]);
+                        }
+                        this._sotable.getTableModel().setData(tableData);
                     }
-                    this._sotable.getTableModel().setData(tableData);
+
                     //alert("Set table data here");
                 }, this, this._open.getValue());
                 //return ;//list;

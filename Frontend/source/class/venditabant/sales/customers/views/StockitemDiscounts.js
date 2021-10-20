@@ -76,10 +76,12 @@ qx.Class.define ( "venditabant.sales.customers.views.StockitemDiscounts",
                 loadStockitems:function () {
                     let stockitems = new venditabant.stock.stockitems.models.Stockitem();
                     stockitems.loadList(function(response, rsp) {
-                        let tableData = [];
-                        for(let i = 0; i < response.data.length; i++) {
-                            let tempItem = new qx.ui.form.ListItem(response.data[i].stockitem);
-                            this._stockitems.add(tempItem);
+                        if(response.data !== null) {
+                            let tableData = [];
+                            for(let i = 0; i < response.data.length; i++) {
+                                let tempItem = new qx.ui.form.ListItem(response.data[i].stockitem);
+                                this._stockitems.add(tempItem);
+                            }
                         }
                     }, this);
                 },

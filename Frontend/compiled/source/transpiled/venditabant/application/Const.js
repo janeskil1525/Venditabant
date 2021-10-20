@@ -17,7 +17,7 @@
     construct: function construct() {},
     destruct: function destruct() {},
     members: {
-      _mode: 'test',
+      _mode: 'live',
       venditabant_endpoint: function venditabant_endpoint() {
         if (this._mode === 'test') {
           return 'http://192.168.1.134';
@@ -30,4 +30,4 @@
   venditabant.application.Const.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Const.js.map?dt=1633851356519
+//# sourceMappingURL=Const.js.map?dt=1634731288265

@@ -43,7 +43,7 @@ async sub signup ($self, $data) {
     };
     $err = $@ if $@;
     $self->capture_message ($self->pg, '',
-        'venditabant::Helpers::Signup::Signup', 'release', $@
+        'venditabant::Helpers::Signup::Signup', 'signup', $err
     ) if $err;
 
 

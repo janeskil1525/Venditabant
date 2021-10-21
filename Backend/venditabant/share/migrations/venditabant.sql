@@ -1392,3 +1392,18 @@ CREATE UNIQUE INDEX if not exists idx_warehouses_warehouse_companies_fkey_unique
         (companies_fkey, warehouse);
 
 -- 25 down
+-- 26 up
+
+ALTER TABLE companies
+    ADD COLUMN address1 VARCHAR NOT NULL DEFAULT '',
+    ADD COLUMN address2 VARCHAR NOT NULL DEFAULT '',
+    ADD COLUMN address3 VARCHAR NOT NULL DEFAULT '',
+    ADD COLUMN zipcode VARCHAR NOT NULL DEFAULT '',
+    ADD COLUMN city VARCHAR NOT NULL DEFAULT '',
+    ADD COLUMN giro VARCHAR NOT NULL DEFAULT '',
+    ADD COLUMN invoiceref VARCHAR NOT NULL DEFAULT '',
+    ADD COLUMN email VARCHAR NOT NULL DEFAULT '',
+    ADD COLUMN tin VARCHAR NOT NULL DEFAULT '',
+    ADD COLUMN invoicecomment VARCHAR NOT NULL DEFAULT '';
+
+-- 26 down

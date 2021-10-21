@@ -18,6 +18,7 @@ use venditabant::Helpers::Companies::Company;
 use venditabant::Helpers::Sentinel::Sentinel;
 use venditabant::Helpers::Parameter::Languages;
 use venditabant::Helpers::Mailer::Templates::Mailtemplates;
+use venditabant::Helpers::Warehouses::Warehouse;
 
 use Data::Dumper;
 use File::Share;
@@ -88,7 +89,10 @@ sub startup ($self) {
             state  $mailtemplates = venditabant::Helpers::Mailer::Templates::Mailtemplates->new(pg => shift->pg)
         });
 
-
+  $self->helper(
+      warehouses => sub {
+        state  $warehouses = venditabant::Helpers::Warehouses::Warehouse->new(pg => shift->pg)
+      });
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -96,7 +100,7 @@ sub startup ($self) {
 
   $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-  )->migrate(24);
+  )->migrate(25);
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -184,6 +188,8 @@ sub startup ($self) {
   $auth->get('/mailtemplates/load_list/:mailer_fkey')->to('mailtemplates#load_list');
   $auth->put('/mailtemplates/save/')->to('mailtemplates#save_template');
 
+  $auth->get('/warehouses/load_list/')->to('warehouses#load_list');
+  $auth->put('/warehouses/save/')->to('warehouses#save_warehouse');
 
 }
 

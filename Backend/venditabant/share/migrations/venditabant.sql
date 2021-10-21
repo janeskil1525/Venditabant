@@ -1383,3 +1383,12 @@ CREATE UNIQUE INDEX idx_default_mailer_mails_mailer_fkey_languages_fkey
     ON default_mailer_mails(mailer_fkey, languages_fkey);
 
 -- 24 down
+
+-- 25 up
+
+DROP INDEX idx_warehouses_warehouse_unique;
+CREATE UNIQUE INDEX if not exists idx_warehouses_warehouse_companies_fkey_unique
+    ON warehouses USING btree
+        (companies_fkey, warehouse);
+
+-- 25 down

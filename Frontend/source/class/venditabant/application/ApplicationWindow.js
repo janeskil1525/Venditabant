@@ -57,6 +57,12 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 this.cockpitButton();
                 this.setStatus("Application is ready");
             },
+            warehouseButton:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.stock.warehouse.views.Definition();
+                root._basewin.addView(root, view);
+
+            },
             commissionButton:function() {
                 let root  = qx.core.Init.getApplication ( ).getRoot();
                 let view = new venditabant.sales.commission.views.Definition();
@@ -177,7 +183,9 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let stockitemButton = new qx.ui.menu.Button("Stockitems");
                 let pricelistButton = new qx.ui.menu.Button("Pricelists");
                 let customerButton = new qx.ui.menu.Button("Customers");
+                let warehouseButton = new qx.ui.menu.Button("Warehouse");
                 let commissionButton = new qx.ui.menu.Button("Commission");
+
                 let settingsButton = new qx.ui.menu.Button("Settings");
                 /* var replaceButton = new qx.ui.menu.Button("Replace");
                 var searchFilesButton = new qx.ui.menu.Button("Search in files", "icon/16/actions/system-search.png");
@@ -190,6 +198,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 pricelistButton.addListener("execute", this.pricelistsButton);
                 customerButton.addListener("execute", this.customersButton);
                 commissionButton.addListener("execute", this.commissionButton);
+                warehouseButton.addListener("execute", this.warehouseButton);
                 settingsButton.addListener("execute", this.settingsButton);
 
                 menu.add(usersButton);
@@ -197,6 +206,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 menu.add(pricelistButton);
                 menu.add(customerButton);
                 menu.add(commissionButton);
+                menu.add(warehouseButton);
 
                 menu.addSeparator();
                 menu.add(settingsButton);

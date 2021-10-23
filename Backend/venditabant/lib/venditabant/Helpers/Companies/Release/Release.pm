@@ -47,7 +47,7 @@ async sub release ($self) {
     $err = $@ if $@;
     $self->capture_message (
         $self->pg, '',
-        'venditabant::Helpers::Companies::Release::Release;', 'release', $@
+        'venditabant::Helpers::Companies::Release::Release;', 'release', $err
     ) if $err;
 
 

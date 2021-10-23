@@ -1407,3 +1407,95 @@ ALTER TABLE companies
     ADD COLUMN invoicecomment VARCHAR NOT NULL DEFAULT '';
 
 -- 26 down
+-- 27 up
+
+CREATE TABLE if not exists checks
+(
+    checks_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    check_type varchar NOT NULL,
+    check_name varchar NOT NULL,
+    check_condition varchar NOT NULL DEFAULT '',
+    check_action varchar NOT NULL DEFAULT '',
+    CONSTRAINT checks_pkey PRIMARY KEY (checks_pkey)
+
+) ;
+
+CREATE UNIQUE INDEX idx_checks_check_type_check_name
+    ON checks(check_type,check_name);
+
+
+CREATE TABLE IF NOT EXISTS translations
+(
+    translations_pkey SERIAL NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    languages_fkey integer NOT NULL DEFAULT 0,
+    module varchar  NOT NULL,
+    tag varchar NOT NULL,
+    translation text NOT NULL,
+    CONSTRAINT translations_pkey PRIMARY KEY (translations_pkey),
+    CONSTRAINT languages_translations_fkey FOREIGN KEY (languages_fkey)
+        REFERENCES languages (languages_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE UNIQUE INDEX if not exists idx_translations_languages_fkey_module_tag_unique
+    ON translations USING btree
+        (languages_fkey, module, tag)
+    TABLESPACE webshop;
+
+CREATE  INDEX if not exists idx_translations_languages_fkey
+    ON translations USING btree
+        (languages_fkey)
+    TABLESPACE translations;
+
+INSERT INTO checks (check_type, check_name, check_condition, check_action)
+VALUES  ('SQL_FALSE', 'COMPANY_CHECK_GIRO','SELECT LENGTH(TRIM(giro)) > 0 as result FROM companies WHERE companies_pkey = ?',''),
+        ('SQL_FALSE', 'COMPANY_CHECK_EMAIL','SELECT LENGTH(TRIM(email)) > 0 as result FROM companies WHERE companies_pkey = ?',''),
+        ('SQL_FALSE', 'COMPANY_CHECK_VATNO','SELECT LENGTH(TRIM(tin)) > 0 as result FROM companies WHERE companies_pkey = ?',''),
+        ('SQL_FALSE', 'COMPANY_CHECK_INVOICEREF','SELECT LENGTH(TRIM(invoiceref)) > 0 as result FROM companies WHERE companies_pkey = ?','');
+
+INSERT INTO translations (languages_fkey, module, tag, translation)
+VALUES((SELECT languages_pkey FROM languages WHERE lan ='swe'), 'SQL_FALSE', 'COMPANY_CHECK_VATNO', 'VAT nummer saknas i företags inställningarna, dubbel clicka för att rätta till'),
+        ((SELECT languages_pkey FROM languages WHERE lan ='swe'), 'SQL_FALSE', 'COMPANY_CHECK_EMAIL', 'E-mail saknas i företags inställningarna, dubbel clicka för att rätta till'),
+      ((SELECT languages_pkey FROM languages WHERE lan ='swe'), 'SQL_FALSE', 'COMPANY_CHECK_GIRO', 'Post eller bankgiro saknas i företags inställningarna, dubbel clicka för att rätta till'),
+      ((SELECT languages_pkey FROM languages WHERE lan ='swe'), 'SQL_FALSE', 'COMPANY_CHECK_INVOICEREF', 'Faktura referens saknas i företags inställningarna, dubbel clicka för att rätta till');
+-- 27 down
+-- 28 up
+CREATE TABLE IF NOT EXISTS auto_todo
+(
+    auto_todo_pkey SERIAL NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    companies_fkey bigint NOT NULL DEFAULT 0,
+    check_type varchar NOT NULL,
+    check_name varchar  NOT NULL,
+    user_action varchar NOT NULL,
+    closed boolean NOT NULL DEFAULT 'false',
+    CONSTRAINT auto_todo_pkey PRIMARY KEY (auto_todo_pkey),
+    CONSTRAINT auto_todo_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX ids_auto_todo_companies_fkey
+    ON auto_todo(companies_fkey);
+
+CREATE UNIQUE INDEX idx_auto_todo_companies_fkey_check_type_check_name
+    ON auto_todo(companies_fkey, check_type, check_name);
+-- 28 down

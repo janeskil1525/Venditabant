@@ -369,6 +369,121 @@ sub _maybe_isa;
 sub downgrade;
 sub is_utf8;
 }
+package Class::Load {
+sub is_class_loaded;
+}
+package Class::Load::XS {
+sub is_class_loaded;
+}
+package Class::MOP {
+sub blessed($) ;
+sub check_package_cache_flag($) ;
+sub get_code_info($) ;
+sub isweak($) ;
+sub weaken($) ;
+}
+package Class::MOP::Attribute {
+sub associated_class;
+sub associated_methods;
+sub blessed($) ;
+sub weaken($) ;
+}
+package Class::MOP::Class {
+sub all(&@) ;
+sub blessed($) ;
+sub constructor_class;
+sub constructor_name;
+sub destructor_class;
+sub immutable_trait;
+sub instance_metaclass;
+sub subname;
+}
+package Class::MOP::Instance {
+sub associated_metaclass;
+sub blessed($) ;
+sub isweak($) ;
+sub slot_hash;
+sub slots;
+sub weaken($) ;
+}
+package Class::MOP::Method {
+sub blessed($) ;
+sub body;
+sub is_stub;
+sub name;
+sub package_name;
+sub reftype($) ;
+sub weaken($) ;
+}
+package Class::MOP::Method::Accessor {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Class::MOP::Method::Constructor {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Class::MOP::Method::Generated {
+sub definition_context;
+sub is_inline;
+}
+package Class::MOP::Method::Inlined {
+sub _expected_method_class;
+sub refaddr($) ;
+}
+package Class::MOP::Method::Meta {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Class::MOP::Method::Wrapped {
+sub blessed($) ;
+sub subname;
+}
+package Class::MOP::Mixin {
+sub blessed($) ;
+}
+package Class::MOP::Mixin::AttributeCore {
+sub accessor;
+sub blessed($) ;
+sub builder;
+sub clearer;
+sub definition_context;
+sub init_arg;
+sub initializer;
+sub insertion_order;
+sub name;
+sub predicate;
+sub reader;
+sub writer;
+}
+package Class::MOP::Mixin::HasAttributes {
+sub _attribute_map;
+sub attribute_metaclass;
+sub blessed($) ;
+}
+package Class::MOP::Mixin::HasMethods {
+sub _method_map;
+sub blessed($) ;
+sub method_metaclass;
+sub reftype($) ;
+sub subname;
+sub wrapped_method_metaclass;
+}
+package Class::MOP::Mixin::HasOverloads {
+sub blessed($) ;
+}
+package Class::MOP::Object {
+sub blessed($) ;
+}
+package Class::MOP::Overload {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Class::MOP::Package {
+sub blessed($) ;
+sub name;
+sub weaken($) ;
+}
 package Class::XSAccessor {
 sub __entersub_optimized__() ;
 sub _newxs_compat_accessor;
@@ -2104,6 +2219,10 @@ sub any(&@) ;
 package Devel::MAT::Tool::time {
 sub gettimeofday() ;
 }
+package Devel::OverloadInfo {
+sub blessed($) ;
+sub subname;
+}
 package Devel::Peek {
 sub CvGV;
 sub DeadCode;
@@ -2944,6 +3063,109 @@ sub _zero;
 package Module::Pluggable::Object {
 sub catdir;
 sub catfile;
+}
+package Moose {
+sub is_class_loaded;
+}
+package Moose::Exporter {
+sub _export_is_flagged;
+sub _flag_as_reexport;
+sub is_class_loaded;
+sub reftype($) ;
+sub subname;
+sub uniq(@) ;
+}
+package Moose::Meta::Attribute {
+sub any(&@) ;
+sub blessed($) ;
+}
+package Moose::Meta::Class {
+sub any(&@) ;
+sub blessed($) ;
+}
+package Moose::Meta::Class::Immutable::Trait {
+sub blessed($) ;
+}
+package Moose::Meta::Method::Constructor {
+sub weaken($) ;
+}
+package Moose::Meta::Method::Delegation {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Moose::Meta::Method::Destructor {
+sub blessed($) ;
+sub weaken($) ;
+}
+package Moose::Meta::Object::Trait {
+sub blessed($) ;
+}
+package Moose::Meta::Role {
+sub blessed($) ;
+}
+package Moose::Meta::Role::Application {
+sub all(&@) ;
+}
+package Moose::Meta::Role::Application::RoleSummation {
+sub all(&@) ;
+sub blessed($) ;
+}
+package Moose::Meta::Role::Application::ToClass {
+sub first(&@) ;
+sub weaken($) ;
+}
+package Moose::Meta::Role::Application::ToInstance {
+sub _reset_amagic;
+sub all(&@) ;
+sub blessed($) ;
+}
+package Moose::Meta::Role::Attribute {
+sub all(&@) ;
+sub blessed($) ;
+sub weaken($) ;
+}
+package Moose::Meta::Role::Composite {
+sub blessed($) ;
+}
+package Moose::Meta::TypeCoercion::Union {
+sub blessed($) ;
+}
+package Moose::Meta::TypeConstraint {
+sub refaddr($) ;
+sub subname;
+}
+package Moose::Meta::TypeConstraint::DuckType {
+sub all(&@) ;
+sub blessed($) ;
+}
+package Moose::Meta::TypeConstraint::Parameterized {
+sub blessed($) ;
+}
+package Moose::Meta::TypeConstraint::Registry {
+sub blessed($) ;
+}
+package Moose::Meta::TypeConstraint::Union {
+sub all(&@) ;
+sub first(&@) ;
+}
+package Moose::Util {
+sub all(&@) ;
+sub any(&@) ;
+sub blessed($) ;
+sub first(&@) ;
+}
+package Moose::Util::MetaRole {
+sub all(&@) ;
+sub blessed($) ;
+sub first(&@) ;
+}
+package Moose::Util::TypeConstraints {
+sub blessed($) ;
+}
+package Moose::Util::TypeConstraints::Builtins {
+sub _RegexpRef;
+sub blessed($) ;
+sub is_class_loaded;
 }
 package Net::SSLeay {
 sub AF_802() ;
@@ -4078,6 +4300,11 @@ sub setispeed;
 sub setlflag;
 sub setoflag;
 sub setospeed;
+}
+package Package::DeprecationManager {
+sub _HASH0($) ;
+sub any(&@) ;
+sub subname;
 }
 package Package::Stash {
 sub add_symbol;

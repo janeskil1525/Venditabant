@@ -15,11 +15,11 @@ async sub check_all ($self) {
             db => $self->pg->db
         )->load_list_p();
 
-        my $releaser = venditabant::Helpers::Checkpoints::Check::->new(
-            db => $self->pg->db
+        my $checker = venditabant::Helpers::Checkpoints::Check->new(
+            pg => $self->pg
         );
         foreach my $company (@{$companies}) {
-            await $releaser->check(
+            await $checker->check(
                 $company->{companies_pkey}
             );
         }
@@ -27,7 +27,7 @@ async sub check_all ($self) {
     $err = $@ if $@;
     $self->capture_message (
         $self->pg, '',
-        'venditabant::Helpers::ProcessChecpoints;', 'release', $err
+        'venditabant::Helpers::ProcessChecpoints;', 'check_all', $err
     ) if $err;
 
 

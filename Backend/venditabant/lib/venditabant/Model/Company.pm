@@ -1,7 +1,6 @@
 package venditabant::Model::Company;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
-has 'pg';
 has 'db';
 
 sub upsert ($self, $companies_pkey, $users_pkey, $company) {

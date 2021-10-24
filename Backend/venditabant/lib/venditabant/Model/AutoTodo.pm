@@ -1,6 +1,7 @@
 package venditabant::Model::AutoTodo;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
+has 'db';
 
 async sub load_list_p ($self, $companies_fkey) {
 

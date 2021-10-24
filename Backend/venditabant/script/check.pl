@@ -7,6 +7,7 @@ use Moo;
 use MooX::Options;
 use Data::Dumper;
 use feature 'say';
+use feature 'signatures';
 use POSIX qw(strftime);
 use Config::Tiny;
 use Try::Tiny;
@@ -30,11 +31,19 @@ sub check {
     my $self = shift;
 
     Log::Log4perl->easy_init($ERROR);
-    Log::Log4perl::init($self->get_configpath() . 'check_log.conf');
+    eval {
+        Log::Log4perl::init($self->get_configpath() . 'check_log.conf');
+    };
+    say $@ if $@;
 
     $self->_log_script_start();
 
-    my $config = get_config($self->get_configpath() . 'check.ini');
+    my $config;
+    eval {
+        $config = get_config($self->get_configpath() . 'check.ini');
+    };
+    say $@ if $@;
+
     my $pg = Mojo::Pg->new()->dsn(
         $config->{DATABASE}->{pg}
     );
@@ -44,7 +53,10 @@ sub check {
     try {
         venditabant::Helpers::ProcessCheckpoints->new(
             pg     => $pg,
-        )->process();
+        )->check_all()->catch(sub($err) {
+            my $log = Log::Log4perl->get_logger();
+            $log->error('ProcessChecpoints ' . $err)
+        });
 
     }catch{
         say $_;

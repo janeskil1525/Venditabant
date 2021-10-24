@@ -6,18 +6,16 @@ has 'db';
 
 async sub check ($self, $companies_pkey, $check) {
 
-    my $result = $self->db->query(
-        $check->{check_condition},
+    my $result;
+    eval {
+        $result = $self->db->query(
+            $check->{check_condition},
             ($companies_pkey)
-    )->hash;
+        )->hash;
+    };
+    say "check " . $@ if $@;
 
-    if(!$result->{result}) {
-        venditabant::Model::AutoTodo->new(
-            db => $self->db
-        )->upsert(
-            $companies_pkey, $check
-        );
-    }
-    return $result->{result};
+
+    return $result;
 }
 1;

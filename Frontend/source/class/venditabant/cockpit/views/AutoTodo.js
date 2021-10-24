@@ -13,7 +13,8 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
         },
         members: {
             // Public functions ...
-            __table: null,
+            _table: null,
+            _selectedRow:null,
             getView:function() {
 
                 var page1 = new qx.ui.tabview.Page("Auto todo's");
@@ -72,7 +73,13 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                     selectionModel.iterateSelection(function(index) {
                         selectedRows.push(table.getTableModel().getRowData(index));
                     });
+                    that._selectedRow = selectedRows[0];
 
+                });
+                table.addListener('cellDbltap', function(e){
+                    if(that._selectedRow[4] === 'SQL_FALSE') {
+                        that.sqlFalse();
+                    }
 
                 });
                 var tcm = table.getTableColumnModel();
@@ -87,5 +94,16 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
 
                 return ;
             },
+            sqlFalse:function() {
+                if(this._selectedRow[5] === 'COMPANY_CHECK_VATNO' ||
+                    this._selectedRow[5] === 'COMPANY_CHECK_EMAIL' ||
+                    this._selectedRow[5] === 'COMPANY_CHECK_GIRO' ||
+                    this._selectedRow[5] === 'COMPANY_CHECK_INVOICEREF'
+                ) {
+                    let root  = qx.core.Init.getApplication ( ).getRoot();
+                    let view = new venditabant.company.views.Definition();
+                    root._basewin.addView(root, view);
+                }
+            }
         }
     });

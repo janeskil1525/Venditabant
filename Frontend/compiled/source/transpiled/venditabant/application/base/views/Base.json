@@ -264,6 +264,7 @@
     "venditabant.sales.orders.views.SalesordersList",
     "venditabant.sales.orders.views.Salesorder",
     "venditabant.sales.commission.views.Definition",
-    "venditabant.stock.warehouse.views.Definition"
+    "venditabant.stock.warehouse.views.Definition",
+    "venditabant.cockpit.views.AutoTodo"
   ]
 }

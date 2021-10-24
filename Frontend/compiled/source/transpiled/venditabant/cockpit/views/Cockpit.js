@@ -14,6 +14,7 @@
       "qx.ui.container.Composite": {},
       "qx.ui.layout.Canvas": {},
       "qx.ui.tabview.TabView": {},
+      "venditabant.cockpit.views.AutoTodo": {},
       "qx.ui.tabview.Page": {}
     }
   };
@@ -41,11 +42,11 @@
           right: 5,
           height: "100%"
         });
-        var page1 = new qx.ui.tabview.Page("Todo");
-        page1.setLayout(new qx.ui.layout.Canvas());
+        var page1 = new venditabant.cockpit.views.AutoTodo();
+        this._page1 = page1;
         var page2 = new qx.ui.tabview.Page("Status");
         page2.setLayout(new qx.ui.layout.Canvas());
-        tabView.add(page1);
+        tabView.add(page1.getView());
         tabView.add(page2);
         return view;
       }
@@ -54,4 +55,4 @@
   venditabant.cockpit.views.Cockpit.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Cockpit.js.map?dt=1633266123031
+//# sourceMappingURL=Cockpit.js.map?dt=1635078860316

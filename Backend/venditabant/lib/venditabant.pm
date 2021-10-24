@@ -19,6 +19,7 @@ use venditabant::Helpers::Sentinel::Sentinel;
 use venditabant::Helpers::Parameter::Languages;
 use venditabant::Helpers::Mailer::Templates::Mailtemplates;
 use venditabant::Helpers::Warehouses::Warehouse;
+use venditabant::Helpers::Checkpoints::Autotodos;
 
 use Data::Dumper;
 use File::Share;
@@ -93,6 +94,12 @@ sub startup ($self) {
       warehouses => sub {
         state  $warehouses = venditabant::Helpers::Warehouses::Warehouse->new(pg => shift->pg)
       });
+
+  $self->helper(
+      autotodos => sub {
+        state  $autotodos = venditabant::Helpers::Checkpoints::Autotodos->new(pg => shift->pg)
+      });
+
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -191,6 +198,8 @@ sub startup ($self) {
   $auth->get('/warehouses/load_list/')->to('warehouses#load_list');
   $auth->put('/warehouses/save/')->to('warehouses#save_warehouse');
 
+  $auth->get('/autotodos/load_list/')->to('autotodos#load_list');
+  $auth->put('/autotodos/save/')->to('autotodos#save_warehouse');
 }
 
 1;

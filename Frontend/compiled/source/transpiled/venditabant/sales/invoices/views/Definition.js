@@ -13,8 +13,8 @@
       },
       "qx.ui.container.Composite": {},
       "qx.ui.layout.Canvas": {},
-      "qx.ui.tabview.TabView": {},
-      "qx.ui.tabview.Page": {},
+      "qx.ui.container.Stack": {},
+      "venditabant.sales.invoices.views.InvoiceList": {},
       "venditabant.communication.Post": {},
       "qx.ui.table.model.Simple": {},
       "qx.ui.table.Table": {},
@@ -43,106 +43,18 @@
         /*var box = new qx.ui.container.Composite();
         box.setLayout(new qx.ui.layout.HBox(10));
         win.add(box, {flex: 1});*/
-        // Add a TabView
 
-        var tabView = new qx.ui.tabview.TabView();
-        var page1 = new qx.ui.tabview.Page("Invoices");
-        page1.setLayout(new qx.ui.layout.Canvas());
+        var container = new qx.ui.container.Stack();
+        container.setDecorator("main");
+        this._container = container;
+        var invoicelist = new venditabant.sales.invoices.views.InvoiceList().set({
+          support: this.isSupport(),
+          callback: this
+        });
+        this._invoicelist = invoicelist;
+        container.add(this._invoicelist.getView()); // Add a TabView
 
-        this._createInvTable();
-
-        page1.add(this._invtable, {
-          left: 5,
-          right: 5,
-          height: "95%"
-        });
-        tabView.add(page1);
-        var page2 = new qx.ui.tabview.Page("Invoice");
-        page2.setLayout(new qx.ui.layout.Canvas());
-
-        var lbl = this._createLbl(this.tr("Customer"), 70);
-
-        page2.add(lbl, {
-          top: 10,
-          left: 10
-        });
-        lbl = this._createLbl(this.tr("Customer"), 70);
-        page2.add(lbl, {
-          top: 10,
-          left: 90
-        });
-        lbl = this._createLbl(this.tr("Orderno"), 70);
-        page2.add(lbl, {
-          top: 10,
-          left: 250
-        });
-        lbl = this._createLbl(this.tr("Orderno"), 70);
-        page2.add(lbl, {
-          top: 10,
-          left: 350
-        });
-        lbl = this._createLbl(this.tr("Orderdate"), 70);
-        page2.add(lbl, {
-          top: 10,
-          left: 450
-        });
-        lbl = this._createLbl(this.tr("Orderdate"), 70);
-        page2.add(lbl, {
-          top: 10,
-          left: 550
-        });
-        /*let stockitem = this._createTxt(
-            this.tr( "Stockitem" ),150,true,this.tr("Stockitem is required")
-        );
-         page2.add ( stockitem, { top: 10, left: 90 } );
-        this._stockitem = stockitem;
-         lbl = this._createLbl(this.tr( "Description" ),70);
-        page2.add ( lbl, { top: 10, left: 250 } );
-         let descriptn = this._createTxt(
-            this.tr( "Description" ),250,true,this.tr("Description is required")
-        );
-        page2.add ( descriptn, { top: 10, left: 350 } );
-        this._description = descriptn;
-         lbl = this._createLbl(this.tr( "Price" ),70);
-        page2.add ( lbl, { top: 50, left: 10 } );
-         let price = this._createTxt(
-            this.tr( "Price" ),80,false
-        );
-         page2.add ( price, { top: 50, left: 90 } );
-        this._price = price;
-         lbl = this._createLbl(this.tr( "PO price" ),70);
-        page2.add ( lbl, { top: 50, left: 250 } );
-         let purchprice = this._createTxt(
-            this.tr( "Purchase price" ),80,false
-        );
-         page2.add ( purchprice, { top: 50, left: 350 } );
-        this._purchaseprice = purchprice;
-         lbl = this._createLbl(this.tr( "Active" ),70);
-        page2.add ( lbl, { top: 90, left: 10 } );
-         let active = new qx.ui.form.CheckBox("");
-        page2.add ( active, { top: 90, left: 90 } );
-        this._active = active;
-         lbl = this._createLbl(this.tr( "Stocked" ),70);
-        page2.add ( lbl, { top: 90, left: 250 } );
-         let stocked = new qx.ui.form.CheckBox("");
-        page2.add ( stocked, { top: 90, left: 350 } );
-        this._stocked = stocked;
-         let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
-            this.saveStockitem ( );
-        }, this );
-        page2.add ( btnSignup, { bottom: 10, left: 10 } );
-         let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
-            this.cancel ( );
-        }, this );
-        page2.add ( btnCancel, { bottom: 10, right: 10 } );*/
-
-        tabView.add(page2);
-        /*var page2 = new qx.ui.tabview.Page("Page 2");
-        tabView.add(page2);
-         var page3 = new qx.ui.tabview.Page("Page 3");
-        tabView.add(page3);*/
-
-        view.add(tabView, {
+        view.add(container, {
           top: 5,
           left: 5,
           right: 5,
@@ -233,4 +145,4 @@
   venditabant.sales.invoices.views.Definition.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Definition.js.map?dt=1633266120859
+//# sourceMappingURL=Definition.js.map?dt=1635088717882

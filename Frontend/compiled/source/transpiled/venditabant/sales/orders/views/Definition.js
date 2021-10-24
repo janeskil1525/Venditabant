@@ -38,12 +38,7 @@
         view.setBackgroundColor("white");
         var container = new qx.ui.container.Stack();
         container.setDecorator("main");
-        this._container = container; //container.setWidth(200);
-        //container.setHeight(120);
-        // Add a TabView
-        //var tabView = new qx.ui.tabview.TabView();
-        //view.add(tabView, {top: 0, left: 5, right: 5, height: "90%"});
-
+        this._container = container;
         var salesorderlist = new venditabant.sales.orders.views.SalesordersList().set({
           support: this.isSupport(),
           callback: this
@@ -104,4 +99,4 @@
   venditabant.sales.orders.views.Definition.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Definition.js.map?dt=1634652962396
+//# sourceMappingURL=Definition.js.map?dt=1635088718240

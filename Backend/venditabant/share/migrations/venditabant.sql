@@ -1499,3 +1499,9 @@ CREATE INDEX ids_auto_todo_companies_fkey
 CREATE UNIQUE INDEX idx_auto_todo_companies_fkey_check_type_check_name
     ON auto_todo(companies_fkey, check_type, check_name);
 -- 28 down
+-- 29 up
+ALTER TABLE invoice
+    ADD COLUMN invoiceno BIGINT NOT NULL,
+    ADD COLUMN open BOOLEAN NOT NULL DEFAULT 'true';
+
+-- 29 down

@@ -22,6 +22,9 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                 this._createTable();
 
                 page1.add(this._table,{top: 50, left:5, right:5, height:"90%"});
+                let jwt = new venditabant.utils.UserJwt();
+                if(jwt.getUserJwt())
+
                 this.loadAutoTodoList();
                 return page1;
             },

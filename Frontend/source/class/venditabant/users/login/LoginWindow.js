@@ -1,3 +1,11 @@
+
+async function loadWindow(data) {
+    let jwt = new qx.data.store.Offline('userid','local');
+    jwt.setModel(qx.data.marshal.Json.createModel(data));
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    return data;
+}
+
 qx.Class.define ( "venditabant.users.login.LoginWindow",
     {
         extend : qx.ui.container.Composite,
@@ -90,6 +98,7 @@ qx.Class.define ( "venditabant.users.login.LoginWindow",
                 this.destroy ( );
             },
             login : function ( )  {
+                let that = this;
                 var name = this._name.getValue ( );
                 var pass = this._pass.getValue ( );
                 var remember = this._remember.getValue ( );
@@ -104,19 +113,22 @@ qx.Class.define ( "venditabant.users.login.LoginWindow",
                 };
                 app.send ( this._address, "/api/login/", data, function ( success, rsp ) {
                     if (success) {
-                        let jwt = new qx.data.store.Offline('userid','local');
-                        jwt.setModel(qx.data.marshal.Json.createModel(rsp.data));
-                        let support = false;
-                        if(rsp.data.support === 1) {
-                            support = true;
-                        }
-
-                        let win = new venditabant.application.ApplicationWindow();
-                        win.set({
-                            support:support
+                        loadWindow(rsp.data).then(function(data){
+                            let support = false;
+                            if(rsp.data.support === 1) {
+                                support = true;
+                            }
+                            let win = new venditabant.application.ApplicationWindow();
+                            win.set({
+                                support:support
+                            });
+                            win.show();
+                            that.destroy();
                         });
-                        win.show();
-                        this.destroy();
+                            /*let jwt = new qx.data.store.Offline('userid','local');
+                            jwt.setModel(qx.data.marshal.Json.createModel(rsp.data));*/
+
+
                     } else {
                         alert(this.tr("Could not log in."));
                     }

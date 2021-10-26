@@ -2419,7 +2419,7 @@
   });
   qx.ui.table.pane.CellEvent.$$dbClassInfo = $$dbClassInfo;
 })();
-//# sourceMappingURL=package-37.js.map?dt=1635093082508
+//# sourceMappingURL=package-37.js.map?dt=1635230906256
 qx.$$packageData['37'] = {
   "locales": {},
   "resources": {},

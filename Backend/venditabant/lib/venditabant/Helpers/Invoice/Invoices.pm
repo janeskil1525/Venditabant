@@ -1,4 +1,4 @@
-package venditabant::Helpers::Invoices::Invoice;
+package venditabant::Helpers::Invoice::Invoices;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 

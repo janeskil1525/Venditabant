@@ -1,5 +1,5 @@
 
-qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
+qx.Class.define ( "venditabant.sales.invoices.views.Invoice",
     {
         extend: venditabant.application.base.views.Base,
         include:[qx.locale.MTranslation],
@@ -10,14 +10,14 @@ qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
         properties : {
             support : { nullable : true, check: "Boolean" },
             callback:{nullable:true},
-            salesorders_fkey: { nullable : true, check: "Number" },
+            invoice_fkey: { nullable : true, check: "Number" },
         },
         members: {
             // Public functions ...
             __table : null,
             getView: function () {
 
-                var page1 = new qx.ui.tabview.Page("Salesorder");
+                var page1 = new qx.ui.tabview.Page("Invoice");
                 //page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
 
@@ -31,18 +31,18 @@ qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
                 this._customers = customers;
                 page1.add ( customers.getView(), { top: 10, left: 90 } );
 
-                lbl = this._createLbl(this.tr( "Order no" ),70);
+                lbl = this._createLbl(this.tr( "Invoice no" ),70);
                 page1.add ( lbl, { top: 45, left: 10 } );
 
                 let orderno = this._createTxt(
-                    this.tr( "Orderno" ),100,false,''
+                    this.tr( "Invoice no" ),100,false,''
                 );
                 page1.add ( orderno, { top: 45, left: 90 } );
                 this._orderno = orderno;
 
                 let format = new qx.util.format.DateFormat("yyyy-MM-dd");
 
-                lbl = new qx.ui.basic.Label ( this.tr( "Order date" )  );
+                lbl = new qx.ui.basic.Label ( this.tr( "Invoice date" )  );
                 lbl.setRich ( true );
                 lbl.setWidth( 70 );
                 page1.add ( lbl, { top: 80, left: 10 } );
@@ -55,7 +55,7 @@ qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
                 page1.add ( orderdate, { top: 80, left: 90 } );
                 this._orderdate = orderdate;
 
-                lbl = new qx.ui.basic.Label ( ( "Delivery date" )  );
+                lbl = new qx.ui.basic.Label ( ( "Pay date" )  );
                 lbl.setRich ( true );
                 lbl.setWidth( 90 );
                 page1.add ( lbl, { top: 80, left: 250 } );
@@ -94,7 +94,7 @@ qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
                 page1.add ( btnSignup, { top: 200, left: 10 } );
 
                 let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 90, function ( ) {
-                        this.getCallback().previousView();
+                    this.getCallback().previousView();
                 }, this );
 
                 page1.add ( btnCancel, { top: 200, right: 10 } );
@@ -110,25 +110,25 @@ qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
 
                 return page1;
             },
-            loadOrder:function() {
+            loadInvoice:function() {
                 let that = this;
-                if(this.getSalesorders_fkey() !== null && this.getSalesorders_fkey() > 0) {
-                    let order = new venditabant.sales.orders.models.Salesorders();
-                    order.loadSalesorder(function(response){
-                        that.loadSalesorderItems();
+                if(this.getInvoiceFkey() !== null && this.getInvoiceFkey() > 0) {
+                    let invoice = new venditabant.sales.invoices.models.Invoice();
+                    invoice.loadInvoice(function(response){
+                        that.loadInvoiceItems();
                         that._customers.setKey(response.data.customers_fkey);
                         that._orderno.setValue(response.data.orderno.toString());
                         that._deliverydate.setValue(new Date(response.data.deliverydate));
                         that._orderdate.setValue(new Date(response.data.orderdate));
 
-                    },this, this.getSalesorders_fkey());
+                    },this, this.getInvoiceFkey());
                 }
             },
-            loadSalesorderItems:function() {
-                let items = new venditabant.sales.orders.models.SalesorderItems();
+            loadInvoiceItems:function() {
+                let items = new venditabant.sales.invoices.models.InvoiceItems();
 
-                if(this.getSalesorders_fkey() !== null && this.getSalesorders_fkey() > 0) {
-                    items.loadSalesorderItemsList(function(response) {
+                if(this.getInvoiceFkey() !== null && this.getInvoiceFkey() > 0) {
+                    items.loadInvoiceItemsList(function(response) {
                             let tableData = [];
                             if(response.data !== null) {
                                 for(let i = 0; i < response.data.length; i++) {
@@ -152,7 +152,7 @@ qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
                 }
 
             },
-            saveOrderItem:function() {
+            saveInvoiceItem:function() {
                 let that = this;
 
                 let stockitems_fkey = this._stockitems.getKey();
@@ -163,12 +163,12 @@ qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
                     stockitems_fkey: stockitems_fkey,
                     price: price,
                     quantity:quantity,
-                    salesorders_fkey:this.getSalesorders_fkey(),
+                    invoice_fkey:this.getInvoice_fkey(),
                 }
-                let model = new venditabant.sales.orders.models.SalesorderItems();
-                model.saveOrderItem(data, function(success) {
+                let model = new venditabant.sales.invoices.models.InvoiceItems();
+                model.savevoiceItem(data, function(success) {
                     if ( success )  {
-                        that.loadSalesorderItems();
+                        that.loadInvoiceItems();
                     }
                     else  {
                         alert ( this.tr ( 'Something went bad during saving of pricelist item' ) );
@@ -220,11 +220,11 @@ qx.Class.define ( "venditabant.sales.orders.views.Salesorder",
 
                 this._table = table;
             },
-            setSalesorderFkey:function(salesorders_fkey) {
-                this._salesorders_fkey = salesorders_fkey;
+            setInvoiceFkey:function(invoice_fkey) {
+                this._invoice_fkey = invoice_fkey;
             },
-            getSalesorderFkey:function() {
-                return this._salesorders_fkey;
+            getInvoiceFkey:function() {
+                return this._invoice_fkey;
             }
         }
     });

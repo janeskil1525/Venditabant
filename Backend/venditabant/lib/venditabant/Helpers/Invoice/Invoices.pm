@@ -14,17 +14,17 @@ async sub load_invoice_list ($self, $companies_pkey, $users_pkey, $data) {
     eval {
         $result = venditabant::Model::InvoiceHead->new(
             db => $self->pg->db
-        )->load_salesorder_list (
+        )->load_invoice_list(
             $companies_pkey, $users_pkey, $data
         );
     };
     $err = $@ if $@;
-    $self->capture_message (
+    $self->capture_message(
         $self->pg, '',
         'venditabant::Helpers::Salesorder::Salesorders', 'load_list_p', $err
     ) if $err;
 
     return $result;
-
+}
 
 1;

@@ -9,6 +9,33 @@ use Data::Dumper;
 
 has 'pg';
 
+async sub load_salesorder_full($self, $companies_pkey, $users_pkey, $salesorders_fkey) {
+
+    my $order;
+    my $err;
+    eval {
+        $order->{salesorder} = await $self->load_salesorder(
+            $companies_pkey, $users_pkey, $salesorders_fkey
+        );
+        $order->{items} = await $self->load_salesorder_items_list(
+            $companies_pkey, $users_pkey, $salesorders_fkey
+        );
+        $order->{invaddress} = await venditabant::Helpers::Customers::Address->new(
+            pg => $self->pg
+        )->load_invoice_address_p(
+            $companies_pkey, $users_pkey, $order->{salesorder}->{customers_fkey}
+        );
+
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Salesorder::Salesorders', 'load_list_p', $err
+    ) if $err;
+
+    return $order;
+}
+
 async sub load_salesorder_items_list ($self, $companies_pkey, $users_pkey, $salesorders_fkey) {
 
     my $result;

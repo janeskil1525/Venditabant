@@ -1505,3 +1505,66 @@ ALTER TABLE invoice
     ADD COLUMN open BOOLEAN NOT NULL DEFAULT 'true';
 
 -- 29 down
+-- 30 up
+ALTER TABLE invoice
+    ADD COLUMN address1 varchar NOT NULL DEFAULT '',
+    ADD COLUMN address2 varchar NOT NULL DEFAULT '',
+    ADD COLUMN address3 varchar NOT NULL DEFAULT '',
+    ADD COLUMN city varchar NOT NULL DEFAULT '',
+    ADD COLUMN zipcode varchar NOT NULL DEFAULT '',
+    ADD COLUMN country varchar NOT NULL DEFAULT '',
+    ADD COLUMN mailaddresses varchar NOT NULL DEFAULT '',
+    ADD COLUMN vatsum DECIMAL(15,2) NOT NULL DEFAULT 0.0,
+    ADD COLUMN netsum DECIMAL(15,2) NOT NULL DEFAULT 0.0,
+    ADD COLUMN total DECIMAL(15,2) NOT NULL DEFAULT 0.0,
+    ADD COLUMN salesorder_fkey BIGINT NOT NULL DEFAULT 0,
+    ADD COLUMN invoicedays BIGINT NOT NULL DEFAULT 0,
+    ADD COLUMN paid BOOLEAN NOT NULL DEFAULT 'false';
+
+ALTER TABLE invoice_items
+    ADD COLUMN vat DECIMAL(15,2) NOT NULL DEFAULT 0.0,
+    ADD COLUMN vatsum DECIMAL(15,2) NOT NULL DEFAULT 0.0,
+    ADD COLUMN netsum DECIMAL(15,2) NOT NULL DEFAULT 0.0,
+    ADD COLUMN total DECIMAL(15,2) NOT NULL DEFAULT 0.0;
+
+CREATE TABLE IF NOT EXISTS accounts_receivable
+(
+    accounts_receivable_pkey SERIAL NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    companies_fkey bigint NOT NULL DEFAULT 0,
+    customers_fkey BIGINT NOT NULL DEFAULT 0,
+    invoice_fkey bigint NOT NULL DEFAULT 0,
+    accounts_type varchar NOT NULL,
+    total DECIMAL(15,2) NOT NULL DEFAULT 0.0,
+    CONSTRAINT accounts_receivable_pkey PRIMARY KEY (accounts_receivable_pkey),
+    CONSTRAINT accounts_receivable_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT accounts_receivable_customers_fkey FOREIGN KEY (customers_fkey)
+        REFERENCES customers (customers_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT accounts_receivable_invoice_fkey FOREIGN KEY (invoice_fkey)
+        REFERENCES invoice (invoice_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX idx_accounts_receivable_companies_fkey
+    ON accounts_receivable(companies_fkey);
+
+CREATE INDEX idx_accounts_receivable_customers_fkey
+    ON accounts_receivable(customers_fkey);
+
+CREATE INDEX idx_accounts_receivable_invoice_fkey
+    ON accounts_receivable(invoice_fkey);
+
+-- 30 down

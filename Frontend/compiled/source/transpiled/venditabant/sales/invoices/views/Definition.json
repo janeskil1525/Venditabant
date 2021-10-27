@@ -15,7 +15,7 @@
         "column": 0
       },
       "end": {
-        "line": 129,
+        "line": 65,
         "column": 7
       }
     }
@@ -128,42 +128,42 @@
       "type": "function",
       "access": "public"
     },
-    "saveStockitem": {
+    "setInvoice": {
       "location": {
         "start": {
           "line": 41,
           "column": 12
         },
         "end": {
-          "line": 75,
+          "line": 56,
           "column": 13
         }
       },
       "type": "function",
       "access": "public"
     },
-    "_createInvTable": {
+    "nextViev": {
       "location": {
         "start": {
-          "line": 76,
+          "line": 57,
           "column": 12
         },
         "end": {
-          "line": 105,
+          "line": 59,
           "column": 13
         }
       },
       "type": "function",
-      "access": "protected"
+      "access": "public"
     },
-    "loadStockitems": {
+    "previousView": {
       "location": {
         "start": {
-          "line": 106,
+          "line": 60,
           "column": 12
         },
         "end": {
-          "line": 127,
+          "line": 62,
           "column": 13
         }
       },

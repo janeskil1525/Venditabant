@@ -30,30 +30,6 @@ qx.Class.define ( "venditabant.sales.orders.views.Definition",
                 this._salesorderlist = salesorderlist;
                 container.add(this._salesorderlist.getView());
 
-
-
-                /*page2.setLayout(new qx.ui.layout.Canvas());
-
-                let lbl = this._createLbl(this.tr( "Customer" ),70);
-                page2.add ( lbl, { top: 10, left: 10 } );
-
-                lbl = this._createLbl(this.tr( "Customer" ),70);
-                page2.add ( lbl, { top: 10, left: 90 } );
-
-                lbl = this._createLbl(this.tr( "Orderno" ),70);
-                page2.add ( lbl, { top: 10, left: 250 } );
-
-                lbl = this._createLbl(this.tr( "Orderno" ),70);
-                page2.add ( lbl, { top: 10, left: 350 } );
-
-                lbl = this._createLbl(this.tr( "Orderdate" ),70);
-                page2.add ( lbl, { top: 10, left: 450 } );
-
-                lbl = this._createLbl(this.tr( "Orderdate" ),70);
-                page2.add ( lbl, { top: 10, left: 550 } );
-
-                tabView.add(page2);*/
-
                 view.add(container, {top:5, left:5, right:5,height:"95%"});
                 //this._tabView = tabView;
                 return view;

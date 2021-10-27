@@ -20,7 +20,7 @@ use venditabant::Helpers::Parameter::Languages;
 use venditabant::Helpers::Mailer::Templates::Mailtemplates;
 use venditabant::Helpers::Warehouses::Warehouse;
 use venditabant::Helpers::Checkpoints::Autotodos;
-#use venditabant::Helpers::Invoice::Invoices;
+use venditabant::Helpers::Invoice::Invoices;
 
 use Data::Dumper;
 use File::Share;
@@ -101,11 +101,10 @@ sub startup ($self) {
       autotodos => sub {
         state  $autotodos = venditabant::Helpers::Checkpoints::Autotodos->new(pg => shift->pg)
       });
-
-  # $self->helper(
-  #     invoices => sub {
-  #       state  $invoices = venditabant::Helpers::Invoice::Invoices->new(pg => shift->pg)
-  #     });
+    $self->helper(
+     invoices => sub {
+         state  $invoices = venditabant::Helpers::Invoice::Invoices->new(pg => shift->pg)
+      });
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -113,7 +112,7 @@ sub startup ($self) {
 
   $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-  )->migrate(28);
+  )->migrate(30);
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -139,7 +138,6 @@ sub startup ($self) {
     my $c = shift;
     #say "authentichate " . $c->req->headers->header('X-Token-Check');
     # Authenticated
-say "under ";
     return 1 if $c->login->authenticate($c->req->headers->header('X-Token-Check'));
     # Not authenticated
     $c->render(json => '{"error":"unknown error"}');
@@ -207,12 +205,12 @@ say "under ";
   $auth->get('/autotodos/load_list/')->to('autotodos#load_list');
   $auth->put('/autotodos/save/')->to('autotodos#save_warehouse');
 
-  # $auth->put('/invoices/save/')->to('invoices#save_salesorder');
-  # $auth->put('/invoices/close/')->to('invoices#close_salesorder');
-  # $auth->get('/invoices/load_invoice_list/:open')->to('invoices#load_invoice_list');
-  # $auth->get('/invoices/load_salesorder/:salesorders_pkey')->to('invoices#load_salesorder');
-  # $auth->get('/invoices/items/load_list/:salesorders_fkey')->to('invoices#load_salesorder_items_list');
-  # $auth->put('/invoices/items/save/')->to('invoices#item_save');
+  $auth->put('/invoices/save/')->to('invoices#save_salesorder');
+  $auth->put('/invoices/close/')->to('invoices#close_salesorder');
+  $auth->get('/invoices/load_invoice_list/:open')->to('invoices#load_invoice_list');
+  $auth->get('/invoices/load_salesorder/:invoice_fkey')->to('invoices#load_salesorder');
+  $auth->get('/invoices/items/load_list/:invoice_fkey')->to('invoices#load_salesorder_items_list');
+  $auth->put('/invoices/items/save/')->to('invoices#item_save');
 
 }
 

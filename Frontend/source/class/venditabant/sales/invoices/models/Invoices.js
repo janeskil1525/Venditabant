@@ -28,7 +28,7 @@ qx.Class.define("venditabant.sales.invoices.models.Invoices",
                     cb.call ( ctx,(response));
                 },this);
             },
-            loadSalesorder:function(cb, ctx, salesorders_pkey) {
+            loadInvoice:function(cb, ctx, salesorders_pkey) {
                 let get = new venditabant.communication.Get;
                 salesorders_pkey = salesorders_pkey ? salesorders_pkey : 0;
                 get.load(this._address, "/api/v1/salesorders/load_salesorder/", salesorders_pkey, function(response){

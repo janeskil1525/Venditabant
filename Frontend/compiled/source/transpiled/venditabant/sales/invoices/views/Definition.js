@@ -70,7 +70,7 @@
 
           this._container.add(this._invoice.getView());
         } else {
-          this._invoice.setSalesorders_fkey(invoice_fkey);
+          this._invoice.setInvoiceFkey(invoice_fkey);
         }
 
         this._invoice.loadInvoice();
@@ -88,4 +88,4 @@
   venditabant.sales.invoices.views.Definition.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Definition.js.map?dt=1635236539467
+//# sourceMappingURL=Definition.js.map?dt=1635434046434

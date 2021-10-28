@@ -49,7 +49,7 @@ qx.Class.define ( "venditabant.sales.invoices.views.Definition",
                     this._invoice = invoice;
                     this._container.add(this._invoice.getView());
                 } else {
-                    this._invoice.setSalesorders_fkey(invoice_fkey);
+                    this._invoice.setInvoiceFkey(invoice_fkey);
                 }
                 this._invoice.loadInvoice();
                 this.nextViev();

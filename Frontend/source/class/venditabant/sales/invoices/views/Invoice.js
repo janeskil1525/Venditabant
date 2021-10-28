@@ -34,11 +34,23 @@ qx.Class.define ( "venditabant.sales.invoices.views.Invoice",
                 lbl = this._createLbl(this.tr( "Invoice no" ),70);
                 page1.add ( lbl, { top: 45, left: 10 } );
 
-                let orderno = this._createTxt(
+                let invoiceno = this._createTxt(
                     this.tr( "Invoice no" ),100,false,''
                 );
-                page1.add ( orderno, { top: 45, left: 90 } );
-                this._orderno = orderno;
+                page1.add ( invoiceno, { top: 45, left: 90 } );
+                this._invoiceno = invoiceno;
+
+                lbl = this._createLbl(this.tr( "Invoice time" ), 120);
+                page1.add ( lbl, { top: 45, left: 250 } );
+
+                let invoicetime = new venditabant.settings.views.SettingsSelectBox().set({
+                    width:150,
+                    parameter:'INVOICEDAYS',
+                    emptyrow:true,
+                });
+                let invoicetimeview = invoicetime.getView()
+                this._invoicetime = invoicetime;
+                page1.add ( invoicetimeview, { top: 45, left: 350 } );
 
                 let format = new qx.util.format.DateFormat("yyyy-MM-dd");
 
@@ -47,26 +59,26 @@ qx.Class.define ( "venditabant.sales.invoices.views.Invoice",
                 lbl.setWidth( 70 );
                 page1.add ( lbl, { top: 80, left: 10 } );
 
-                let orderdate = new qx.ui.form.DateField ( );
-                orderdate.setDateFormat(format);
-                orderdate.setValue (new Date());
-                orderdate.setWidth( 150 );
+                let invoicedate = new qx.ui.form.DateField ( );
+                invoicedate.setDateFormat(format);
+                invoicedate.setValue (new Date());
+                invoicedate.setWidth( 150 );
 
-                page1.add ( orderdate, { top: 80, left: 90 } );
-                this._orderdate = orderdate;
+                page1.add ( invoicedate, { top: 80, left: 90 } );
+                this._invoicedate = invoicedate;
 
                 lbl = new qx.ui.basic.Label ( ( "Pay date" )  );
                 lbl.setRich ( true );
                 lbl.setWidth( 90 );
                 page1.add ( lbl, { top: 80, left: 250 } );
 
-                var deliverydate = new qx.ui.form.DateField ( );
-                deliverydate.setDateFormat(format);
-                deliverydate.setValue (new Date(new Date().setFullYear(new Date().getFullYear() + 3)));
-                deliverydate.setWidth( 150 );
+                var paydate = new qx.ui.form.DateField ( );
+                paydate.setDateFormat(format);
+                paydate.setValue (new Date(new Date().setFullYear(new Date().getFullYear() + 3)));
+                paydate.setWidth( 150 );
 
-                page1.add ( deliverydate, { top: 80, left: 350 } );
-                this._deliverydate = deliverydate;
+                page1.add ( paydate, { top: 80, left: 350 } );
+                this._paydate = paydate;
 
                 let stockitems = new venditabant.stock.stockitems.views.StockitemsSelectBox().set({
                     width:180,
@@ -112,22 +124,23 @@ qx.Class.define ( "venditabant.sales.invoices.views.Invoice",
             },
             loadInvoice:function() {
                 let that = this;
-                if(this.getInvoiceFkey() !== null && this.getInvoiceFkey() > 0) {
-                    let invoice = new venditabant.sales.invoices.models.Invoice();
+                if(this.getInvoice_fkey() !== null && this.getInvoice_fkey() > 0) {
+                    let invoice = new venditabant.sales.invoices.models.Invoices();
                     invoice.loadInvoice(function(response){
-                        that.loadInvoiceItems();
-                        that._customers.setKey(response.data.customers_fkey);
-                        that._orderno.setValue(response.data.orderno.toString());
-                        that._deliverydate.setValue(new Date(response.data.deliverydate));
-                        that._orderdate.setValue(new Date(response.data.orderdate));
 
-                    },this, this.getInvoiceFkey());
+                        that._customers.setKey(response.data.customers_fkey);
+                        that._invoiceno.setValue(response.data.invoiceno.toString());
+                        that._invoicedate.setValue(new Date(response.data.invoicedate));
+                        that._paydate.setValue(new Date(response.data.paydate));
+                        that._invoicetime.setKey(response.data.invoicedays_fkey);
+                        that.loadInvoiceItems();
+                    },this, this.getInvoice_fkey());
                 }
             },
             loadInvoiceItems:function() {
                 let items = new venditabant.sales.invoices.models.InvoiceItems();
 
-                if(this.getInvoiceFkey() !== null && this.getInvoiceFkey() > 0) {
+                if(this.getInvoice_fkey() !== null && this.getInvoice_fkey() > 0) {
                     items.loadInvoiceItemsList(function(response) {
                             let tableData = [];
                             if(response.data !== null) {
@@ -143,11 +156,10 @@ qx.Class.define ( "venditabant.sales.invoices.views.Invoice",
                                     ]);
                                 }
                             }
-
                             this._table.getTableModel().setData(tableData);
                         },
                         this,
-                        this.getSalesorders_fkey()
+                        this.getInvoice_fkey()
                     );
                 }
 

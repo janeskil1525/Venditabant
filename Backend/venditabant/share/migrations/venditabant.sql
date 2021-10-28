@@ -1591,3 +1591,10 @@ CREATE TABLE invoice_status
         DEFERRABLE
 );
 -- 31 down
+-- 32 up
+ALTER TABLE salesorders
+    ADD COLUMN invoicedays_fkey BIGINT NOT NULL DEFAULT 0;
+ALTER TABLE invoice
+    ADD COLUMN invoicedays_fkey BIGINT NOT NULL DEFAULT 0;
+
+-- 32 down

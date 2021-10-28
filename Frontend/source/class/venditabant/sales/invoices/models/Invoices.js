@@ -28,10 +28,10 @@ qx.Class.define("venditabant.sales.invoices.models.Invoices",
                     cb.call ( ctx,(response));
                 },this);
             },
-            loadInvoice:function(cb, ctx, salesorders_pkey) {
+            loadInvoice:function(cb, ctx, invoice_pkey) {
                 let get = new venditabant.communication.Get;
-                salesorders_pkey = salesorders_pkey ? salesorders_pkey : 0;
-                get.load(this._address, "/api/v1/salesorders/load_salesorder/", salesorders_pkey, function(response){
+                invoice_pkey = invoice_pkey ? invoice_pkey : 0;
+                get.load(this._address, "/api/v1/invoices/load_invoice/", invoice_pkey, function(response){
                     cb.call ( ctx,(response));
                 },this);
             }

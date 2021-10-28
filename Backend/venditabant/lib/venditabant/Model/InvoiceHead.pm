@@ -66,6 +66,19 @@ async sub load_invoice_list ($self, $companies_pkey, $users_pkey, $open) {
     return $hash;
 }
 
+async sub load_invoice($self, $companies_pkey, $users_pkey, $invoice_fkey) {
 
+    my $result = $self->db->select (
+        'invoice', ['*'],
+        {
+            companies_fkey    => $companies_pkey,
+            invoice_pkey => $invoice_fkey,
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result->rows;
+    return $hash;
+}
 
 1;

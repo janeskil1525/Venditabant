@@ -6,7 +6,7 @@ use Data::Dumper;
 has 'db';
 
 async sub insert ($self, $companies_pkey, $users_pkey, $invoicehead) {
-    my $stmt = qq{
+    my $stmt = qq {
         INSERT INTO invoice (
 	        insby,  modby, customers_fkey, companies_fkey, invoicedate, paydate, invoiceno,
             address1, address2, address3, city, zipcode, country, mailaddresses, vatsum,
@@ -31,12 +31,13 @@ async sub insert ($self, $companies_pkey, $users_pkey, $invoicehead) {
         $invoicehead->{address2},
         $invoicehead->{address3},
         $invoicehead->{city},
+        $invoicehead->{zipcode},
         $invoicehead->{country},
-        $invoicehead->{mailaddresses},
+        $invoicehead->{mailadresses},
         $invoicehead->{vatsum},
         $invoicehead->{netsum},
         $invoicehead->{total},
-        $invoicehead->{salesorder_fkey},
+        $invoicehead->{salesorders_fkey},
         $invoicehead->{invoicedays}
     ))->hash();
 

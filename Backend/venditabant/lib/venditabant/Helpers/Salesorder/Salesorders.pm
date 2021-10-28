@@ -4,6 +4,7 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 use venditabant::Model::SalesorderHead;
 use venditabant::Model::Counter;
 use venditabant::Model::SalesorderItem;
+use venditabant::Helpers::Customers::Address;
 
 use Data::Dumper;
 
@@ -60,7 +61,7 @@ async sub load_salesorder($self, $companies_pkey, $users_pkey, $salesorders_pkey
     my $result;
     my $err;
     eval {
-        $result = venditabant::Model::SalesorderHead->new(
+        $result = await venditabant::Model::SalesorderHead->new(
             db => $self->pg->db
         )->load_salesorder (
             $companies_pkey, $users_pkey, $salesorders_pkey
@@ -170,6 +171,18 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
     say "error '$err'" if $err;
 
     return $err ? $err : 'success';
+}
+
+async sub imvoice ($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
+
+    $self->db->update('salesorders',
+        {
+            invoiced => 'true'
+        },
+        {
+            salesorders_pkey => $salesorders_pkey
+        }
+    );
 }
 
 async sub close ($self, $companies_pkey, $users_pkey, $data){

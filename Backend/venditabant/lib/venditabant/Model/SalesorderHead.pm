@@ -7,7 +7,7 @@ has 'db';
 
 async sub load_salesorder ($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
 
-    my $result = await $self->db->select_p(
+    my $result = $self->db->select (
         'salesorders', ['*'],
             {
                 companies_fkey    => $companies_pkey,
@@ -144,5 +144,18 @@ async sub close ($self, $companies_pkey, $users_pkey, $customer) {
         return $hash->{salesorders_pkey};
     }
     return 0;
+}
+
+async sub invoice ($self, $salseorders_pkey) {
+
+    $self->db->update(
+        'salesorders',
+            {
+                invoiced => 'true'
+            },
+            {
+                salesorders_pkey => $salseorders_pkey
+            }
+    );
 }
 1;

@@ -1568,3 +1568,26 @@ CREATE INDEX idx_accounts_receivable_invoice_fkey
     ON accounts_receivable(invoice_fkey);
 
 -- 30 down
+-- 31 up
+ALTER TABLE salesorders
+    ADD COLUMN invoiced BOOLEAN NOT NULL DEFAULT 'false';
+
+CREATE TABLE invoice_status
+(
+    invoice_status_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    invoice_fkey bigint NOT NULL,
+    status varchar NOT NULL,
+    status_date timestamp without time zone NOT NULL DEFAULT now(),
+    CONSTRAINT invoice_status_pkey PRIMARY KEY (invoice_status_pkey),
+    CONSTRAINT invoice_status_invoice_fkey FOREIGN KEY (invoice_fkey)
+        REFERENCES invoice (invoice_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+-- 31 down

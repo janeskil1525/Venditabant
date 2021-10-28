@@ -69,11 +69,11 @@ qx.Class.define ( "venditabant.sales.invoices.views.InvoiceList",
                         selectedRows.push(table.getTableModel().getRowData(index));
                     });
 
-                    that._salesorders_fkey = selectedRows[0][0];
+                    that._invoice_fkey = selectedRows[0][0];
 
                 });
                 table.addListener('cellDbltap', function(e){
-                    that.getCallback().setSalesorder(that._salesorders_fkey);
+                    that.getCallback().setInvoice(that._invoice_fkey);
                 });
 
                 var tcm = table.getTableColumnModel();
@@ -102,7 +102,7 @@ qx.Class.define ( "venditabant.sales.invoices.views.InvoiceList",
                                 response.data[i].customers_fkey,
                             ]);
                         }
-                        this._sotable.getTableModel().setData(tableData);
+                        this._table.getTableModel().setData(tableData);
                     }
 
                     //alert("Set table data here");

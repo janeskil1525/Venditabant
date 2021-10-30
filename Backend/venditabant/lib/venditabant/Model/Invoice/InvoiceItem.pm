@@ -1,4 +1,4 @@
-package venditabant::Model::InvoiceItem;
+package venditabant::Model::Invoice::InvoiceItem;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;

@@ -1,4 +1,4 @@
-package venditabant::Model::CustomerAddress;
+package venditabant::Model::Customer::CustomerAddress;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 has 'db';

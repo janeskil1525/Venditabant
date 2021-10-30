@@ -1,4 +1,4 @@
-package venditabant::Model::Customers;
+package venditabant::Model::Customer::Customers;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;
@@ -57,6 +57,23 @@ async sub load_customer ($self, $companies_pkey, $customer) {
                 companies_pkey => $companies_pkey,
                 customer       => $customer
             }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash;
+}
+
+async sub load_customer_from_pkey ($self, $companies_pkey, $customers_pkey) {
+
+    my $result = $self->db->select(
+        'customers',
+        undef,
+        {
+            companies_pkey      => $companies_pkey,
+            customers_pkey      => $customers_pkey
+        }
     );
 
     my $hash;

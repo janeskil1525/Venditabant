@@ -1,7 +1,7 @@
 package venditabant::Helpers::Customers::Address;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Model::CustomerAddress;
+use venditabant::Model::Customer::CustomerAddress;
 use Data::Dumper;
 
 has 'pg';
@@ -15,13 +15,13 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
     my $customer_addresses_pkey;
     eval {
         if(exists $customer->{customer_addresses_pkey} and $customer->{customer_addresses_pkey} > 0) {
-            $customer_addresses_pkey = await venditabant::Model::CustomerAddress->new(
+            $customer_addresses_pkey = await venditabant::Model::Customer::CustomerAddress->new(
                 db => $db
             )->update_p(
                 $companies_pkey, $users_pkey, $customer
             );
         } else {
-            $customer_addresses_pkey = await venditabant::Model::CustomerAddress->new(
+            $customer_addresses_pkey = await venditabant::Model::Customer::CustomerAddress->new(
                 db => $db
             )->insert_p(
                 $companies_pkey, $users_pkey, $customer
@@ -43,7 +43,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
 
 async sub load_invoice_address_p($self, $companies_pkey, $users_pkey, $customers_pkey) {
 
-    my $result = venditabant::Model::CustomerAddress->new(
+    my $result = venditabant::Model::Customer::CustomerAddress->new(
         db => $self->pg->db
     )->load_invoice_address_p(
         $customers_pkey
@@ -54,7 +54,7 @@ async sub load_invoice_address_p($self, $companies_pkey, $users_pkey, $customers
 
 async sub load_delivery_address_p($self, $companies_pkey, $users_pkey, $customer_addresses_pkey) {
 
-    my $result = venditabant::Model::CustomerAddress->new(
+    my $result = venditabant::Model::Customer::CustomerAddress->new(
         db => $self->pg->db
     )->load_delivery_address_p(
         $customer_addresses_pkey
@@ -65,7 +65,7 @@ async sub load_delivery_address_p($self, $companies_pkey, $users_pkey, $customer
 
 async sub load_delivery_address_list_p($self, $companies_pkey, $users_pkey, $customers_pkey) {
 
-    my $result = venditabant::Model::CustomerAddress->new(
+    my $result = venditabant::Model::Customer::CustomerAddress->new(
         db => $self->pg->db
     )->load_delivery_address_list_p(
         $customers_pkey

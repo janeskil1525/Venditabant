@@ -24,20 +24,20 @@ async sub convert($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
     if($order) {
         eval {
             my $invoicehead = await $self->map_invoicehead($companies_pkey, $users_pkey, $order, $db);
-            my $invoice_pkey = await venditabant::Model::InvoiceHead->new(
+            my $invoice_pkey = await venditabant::Model::Invoice::InvoiceHead->new(
                 db => $db
             )->insert(
                 $companies_pkey, $users_pkey, $invoicehead
             );
             foreach my $item (@{$order->{items}}) {
                 my $invoiceitem = await $self->map_invoiceitem($companies_pkey, $users_pkey, $invoice_pkey, $item);
-                await venditabant::Model::InvoiceItem->new(
+                await venditabant::Model::Invoice::InvoiceItem->new(
                     db => $db
                 )->insert(
                     $companies_pkey, $users_pkey, $invoiceitem
                 );
             }
-            await venditabant::Model::InvoiceStatus->new(
+            await venditabant::Model::Invoice::InvoiceStatus->new(
                 db => $db
             )->insert(
                 $companies_pkey, $users_pkey, $invoice_pkey,'SENT'

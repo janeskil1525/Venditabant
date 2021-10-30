@@ -1,7 +1,7 @@
 package venditabant::Helpers::Customers::Customers;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Model::Customers;
+use venditabant::Model::Customer::Customers;
 use Data::Dumper;
 
 has 'pg';
@@ -13,7 +13,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customers ) {
 
     my $err;
     eval {
-        my $customers_pkey = venditabant::Model::Customers->new(
+        my $customers_pkey = venditabant::Model::Customer::Customers->new(
             db => $db
         )->upsert(
             $companies_pkey, $users_pkey, $customers

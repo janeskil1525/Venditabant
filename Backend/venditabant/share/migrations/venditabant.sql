@@ -1598,3 +1598,125 @@ ALTER TABLE invoice
     ADD COLUMN invoicedays_fkey BIGINT NOT NULL DEFAULT 0;
 
 -- 32 down
+-- 33 up
+CREATE TABLE if not exists mailer_mails
+(
+    mailer_mails_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    recipients varchar NOT NULL,
+    subject varchar NOT NULL,
+    content varchar NOT NULL,
+    sent boolean NOT NULL DEFAULT 'false',
+    CONSTRAINT mailer_mails_pkey PRIMARY KEY (mailer_mails_pkey)
+);
+
+CREATE INDEX idx_mailer_mails_sent
+    ON mailer_mails(sent);
+
+CREATE TABLE if not exists mailer_mails_attachements
+(
+    mailer_mails_attachements_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    mailer_mails_fkey BIGINT NOT NULL,
+    path varchar NOT NULL,
+    CONSTRAINT mailer_mails_attachements_pkey PRIMARY KEY (mailer_mails_attachements_pkey),
+    CONSTRAINT mailer_mails_attachements_mailer_mails_fkey FOREIGN KEY (mailer_mails_fkey)
+        REFERENCES mailer_mails (mailer_mails_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+) ;
+
+CREATE INDEX idx_mailer_mails_attachements_mailer_mails_fkey
+    ON mailer_mails_attachements(mailer_mails_fkey);
+
+CREATE TABLE if not exists system_settings
+(
+    system_settings_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    setting varchar UNIQUE NOT NULL,
+    value varchar NOT NULL,
+    CONSTRAINT system_settings_pkey PRIMARY KEY (system_settings_pkey)
+);
+
+INSERT INTO system_settings (setting, value) VALUES('TEMP_PATH', '/tmp/');
+
+CREATE TABLE if not exists system_mappings
+(
+    system_mappings_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    mapping varchar UNIQUE NOT NULL,
+    CONSTRAINT system_mappings_pkey PRIMARY KEY (system_mappings_pkey)
+);
+
+CREATE TABLE if not exists system_mappings_map
+(
+    system_mappings_map_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    system_mappings_fkey bigint NOT NULL,
+    map_key varchar  NOT NULL,
+    map_field varchar  NOT NULL,
+    map_table varchar  NOT NULL,
+    CONSTRAINT system_mappings_map_pkey PRIMARY KEY (system_mappings_map_pkey),
+    CONSTRAINT system_mappings_map_system_mappings_fkey FOREIGN KEY (system_mappings_fkey)
+        REFERENCES system_mappings (system_mappings_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX idx_system_mappings_map_system_mappings_fkey
+    ON system_mappings_map(system_mappings_fkey);
+
+CREATE UNIQUE INDEX idx_system_mappings_map_system_mappings_fkey_map_key
+    ON system_mappings_map(system_mappings_fkey, map_key);
+
+INSERT INTO system_mappings (mapping)
+    VALUES ('INVOICE_HEADER'),
+            ('INVOICE_BODY'),
+            ('INVOICE_FOOTER');
+
+INSERT INTO system_mappings_map (system_mappings_fkey, map_key, map_field, map_table)
+    VALUES((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'COMPANYNAME','name','comppanies'),
+           ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'COMPANYADDRESS','address1','comppanies'),
+           ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'ZIPCODE','zipcode','comppanies'),
+           ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'CITY','city','comppanies'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'INVOICEDATE','invoicedate','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'CUSTOMER','customer','customers'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'PAYDATE','paydate','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'GIRO','giro','companies'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'SUM','total','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'CUSTOMERNAME','customername','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'ADDRESS1','address1','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'ADDRESS2','address2','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'ADDRESS3','address3','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'CUSTZIPCODE','zipcode','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'CUSTCITY','city','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'COMPANYREFERENCE','invoiceref','companies'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'CUSTREFERENCE','reference','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'YOURORDERNO','yourorderno','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'DELIVERYCONDITIONS','deliveryconditions','invoice'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'DELIVERYWAY','deliveryway','invoice');
+
+
+-- 33 down

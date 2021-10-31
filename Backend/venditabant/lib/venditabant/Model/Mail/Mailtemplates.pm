@@ -95,4 +95,21 @@ sub load_list ($self, $mailer_pkey) {
     return $hash
 }
 
+async sub load_template($self, $companies_pkey, $users_pkey, $language_fkey, $template) {
+
+    my $result = $self->db->select(
+        ['default_mailer_mails',
+            ['mailer', 'mailer_pkey' => 'mailer_fkey']],
+        ['header_value', 'body_value', 'footer_value'],
+        {
+            languages_fkey => $language_fkey,
+            template       => $template,
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash
+}
 1;

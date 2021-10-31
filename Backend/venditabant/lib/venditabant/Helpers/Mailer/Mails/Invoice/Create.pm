@@ -24,7 +24,7 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
     my $template = await venditabant::Helpers::Mailer::Mails::Loader::Templates->new(
         pg => $self->pg
     )->load_template(
-        $companies_pkey, $users_pkey,'Invoice'
+        $companies_pkey, $users_pkey, $invoice->{customer}->{language_fkey}, 'Invoice'
     );
 
     my $mail_content = await venditabant::Helpers::Mailer::Mails::Mapper::Map->new(
@@ -34,7 +34,7 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
     );
 
     my $recipients = await $self->get_recipients($companies_pkey, $invoice);
-    my $subject = await $self->get_subject(companies_pkey, $invoice);
+    my $subject = await $self->get_subject($companies_pkey, $invoice);
 
     await venditabant::Helpers::Mailer::System::Sender->new(
         pg => $self->pg

@@ -88,6 +88,11 @@ async sub load_invoice_full($self, $companies_pkey, $users_pkey, $invoice_pkey) 
         )->load_p(
             $companies_pkey, $users_pkey
         );
+        $result->{customer} = await venditabant::Model::Customer::Customers->new(
+            db => $self->pg->db
+        )->load_customer_from_pkey(
+            $companies_pkey, $result->{invoice}->{customers_fkey}
+        );
     };
     $err = $@ if $@;
     $self->capture_message (

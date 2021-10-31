@@ -41,4 +41,19 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
     )->send()
 
 }
+
+async sub get_recipients($self, $companies_pkey, $users_pkey, $invoice) {
+
+    my $user = venditabant::Model::Users->new(
+        db => $self->pg->db
+    )->load_user_from_pkey(
+        $users_pkey
+    );
+
+    my $recipients = $invoice->{invoice}->{mailaddresses};
+    $recipients .= ",$user->{username}";
+
+    return $recipients;
+}
+
 1;

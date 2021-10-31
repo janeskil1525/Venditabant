@@ -79,4 +79,18 @@ sub load_list_support ($self) {
 
     return $hashes;
 }
+
+async sub load_user_from_pkey($self, $users_pkey) {
+    my $result = $self->db->select(
+        'users', ['*'],
+            {
+                users_pkey => $users_pkey
+            }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash;
+}
 1;

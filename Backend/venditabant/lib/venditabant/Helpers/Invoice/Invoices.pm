@@ -3,6 +3,7 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 
 use venditabant::Model::Invoice::InvoiceHead;
 use venditabant::Model::Invoice::InvoiceItem;
+use venditabant::Model::Customer::Customers;
 use venditabant::Model::Company;
 
 use Data::Dumper;

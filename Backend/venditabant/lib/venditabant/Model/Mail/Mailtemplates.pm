@@ -103,7 +103,7 @@ async sub load_template($self, $companies_pkey, $users_pkey, $language_fkey, $te
         ['header_value', 'body_value', 'footer_value'],
         {
             languages_fkey => $language_fkey,
-            template       => $template,
+            mailtemplate       => $template,
         }
     );
 

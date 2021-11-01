@@ -3,7 +3,13 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 
 use venditabant::Helpers::Invoice::Invoices;
 use venditabant::Helpers::Mailer::Mails::Loader::Templates;
+use venditabant::Helpers::Mailer::Mails::Mapper::Map;
+use venditabant::Helpers::System::Pdf;
+use venditabant::Model::Mail::MailerMailsAttachments;
+use venditabant::Model::Mail::MailerMails;
 use venditabant::Model::Lan::Translations;
+use venditabant::Model::Users;
+
 
 use Data::UUID;
 use Data::Dumper;
@@ -12,59 +18,104 @@ has 'pg';
 
 async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
 
-    my $invoice = await venditabant::Helpers::Invoice::Invoices->new(
-        pg => $self->pg
-    )->load_invoice_full(
-        $companies_pkey, $users_pkey, $invoice_pkey
-    );
+    my $db = $self->pg->db;
+    my $tx = $db->begin();
 
-    my $ug = Data::UUID->new();
-    my $token = $ug->create();
-    $invoice->{id_token} = $ug->to_string($token);
+    my $err;
+    eval {
+        my $invoice = await venditabant::Helpers::Invoice::Invoices->new(
+            pg => $self->pg
+        )->load_invoice_full(
+            $companies_pkey, $users_pkey, $invoice_pkey
+        );
 
-    my $template = await venditabant::Helpers::Mailer::Mails::Loader::Templates->new(
-        pg => $self->pg
-    )->load_template(
-        $companies_pkey, $users_pkey, $invoice->{customer}->{language_fkey}, 'Invoice'
-    );
+        my $ug = Data::UUID->new();
+        my $token = $ug->create();
+        $invoice->{id_token} = $ug->to_string($token);
 
-    my $mail_content = await venditabant::Helpers::Mailer::Mails::Mapper::Map->new(
-        pg => $self->pg
-    )->map_data(
-        $companies_pkey, $users_pkey, 'Invoice', $invoice, $template
-    );
+        my $template = await venditabant::Helpers::Mailer::Mails::Loader::Templates->new(
+            pg => $self->pg
+        )->load_template(
+            $companies_pkey, $users_pkey, $invoice->{customer}->{languages_fkey}, 'Invoice'
+        );
 
-    my $recipients = await $self->get_recipients($companies_pkey, $invoice);
-    my $subject = await $self->get_subject($companies_pkey, $invoice);
+        my $mail_content = await venditabant::Helpers::Mailer::Mails::Mapper::Map->new(
+            pg => $self->pg
+        )->map_data(
+            $companies_pkey, $users_pkey, 'Invoice', $invoice, $template
+        );
 
-    await venditabant::Helpers::Mailer::System::Sender->new(
-        pg => $self->pg
-    )->send($companies_pkey, $users_pkey, $recipients, $subject, $mail_content)
+        my $path = await venditabant::Helpers::System::Pdf->new(
+            pg => $self->pg
+        )->create(
+            $companies_pkey, $users_pkey, $mail_content
+        );
+
+        my $recipients = await $self->get_recipients($companies_pkey, $users_pkey, $invoice);
+        my $subject = await $self->get_subject($companies_pkey, $invoice);
+
+        my $mailer_mails_pkey = await venditabant::Model::Mail::MailerMails->new(
+            db => $db
+        )->insert(
+            $companies_pkey, $recipients, $subject, $mail_content
+        );
+
+        await venditabant::Model::Mail::MailerMailsAttachments->new(
+            db => $db
+        )->insert(
+            $mailer_mails_pkey, $path
+        );
+
+        $tx->commit();
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Mailer::Mails::Invoice::Create', 'create', $err
+    ) if $err;
 
 }
 
 async sub get_subject($self, $companies_pkey, $invoice) {
 
-    my $text = venditabant::Model::Lan::Translations->new(
-        db => $self->pg->db
-    )->load_translation(
-        $invoice->{customer}->{language_fkey},"INVOICE_MAIL", "SUBJECT"
-    );
-    my $subject = $invoice->{company}->{name} . $text . " " .  $invoice->{invoice}->{invoiceno};
+    my $err;
+    my $subject;
+    eval {
+        my $text = venditabant::Model::Lan::Translations->new(
+            db => $self->pg->db
+        )->load_translation(
+            $invoice->{customer}->{languages_fkey}, "INVOICE_MAIL", "SUBJECT"
+        );
+        $subject = $invoice->{company}->{name} . $text . " " . $invoice->{invoice}->{invoiceno};
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Mailer::Mails::Invoice::Create', 'get_subject', $err
+    ) if $err;
 
     return $subject;
 }
 
 async sub get_recipients($self, $companies_pkey, $users_pkey, $invoice) {
 
-    my $user = venditabant::Model::Users->new(
-        db => $self->pg->db
-    )->load_user_from_pkey(
-        $users_pkey
-    );
+    my $err;
+    my $recipients;
+    eval {
+        my $user = venditabant::Model::Users->new(
+            db => $self->pg->db
+        )->load_user_from_pkey(
+            $users_pkey
+        );
 
-    my $recipients = $invoice->{invoice}->{mailaddresses};
-    $recipients .= ",$user->{username}";
+        $recipients = $invoice->{invoice}->{mailaddresses};
+        $recipients .= ",$user->{username}";
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Mailer::Mails::Invoice::Create', 'get_recipients', $err
+    ) if $err;
 
     return $recipients;
 }

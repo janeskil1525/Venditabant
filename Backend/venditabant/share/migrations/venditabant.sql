@@ -1739,3 +1739,11 @@ VALUES ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOI
        ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_FOOTER'),'COMPANYHOMPAGE','homepage','company');
 
 -- 34 down
+-- 35 up
+ALTER TABLE mailer_mails_attachements
+    ADD COLUMN file  bytea;
+
+ALTER TABLE mailer_mails
+    ADD COLUMN companies_fkey bigint NOT NULL DEFAULT 0;
+
+-- 35 down

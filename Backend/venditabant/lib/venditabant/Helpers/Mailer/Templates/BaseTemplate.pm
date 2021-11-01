@@ -16,7 +16,7 @@ async sub getbasetemplate($self) {
 	<META NAME="CHANGED" CONTENT="20211029;14352916">
 	<STYLE TYPE="text/css">
 	<!--
-		@page { margin: 0.79in }
+		\@page { margin: 0.79in }
 		P { margin-bottom: 0.08in }
 		TD P { margin-bottom: 0in }
 		A:link { so-language: zxx }
@@ -24,9 +24,9 @@ async sub getbasetemplate($self) {
 	</STYLE>
 </HEAD>
 <BODY>
-@@HEADER@@
-@@BODY@@
-@@FOOTER@@
+---HEADER---
+---BODY---
+---FOOTER---
 </BODY>
 </HTML>
 

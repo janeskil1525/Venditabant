@@ -1,7 +1,7 @@
 package venditabant::Helpers::Parameter::Languages;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Model::Languages;
+use venditabant::Model::Lan::Languages;
 use Data::Dumper;
 
 has 'pg';

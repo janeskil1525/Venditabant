@@ -1718,5 +1718,24 @@ INSERT INTO system_mappings_map (system_mappings_fkey, map_key, map_field, map_t
           ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'DELIVERYCONDITIONS','deliveryconditions','invoice'),
           ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_HEADER'),'DELIVERYWAY','deliveryway','invoice');
 
-
 -- 33 down
+-- 34 up
+INSERT INTO translations (languages_fkey, module, tag, translation)
+    VALUES ((SELECT languages_pkey FROM languages WHERE lan = 'swe'),'INVOICE_MAIL', 'SUBJECT', 'Faktura : ');
+
+INSERT INTO system_mappings_map (system_mappings_fkey, map_key, map_field, map_table)
+    VALUES ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_BODY'),'STOCKITEM','stockitem','items'),
+        ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_BODY'),'DESCRIPTION','description','items'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_BODY'),'QUANTITY','quantity','items'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_BODY'),'UNIT','unit','items'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_BODY'),'PRICE','price','items'),
+          ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_BODY'),'TOTAL','total','items');
+
+INSERT INTO system_mappings_map (system_mappings_fkey, map_key, map_field, map_table)
+VALUES ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_FOOTER'),'COMPANYPHONE','phone','company'),
+      ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_FOOTER'),'GIRO','giro','company'),
+       ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_FOOTER'),'COMPANYMAIL','email','company'),
+       ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_FOOTER'),'REGISTRATIONNUMBER','registrationnumber','company'),
+       ((SELECT system_mappings_pkey FROM system_mappings WHERE mapping = 'INVOICE_FOOTER'),'COMPANYHOMPAGE','homepage','company');
+
+-- 34 down

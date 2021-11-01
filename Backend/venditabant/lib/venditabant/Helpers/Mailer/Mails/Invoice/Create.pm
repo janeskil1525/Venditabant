@@ -3,8 +3,9 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 
 use venditabant::Helpers::Invoice::Invoices;
 use venditabant::Helpers::Mailer::Mails::Loader::Templates;
-use Data::UUID;
+use venditabant::Model::Lan::Translations;
 
+use Data::UUID;
 use Data::Dumper;
 
 has 'pg';
@@ -44,8 +45,16 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
 
 async sub get_subject($self, $companies_pkey, $invoice) {
 
-    #$invoice->{customer}->{language_fkey}
+    my $text = venditabant::Model::Lan::Translations->new(
+        db => $self->pg->db
+    )->load_translation(
+        $invoice->{customer}->{language_fkey},"INVOICE_MAIL", "SUBJECT"
+    );
+    my $subject = $invoice->{company}->{name} . $text . " " .  $invoice->{invoice}->{invoiceno};
+
+    return $subject;
 }
+
 async sub get_recipients($self, $companies_pkey, $users_pkey, $invoice) {
 
     my $user = venditabant::Model::Users->new(

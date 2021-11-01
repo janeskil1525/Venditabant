@@ -38,10 +38,14 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
 
     await venditabant::Helpers::Mailer::System::Sender->new(
         pg => $self->pg
-    )->send()
+    )->send($companies_pkey, $users_pkey, $recipients, $subject, $mail_content)
 
 }
 
+async sub get_subject($self, $companies_pkey, $invoice) {
+
+    #$invoice->{customer}->{language_fkey}
+}
 async sub get_recipients($self, $companies_pkey, $users_pkey, $invoice) {
 
     my $user = venditabant::Model::Users->new(

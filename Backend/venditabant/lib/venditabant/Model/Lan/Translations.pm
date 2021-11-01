@@ -1,4 +1,4 @@
-package venditabant::Model::Languages;
+package venditabant::Model::Lan::Translations;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;
@@ -18,5 +18,4 @@ async sub load_list_p ($self) {
 
     return $hash
 }
-
 1;

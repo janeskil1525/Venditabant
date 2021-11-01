@@ -8,7 +8,7 @@ has 'pg';
 
 async sub load_list ($self) {
 
-        my $languages = await venditabant::Model::Languages->new(
+        my $languages = await venditabant::Model::Lan::Languages->new(
             db => $self->pg->db
         )->load_list_p();
 

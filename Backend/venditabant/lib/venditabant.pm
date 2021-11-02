@@ -217,6 +217,8 @@ sub startup ($self) {
   $auth->get('/invoices/items/load_list/:invoice_fkey')->to('invoices#load_invoice_items_list');
   $auth->put('/invoices/items/save/')->to('invoices#item_save');
 
+  $auth->get('/systemsettings/load/:setting')->to('systemsettings#load');
+  $auth->put('/systemsettings/save/')->to('systemsettings#save_system_parameter');
 }
 
 1;

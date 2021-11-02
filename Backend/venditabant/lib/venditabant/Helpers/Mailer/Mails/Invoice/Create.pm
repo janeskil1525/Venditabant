@@ -9,6 +9,7 @@ use venditabant::Model::Mail::MailerMailsAttachments;
 use venditabant::Model::Mail::MailerMails;
 use venditabant::Model::Lan::Translations;
 use venditabant::Model::Users;
+use venditabant::Helpers::Mailer::System::Sender;
 
 
 use Data::UUID;
@@ -67,12 +68,18 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
         );
 
         $tx->commit();
+        await venditabant::Helpers::Mailer::System::Sender->new(
+            pg => $self->pg
+        )->process(
+            $mail_content
+        );
     };
     $err = $@ if $@;
     $self->capture_message (
         $self->pg, '',
         'venditabant::Helpers::Mailer::Mails::Invoice::Create', 'create', $err
     ) if $err;
+
 
 }
 

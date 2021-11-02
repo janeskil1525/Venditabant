@@ -21,6 +21,7 @@ use venditabant::Helpers::Mailer::Templates::Mailtemplates;
 use venditabant::Helpers::Warehouses::Warehouse;
 use venditabant::Helpers::Checkpoints::Autotodos;
 use venditabant::Helpers::Invoice::Invoices;
+use venditabant::Helpers::System::Settings;
 
 use Data::Dumper;
 use File::Share;
@@ -104,6 +105,10 @@ sub startup ($self) {
     $self->helper(
      invoices => sub {
          state  $invoices = venditabant::Helpers::Invoice::Invoices->new(pg => shift->pg)
+      });
+  $self->helper(
+      systemsettings => sub {
+        state  $systemsettings = venditabant::Helpers::System::Settings->new(pg => shift->pg)
       });
 
   # Configure the application

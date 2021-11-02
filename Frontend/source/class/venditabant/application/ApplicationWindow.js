@@ -63,6 +63,11 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 root._basewin.addView(root, view);
 
             },
+            systemSettingsButton:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.support.views.Settings();
+                root._basewin.addView(root, view);
+            },
             commissionButton:function() {
                 let root  = qx.core.Init.getApplication ( ).getRoot();
                 let view = new venditabant.sales.commission.views.Definition();
@@ -253,6 +258,10 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let mailTemplatesButton = new qx.ui.menu.Button("Mail templates");
                 mailTemplatesButton.addListener("execute", this.mailTemplatesButton);
                 menu.add(mailTemplatesButton);
+
+                let systemSettingsButton = new qx.ui.menu.Button("Settings");
+                systemSettingsButton.addListener("execute", this.systemSettingsButton);
+                menu.add(systemSettingsButton);
 
                 return menu;
             },

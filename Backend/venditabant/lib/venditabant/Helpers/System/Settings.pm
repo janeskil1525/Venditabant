@@ -31,16 +31,18 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
 
 async sub load_system_setting($self, $companies_pkey, $users_pkey, $setting) {
 
-    my $setting = await venditabant::Model::System::Settings->new(
+    my $setting_obj = await venditabant::Model::System::Settings->new(
         db => $self->pg->db
     )->load_setting(
         $setting
     );
 
-    if(exists $setting->{value} and $setting->{value} ne '') {
-        $setting->{value} = await venditabant::Helpers::Jwt->new()->decode_jwt_p($setting->{value});
+    if(exists $setting_obj->{value} and $setting_obj->{value} ne '') {
+        $setting_obj->{value} = await venditabant::Helpers::Jwt->new()->decode_jwt_p(
+            $setting_obj->{value}
+        );
     }
 
-    return $setting;
+    return $setting_obj;
 }
 1;

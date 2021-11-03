@@ -1,6 +1,9 @@
 package venditabant::Helpers::Mailer::System::Sender;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
+use venditabant::Helpers::System::Settings;
+use venditabant::Model::Mail::MailerMails;
+
 use Try::Tiny;
 use Email::Stuffer;
 use Email::Sender::Simple qw(sendmail);
@@ -10,59 +13,32 @@ use Email::MIME;
 
 has 'pg';
 
-async sub process($self, $mailer_mails_pkey) {
+async sub _send($self, $settings, $mail ) {
 
-    my @parts;
-    my $transport = Email::Sender::Transport::SMTP->new({
-        host          => 'smtp.office365.com',
-        port          => 587,
-        ssl           => 'starttls',
-        sasl_username => 'admin@venditabant.net',
-        sasl_password => 'PeTer1"%09',
-    });
+    my $err;
+    eval {
+        my $transport = Email::Sender::Transport::SMTP->new({
+            host          => $settings->{host},
+            port          => $settings->{port},
+            ssl           => $settings->{ssl},
+            sasl_username => $settings->{sasl_username},
+            sasl_password => $settings->{sasl_password},
+        });
 
-    # push @parts,  Email::MIME->create(
-    #     attributes => {
-    #         content_type => 'text/html',
-    #         disposition  => "attachment",
-    #         charset      => "US-ASCII",
-    #         encoding     => 'base64',
-    #         encode_check => 0,
-    #     },
-    #     body_str => 'Hej hopp',
-    # );
-    #
-    # my $email = Email::MIME->create(
-    #     header_str     => [
-    #         From           => 'jan@daje.work',
-    #         To             => 'janeskil1525@gmail.com',
-    #         Subject        => 'Test',
-    #     ],
-    #     parts => [@parts],
-    # );
-    #
-    # my $result = try {
-    #     sendmail($email, {
-    #         transport => $transport
-    #     });
-    #     return 1;
-    # } catch {
-    #     say $_;
-    #     return 0;
-    # };
+        Email::Stuffer->to('Jan Eskilsson<janeskil1525@gmail.com>')
+            ->from('admin@venditabant.net')
+            #->text_body("You've been good this year. No coal for you.")
+            ->html_body($mail->{content})
+            #->attach_file('choochoo.gif')
+            ->transport($transport)
+            ->subject($mail->{subject})
+            ->send;
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Mailer::System::Sender', '_send', $err
+    ) if $err;
 
-    #return $result;
-     try {
-         Email::Stuffer->to('Jan Eskilsson<janeskil1525@gmail.com>')
-             ->from('jan@daje.work')
-             #->text_body("You've been good this year. No coal for you.")
-             ->html_body($mailer_mails_pkey)
-             #->attach_file('choochoo.gif')
-             ->transport($transport)
-             ->subject('Test')
-             ->send;
-     } catch {
-         die "Error sending email: $_";
-     };
-     print $@ if $@;
+    return $err ? $err : '1' ;
 }1;

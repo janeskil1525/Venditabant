@@ -38,4 +38,20 @@ async sub load_mail ($self, $mailer_mails_pkey) {
 
     return $hash;
 }
+
+async sub set_sent($self, $mailer_mails_pkey) {
+
+    $self->db->update(
+        'mailer_mails',
+            {
+                sent => 'true',
+                sent_at => 'now()',
+            },
+        {
+            mailer_mails_pkey => $mailer_mails_pkey
+        }
+    );
+
+    return 1;
+}
 1;

@@ -3,13 +3,14 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 
 use venditabant::Helpers::Invoice::Invoices;
 use venditabant::Helpers::Mailer::Mails::Loader::Templates;
-use venditabant::Helpers::Mailer::Mails::Mapper::Map;
+use venditabant::Helpers::Mailer::Mails::Invoice::Text;
 use venditabant::Helpers::System::Pdf;
+use venditabant::Helpers::Mailer::System::Processor;
 use venditabant::Model::Mail::MailerMailsAttachments;
 use venditabant::Model::Mail::MailerMails;
 use venditabant::Model::Lan::Translations;
 use venditabant::Model::Users;
-use venditabant::Helpers::Mailer::System::Sender;
+# use venditabant::Helpers::Mailer::System::Sender;
 
 
 use Data::UUID;
@@ -40,10 +41,10 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
             $companies_pkey, $users_pkey, $invoice->{customer}->{languages_fkey}, 'Invoice'
         );
 
-        my $mail_content = await venditabant::Helpers::Mailer::Mails::Mapper::Map->new(
+        my $mail_content = await venditabant::Helpers::Mailer::Mails::Invoice::Text->new(
             pg => $self->pg
-        )->map_data(
-            $companies_pkey, $users_pkey, 'Invoice', $invoice, $template
+        )->map_text(
+            $companies_pkey, $users_pkey, $invoice, $template
         );
 
         my $path = await venditabant::Helpers::System::Pdf->new(
@@ -68,10 +69,11 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
         );
 
         $tx->commit();
-        await venditabant::Helpers::Mailer::System::Sender->new(
+
+        await venditabant::Helpers::Mailer::System::Processor->new(
             pg => $self->pg
         )->process(
-            $mail_content
+            $mailer_mails_pkey
         );
     };
     $err = $@ if $@;

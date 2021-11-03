@@ -1747,3 +1747,8 @@ ALTER TABLE mailer_mails
     ADD COLUMN companies_fkey bigint NOT NULL DEFAULT 0;
 
 -- 35 down
+-- 36 up
+ALTER TABLE mailer_mails
+    ADD COLUMN sent_at timestamp without time zone NOT NULL DEFAULT now();
+
+-- 36 down

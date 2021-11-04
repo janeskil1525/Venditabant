@@ -90,12 +90,12 @@ async sub get_subject($self, $companies_pkey, $invoice) {
     my $err;
     my $subject;
     eval {
-        my $text = venditabant::Model::Lan::Translations->new(
+        my $text = await venditabant::Model::Lan::Translations->new(
             db => $self->pg->db
         )->load_translation(
             $invoice->{customer}->{languages_fkey}, "INVOICE_MAIL", "SUBJECT"
         );
-        $subject = $invoice->{company}->{name} . $text . " " . $invoice->{invoice}->{invoiceno};
+        $subject = $invoice->{company}->{name} . $text->{translation} . " " . $invoice->{invoice}->{invoiceno};
     };
     $err = $@ if $@;
     $self->capture_message (

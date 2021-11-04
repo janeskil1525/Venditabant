@@ -88,22 +88,24 @@ async sub _create_header($self, $invoice, $template) {
 
 async sub _get_header_hash($self, $invoice) {
 
+    my $style = await $self->_get_style();
     my $hash_header = {
-        invoiceno => $invoice->{invoice}->{invoiceno},
-        company => $invoice->{company}->{name},
+        invoiceno       => $invoice->{invoice}->{invoiceno},
+        company         => $invoice->{company}->{name},
         companyaddress1 => $invoice->{company}->{address1},
         companyaddress2 => $invoice->{company}->{address2},
-        companyzipcode => $invoice->{company}->{zipcode},
-        companycity => $invoice->{company}->{city},
-        companyphone => $invoice->{company}->{phone},
-        customer => $invoice->{customer}->{customer},
-        name => $invoice->{customer}->{name},
-        address1 => $invoice->{invoice}->{address1},
-        zipcode => $invoice->{invoice}->{zipcode},
-        city => $invoice->{invoice}->{city},
-        mail => $invoice->{customer}->{mail},
-        invoicedate => $invoice->{invoice}->{invoicedate},
-        paydate => $invoice->{invoice}->{paydate},
+        companyzipcode  => $invoice->{company}->{zipcode},
+        companycity     => $invoice->{company}->{city},
+        companyphone    => $invoice->{company}->{phone},
+        customer        => $invoice->{customer}->{customer},
+        name            => $invoice->{customer}->{name},
+        address1        => $invoice->{invoice}->{address1},
+        zipcode         => $invoice->{invoice}->{zipcode},
+        city            => $invoice->{invoice}->{city},
+        mail            => $invoice->{customer}->{mail},
+        invoicedate     => $invoice->{invoice}->{invoicedate},
+        paydate         => $invoice->{invoice}->{paydate},
+        styling         => $style,
     };
 
     return $hash_header;

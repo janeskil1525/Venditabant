@@ -21,12 +21,12 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
 
                 // Add a TabView
                 var tabView = new qx.ui.tabview.TabView();
-                view.add(tabView, {top: 0, left: 5, right: 5, height: "50%"});
+                view.add(tabView, {top: 0, left: 5, right: 5, height: "63%"});
                 let page1 = this.getDefinition();
                 tabView.add(page1);
 
                 this._createTable();
-                view.add(this._table,{top:"52%", left:5, right:5,height:"45%"});
+                view.add(this._table,{top:"65%", left:5, right:5,height:"35%"});
                 this.loadTemplates();
 
                 return view;
@@ -36,31 +36,54 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                 //page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
 
-                let lbl = this._createLbl(this.tr( "Headet" ), 70);
+                let lbl = this._createLbl(this.tr( "Header" ), 70);
                 page1.add ( lbl, { top: 10, left: 10 } );
 
-                let header = this._createTextArea(this.tr("Header"), 770, 50);
+                let header = this._createTextArea(this.tr("Header"), 500, 80);
                 page1.add ( header, { top: 10, left: 90 } );
                 this._header = header;
 
                 lbl = this._createLbl(this.tr( "Body" ), 70);
-                page1.add ( lbl, { top: 65, left: 10 } );
+                page1.add ( lbl, { top: 95, left: 10 } );
 
-                let body = this._createTextArea(this.tr("Body"), 770, 80);
-                page1.add ( body, { top: 65, left: 90 } );
+                let body = this._createTextArea(this.tr("Body"), 500, 80);
+                page1.add ( body, { top: 95, left: 90 } );
                 this._body = body
 
                 lbl = this._createLbl(this.tr( "Footer" ), 70);
-                page1.add ( lbl, { top: 150, left: 10 } );
+                page1.add ( lbl, { top: 180, left: 10 } );
 
-                let footer =  this._createTextArea(this.tr("Footer"), 770, 50);
-                page1.add ( footer, { top: 150, left: 90 } );
+                let footer =  this._createTextArea(this.tr("Footer"), 500, 80);
+                page1.add ( footer, { top: 180, left: 90 } );
                 this._footer = footer;
+
+                lbl = this._createLbl(this.tr( "Sub 1" ), 70);
+                page1.add ( lbl, { top: 10, left: 600 } );
+
+                let sub1 = this._createTextArea(this.tr("Sub 1"), 270, 80);
+                page1.add ( sub1, { top: 10, left: 670 } );
+                this._sub1 = sub1;
+
+                lbl = this._createLbl(this.tr( "Sub 2" ), 70);
+                page1.add ( lbl, { top: 95, left: 600 } );
+
+                let sub2 = this._createTextArea(this.tr("Sub 2"), 270, 80);
+                page1.add ( sub2, { top: 95, left: 670 } );
+                this._sub2 = sub2;
+
+                lbl = this._createLbl(this.tr( "Sub 3" ), 70);
+                page1.add ( lbl, { top: 180, left: 600 } );
+
+                let sub3 = this._createTextArea(this.tr("Sub 3"), 270, 80);
+                page1.add ( sub3, { top: 180, left: 670 } );
+                this._sub3 = sub3;
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveTemplate( );
                 }, this );
                 page1.add ( btnSignup, { bottom: 5, left: 10 } );
+
+
 
                 let template = new venditabant.support.views.MailTemplatesSelectBox().set({
                     width:250,
@@ -103,6 +126,9 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                 let languages_fkey = this._languages.getKey();
                 let companies_fkey = this._companies.getKey();
                 let mailer_fkey = this._template.getKey();
+                let sub1 = this._sub1.getValue();
+                let sub2 = this._sub2.getValue();
+                let sub3 = this._sub3.getValue();
                 let data = {
                     header_value: header,
                     body_value: body,
@@ -111,6 +137,9 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                     companies_fkey: companies_fkey,
                     mailer_fkey: mailer_fkey,
                     default_mailer_mails_pkey: that._default_mailer_mails_pkey,
+                    sub1:sub1,
+                    sub2:sub2,
+                    sub3:sub3,
                 }
                 let model = new venditabant.support.models.MailTemplates();
                 model.saveTemplate(data,function ( success ) {
@@ -127,6 +156,9 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                 this._header.setValue('');
                 this._body.setValue('');
                 this._footer.setValue('');
+                this._sub1.setValue('');
+                this._sub2.setValue('');
+                this._sub3.setValue('');
             },
             _createTable : function() {
                 // Create the initial data
@@ -135,7 +167,7 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Header", "Body", "Footer", "Language", 'languages_fkey' ]);
+                tableModel.setColumns([ "ID", "Header", "Body", "Footer", "Language", 'languages_fkey', 'sub1', 'sub2', 'sub3' ]);
                 tableModel.setData(rowData);
 
                 // table
@@ -158,6 +190,9 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                     that._body.setValue(selectedRows[0][2]);
                     that._footer.setValue(selectedRows[0][3]);
                     that._languages.setKey(selectedRows[0][5])
+                    that._sub1.setValue(selectedRows[0][6]);
+                    that._sub2.setValue(selectedRows[0][7]);
+                    that._sub3.setValue(selectedRows[0][8]);
                 });
                 var tcm = table.getTableColumnModel();
                 tcm.setColumnVisible(0,false);
@@ -185,7 +220,10 @@ qx.Class.define ( "venditabant.support.views.MailTemplates",
                                 response.data[i].body_value,
                                 response.data[i].footer_value,
                                 response.data[i].lan,
-                                response.data[i].languages_fkey
+                                response.data[i].languages_fkey,
+                                response.data[i].sub1,
+                                response.data[i].sub2,
+                                response.data[i].sub3,
                             ]);
                         }
                     }

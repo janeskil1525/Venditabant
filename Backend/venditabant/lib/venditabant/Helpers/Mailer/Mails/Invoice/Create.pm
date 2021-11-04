@@ -48,11 +48,11 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
             $companies_pkey, $users_pkey, $invoice, $template
         );
 
-        my $path = await venditabant::Helpers::System::Pdf->new(
-            pg => $self->pg
-        )->create(
-            $companies_pkey, $users_pkey, $mail_content
-        );
+        # my $path = await venditabant::Helpers::System::Pdf->new(
+        #     pg => $self->pg
+        # )->create(
+        #     $companies_pkey, $users_pkey, $mail_content
+        # );
 
         my $subject = await venditabant::Helpers::Mailer::Mails::Utils::Subject->new(
             pg             => $self->pg,
@@ -76,11 +76,11 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
             $companies_pkey, $recipients, $subject, $mail_content
         );
 
-        await venditabant::Model::Mail::MailerMailsAttachments->new(
-            db => $db
-        )->insert(
-            $mailer_mails_pkey, $path
-        );
+        # await venditabant::Model::Mail::MailerMailsAttachments->new(
+        #     db => $db
+        # )->insert(
+        #     $mailer_mails_pkey, $path
+        # );
 
         $tx->commit();
 

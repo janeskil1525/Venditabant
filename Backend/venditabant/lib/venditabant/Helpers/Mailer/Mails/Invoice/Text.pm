@@ -6,8 +6,8 @@ use Text::Template;
 
 async sub map_text($self, $companies_pkey, $users_pkey, $invoice, $template) {
 
-    my $header = await $self->_create_header($invoice, $template->{header_value} );
-    my $body = await $self->_create_body($invoice, $template->{body_value});
+    my $header = await $self->_create_header($invoice, $template->{header_value}, $template->{sub3} );
+    my $body = await $self->_create_body($invoice, $template->{body_value}, $template->{sub1});
     my $footer = await $self->_create_footer($invoice, $template->{footer_value});
 
     return $header . $body . $footer;
@@ -20,7 +20,7 @@ async sub _create_footer($self, $invoice, $template) {
     return $template;
 }
 
-async sub _create_body ($self, $invoice, $template) {
+async sub _create_body ($self, $invoice, $template, $summary) {
 
     my $body = '';
 
@@ -29,28 +29,13 @@ async sub _create_body ($self, $invoice, $template) {
         my $hash_body = await $self->_get_body_hash($item);
         $body .= $body_templ->fill_in(HASH => $hash_body);
     }
-    my $summary = await $self->get_summary($invoice);
+    my $summary = await $self->get_summary($invoice, $summary);
     $body .= $summary;
 
     return $body;
 }
 
-async sub get_summary($self, $invoice) {
-
-    my $template =  '
-        <tr>
-            <td colspan="4">Sub</td>
-            <td class="total">{$netsum}</td>
-          </tr>
-          <tr>
-            <td colspan="4">Moms</td>
-            <td class="total">{$vatsum}</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="grand total">Summa</td>
-            <td class="grand total">{$total}</td>
-          </tr>
-    ';
+async sub get_summary($self, $invoice, $template) {
 
     my $hash = {
         netsum => $invoice->{invoice}->{netsum},
@@ -77,18 +62,17 @@ async sub _get_body_hash($self, $item) {
     #return $hash;
 }
 
-async sub _create_header($self, $invoice, $template) {
+async sub _create_header($self, $invoice, $template, $style) {
 
     my $header_templ = Text::Template->new(TYPE => 'STRING', SOURCE => $template );
-    my $hash_header = await $self->_get_header_hash($invoice);
+    my $hash_header = await $self->_get_header_hash($invoice, $style);
 
     my $header = $header_templ->fill_in(HASH => $hash_header);
     return $header;
 }
 
-async sub _get_header_hash($self, $invoice) {
+async sub _get_header_hash($self, $invoice, $style) {
 
-    my $style = await $self->_get_style();
     my $hash_header = {
         invoiceno       => $invoice->{invoice}->{invoiceno},
         company         => encode_entities($invoice->{company}->{name}),

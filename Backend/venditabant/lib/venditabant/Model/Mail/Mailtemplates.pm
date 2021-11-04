@@ -9,7 +9,7 @@ sub update ($self, $companies_pkey, $users_pkey, $template) {
     my $stmt = qq{
         UPDATE default_mailer_mails SET header_value = ?, body_value = ?, footer_value = ?,
             moddatetime = now(),
-            modby = (SELECT userid FROM users WHERE users_pkey = ?)
+            modby = (SELECT userid FROM users WHERE users_pkey = ?), sub1 = ?, sub2 = ?, sub3 = ?
             WHERE default_mailer_mails_pkey = ?
         RETURNING default_mailer_mails_pkey
     };
@@ -21,7 +21,11 @@ sub update ($self, $companies_pkey, $users_pkey, $template) {
             $template->{body_value},
             $template->{footer_value},
             $users_pkey,
+            $template->{sub1},
+            $template->{sub2},
+            $template->{sub3},
             $template->{default_mailer_mails_pkey}
+
         )
     )->hash->{default_mailer_mails_pkey};
 
@@ -32,9 +36,9 @@ sub upsert ($self, $companies_pkey, $users_pkey, $template) {
 
     my $stmt = qq{
         INSERT INTO default_mailer_mails (insby, modby, mailer_fkey, languages_fkey, header_value,
-                body_value, footer_value)
+                body_value, footer_value, sub1, sub2, sub3)
             VALUES ((SELECT userid FROM users WHERE users_pkey = ?),
-                    (SELECT userid FROM users WHERE users_pkey = ?),?,?,?,?,?)
+                    (SELECT userid FROM users WHERE users_pkey = ?),?,?,?,?,?,?,?,?)
             ON CONFLICT (mailer_fkey, languages_fkey)
         DO UPDATE SET header_value = ?, body_value = ?, footer_value = ?,
             moddatetime = now(),
@@ -52,6 +56,9 @@ sub upsert ($self, $companies_pkey, $users_pkey, $template) {
             $template->{header_value},
             $template->{body_value},
             $template->{footer_value},
+            $template->{sub1},
+            $template->{sub2},
+            $template->{sub3},
             $template->{header_value},
             $template->{body_value},
             $template->{footer_value},
@@ -80,7 +87,7 @@ sub load_list ($self, $mailer_pkey) {
     my $result = $self->db->select(
         ['default_mailer_mails',
             ['languages', 'languages_pkey' => 'languages_fkey']],
-        ['default_mailer_mails_pkey', 'header_value', 'body_value', 'footer_value', 'lan', 'languages_fkey'],
+        ['default_mailer_mails_pkey', 'header_value', 'body_value', 'footer_value', 'lan', 'languages_fkey', 'sub1', 'sub2', 'sub3'],
             {
                 mailer_fkey => $mailer_pkey
             },
@@ -100,7 +107,7 @@ async sub load_template($self, $companies_pkey, $users_pkey, $language_fkey, $te
     my $result = $self->db->select(
         ['default_mailer_mails',
             ['mailer', 'mailer_pkey' => 'mailer_fkey']],
-        ['header_value', 'body_value', 'footer_value'],
+        ['header_value', 'body_value', 'footer_value','sub1', 'sub2', 'sub3'],
         {
             languages_fkey => $language_fkey,
             mailtemplate       => $template,

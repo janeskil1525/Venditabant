@@ -1752,3 +1752,8 @@ ALTER TABLE mailer_mails
     ADD COLUMN sent_at timestamp without time zone NOT NULL DEFAULT now();
 
 -- 36 down
+-- 37 up
+ALTER TABLE default_mailer_mails
+    ADD COLUMN sub1 TEXT NOT NULL DEFAULT '',
+    ADD COLUMN sub2 TEXT NOT NULL DEFAULT '',
+    ADD COLUMN sub3 TEXT NOT NULL DEFAULT '';

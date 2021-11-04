@@ -5,7 +5,8 @@ use Try::Tiny;
 use Data::UUID;
 use Data::Dumper;
 use Digest::SHA qw{sha512_base64};
-use Mojo::JSON qw {from_json};
+use Mojo::JSON qw {decode_json};
+
 has 'pg';
 
 sub signup_user{
@@ -60,7 +61,7 @@ sub save_user ($self) {
     my $companies_pkey = $self->jwt->companise_pkey(
         $self->req->headers->header('X-Token-Check')
     );
-    my $json_hash = from_json ($self->req->body);
+    my $json_hash = decode_json ($self->req->body);
     $self->users->upsert($companies_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => $result});
     })->catch( sub ($err) {

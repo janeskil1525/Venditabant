@@ -1,7 +1,7 @@
 package venditabant::Controller::Signup;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
-use Mojo::JSON qw{from_json};
+use Mojo::JSON qw{decode_json};
 use venditabant::Helpers::Signup::Signup;
 use venditabant::Helpers::Sentinel::Sentinelsender;
 

@@ -1,10 +1,10 @@
 package venditabant::Helpers::Mailer::Mails::Invoice::Text;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
+use HTML::Entities;
 use Text::Template;
 
 async sub map_text($self, $companies_pkey, $users_pkey, $invoice, $template) {
-
 
     my $header = await $self->_create_header($invoice, $template->{header_value} );
     my $body = await $self->_create_body($invoice, $template->{body_value});
@@ -67,8 +67,8 @@ async sub get_summary($self, $invoice) {
 async sub _get_body_hash($self, $item) {
 
     my $hash = {
-            stockitem => $item->{stockitem},
-            description => $item->{description},
+            stockitem => encode_entities($item->{stockitem}),
+            description => encode_entities($item->{description}),
             price => $item->{price},
             quantity => $item->{quantity},
             total => $item->{total}
@@ -91,20 +91,20 @@ async sub _get_header_hash($self, $invoice) {
     my $style = await $self->_get_style();
     my $hash_header = {
         invoiceno       => $invoice->{invoice}->{invoiceno},
-        company         => $invoice->{company}->{name},
-        companyaddress1 => $invoice->{company}->{address1},
-        companyaddress2 => $invoice->{company}->{address2},
+        company         => encode_entities($invoice->{company}->{name}),
+        companyaddress1 => encode_entities($invoice->{company}->{address1}),
+        companyaddress2 => encode_entities($invoice->{company}->{address2}),
         companyzipcode  => $invoice->{company}->{zipcode},
-        companycity     => $invoice->{company}->{city},
+        companycity     => encode_entities($invoice->{company}->{city}),
         companyphone    => $invoice->{company}->{phone},
-        customer        => $invoice->{customer}->{customer},
-        name            => $invoice->{customer}->{name},
-        address1        => $invoice->{invoice}->{address1},
+        customer        => encode_entities($invoice->{customer}->{customer}),
+        name            => encode_entities($invoice->{customer}->{name}),
+        address1        => encode_entities($invoice->{invoice}->{address1}),
         zipcode         => $invoice->{invoice}->{zipcode},
-        city            => $invoice->{invoice}->{city},
+        city            => encode_entities($invoice->{invoice}->{city}),
         mail            => $invoice->{customer}->{mail},
-        invoicedate     => $invoice->{invoice}->{invoicedate},
-        paydate         => $invoice->{invoice}->{paydate},
+        invoicedate     => substr($invoice->{invoice}->{invoicedate},0,10),
+        paydate         => substr($invoice->{invoice}->{paydate},0,10),
         styling         => $style,
     };
 

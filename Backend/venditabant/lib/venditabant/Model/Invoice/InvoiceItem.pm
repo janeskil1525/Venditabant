@@ -36,7 +36,7 @@ async sub load_items_list ($self, $companies_pkey, $users_pkey, $invoice_pkey) {
 
     my $result = $self->db->select(
         ['invoice_items',['stockitems', stockitems_pkey => 'stockitems_fkey']],
-        ['invoice_items_pkey', 'invoice_fkey', 'stockitems_fkey', 'stockitem', 'quantity', 'price'],
+        ['invoice_items_pkey', 'invoice_fkey', 'stockitems_fkey', 'stockitem', 'quantity', 'price','description', 'vat','vatsum','netsum','total'],
         {
             invoice_fkey => $invoice_pkey
         },

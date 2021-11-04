@@ -1,7 +1,7 @@
 package venditabant::Controller::Pricelists;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
-use Mojo::JSON qw { from_json };
+use Mojo::JSON qw { decode_json };
 
 sub load_list_heads ($self) {
 
@@ -26,7 +26,7 @@ sub upsert_head ($self) {
     my $companies_pkey = $self->jwt->companise_pkey(
         $self->req->headers->header('X-Token-Check')
     );
-    my $json_hash = from_json ($self->req->body);
+    my $json_hash = decode_json ($self->req->body);
     $self->pricelists->upsert_head($companies_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => $result});
     })->catch( sub ($err) {
@@ -41,7 +41,7 @@ sub insert_item ($self) {
     my $companies_pkey = $self->jwt->companise_pkey(
         $self->req->headers->header('X-Token-Check')
     );
-    my $json_hash = from_json ($self->req->body);
+    my $json_hash = decode_json ($self->req->body);
     $self->pricelists->insert_item($companies_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => $result});
     })->catch( sub ($err) {

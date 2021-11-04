@@ -1,10 +1,8 @@
 package venditabant::Controller::Systemsettings;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
-
-
 use Data::Dumper;
-use Mojo::JSON qw {from_json};
+use Mojo::JSON qw {decode_json};
 
 sub save_system_parameter ($self) {
 
@@ -12,7 +10,7 @@ sub save_system_parameter ($self) {
     my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
         $self->req->headers->header('X-Token-Check')
     );
-    my $json_hash = from_json ($self->req->body);
+    my $json_hash = decode_json ($self->req->body);
     $self->systemsettings->upsert($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => $result});
     })->catch( sub ($err) {

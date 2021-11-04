@@ -2,7 +2,7 @@ package venditabant::Controller::Sentinel;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 use Data::Dumper;
-use Mojo::JSON qw {from_json};
+use Mojo::JSON qw {decode_json};
 
 sub load_list ($self) {
 

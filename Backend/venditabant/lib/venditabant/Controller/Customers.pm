@@ -23,11 +23,11 @@ sub save_customer ($self) {
 sub load_list ($self) {
 
     $self->render_later;
-    my $companies_pkey = $self->jwt->companise_pkey(
+    my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
         $self->req->headers->header('X-Token-Check')
     );
 
-    $self->customers->load_list($companies_pkey)->then(sub ($result) {
+    $self->customers->load_list($companies_pkey, $users_pkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {

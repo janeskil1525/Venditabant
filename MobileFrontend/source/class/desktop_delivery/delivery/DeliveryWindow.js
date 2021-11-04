@@ -35,6 +35,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 this.add ( lbl, { top: 10, left: 10 } );
                 this._createLogoutButton();
                 this.customerList();
+                this.deliveryAddressList();
                 this._createAddButton();
                 this._createQuantityField();
                 this._createStockitemLabel();
@@ -132,9 +133,10 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                     that._selectedCustomer = evt.getData()[0].getLabel();
                     //if(that._selectedCustomer !== null && that._selectedCustomer !== '') {
                         that.loadStockitemList(that._selectedCustomer);
+                        that.loadDeliveryaddresses(that._selectedCustomer);
                     //}
                 }, this);
-
+                customers.setWidth(150);
                 cust.loadList(function(response) {
                     customers.add(new qx.ui.form.ListItem(""));
                     for(let i = 0; i < response.data.length; i++) {
@@ -153,6 +155,43 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 container.add(lbl);
                 container.add(customers);
                 this.add(container,{left : 10, top : 40});
+            },
+            loadDeliveryaddresses:function(customer) {
+                let that = this;
+                let del = new desktop_delivery.models.Deliveryaddresses();
+                del.loadList(function(response) {
+                    that._delivery.add(new qx.ui.form.ListItem(""));
+                    for(let i = 0; i < response.data.length; i++) {
+                        let tempItem = new qx.ui.form.ListItem(response.data[i].customer);
+                        that._delivery.add(tempItem);
+                    }
+
+                }, this, customer);
+            },
+            deliveryAddressList:function() {
+                let that = this;
+
+                let container = new qx.ui.container.Composite(new qx.ui.layout.VBox(2));
+                let delivery = new qx.ui.form.SelectBox();
+
+                delivery.addListener("changeSelection", function(evt) {
+                    that._selectedDeliveryr = evt.getData()[0].getLabel();
+                    //if(that._selectedCustomer !== null && that._selectedCustomer !== '') {
+                    that.loadStockitemList(that._selectedCustomer);
+                    //}
+                }, this);
+                delivery.setWidth(150);
+
+                this._delivery = delivery;
+                let font = new qx.bom.Font ( 18, [ "Arial" ] );
+                font.setColor ( "white" );
+                let lbl = new qx.ui.basic.Label ( this.tr ( "Deliveryaddress" ) );
+                // var lbl = new qx.ui.basic.Label ( "<b style='color: #FFFFFF'>" + this.tr ( "Delivery" ) + "</b>" );
+                lbl.setFont(font);
+                lbl.setTextColor ( "#FFFFFF" );
+                container.add(lbl);
+                container.add(delivery);
+                this.add(container,{left : 180, top : 40});
             },
             loadStockitemList : function(customer, recreate) {
                 let that = this;

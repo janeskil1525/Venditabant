@@ -29,7 +29,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customers ) {
     return $err ? $err : 'success';
 }
 
-async sub load_list ($self, $companies_pkey) {
+async sub load_list ($self, $companies_pkey, $users_pkey) {
 
     my $load_stmt = qq {
         SELECT customers_pkey, customer, name, registrationnumber, homepage, phone,

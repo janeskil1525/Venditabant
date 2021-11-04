@@ -170,6 +170,7 @@ sub startup ($self) {
   );
   $auth->put('/customers/save/')->to('customers#save_customer');
   $auth->get('/customers/load_list/')->to('customers#load_list');
+  $auth->get('/customers/deliveryaddresses/load_list/')->to('customers#load_deliveryaddrs_list');
   $auth->put('/customers/invoice/address/save/')->to('customeraddresses#save_address');
   $auth->get('/customers/invoice/address/load/:customers_fkey')->to('customeraddresses#load_invoice_address');
 

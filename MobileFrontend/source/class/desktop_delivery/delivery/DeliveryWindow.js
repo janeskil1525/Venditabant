@@ -161,11 +161,12 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 let del = new desktop_delivery.models.Deliveryaddresses();
                 del.loadList(function(response) {
                     that._delivery.add(new qx.ui.form.ListItem(""));
-                    for(let i = 0; i < response.data.length; i++) {
-                        let tempItem = new qx.ui.form.ListItem(response.data[i].customer);
-                        that._delivery.add(tempItem);
+                    if(typeof response.data !== 'undefined' && response.data != null) {
+                        for(let i = 0; i < response.data.length; i++) {
+                            let tempItem = new qx.ui.form.ListItem(response.data[i].name);
+                            that._delivery.add(tempItem);
+                        }
                     }
-
                 }, this, customer);
             },
             deliveryAddressList:function() {
@@ -177,7 +178,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 delivery.addListener("changeSelection", function(evt) {
                     that._selectedDeliveryr = evt.getData()[0].getLabel();
                     //if(that._selectedCustomer !== null && that._selectedCustomer !== '') {
-                    that.loadStockitemList(that._selectedCustomer);
+                    //that.loadStockitemList(that._selectedCustomer);
                     //}
                 }, this);
                 delivery.setWidth(150);

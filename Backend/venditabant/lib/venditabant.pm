@@ -177,6 +177,7 @@ sub startup ($self) {
   $auth->put('/customers/delivery/address/save/')->to('customeraddresses#save_address');
   $auth->get('/customers/delivery/address/load/:customer_addresses_pkey')->to('customeraddresses#load_delivery_address');
   $auth->get('/customers/delivery/address/load_list/:customers_fkey')->to('customeraddresses#load_delivery_address_list');
+  $auth->get('/customers/delivery/address/load_list_customer/:customer')->to('customeraddresses#load_delivery_address_from_customer_list');
 
   $auth->put('/users/save/')->to('users#save_user');
   $auth->get('/users/load_list/')->to('users#load_list');

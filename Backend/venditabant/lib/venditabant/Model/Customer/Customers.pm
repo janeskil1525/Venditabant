@@ -54,7 +54,7 @@ async sub load_customer ($self, $companies_pkey, $customer) {
         'customers',
         undef,
             {
-                companies_pkey => $companies_pkey,
+                companies_fkey => $companies_pkey,
                 customer       => $customer
             }
     );

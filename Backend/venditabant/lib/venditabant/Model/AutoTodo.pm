@@ -45,7 +45,7 @@ async sub upsert_simple($self, $companies_fkey, $check) {
     return $auto_todo_pkey;
 }
 
-async sub upsert_user_action ($companies_pkey, $check_type, $check_name, $user_action, $key_id) {
+async sub upsert_user_action ($self, $companies_pkey, $check_type, $check_name, $user_action, $key_id) {
     my $stmt = qq{
         INSERT INTO auto_todo (companies_fkey, check_type, check_name, user_action, key_id)
             VALUES (?,?,?,?,? )
@@ -56,12 +56,12 @@ async sub upsert_user_action ($companies_pkey, $check_type, $check_name, $user_a
 
     my $auto_todo_pkey = $self->db->query(
         $stmt,(
-        $companies_fkey,
-        $check_type,
-        $check_name,
-        $user_action,
-        $key_id
-    )
+            $companies_pkey,
+            $check_type,
+            $check_name,
+            $user_action,
+            $key_id
+        )
     )->hash->{auto_todo_pkey};
 
     return $auto_todo_pkey;

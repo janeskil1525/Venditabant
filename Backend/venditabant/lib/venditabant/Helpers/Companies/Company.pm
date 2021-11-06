@@ -49,4 +49,14 @@ async sub load_list ($self) {
     return $languages;
 }
 
+async sub get_language_fkey_p($self, $companies_pkey, $users_pkey) {
+
+    my $result = await venditabant::Model::Company->new(
+        db => $self->pg->db
+    )->load_p(
+        $companies_pkey, $users_pkey
+    );
+
+    return $result->{languages_fkey};
+}
 1;

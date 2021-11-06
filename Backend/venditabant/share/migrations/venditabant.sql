@@ -1770,3 +1770,10 @@ INSERT INTO translations (languages_fkey, module, tag, translation)
 VALUES ((SELECT languages_pkey FROM languages WHERE lan = 'swe'),'SQL_LIST', 'CUSTOMER_DELIVERYADDRESS', '{$customer} {$name} saknar leverans address, dubbelklicka för att rätta till detta');
 
 -- 38 down
+-- 39 up
+DROP INDEX idx_auto_todo_companies_fkey_check_type_check_name;
+
+CREATE UNIQUE INDEX idx_auto_todo_companies_fkey_check_type_check_name_key_id
+    ON auto_todo(companies_fkey, check_type, check_name, key_id);
+
+-- 39 down

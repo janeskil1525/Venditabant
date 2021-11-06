@@ -1,7 +1,7 @@
 package venditabant::Helpers::Checkpoints::Actions::SubstituteText;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Model::Company;
+use venditabant::Helpers::Companies::Company;
 use venditabant::Model::Lan::Translations;
 
 use Text::Template;
@@ -14,18 +14,20 @@ async sub substitute($self, $companies_fkey, $check_type, $check_name, $substitu
     my $result;
     my $err;
     eval {
-        my $languages_fkey = await venditabant::Model::Company->new(
-            db => $self->pg->db
-        )->get_language(
-            $companies_fkey
+        my $languages_fkey = await venditabant::Helpers::Companies::Company->new(
+            pg => $self->pg
+        )->get_language_fkey_p(
+            $companies_fkey, 0
         );
 
         my $translation = await venditabant::Model::Lan::Translations->new(
             db => $self->pg->db
-        )->load_translation($languages_fkey, $check_type, $check_name);
+        )->load_translation(
+            $languages_fkey, $check_type, $check_name
+        );
 
-        $result = Text::Templat->new(
-            TYPE => 'STRING', SOURCE => $translation
+        $result = Text::Template->new(
+            TYPE => 'STRING', SOURCE => $translation->{translation}
         )->fill_in(
             HASH => $substitute_hash
         );

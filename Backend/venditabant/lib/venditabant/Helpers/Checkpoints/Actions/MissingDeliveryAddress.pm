@@ -12,11 +12,11 @@ async sub create_text($self, $companies_pkey, $result, $check) {
     my $err;
     eval {
         my $hash = {
-            company => $result->{company},
+            customer => $result->{customer},
             name    => $result->{name},
         };
 
-        my $text = $self->substitute(
+        $text = await $self->substitute(
             $companies_pkey, $check->{check_type}, $check->{check_name}, $hash
         );
     };

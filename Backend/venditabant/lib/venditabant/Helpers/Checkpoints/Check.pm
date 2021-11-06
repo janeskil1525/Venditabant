@@ -2,7 +2,9 @@ package venditabant::Helpers::Checkpoints::Check;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::Checks;
+use venditabant::Model::AutoTodo;
 use venditabant::Helpers::Checkpoints::Check::SqlFalse;
+use venditabant::Helpers::Checkpoints::Check::SqlList;
 use venditabant::Helpers::Checkpoints::Actions::MissingDeliveryAddress;
 
 use Data::Dumper;
@@ -35,14 +37,14 @@ async sub check ($self, $companies_pkey) {
                     $companies_pkey, $check
                 );
                 if(!$result->{result}) {
-                    venditabant::Model::AutoTodo->new(
+                    await venditabant::Model::AutoTodo->new(
                         db => $db
                     )->upsert_simple(
                         $companies_pkey, $check
                     );
                 }
             } elsif ($check->{check_type} eq 'SQL_LIST') {
-                my $results = venditabant::Helpers::Checkpoints::Check::SqlList->new(
+                my $results = await venditabant::Helpers::Checkpoints::Check::SqlList->new(
                     db => $db
                 )->check(
                     $companies_pkey, $check
@@ -52,7 +54,7 @@ async sub check ($self, $companies_pkey) {
                         my $user_action = await venditabant::Helpers::Checkpoints::Actions::MissingDeliveryAddress->new(
                             pg => $self->pg
                         )->create_text(
-                            $companies_pkey, $result
+                            $companies_pkey, $result, $check
                         );
                         await $self->upsert_user_action(
                             $db,
@@ -60,7 +62,7 @@ async sub check ($self, $companies_pkey) {
                             $check->{check_type},
                             $check->{check_name},
                             $user_action,
-                            $result->{customers_fkey}
+                            $result->{customers_pkey}
                         );
                     }
                 }

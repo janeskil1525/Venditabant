@@ -94,27 +94,43 @@ qx.Class.define("venditabant.users.login.SignupWindow",
                 let line = new qx.ui.core.Widget ( );
                 line.set ( { height: 2, backgroundColor: '#FFFFFF' } );
                 this.add ( line, { top: 50, left: 10, right: 10 } );
+                let validator = new qx.ui.form.validation.Manager();
+                this._validator = validator;
 
                 let email = new qx.ui.form.TextField ( );
                 email.setPlaceholder ( this.tr ( "Email" ) );
                 email.setWidth ( 135 );
+                email.setRequired(true);
+
                 this.add ( email, { top: 65, right: 10, left: 10 } );
                 this._email = email;
+                this._validator.add(email, qx.util.Validate.email());
 
                 let user_name = new qx.ui.form.TextField ( );
                 user_name.setPlaceholder ( this.tr ( "Name" ) );
+                user_name.setRequired(true);
+                user_name.setRequiredInvalidMessage(this.tr("User name can not be emty"));
                 this.add ( user_name, { top: 95, left: 10, right: 10 } );
                 this._user_name = user_name;
+                this._validator.add(this._user_name);
 
                 let company_name = new qx.ui.form.TextField ( );
                 company_name.setPlaceholder ( this.tr ( "Company" ) );
+                company_name.setRequired(true);
+                company_name.setRequiredInvalidMessage(this.tr("Company name can not be emty"));
+
                 this.add ( company_name, { top: 125, left: 10, right: 10 } );
                 this._company_name = company_name;
+                this._validator.add(this._company_name);
 
                 let company_orgnr = new qx.ui.form.TextField ( );
                 company_orgnr.setPlaceholder ( this.tr ( "Org. number" ) );
+                company_orgnr.setRequired(true);
+                company_orgnr.setRequiredInvalidMessage(this.tr("Org. no can not be emty"));
+
                 this.add ( company_orgnr, { top: 155, left: 10, right: 10 } );
                 this._company_orgnr = company_orgnr;
+                this._validator.add(this._company_orgnr);
 
                 let company_address = new qx.ui.form.TextField ( );
                 company_address.setPlaceholder ( this.tr ( "Company address" ) );
@@ -124,18 +140,24 @@ qx.Class.define("venditabant.users.login.SignupWindow",
                 let pass1 = new qx.ui.form.PasswordField ( );
                 pass1.setPlaceholder ( this.tr ( "Password" ) );
                 pass1.setWidth ( 135 );
+                pass1.setRequired(true);
+                pass1.setRequiredInvalidMessage(this.tr("Password can not be emty"));
                 this.add ( pass1, { top: 220, left: 10 } );
                 this._pass1 = pass1;
 
                 let pass2 = new qx.ui.form.PasswordField ( );
                 pass2.setPlaceholder ( this.tr ( "Retype Password" ) );
                 pass2.setWidth ( 135 );
+                pass2.setRequired(true);
+                pass2.setRequiredInvalidMessage(this.tr("Password can not be emty"));
                 this.add ( pass2, { top: 220, right: 10 } );
                 this._pass2 = pass2;
 
 
                 let btnSignup = this._createBtn ( this.tr ( "Sign Up" ), "#AAAAFF70", 135, function ( ) {
-                    this.signup ( );
+                    if(this._validator.validate()) {
+                        this.signup ( );
+                    }
                 }, this );
                 this.add ( btnSignup, { bottom: 10, left: 10 } );
 

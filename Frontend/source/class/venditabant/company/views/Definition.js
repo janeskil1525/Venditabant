@@ -33,12 +33,16 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 //page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
 
+                var validator = new qx.ui.form.validation.Manager();
+                this._validator = validator;
+
                 let lbl = this._createLbl(this.tr( "Company" ), 70);
                 page1.add ( lbl, { top: 10, left: 10 } );
 
                 let company = this._createTxt("Company", 150, true, this.tr("Customer is required"));
                 page1.add ( company, { top: 10, left: 90 } );
                 this._company = company;
+                this._validator.add(this._company);
 
                 let languages = new venditabant.support.views.LanguageSelectBox().set({
                     width:150,
@@ -51,16 +55,18 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 lbl = this._createLbl(this.tr( "Name" ), 70);
                 page1.add ( lbl, { top: 10, left: 250 } );
 
-                let name = this._createTxt("Name", 250, false);
+                let name = this._createTxt("Name", 250, true, this.tr("Name is requires"));
                 page1.add ( name, { top: 10, left: 400 } );
                 this._name = name
+                this._validator.add(this._name);
 
                 lbl = this._createLbl(this.tr( "Org. nr" ), 70);
                 page1.add ( lbl, { top: 45, left: 250 } );
 
-                let orgnbr = this._createTxt("Org. nr", 250, false);
+                let orgnbr = this._createTxt("Org. nr", 250, true, this.tr("Org. nr is required"));
                 page1.add ( orgnbr, { top: 45, left: 400 } );
                 this._registrationnumber = orgnbr
+                this._validator.add(this._registrationnumber);
 
                 lbl = this._createLbl(this.tr( "Phone" ), 70);
                 page1.add ( lbl, { top: 80, left: 10 } );
@@ -68,34 +74,39 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 let phone = this._createTxt("Phone", 150, true, this.tr("Phone is required"));
                 page1.add ( phone, { top: 80, left: 90 } );
                 this._phone = phone;
+                this._validator.add(this._phone);
 
                 lbl = this._createLbl(this.tr( "Homepage" ), 70);
                 page1.add ( lbl, { top: 80, left: 250 } );
 
-                let homepage = this._createTxt("Homepage", 250, false);
+                let homepage = this._createTxt("Homepage", 250, true, this.tr("Homepage is required"));
                 page1.add ( homepage, { top: 80, left: 400 } );
                 this._homepage = homepage
+                this._validator.add(this._homepage);
 
                 lbl = this._createLbl(this.tr( "VAT No" ), 70);
                 page1.add ( lbl, { top: 115, left: 10 } );
 
-                let vatno = this._createTxt("VAT No", 150, true, this.tr("Phone is required"));
+                let vatno = this._createTxt("VAT No", 150, true, this.tr("VAT No is required"));
                 page1.add ( vatno, { top: 115, left: 90 } );
-                this._vatno= vatno;
+                this._vatno = vatno;
+                this._validator.add(this._vatno);
 
                 lbl = this._createLbl(this.tr( "Address" ), 70);
                 page1.add ( lbl, { top: 115, left: 250 } );
 
-                let address1 = this._createTxt("Address", 250, false);
+                let address1 = this._createTxt("Address", 250, true, this.tr("Address is required"));
                 page1.add ( address1, { top: 115, left: 400 } );
                 this._address1 = address1
+                this._validator.add(this._address1);
 
                 lbl = this._createLbl(this.tr( "Giro" ), 70);
                 page1.add ( lbl, { top: 145, left: 10 } );
 
-                let giro = this._createTxt("Giro", 150, true, this.tr("Phone is required"));
+                let giro = this._createTxt("Giro", 150, true, this.tr("Giro is required"));
                 page1.add ( giro, { top: 145, left: 90 } );
                 this._giro = giro;
+                this._validator.add(this._giro);
 
                 let address2 = this._createTxt("Address", 250, false);
                 page1.add ( address2, { top: 145, left: 400 } );
@@ -104,9 +115,10 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 lbl = this._createLbl(this.tr( "Invoice ref." ), 70);
                 page1.add ( lbl, { top: 175, left: 10 } );
 
-                let invoiceref = this._createTxt("Invoice ref.", 150, true, this.tr("Phone is required"));
+                let invoiceref = this._createTxt("Invoice ref.", 150, true, this.tr("Invoiceref is required"));
                 page1.add ( invoiceref, { top: 175, left: 90 } );
                 this._invoiceref = invoiceref;
+                this._validator.add(this._invoiceref);
 
                 let address3 = this._createTxt("Address", 250, false);
                 page1.add ( address3, { top: 175, left: 400 } );
@@ -118,17 +130,20 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 let email = this._createTxt("Email", 150, true, this.tr("Email is required"));
                 page1.add ( email, { top: 210, left: 90 } );
                 this._email = email;
+                this._validator.add(this._email);
 
                 lbl = this._createLbl(this.tr( "Zipcode / City" ), 150);
                 page1.add ( lbl, { top: 210, left: 250 } );
 
-                let zipcode = this._createTxt("Zipcode", 90, false);
+                let zipcode = this._createTxt("Zipcode", 90, true, this.tr("Zipcode is required"));
                 page1.add ( zipcode, { top: 210, left: 400 } );
                 this._zipcode = zipcode
+                this._validator.add(this._zipcode);
 
-                let city = this._createTxt("City", 150, false);
+                let city = this._createTxt("City", 150, true, this.tr("City is required"));
                 page1.add ( city, { top: 210, left: 500 } );
                 this._city = city
+                this._validator.add(this._city);
 
                 lbl = this._createLbl(this.tr( "Invoice comment" ), 90);
                 page1.add ( lbl, { top: 240, left: 10 } );
@@ -138,9 +153,16 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 this._invoicecomment = invoicecomment;
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
-                    this.saveCompany ( );
+                    if(validator.validate()) {
+                        this.saveCompany ( );
+                    } else {
+                        let messages = validator.getInvalidMessages();
+                    }
+
                 }, this );
                 page1.add ( btnSignup, { bottom: 10, left: 10 } );
+                this._btnSignup = btnSignup;
+                // this._validator.bind("valid", this._btnSignup, "enabled");
 
                 let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
                     this.clearScreen();
@@ -217,6 +239,8 @@ qx.Class.define ( "venditabant.company.views.Definition",
                     that._vatno.setValue(response.data.tin) ;
                     that._invoicecomment.setValue(response.data.invoicecomment);
                     that._invoiceref.setValue(response.data.invoiceref) ;
+
+                    that._validator.validate();
                     //alert("Set table data here");
                 }, this);
                 //return ;//list;

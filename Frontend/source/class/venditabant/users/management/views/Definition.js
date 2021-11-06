@@ -21,12 +21,16 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 var page1 = new qx.ui.tabview.Page("Definition");
                 page1.setLayout(new qx.ui.layout.Canvas());
 
+                let validator = new qx.ui.form.validation.Manager();
+                this._validator = validator;
+
                 let lbl = this._createLbl(this.tr( "User" ),70)
                 page1.add ( lbl, { top: 10, left: 10 } );
 
                 let userid = this._createTxt(this.tr( "User" ),150,true,this.tr("User is required") );
                 page1.add ( userid, { top: 10, left: 90 } );
                 this._userid = userid;
+                this._validator.add(this._userid, qx.util.Validate.email());
 
                 lbl = this._createLbl(this.tr( "Name" ),70);
                 page1.add ( lbl, { top: 10, left: 250 } );
@@ -34,6 +38,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 let username = this._createTxt(this.tr( "Name" ),250,true,this.tr("Name is required") );
                 page1.add ( username, { top: 10, left: 350 } );
                 this._username = username;
+                this._validator.add(this._username);
 
                 lbl = this._createLbl(this.tr( "Password" ),70);
                 page1.add ( lbl, { top: 50, left: 10 } );
@@ -43,12 +48,14 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 password1.setWidth ( 250 );
                 page1.add ( password1, { top: 50, left: 90 } );
                 this._password1 = password1;
+                this._validator.add(this._password1);
 
                 var password2 = new qx.ui.form.PasswordField ( );
                 password2.setPlaceholder ( this.tr ( "Password 2" ) );
                 password2.setWidth ( 250 );
                 page1.add ( password2, { top: 50, left: 350 } );
                 this._password2 = password2;
+                this._validator.add(this._password2);
 
                 lbl = this._createLbl(this.tr( "Active" ),70);
                 page1.add ( lbl, { top: 90, left: 10 } );
@@ -66,12 +73,19 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 page1.add ( languagesview, { top: 90, left: 350 } );
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
-                    this.saveUser ( );
+                    if(this._validator.validate()) {
+                        if ( this._password2.getValue() !== this._password1.getValue() )  {
+                            alert ( this.tr ( "Passwords do not match." ) );
+                        } else {
+                            this.saveUser ( );
+                            this.loadUsers();
+                        }
+                    }
                 }, this );
                 page1.add ( btnSignup, { bottom: 10, left: 10 } );
 
                 let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
-                    this.cancel ( );
+                    this.clearFields ( );
                 }, this );
                 page1.add ( btnCancel, { bottom: 10, right: 10 } );
 
@@ -88,7 +102,12 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
             },
             // Public functions ...
             __table : null,
-            setParams: function (params) {
+            clearFields: function (params) {
+                this._userid.setValue('');
+                this._username.setValue('');
+                this._active.setValue(false);
+                this._password1.setValue('');
+                this._password2.setValue('');
             },
             saveUser:function() {
                 let that = this;
@@ -138,7 +157,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "User", "Name", "Active", "languages_fkey" ]);
+                tableModel.setColumns([ "ID", "User", "Name", "Active", "languages_fkey", "Language" ]);
                 tableModel.setData(rowData);
                 //tableModel.setColumnEditable(1, true);
                 //tableModel.setColumnEditable(2, true);
@@ -162,7 +181,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
 
                     that._userid.setValue(selectedRows[0][1]);
                     that._username.setValue(selectedRows[0][2]);
-                    let active = selectedRows[0][4] ? false : true;
+                    let active = selectedRows[0][4] ? true : false;
                     that._active.setValue(active);
                     that._password1.setValue('');
                     that._password2.setValue('');
@@ -173,6 +192,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 // Display a checkbox in column 3
                 tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
                 tcm.setColumnVisible(0,false);
+                tcm.setColumnVisible(4,false);
                 tcm.setColumnWidth(2,300)
                 // use a different header renderer
                 //tcm.setHeaderCellRenderer(2, new qx.ui.table.headerrenderer.Icon("icon/16/apps/office-calendar.png", "A date"));
@@ -196,7 +216,8 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                             response.data[i].userid,
                             response.data[i].username,
                             active,
-                            response.data[i].languages_fkey
+                            response.data[i].languages_fkey,
+                            response.data[i].lan
                         ]);
                     }
                     this._table.getTableModel().setData(tableData);

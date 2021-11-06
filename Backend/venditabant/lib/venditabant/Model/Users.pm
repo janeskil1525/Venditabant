@@ -9,9 +9,9 @@ sub upsert ($self, $data) {
 
     $data->{password} = sha512_base64($data->{password});
     my $users_stmt = qq{
-        INSERT INTO users (userid, username, passwd, active) VALUES (?,?,?,?)
+        INSERT INTO users (userid, username, passwd, active, languages_fkey) VALUES (?,?,?,?, ?)
             ON CONFLICT (userid)
-            DO UPDATE SET username = ?, passwd = ?, active = ?
+            DO UPDATE SET username = ?, passwd = ?, active = ?, languages_fkey = ?
         RETURNING users_pkey
     };
 
@@ -22,9 +22,11 @@ sub upsert ($self, $data) {
             $data->{username},
             $data->{password},
             $data->{active},
+            $data->{languages_fkey},
             $data->{username},
             $data->{password},
             $data->{active},
+            $data->{languages_fkey},
         )
     )->hash->{users_pkey};
 
@@ -53,9 +55,9 @@ sub upsert_user_companies ($self, $companies_pkey, $users_pkey) {
 
 sub load_list ($self, $companies_pkey) {
     my $load_stmt = qq {
-        SELECT users_pkey, userid, username, active, languages_fkey
-            FROM users, users_companies
-        WHERE users_pkey = users_fkey AND companies_fkey = ?
+        SELECT users_pkey, userid, username, active, languages_fkey, lan
+            FROM users, users_companies, languages
+        WHERE users_pkey = users_fkey AND languages_fkey = languages_pkey AND companies_fkey = ?
     };
     say "load_list";
     my $list = $self->db->query($load_stmt,($companies_pkey));
@@ -68,8 +70,8 @@ sub load_list ($self, $companies_pkey) {
 
 sub load_list_support ($self) {
     my $load_stmt = qq {
-        SELECT users_pkey, userid, username, active, languages_fkey
-            FROM users ORDER BY userid
+        SELECT users_pkey, userid, username, active, languages_fkey, lan
+            FROM users, languages WHERE languages_fkey = languages_pkey ORDER BY username
     };
 
     my $list = $self->db->query($load_stmt);

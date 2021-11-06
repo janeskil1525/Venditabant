@@ -1757,3 +1757,16 @@ ALTER TABLE default_mailer_mails
     ADD COLUMN sub1 TEXT NOT NULL DEFAULT '',
     ADD COLUMN sub2 TEXT NOT NULL DEFAULT '',
     ADD COLUMN sub3 TEXT NOT NULL DEFAULT '';
+
+-- 37 down
+-- 38 up
+INSERT INTO checks (check_type, check_name, check_condition, check_action)
+    VALUES  ('SQL_LIST', 'CUSTOMER_DELIVERYADDRESS','SELECT * FROM customers WHERE customers_pkey NOT IN (SELECT customers_fkey FROM customer_addresses) AND companies_fkey = ?','MissingDeliveryAddress');
+
+ALTER TABLE auto_todo
+    ADD COLUMN key_id BIGINT NOT NULL DEFAULT 0;
+
+INSERT INTO translations (languages_fkey, module, tag, translation)
+VALUES ((SELECT languages_pkey FROM languages WHERE lan = 'swe'),'SQL_LIST', 'CUSTOMER_DELIVERYADDRESS', '{$customer} {$name} saknar leverans address, dubbelklicka för att rätta till detta');
+
+-- 38 down

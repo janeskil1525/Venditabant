@@ -11,7 +11,7 @@ sub signup_company ($self) {
 
     $self->render_later();
 
-    my $json_hash = from_json ($self->req->body);
+    my $json_hash = decode_json ($self->req->body);
     my $signup = venditabant::Helpers::Signup::Signup->new(
         pg => $self->pg
     );

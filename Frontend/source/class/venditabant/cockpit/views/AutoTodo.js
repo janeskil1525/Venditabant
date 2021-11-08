@@ -84,9 +84,7 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                     if(that._selectedRow[4] === 'SQL_FALSE') {
                         that.sqlFalse();
                     } else if (that._selectedRow[4] === 'SQL_LIST') {
-
                         that.sqlList();
-
                     }
                 });
                 var tcm = table.getTableColumnModel();

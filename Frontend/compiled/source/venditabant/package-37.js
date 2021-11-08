@@ -5,41 +5,41 @@
         "usage": "dynamic",
         "require": true
       },
-      "qx.ui.core.Widget": {
+      "qx.ui.core.scroll.AbstractScrollArea": {
         "construct": true,
         "require": true
       },
-      "qx.ui.core.MExecutable": {
-        "require": true
-      },
-      "qx.ui.form.MForm": {
-        "require": true
-      },
-      "qx.ui.form.IExecutable": {
+      "qx.ui.core.IMultiSelection": {
         "require": true
       },
       "qx.ui.form.IForm": {
         "require": true
       },
-      "qx.ui.form.IDateForm": {
+      "qx.ui.form.IField": {
         "require": true
       },
-      "qx.ui.layout.VBox": {
-        "construct": true
+      "qx.ui.form.IModelSelection": {
+        "require": true
       },
-      "qx.locale.Date": {
-        "construct": true
+      "qx.ui.core.MRemoteChildrenHandling": {
+        "require": true
       },
-      "qx.locale.Manager": {
-        "construct": true
+      "qx.ui.core.MMultiSelectionHandling": {
+        "require": true
+      },
+      "qx.ui.form.MForm": {
+        "require": true
+      },
+      "qx.ui.form.MModelSelection": {
+        "require": true
+      },
+      "qx.ui.core.selection.ScrollArea": {
+        "require": true
       },
       "qx.ui.container.Composite": {},
       "qx.ui.layout.HBox": {},
-      "qx.ui.tooltip.ToolTip": {},
-      "qx.ui.toolbar.Button": {},
-      "qx.ui.basic.Label": {},
-      "qx.ui.layout.Grid": {},
-      "qx.util.format.DateFormat": {}
+      "qx.ui.layout.VBox": {},
+      "qx.bom.element.Attribute": {}
     }
   };
   qx.Bootstrap.executePendingDefers($$dbClassInfo);
@@ -51,62 +51,29 @@
      http://qooxdoo.org
   
      Copyright:
-       2006 STZ-IDA, Germany, http://www.stz-ida.de
+       2004-2008 1&1 Internet AG, Germany, http://www.1und1.de
   
      License:
        MIT: https://opensource.org/licenses/MIT
        See the LICENSE file in the project's top-level directory for details.
   
      Authors:
-       * Til Schneider (til132)
+       * Sebastian Werner (wpbasti)
+       * Andreas Ecker (ecker)
        * Martin Wittemann (martinwittemann)
+       * Christian Hagendorn (chris_schmidt)
   
   ************************************************************************ */
 
   /**
-   * A *date chooser* is a small calendar including a navigation bar to switch the shown
-   * month. It includes a column for the calendar week and shows one month. Selecting
-   * a date is as easy as tapping on it.
-   *
-   * To be conform with all form widgets, the {@link qx.ui.form.IForm} interface
-   * is implemented.
-   *
-   * The following example creates and adds a date chooser to the root element.
-   * A listener alerts the user if a new date is selected.
-   *
-   * <pre class='javascript'>
-   * var chooser = new qx.ui.control.DateChooser();
-   * this.getRoot().add(chooser, { left : 20, top: 20});
-   *
-   * chooser.addListener("changeValue", function(e) {
-   *   alert(e.getData());
-   * });
-   * </pre>
-   *
-   * Additionally to a selection event an execute event is available which is
-   * fired by doubletap or tapping the space / enter key. With this event you
-   * can for example save the selection and close the date chooser.
-   *
-   * @childControl navigation-bar {qx.ui.container.Composite} container for the navigation bar controls
-   * @childControl last-year-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the last year button
-   * @childControl last-year-button {qx.ui.form.Button} button to jump to the last year
-   * @childControl last-month-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the last month button
-   * @childControl last-month-button {qx.ui.form.Button} button to jump to the last month
-   * @childControl next-month-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the next month button
-   * @childControl next-month-button {qx.ui.form.Button} button to jump to the next month
-   * @childControl next-year-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the next year button
-   * @childControl next-year-button {qx.ui.form.Button} button to jump to the next year
-   * @childControl month-year-label {qx.ui.basic.Label} shows the current month and year
-   * @childControl week {qx.ui.basic.Label} week label (used multiple times)
-   * @childControl weekday {qx.ui.basic.Label} weekday label (used multiple times)
-   * @childControl day {qx.ui.basic.Label} day label (used multiple times)
-   * @childControl date-pane {qx.ui.container.Composite} the pane used to position the week, weekday and day labels
-   *
+   * A list of items. Displays an automatically scrolling list for all
+   * added {@link qx.ui.form.ListItem} instances. Supports various
+   * selection options: single, multi, ...
    */
-  qx.Class.define("qx.ui.control.DateChooser", {
-    extend: qx.ui.core.Widget,
-    include: [qx.ui.core.MExecutable, qx.ui.form.MForm],
-    implement: [qx.ui.form.IExecutable, qx.ui.form.IForm, qx.ui.form.IDateForm],
+  qx.Class.define("qx.ui.form.List", {
+    extend: qx.ui.core.scroll.AbstractScrollArea,
+    implement: [qx.ui.core.IMultiSelection, qx.ui.form.IForm, qx.ui.form.IField, qx.ui.form.IModelSelection],
+    include: [qx.ui.core.MRemoteChildrenHandling, qx.ui.core.MMultiSelectionHandling, qx.ui.form.MForm, qx.ui.form.MModelSelection],
 
     /*
     *****************************************************************************
@@ -115,62 +82,52 @@
     */
 
     /**
-     * @param date {Date ? null} The initial date to show. If <code>null</code>
-     * the current day (today) is shown.
+     * @param horizontal {Boolean?false} Whether the list should be horizontal.
      */
-    construct: function construct(date) {
-      qx.ui.core.Widget.constructor.call(this); // set the layout
+    construct: function construct(horizontal) {
+      qx.ui.core.scroll.AbstractScrollArea.constructor.call(this); // Create content
 
-      var layout = new qx.ui.layout.VBox();
+      this.__content__P_218_0 = this._createListItemContainer(); // Used to fire item add/remove events
 
-      this._setLayout(layout); // create the child controls
+      this.__content__P_218_0.addListener("addChildWidget", this._onAddChild, this);
 
-
-      this._createChildControl("navigation-bar");
-
-      this._createChildControl("date-pane"); // Support for key events
+      this.__content__P_218_0.addListener("removeChildWidget", this._onRemoveChild, this); // Add to scrollpane
 
 
-      this.addListener("keypress", this._onKeyPress); // initialize format - moved from statics{} to constructor due to [BUG #7149]
+      this.getChildControl("pane").add(this.__content__P_218_0); // Apply orientation
 
-      var DateChooser = qx.ui.control.DateChooser;
+      if (horizontal) {
+        this.setOrientation("horizontal");
+      } else {
+        this.initOrientation();
+      } // Add keypress listener
 
-      if (!DateChooser.MONTH_YEAR_FORMAT) {
-        DateChooser.MONTH_YEAR_FORMAT = qx.locale.Date.getDateTimeFormat("yyyyMMMM", "MMMM yyyy");
-      } // Show the right date
 
+      this.addListener("keypress", this._onKeyPress);
+      this.addListener("keyinput", this._onKeyInput); // initialize the search string
 
-      var shownDate = date != null ? date : new Date();
-      this.showMonth(shownDate.getMonth(), shownDate.getFullYear()); // listen for locale changes
-
-      {
-        qx.locale.Manager.getInstance().addListener("changeLocale", this._updateDatePane, this);
-      } // register pointer up and down handler
-
-      this.addListener("pointerdown", this._onPointerUpDown, this);
-      this.addListener("pointerup", this._onPointerUpDown, this);
+      this.__pressedString__P_218_1 = "";
     },
 
     /*
     *****************************************************************************
-       STATICS
+       EVENTS
     *****************************************************************************
     */
-    statics: {
+    events: {
       /**
-       * @type {string} The format for the date year label at the top center.
+       * This event is fired after a list item was added to the list. The
+       * {@link qx.event.type.Data#getData} method of the event returns the
+       * added item.
        */
-      MONTH_YEAR_FORMAT: null,
+      addItem: "qx.event.type.Data",
 
       /**
-       * @type {string} The format for the weekday labels (the headers of the date table).
+       * This event is fired after a list item has been removed from the list.
+       * The {@link qx.event.type.Data#getData} method of the event returns the
+       * removed item.
        */
-      WEEKDAY_FORMAT: "EE",
-
-      /**
-       * @type {string} The format for the week numbers (the labels of the left column).
-       */
-      WEEK_FORMAT: "ww"
+      removeItem: "qx.event.type.Data"
     },
 
     /*
@@ -182,42 +139,53 @@
       // overridden
       appearance: {
         refine: true,
-        init: "datechooser"
+        init: "list"
+      },
+      // overridden
+      focusable: {
+        refine: true,
+        init: true
       },
       // overridden
       width: {
         refine: true,
-        init: 200
+        init: 100
       },
       // overridden
       height: {
         refine: true,
-        init: 150
+        init: 200
       },
 
-      /** The currently shown month. 0 = january, 1 = february, and so on. */
-      shownMonth: {
+      /**
+       * Whether the list should be rendered horizontal or vertical.
+       */
+      orientation: {
+        check: ["horizontal", "vertical"],
+        init: "vertical",
+        apply: "_applyOrientation"
+      },
+
+      /** Spacing between the items */
+      spacing: {
         check: "Integer",
-        init: null,
-        nullable: true,
-        event: "changeShownMonth"
+        init: 0,
+        apply: "_applySpacing",
+        themeable: true
       },
 
-      /** The currently shown year. */
-      shownYear: {
-        check: "Integer",
-        init: null,
-        nullable: true,
-        event: "changeShownYear"
+      /** Controls whether the inline-find feature is activated or not */
+      enableInlineFind: {
+        check: "Boolean",
+        init: true
       },
 
-      /** The date value of the widget. */
-      value: {
-        check: "Date",
-        init: null,
-        nullable: true,
-        event: "changeValue",
-        apply: "_applyValue"
+      /** Whether the list is read only when enabled */
+      readOnly: {
+        check: "Boolean",
+        init: false,
+        event: "changeReadOnly",
+        apply: "_applyReadOnly"
       }
     },
 
@@ -227,215 +195,153 @@
     *****************************************************************************
     */
     members: {
-      __weekdayLabelArr__P_224_0: null,
-      __dayLabelArr__P_224_1: null,
-      __weekLabelArr__P_224_2: null,
+      __pressedString__P_218_1: null,
+      __lastKeyPress__P_218_2: null,
+
+      /** @type {qx.ui.core.Widget} The children container */
+      __content__P_218_0: null,
+
+      /** @type {Class} Pointer to the selection manager to use */
+      SELECTION_MANAGER: qx.ui.core.selection.ScrollArea,
+
+      /*
+      ---------------------------------------------------------------------------
+        WIDGET API
+      ---------------------------------------------------------------------------
+      */
       // overridden
+      getChildrenContainer: function getChildrenContainer() {
+        return this.__content__P_218_0;
+      },
 
       /**
-       * @lint ignoreReferenceField(_forwardStates)
+       * Handle child widget adds on the content pane
+       *
+       * @param e {qx.event.type.Data} the event instance
        */
-      _forwardStates: {
-        invalid: true
+      _onAddChild: function _onAddChild(e) {
+        this.fireDataEvent("addItem", e.getData());
+      },
+
+      /**
+       * Handle child widget removes on the content pane
+       *
+       * @param e {qx.event.type.Data} the event instance
+       */
+      _onRemoveChild: function _onRemoveChild(e) {
+        this.fireDataEvent("removeItem", e.getData());
       },
 
       /*
       ---------------------------------------------------------------------------
-        WIDGET INTERNALS
+        PUBLIC API
       ---------------------------------------------------------------------------
       */
-      // overridden
-      _createChildControlImpl: function _createChildControlImpl(id, hash) {
-        var control;
 
-        switch (id) {
-          // NAVIGATION BAR STUFF
-          case "navigation-bar":
-            control = new qx.ui.container.Composite(new qx.ui.layout.HBox()); // Add the navigation bar elements
-
-            control.add(this.getChildControl("last-year-button"));
-            control.add(this.getChildControl("last-month-button"));
-            control.add(this.getChildControl("month-year-label"), {
-              flex: 1
-            });
-            control.add(this.getChildControl("next-month-button"));
-            control.add(this.getChildControl("next-year-button"));
-
-            this._add(control);
-
-            break;
-
-          case "last-year-button-tooltip":
-            control = new qx.ui.tooltip.ToolTip(this.tr("Last year"));
-            break;
-
-          case "last-year-button":
-            control = new qx.ui.toolbar.Button();
-            control.addState("lastYear");
-            control.setFocusable(false);
-            control.setToolTip(this.getChildControl("last-year-button-tooltip"));
-            control.addListener("tap", this._onNavButtonTap, this);
-            break;
-
-          case "last-month-button-tooltip":
-            control = new qx.ui.tooltip.ToolTip(this.tr("Last month"));
-            break;
-
-          case "last-month-button":
-            control = new qx.ui.toolbar.Button();
-            control.addState("lastMonth");
-            control.setFocusable(false);
-            control.setToolTip(this.getChildControl("last-month-button-tooltip"));
-            control.addListener("tap", this._onNavButtonTap, this);
-            break;
-
-          case "next-month-button-tooltip":
-            control = new qx.ui.tooltip.ToolTip(this.tr("Next month"));
-            break;
-
-          case "next-month-button":
-            control = new qx.ui.toolbar.Button();
-            control.addState("nextMonth");
-            control.setFocusable(false);
-            control.setToolTip(this.getChildControl("next-month-button-tooltip"));
-            control.addListener("tap", this._onNavButtonTap, this);
-            break;
-
-          case "next-year-button-tooltip":
-            control = new qx.ui.tooltip.ToolTip(this.tr("Next year"));
-            break;
-
-          case "next-year-button":
-            control = new qx.ui.toolbar.Button();
-            control.addState("nextYear");
-            control.setFocusable(false);
-            control.setToolTip(this.getChildControl("next-year-button-tooltip"));
-            control.addListener("tap", this._onNavButtonTap, this);
-            break;
-
-          case "month-year-label":
-            control = new qx.ui.basic.Label();
-            control.setAllowGrowX(true);
-            control.setAnonymous(true);
-            break;
-
-          case "week":
-            control = new qx.ui.basic.Label();
-            control.setAllowGrowX(true);
-            control.setAllowGrowY(true);
-            control.setSelectable(false);
-            control.setAnonymous(true);
-            control.setCursor("default");
-            break;
-
-          case "weekday":
-            control = new qx.ui.basic.Label();
-            control.setAllowGrowX(true);
-            control.setAllowGrowY(true);
-            control.setSelectable(false);
-            control.setAnonymous(true);
-            control.setCursor("default");
-            break;
-
-          case "day":
-            control = new qx.ui.basic.Label();
-            control.setAllowGrowX(true);
-            control.setAllowGrowY(true);
-            control.setCursor("default");
-            control.addListener("pointerdown", this._onDayTap, this);
-            control.addListener("dbltap", this._onDayDblTap, this);
-            break;
-
-          case "date-pane":
-            var controlLayout = new qx.ui.layout.Grid();
-            control = new qx.ui.container.Composite(controlLayout);
-
-            for (var i = 0; i < 8; i++) {
-              controlLayout.setColumnFlex(i, 1);
-            }
-
-            for (var i = 0; i < 7; i++) {
-              controlLayout.setRowFlex(i, 1);
-            } // Create the weekdays
-            // Add an empty label as spacer for the week numbers
-
-
-            var label = this.getChildControl("week#0");
-            label.addState("header");
-            control.add(label, {
-              column: 0,
-              row: 0
-            });
-            this.__weekdayLabelArr__P_224_0 = [];
-
-            for (var i = 0; i < 7; i++) {
-              label = this.getChildControl("weekday#" + i);
-              control.add(label, {
-                column: i + 1,
-                row: 0
-              });
-
-              this.__weekdayLabelArr__P_224_0.push(label);
-            } // Add the days
-
-
-            this.__dayLabelArr__P_224_1 = [];
-            this.__weekLabelArr__P_224_2 = [];
-
-            for (var y = 0; y < 6; y++) {
-              // Add the week label
-              var label = this.getChildControl("week#" + (y + 1));
-              control.add(label, {
-                column: 0,
-                row: y + 1
-              });
-
-              this.__weekLabelArr__P_224_2.push(label); // Add the day labels
-
-
-              for (var x = 0; x < 7; x++) {
-                var label = this.getChildControl("day#" + (y * 7 + x));
-                control.add(label, {
-                  column: x + 1,
-                  row: y + 1
-                });
-
-                this.__dayLabelArr__P_224_1.push(label);
-              }
-            }
-
-            this._add(control);
-
-            break;
+      /**
+       * Used to route external <code>keypress</code> events to the list
+       * handling (in fact the manager of the list)
+       *
+       * @param e {qx.event.type.KeySequence} KeyPress event
+       */
+      handleKeyPress: function handleKeyPress(e) {
+        if (!this._onKeyPress(e)) {
+          this._getManager().handleKeyPress(e);
         }
-
-        return control || qx.ui.control.DateChooser.prototype._createChildControlImpl.base.call(this, id);
       },
-      // apply methods
-      _applyValue: function _applyValue(value, old) {
-        if (value != null && (this.getShownMonth() != value.getMonth() || this.getShownYear() != value.getFullYear())) {
-          // The new date is in another month -> Show that month
-          this.showMonth(value.getMonth(), value.getFullYear());
+
+      /*
+      ---------------------------------------------------------------------------
+        PROTECTED API
+      ---------------------------------------------------------------------------
+      */
+
+      /**
+       * This container holds the list item widgets.
+       *
+       * @return {qx.ui.container.Composite} Container for the list item widgets
+       */
+      _createListItemContainer: function _createListItemContainer() {
+        return new qx.ui.container.Composite();
+      },
+
+      /*
+      ---------------------------------------------------------------------------
+        PROPERTY APPLY ROUTINES
+      ---------------------------------------------------------------------------
+      */
+      // property apply
+      _applyOrientation: function _applyOrientation(value, old) {
+        var content = this.__content__P_218_0; // save old layout for disposal
+
+        var oldLayout = content.getLayout(); // Create new layout
+
+        var horizontal = value === "horizontal";
+        var layout = horizontal ? new qx.ui.layout.HBox() : new qx.ui.layout.VBox(); // Configure content
+
+        content.setLayout(layout);
+        content.setAllowGrowX(!horizontal);
+        content.setAllowGrowY(horizontal); // Configure spacing
+
+        this._applySpacing(this.getSpacing()); // dispose old layout
+
+
+        if (oldLayout) {
+          oldLayout.dispose();
+        }
+      },
+      // property apply
+      _applySpacing: function _applySpacing(value, old) {
+        this.__content__P_218_0.getLayout().setSpacing(value);
+      },
+      // property readOnly
+      _applyReadOnly: function _applyReadOnly(value) {
+        this._getManager().setReadOnly(value);
+
+        if (value) {
+          this.addState("readonly");
+          this.addState("disabled"); // Remove draggable
+
+          if (this.isDraggable()) {
+            this._applyDraggable(false, true);
+          } // Remove droppable
+
+
+          if (this.isDroppable()) {
+            this._applyDroppable(false, true);
+          }
         } else {
-          // The new date is in the current month -> Just change the states
-          var newDay = value == null ? -1 : value.getDate();
+          this.removeState("readonly");
 
-          for (var i = 0; i < 42; i++) {
-            var dayLabel = this.__dayLabelArr__P_224_1[i];
+          if (this.isEnabled()) {
+            this.removeState("disabled"); // Re-add draggable
 
-            if (dayLabel.hasState("otherMonth")) {
-              if (dayLabel.hasState("selected")) {
-                dayLabel.removeState("selected");
-              }
-            } else {
-              var day = parseInt(dayLabel.getValue(), 10);
+            if (this.isDraggable()) {
+              this._applyDraggable(true, false);
+            } // Re-add droppable
 
-              if (day == newDay) {
-                dayLabel.addState("selected");
-              } else if (dayLabel.hasState("selected")) {
-                dayLabel.removeState("selected");
-              }
+
+            if (this.isDroppable()) {
+              this._applyDroppable(true, false);
             }
+          }
+        }
+      },
+      // override
+      _applyEnabled: function _applyEnabled(value, old) {
+        qx.ui.form.List.prototype._applyEnabled.base.call(this, value, old); // If editable has just been turned on, we need to correct for readOnly status 
+
+
+        if (value && this.isReadOnly()) {
+          this.addState("disabled"); // Remove draggable
+
+          if (this.isDraggable()) {
+            this._applyDraggable(false, true);
+          } // Remove droppable
+
+
+          if (this.isDroppable()) {
+            this._applyDroppable(false, true);
           }
         }
       },
@@ -447,285 +353,150 @@
       */
 
       /**
-       * Handler which stops the propagation of the tap event if
-       * the navigation bar or calendar headers will be tapped.
+       * Event listener for <code>keypress</code> events.
        *
-       * @param e {qx.event.type.Pointer} The pointer up / down event
+       * @param e {qx.event.type.KeySequence} KeyPress event
+       * @return {Boolean} Whether the event was processed
        */
-      _onPointerUpDown: function _onPointerUpDown(e) {
-        var target = e.getTarget();
+      _onKeyPress: function _onKeyPress(e) {
+        // Execute action on press <ENTER>
+        if (e.getKeyIdentifier() == "Enter" && !e.isAltPressed()) {
+          var items = this.getSelection();
 
-        if (target == this.getChildControl("navigation-bar") || target == this.getChildControl("date-pane")) {
-          e.stopPropagation();
+          for (var i = 0; i < items.length; i++) {
+            items[i].fireEvent("action");
+          }
+
+          return true;
+        }
+
+        return false;
+      },
+
+      /*
+      ---------------------------------------------------------------------------
+        FIND SUPPORT
+      ---------------------------------------------------------------------------
+      */
+
+      /**
+       * Handles the inline find - if enabled
+       *
+       * @param e {qx.event.type.KeyInput} key input event
+       */
+      _onKeyInput: function _onKeyInput(e) {
+        // do nothing if the find is disabled
+        if (!this.getEnableInlineFind()) {
           return;
+        } // Only useful in single or one selection mode
+
+
+        var mode = this.getSelectionMode();
+
+        if (!(mode === "single" || mode === "one")) {
+          return;
+        } // Reset string after a second of non pressed key
+
+
+        if (new Date().valueOf() - this.__lastKeyPress__P_218_2 > 1000) {
+          this.__pressedString__P_218_1 = "";
+        } // Combine keys the user pressed to a string
+
+
+        this.__pressedString__P_218_1 += e.getChar(); // Find matching item
+
+        var matchedItem = this.findItemByLabelFuzzy(this.__pressedString__P_218_1); // if an item was found, select it
+
+        if (matchedItem) {
+          this.setSelection([matchedItem]);
+        } // Store timestamp
+
+
+        this.__lastKeyPress__P_218_2 = new Date().valueOf();
+      },
+
+      /**
+       * Takes the given string and tries to find a ListItem
+       * which starts with this string. The search is not case sensitive and the
+       * first found ListItem will be returned. If there could not be found any
+       * qualifying list item, null will be returned.
+       *
+       * @param search {String} The text with which the label of the ListItem should start with
+       * @return {qx.ui.form.ListItem} The found ListItem or null
+       */
+      findItemByLabelFuzzy: function findItemByLabelFuzzy(search) {
+        // lower case search text
+        search = search.toLowerCase(); // get all items of the list
+
+        var items = this.getChildren(); // go threw all items
+
+        for (var i = 0, l = items.length; i < l; i++) {
+          // get the label of the current item
+          var currentLabel = items[i].getLabel(); // if the label fits with the search text (ignore case, begins with)
+
+          if (currentLabel && currentLabel.toLowerCase().indexOf(search) == 0) {
+            // just return the first found element
+            return items[i];
+          }
+        } // if no element was found, return null
+
+
+        return null;
+      },
+
+      /**
+       * Find an item by its {@link qx.ui.basic.Atom#getLabel}.
+       *
+       * @param search {String} A label or any item
+       * @param ignoreCase {Boolean?true} description
+       * @return {qx.ui.form.ListItem} The found ListItem or null
+       */
+      findItem: function findItem(search, ignoreCase) {
+        // lowercase search
+        if (ignoreCase !== false) {
+          search = search.toLowerCase();
         }
-      },
 
-      /**
-       * Event handler. Called when a navigation button has been tapped.
-       *
-       * @param evt {qx.event.type.Data} The data event.
-       */
-      _onNavButtonTap: function _onNavButtonTap(evt) {
-        var year = this.getShownYear();
-        var month = this.getShownMonth();
+        ; // get all items of the list
 
-        switch (evt.getCurrentTarget()) {
-          case this.getChildControl("last-year-button"):
-            year--;
-            break;
+        var items = this.getChildren();
+        var item; // go through all items
 
-          case this.getChildControl("last-month-button"):
-            month--;
+        for (var i = 0, l = items.length; i < l; i++) {
+          item = items[i]; // get the content of the label; text content when rich
 
-            if (month < 0) {
-              month = 11;
-              year--;
-            }
+          var label;
 
-            break;
+          if (item.isRich()) {
+            var control = item.getChildControl("label", true);
 
-          case this.getChildControl("next-month-button"):
-            month++;
+            if (control) {
+              var labelNode = control.getContentElement().getDomElement();
 
-            if (month >= 12) {
-              month = 0;
-              year++;
-            }
-
-            break;
-
-          case this.getChildControl("next-year-button"):
-            year++;
-            break;
-        }
-
-        this.showMonth(month, year);
-      },
-
-      /**
-       * Event handler. Called when a day has been tapped.
-       *
-       * @param evt {qx.event.type.Data} The event.
-       */
-      _onDayTap: function _onDayTap(evt) {
-        var time = evt.getCurrentTarget().dateTime;
-        this.setValue(new Date(time));
-      },
-
-      /**
-       * Event handler. Called when a day has been double-tapped.
-       */
-      _onDayDblTap: function _onDayDblTap() {
-        this.execute();
-      },
-
-      /**
-       * Event handler. Called when a key was pressed.
-       *
-       * @param evt {qx.event.type.Data} The event.
-       */
-      _onKeyPress: function _onKeyPress(evt) {
-        var dayIncrement = null;
-        var monthIncrement = null;
-        var yearIncrement = null;
-
-        if (evt.getModifiers() == 0) {
-          switch (evt.getKeyIdentifier()) {
-            case "Left":
-              dayIncrement = -1;
-              break;
-
-            case "Right":
-              dayIncrement = 1;
-              break;
-
-            case "Up":
-              dayIncrement = -7;
-              break;
-
-            case "Down":
-              dayIncrement = 7;
-              break;
-
-            case "PageUp":
-              monthIncrement = -1;
-              break;
-
-            case "PageDown":
-              monthIncrement = 1;
-              break;
-
-            case "Escape":
-              if (this.getValue() != null) {
-                this.setValue(null);
-                return;
+              if (labelNode) {
+                label = qx.bom.element.Attribute.get(labelNode, "text");
               }
-
-              break;
-
-            case "Enter":
-            case "Space":
-              if (this.getValue() != null) {
-                this.execute();
-              }
-
-              return;
-          }
-        } else if (evt.isShiftPressed()) {
-          switch (evt.getKeyIdentifier()) {
-            case "PageUp":
-              yearIncrement = -1;
-              break;
-
-            case "PageDown":
-              yearIncrement = 1;
-              break;
-          }
-        }
-
-        if (dayIncrement != null || monthIncrement != null || yearIncrement != null) {
-          var date = this.getValue();
-
-          if (date != null) {
-            date = new Date(date.getTime());
-          }
-
-          if (date == null) {
-            date = new Date();
+            }
           } else {
-            if (dayIncrement != null) {
-              date.setDate(date.getDate() + dayIncrement);
-            }
-
-            if (monthIncrement != null) {
-              date.setMonth(date.getMonth() + monthIncrement);
-            }
-
-            if (yearIncrement != null) {
-              date.setFullYear(date.getFullYear() + yearIncrement);
-            }
+            label = item.getLabel();
           }
 
-          this.setValue(date);
-        }
-      },
-
-      /**
-       * Shows a certain month.
-       *
-       * @param month {Integer ? null} the month to show (0 = january). If not set
-       *      the month will remain the same.
-       * @param year {Integer ? null} the year to show. If not set the year will
-       *      remain the same.
-       */
-      showMonth: function showMonth(month, year) {
-        if (month != null && month != this.getShownMonth() || year != null && year != this.getShownYear()) {
-          if (month != null) {
-            this.setShownMonth(month);
-          }
-
-          if (year != null) {
-            this.setShownYear(year);
-          }
-
-          this._updateDatePane();
-        }
-      },
-
-      /**
-       * Event handler. Used to handle the key events.
-       *
-       * @param e {qx.event.type.Data} The event.
-       */
-      handleKeyPress: function handleKeyPress(e) {
-        this._onKeyPress(e);
-      },
-
-      /**
-       * Updates the date pane.
-       */
-      _updateDatePane: function _updateDatePane() {
-        var DateChooser = qx.ui.control.DateChooser;
-        var today = new Date();
-        var todayYear = today.getFullYear();
-        var todayMonth = today.getMonth();
-        var todayDayOfMonth = today.getDate();
-        var selDate = this.getValue();
-        var selYear = selDate == null ? -1 : selDate.getFullYear();
-        var selMonth = selDate == null ? -1 : selDate.getMonth();
-        var selDayOfMonth = selDate == null ? -1 : selDate.getDate();
-        var shownMonth = this.getShownMonth();
-        var shownYear = this.getShownYear();
-        var startOfWeek = qx.locale.Date.getWeekStart(); // Create a help date that points to the first of the current month
-
-        var helpDate = new Date(this.getShownYear(), this.getShownMonth(), 1);
-        var monthYearFormat = new qx.util.format.DateFormat(DateChooser.MONTH_YEAR_FORMAT);
-        this.getChildControl("month-year-label").setValue(monthYearFormat.format(helpDate)); // Show the day names
-
-        var firstDayOfWeek = helpDate.getDay();
-        var firstSundayInMonth = 1 + (7 - firstDayOfWeek) % 7;
-        var weekDayFormat = new qx.util.format.DateFormat(DateChooser.WEEKDAY_FORMAT);
-
-        for (var i = 0; i < 7; i++) {
-          var day = (i + startOfWeek) % 7;
-          var dayLabel = this.__weekdayLabelArr__P_224_0[i];
-          helpDate.setDate(firstSundayInMonth + day);
-          dayLabel.setValue(weekDayFormat.format(helpDate));
-
-          if (qx.locale.Date.isWeekend(day)) {
-            dayLabel.addState("weekend");
-          } else {
-            dayLabel.removeState("weekend");
-          }
-        } // Show the days
-
-
-        helpDate = new Date(shownYear, shownMonth, 1, 12, 0, 0);
-        var nrDaysOfLastMonth = (7 + firstDayOfWeek - startOfWeek) % 7;
-        helpDate.setDate(helpDate.getDate() - nrDaysOfLastMonth);
-        var weekFormat = new qx.util.format.DateFormat(DateChooser.WEEK_FORMAT);
-
-        for (var week = 0; week < 6; week++) {
-          this.__weekLabelArr__P_224_2[week].setValue(weekFormat.format(helpDate));
-
-          for (var i = 0; i < 7; i++) {
-            var dayLabel = this.__dayLabelArr__P_224_1[week * 7 + i];
-            var year = helpDate.getFullYear();
-            var month = helpDate.getMonth();
-            var dayOfMonth = helpDate.getDate();
-            var isSelectedDate = selYear == year && selMonth == month && selDayOfMonth == dayOfMonth;
-
-            if (isSelectedDate) {
-              dayLabel.addState("selected");
-            } else {
-              dayLabel.removeState("selected");
+          if (label != null) {
+            if (label.translate) {
+              label = label.translate();
             }
 
-            if (month != shownMonth) {
-              dayLabel.addState("otherMonth");
-            } else {
-              dayLabel.removeState("otherMonth");
+            if (ignoreCase !== false) {
+              label = label.toLowerCase();
             }
 
-            var isToday = year == todayYear && month == todayMonth && dayOfMonth == todayDayOfMonth;
-
-            if (isToday) {
-              dayLabel.addState("today");
-            } else {
-              dayLabel.removeState("today");
+            if (label.toString() == search.toString()) {
+              return item;
             }
-
-            dayLabel.setValue("" + dayOfMonth);
-            dayLabel.dateTime = helpDate.getTime(); // Go to the next day
-
-            helpDate.setDate(helpDate.getDate() + 1);
           }
         }
 
-        monthYearFormat.dispose();
-        weekDayFormat.dispose();
-        weekFormat.dispose();
+        return null;
       }
     },
 
@@ -735,19 +506,14 @@
     *****************************************************************************
     */
     destruct: function destruct() {
-      {
-        qx.locale.Manager.getInstance().removeListener("changeLocale", this._updateDatePane, this);
-      }
-      this.__weekdayLabelArr__P_224_0 = this.__dayLabelArr__P_224_1 = this.__weekLabelArr__P_224_2 = null;
+      this._disposeObjects("__content__P_218_0");
     }
   });
-  qx.ui.control.DateChooser.$$dbClassInfo = $$dbClassInfo;
+  qx.ui.form.List.$$dbClassInfo = $$dbClassInfo;
 })();
-//# sourceMappingURL=package-37.js.map?dt=1635873034554
+//# sourceMappingURL=package-37.js.map?dt=1636384395429
 qx.$$packageData['37'] = {
   "locales": {},
   "resources": {},
-  "translations": {
-    "en": {}
-  }
+  "translations": {}
 };

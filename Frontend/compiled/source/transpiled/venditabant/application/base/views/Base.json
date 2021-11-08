@@ -268,6 +268,7 @@
     "venditabant.cockpit.views.AutoTodo",
     "venditabant.sales.invoices.views.InvoiceList",
     "venditabant.sales.invoices.views.Invoice",
-    "venditabant.support.views.Settings"
+    "venditabant.support.views.Settings",
+    "venditabant.support.views.MailSettings"
   ]
 }

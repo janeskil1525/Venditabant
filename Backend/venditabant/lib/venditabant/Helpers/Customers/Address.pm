@@ -27,7 +27,23 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
                 db => $db
             )->insert_p(
                 $companies_pkey, $users_pkey, $customer
-            )
+            );
+            if($customer->{type} eq 'INVOICE'){
+                my $exists = await venditabant::Model::Customer::CustomerAddress->new(
+                    db => $db
+                )->address_type_exists(
+                    $companies_pkey, $users_pkey, $customer->{customers_fkey}, 'DELIVERY'
+                );
+                say "customer 2 " . Dumper($customer);
+                if($exists == 0) {
+                    $customer->{type} = 'DELIVERY';
+                    $customer_addresses_pkey = await venditabant::Model::Customer::CustomerAddress->new(
+                        db => $db
+                    )->insert_p(
+                        $companies_pkey, $users_pkey, $customer
+                    );
+                }
+            }
         }
         $tx->commit();
     };

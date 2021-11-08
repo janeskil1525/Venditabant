@@ -39,10 +39,18 @@ async sub load_list ($self, $companies_pkey, $users_pkey) {
         WHERE companies_fkey = ?
     };
 
-    my $list = $self->pg->db->query($load_stmt,($companies_pkey));
-
+    my $err;
     my $hashes;
-    $hashes = $list->hashes if $list->rows > 0;
+    eval {
+        my $list = $self->pg->db->query($load_stmt, ($companies_pkey));
+        $hashes = $list->hashes if $list->rows > 0;
+    };
+    $err = $@ if $@;
+    say "error '$err'" if $err;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Customers::Customers', 'load_list', $err
+    ) if $err;
 
     return $hashes;
 }

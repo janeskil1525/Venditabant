@@ -121,5 +121,22 @@ async sub load_delivery_address_list_p($self, $customers_pkey) {
     return $hash;
 }
 
+async sub address_type_exists($self, $companies_pkey, $users_pkey, $customers_fkey, $type) {
+
+    say "customers_fkey " . $customers_fkey;
+    my $stmt = qq{
+        SELECT COUNT(*) as exists FROM customer_addresses WHERE customers_fkey = ? AND type = ?
+    };
+
+    my $exists;
+    $exists = $self->db->query(
+        $stmt, ($customers_fkey, $type)
+    )->hash->{exists};
+
+
+
+
+    return $exists;
+}
 
 1;

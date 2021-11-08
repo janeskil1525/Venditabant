@@ -91,12 +91,16 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                 });
                 var tcm = table.getTableColumnModel();
                 tcm.setColumnVisible(0,false);
+                tcm.setColumnVisible(1,false);
                 tcm.setColumnVisible(4,false);
                 tcm.setColumnVisible(5,false);
+                tcm.setColumnVisible(6,false);
+
+                tcm.setDataCellRenderer(2, new qx.ui.table.cellrenderer.Date("YYYY-MM-DD HH:mm:SS"));
                 // tcm.setColumnVisible(8,false);
-                tcm.setColumnWidth(1,150)
-                tcm.setColumnWidth(2,150)
-                tcm.setColumnWidth(3,650)
+
+                tcm.setColumnWidth(2,160)
+                tcm.setColumnWidth(3,850)
                 this._table = table;
 
                 return ;

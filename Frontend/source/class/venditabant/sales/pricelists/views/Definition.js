@@ -45,7 +45,6 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 lbl.setWidth( 70 );
                 page1.add ( lbl, { top: 80, left: 10 } );
 
-
                 let stockitems = new venditabant.stock.stockitems.views.StockitemsSelectBox().set({
                     width:180,
                     emptyrow:true,

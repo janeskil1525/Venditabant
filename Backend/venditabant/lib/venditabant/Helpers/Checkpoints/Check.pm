@@ -6,6 +6,7 @@ use venditabant::Model::AutoTodo;
 use venditabant::Helpers::Checkpoints::Check::SqlFalse;
 use venditabant::Helpers::Checkpoints::Check::SqlList;
 use venditabant::Helpers::Checkpoints::Actions::MissingDeliveryAddress;
+use venditabant::Helpers::Checkpoints::Actions::MissingInvoiceAddress;
 
 use Data::Dumper;
 
@@ -29,6 +30,9 @@ async sub check ($self, $companies_pkey) {
     my $db = $self->pg->db;
     my $tx = $db->begin();
     eval {
+        await venditabant::Model::AutoTodo->new(
+            db => $db
+        )->delete_auto_todos($companies_pkey);
         foreach my $check (@{$checks}) {
             if($check->{check_type} eq 'SQL_FALSE') {
                 my $result = await venditabant::Helpers::Checkpoints::Check::SqlFalse->new(
@@ -50,21 +54,30 @@ async sub check ($self, $companies_pkey) {
                     $companies_pkey, $check
                 );
                 foreach my $result (@{$results}) {
+                    my $user_action = '';
                     if($check->{check_name} eq 'CUSTOMER_DELIVERYADDRESS') {
-                        my $user_action = await venditabant::Helpers::Checkpoints::Actions::MissingDeliveryAddress->new(
+                        $user_action = await venditabant::Helpers::Checkpoints::Actions::MissingDeliveryAddress->new(
                             pg => $self->pg
                         )->create_text(
                             $companies_pkey, $result, $check
                         );
-                        await $self->upsert_user_action(
-                            $db,
-                            $companies_pkey,
-                            $check->{check_type},
-                            $check->{check_name},
-                            $user_action,
-                            $result->{customers_pkey}
+                    } elsif ($check->{check_name} eq 'CUSTOMER_INVOICEADDRESS') {
+                        $user_action = await venditabant::Helpers::Checkpoints::Actions::MissingInvoiceAddress->new(
+                            pg => $self->pg
+                        )->create_text(
+                            $companies_pkey, $result, $check
                         );
                     }
+
+                    await $self->upsert_user_action(
+                        $db,
+                        $companies_pkey,
+                        $check->{check_type},
+                        $check->{check_name},
+                        $user_action,
+                        $result->{customers_pkey}
+                    );
+
                 }
             }
         }

@@ -70,4 +70,13 @@ async sub upsert_user_action ($self, $companies_pkey, $check_type, $check_name, 
 
     return $auto_todo_pkey;
 }
+
+async sub delete_auto_todos($self, $companies_pkey) {
+    $self->db->delete(
+        'auto_todo',
+            {
+                companies_fkey => $companies_pkey
+            }
+    );
+}
 1;

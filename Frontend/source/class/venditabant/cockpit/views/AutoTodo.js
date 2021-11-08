@@ -42,6 +42,7 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                                 response.data[i].user_action,
                                 response.data[i].check_type,
                                 response.data[i].check_name,
+                                response.data[i].key_id,
                             ]);
                         }
                         this._table.getTableModel().setData(tableData);
@@ -58,7 +59,7 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Created", "Last Check", "User action", "Check type", "Check name" ]);
+                tableModel.setColumns([ "ID", "Created", "Last Check", "User action", "Check type", "Check name", "key_id" ]);
                 tableModel.setData(rowData);
 
                 // table
@@ -82,6 +83,10 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                 table.addListener('cellDbltap', function(e){
                     if(that._selectedRow[4] === 'SQL_FALSE') {
                         that.sqlFalse();
+                    } else if (that._selectedRow[4] === 'SQL_LIST') {
+
+                        that.sqlList();
+
                     }
                 });
                 var tcm = table.getTableColumnModel();
@@ -95,6 +100,13 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                 this._table = table;
 
                 return ;
+            },
+            sqlList:function() {
+                if(this._selectedRow[5] === 'CUSTOMER_DELIVERYADDRESS') {
+                    alert("CUSTOMER_DELIVERYADDRESS")
+                } else if(this._selectedRow[5] === 'CUSTOMER_INVOICEADDRESS') {
+                    alert("CUSTOMER_INVOICEADDRESS")
+                }
             },
             sqlFalse:function() {
                 if(this._selectedRow[5] === 'COMPANY_CHECK_VATNO' ||

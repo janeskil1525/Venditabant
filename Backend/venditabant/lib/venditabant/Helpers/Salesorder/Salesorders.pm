@@ -133,10 +133,17 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
 
     my $err;
     eval {
+        my $customer_fkey = await venditabant::Helpers::Customers::Address->new(
+            db => $self->pg->db
+        )->load_delivery_address_p(
+            $companies_pkey, $users_pkey, $data->{customer_addresses_pkey}
+        )->{customer_fkey};
+
+        $data->{customers_fkey} = $customer_fkey;
         my $sohead = venditabant::Model::SalesorderHead->new(db => $db);
 
         my $orderno = await $sohead->get_open_so(
-            $companies_pkey, $data->{customer}
+            $companies_pkey, $customer_fkey
         );
 
         if( !defined $orderno or $orderno == 0) {
@@ -192,20 +199,25 @@ async sub close ($self, $companies_pkey, $users_pkey, $data){
 
     my $salesorder_statistics = qq{
         INSERT INTO salesorder_statistics (salesorders_fkey, stockitems_fkey, customers_fkey,
-            users_fkey, companies_fkey, orderdate, deliverydate, quantity, price)
+            users_fkey, companies_fkey, orderdate, deliverydate, quantity, price, customer_addresses_fkey)
         SELECT salesorders_pkey, stockitems_fkey, customers_fkey,
-            users_fkey, companies_fkey, orderdate, deliverydate, quantity, price
+            users_fkey, companies_fkey, orderdate, deliverydate, quantity, price, customer_addresses_fkey
                 FROM salesorders JOIN salesorder_items ON salesorders_pkey = salesorders_fkey
                     where salesorders_pkey = ?
     };
 
     my $err;
     eval {
+        my $customer_fkey = await venditabant::Helpers::Customers::Address->new(
+            db => $self->pg->db
+        )->load_delivery_address_p(
+            $companies_pkey, $users_pkey, $data->{customer_addresses_pkey}
+        )->{customer_fkey};
 
         my $salesorders_pkey = await venditabant::Model::SalesorderHead->new(
             db => $db
         )->close(
-            $companies_pkey, $users_pkey, $data->{customer}
+            $companies_pkey, $users_pkey, $$customer_fkey
         );
 
         $db->query($salesorder_statistics,($salesorders_pkey));

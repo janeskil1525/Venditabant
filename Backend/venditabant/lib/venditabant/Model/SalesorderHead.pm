@@ -73,19 +73,17 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
     return $salesorders_pkey;
 }
 
-async sub get_open_so ($self, $companies_pkey, $customer) {
+async sub get_open_so ($self, $companies_pkey, $customer_fkey) {
 
     my $soopen_stmt = qq {
         SELECT orderno FROM salesorders
             WHERE open = true AND
             companies_fkey = ?
-            AND customers_fkey = (SELECT customers_pkey
-                                    FROM customers WHERE customer = ?
-                                        AND companies_fkey = ?)
+            AND customers_fkey = ?
     };
     my $result = $self->db->query(
         $soopen_stmt,
-        ($companies_pkey, $customer, $companies_pkey)
+        ($companies_pkey, $customer_fkey)
     );
 
     my $hash;
@@ -119,7 +117,7 @@ async sub get_open_so_pkey ($self, $companies_pkey, $customer) {
     return 0;
 }
 
-async sub close ($self, $companies_pkey, $users_pkey, $customer) {
+async sub close ($self, $companies_pkey, $users_pkey, $customer_fkey) {
 
     my $soclose_stmt = qq {
         UPDATE salesorders SET open = false,
@@ -127,15 +125,13 @@ async sub close ($self, $companies_pkey, $users_pkey, $customer) {
             moddatetime = now()
             WHERE open = true AND
             companies_fkey = ?
-            AND customers_fkey = (SELECT customers_pkey
-                                    FROM customers WHERE customer = ?
-                                        AND companies_fkey = ?)
+            AND customers_fkey = ?
         RETURNING salesorders_pkey
     };
 
     my $result = $self->db->query(
         $soclose_stmt,
-        ($users_pkey, $companies_pkey, $customer, $companies_pkey)
+        ($users_pkey, $companies_pkey, $customer_fkey)
     );
 
     my $hash;

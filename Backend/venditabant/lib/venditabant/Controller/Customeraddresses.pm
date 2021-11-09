@@ -53,6 +53,24 @@ sub load_delivery_address_from_customer_list ($self) {
     })->wait;
 }
 
+sub load_delivery_address_from_company_list($self) {
+
+    $self->render_later;
+    my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+
+    $self->customeraddress->load_delivery_address_from_company_list(
+        $companies_pkey, $users_pkey
+    )->then(sub ($result) {
+
+        $self->render(json => {'result' => 'success', data => $result});
+    })->catch( sub ($err) {
+
+        $self->render(json => {'result' => 'failed', data => $err});
+    })->wait;
+}
+
 sub load_invoice_address ($self) {
 
     $self->render_later;

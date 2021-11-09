@@ -24,14 +24,13 @@ qx.Class.define("desktop_delivery.delivery.DeliveryAddressSelectBox",
                         this._model = e.getData()[0];
                         if(this._model.getModel() !== null) {
                             this.getDelivery().setCustomerAddressFkey(this._model.getModel().customer_addresses_pkey)
-                            this.getDelivery().loadDeliveryData();
+                            this.getDelivery().loadStockitemList();
                         }
                     }
                 }, this);
                 new desktop_delivery.helpers.LoadList().set({
                     list: selectbox,
                     emptyrow: this.isEmptyrow(),
-                    customers_fkey: this.getCustomersFkey(),
                 }).loadList('');
                 this._selectbox = selectbox;
                 return selectbox;

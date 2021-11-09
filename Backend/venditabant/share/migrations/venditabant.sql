@@ -1777,5 +1777,14 @@ DROP INDEX idx_auto_todo_companies_fkey_check_type_check_name;
 
 CREATE UNIQUE INDEX idx_auto_todo_companies_fkey_check_type_check_name_key_id
     ON auto_todo(companies_fkey, check_type, check_name, key_id);
-
 -- 39 down
+-- 40 up
+ALTER TABLE salesorder_statistics
+    ADD COLUMN customer_addresses_fkey BIGINT NOT NULL DEFAULT 0;
+ALTER TABLE salesorder_items
+    ADD COLUMN customer_addresses_fkey BIGINT NOT NULL DEFAULT 0;
+CREATE INDEX idx_salesorder_statistics_customer_addresses_fkey
+    ON salesorder_statistics(customer_addresses_fkey);
+CREATE INDEX idx_salesorder_items_customer_addresses_fkey
+    ON salesorder_items(customer_addresses_fkey);
+-- 40 down

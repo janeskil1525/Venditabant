@@ -117,7 +117,7 @@ sub startup ($self) {
 
   $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-  )->migrate(39);
+  )->migrate(40);
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -178,6 +178,8 @@ sub startup ($self) {
   $auth->get('/customers/delivery/address/load/:customer_addresses_pkey')->to('customeraddresses#load_delivery_address');
   $auth->get('/customers/delivery/address/load_list/:customers_fkey')->to('customeraddresses#load_delivery_address_list');
   $auth->get('/customers/delivery/address/load_list_customer/:customer')->to('customeraddresses#load_delivery_address_from_customer_list');
+  $auth->get('/customers/delivery/address/load_list_company/')->to('customeraddresses#load_delivery_address_from_company_list');
+
 
   $auth->put('/users/save/')->to('users#save_user');
   $auth->get('/users/load_list/')->to('users#load_list');

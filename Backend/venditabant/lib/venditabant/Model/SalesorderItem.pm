@@ -41,14 +41,14 @@ async sub upsert ($self, $companies_pkey, $salesorders_pkey, $users_pkey, $data)
 
     my $salesorder_item_stmt = qq{
         INSERT INTO salesorder_items (
-                insby, modby, salesorders_fkey, stockitems_fkey, quantity, price
+                insby, modby, salesorders_fkey, stockitems_fkey, quantity, price, customer_addresses_fkey
             ) VALUES (
                     (SELECT userid FROM users WHERE users_pkey = ?),
                     (SELECT userid FROM users WHERE users_pkey = ?),?,?, ?, ?)
             ON CONFLICT (salesorders_fkey, stockitems_fkey)
             DO UPDATE SET modby = (SELECT userid FROM users WHERE users_pkey = ?),
                         moddatetime = now(),
-                        quantity = ?, price = ?
+                        quantity = ?, price = ?, customer_addresses_fkey = ?
             RETURNING salesorder_items_pkey
     };
 
@@ -61,9 +61,11 @@ async sub upsert ($self, $companies_pkey, $salesorders_pkey, $users_pkey, $data)
             $data->{stockitems_fkey},
             $data->{quantity},
             $data->{price},
+            $data->{customer_addresses_pkey},
             $users_pkey,
             $data->{quantity},
             $data->{price},
+            $data->{customer_addresses_pkey},
         )
     )->hash->{salesorder_items_pkey};
 

@@ -28,7 +28,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
             )->insert_p(
                 $companies_pkey, $users_pkey, $customer
             );
-            if($customer->{type} eq 'INVOICE'){
+            if($customer->{type} eq 'INVOICE'){customer_addresses_pkey
                 my $exists = await venditabant::Model::Customer::CustomerAddress->new(
                     db => $db
                 )->address_type_exists(
@@ -116,4 +116,19 @@ async sub load_delivery_address_list_p($self, $companies_pkey, $users_pkey, $cus
 
      return $result;
  }
+
+async sub load_delivery_address_from_company_list($self, $companies_pkey, $users_pkey) {
+
+    my $stmt = qq{
+        SELECT customer_addresses.* FROM customer_addresses, customers
+            WHERE customers_pkey = customers_fkey AND companies_fkey = ?
+    };
+
+    my $result = $self->pg->db->query($stmt,($companies_pkey));
+
+    my $hash;
+    $hash = $result->hashes if $result and $result->rows();
+
+    return $hash;
+}
 1;

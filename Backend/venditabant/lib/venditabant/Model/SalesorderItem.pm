@@ -44,7 +44,7 @@ async sub upsert ($self, $companies_pkey, $salesorders_pkey, $users_pkey, $data)
                 insby, modby, salesorders_fkey, stockitems_fkey, quantity, price, customer_addresses_fkey
             ) VALUES (
                     (SELECT userid FROM users WHERE users_pkey = ?),
-                    (SELECT userid FROM users WHERE users_pkey = ?),?,?, ?, ?)
+                    (SELECT userid FROM users WHERE users_pkey = ?),?,?, ?, ?,?)
             ON CONFLICT (salesorders_fkey, stockitems_fkey)
             DO UPDATE SET modby = (SELECT userid FROM users WHERE users_pkey = ?),
                         moddatetime = now(),

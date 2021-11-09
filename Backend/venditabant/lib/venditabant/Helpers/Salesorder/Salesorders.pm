@@ -133,11 +133,12 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
 
     my $err;
     eval {
-        my $customer_fkey = await venditabant::Helpers::Customers::Address->new(
-            db => $self->pg->db
+        my $customer_addresses = await venditabant::Helpers::Customers::Address->new(
+            pg => $self->pg
         )->load_delivery_address_p(
             $companies_pkey, $users_pkey, $data->{customer_addresses_pkey}
-        )->{customer_fkey};
+        );
+        my $customer_fkey = $customer_addresses->{customers_fkey};
 
         $data->{customers_fkey} = $customer_fkey;
         my $sohead = venditabant::Model::SalesorderHead->new(db => $db);
@@ -152,6 +153,8 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
                 $companies_pkey, $users_pkey, 'salesorder'
             );
         }
+
+        say Dumper($data);
 
         $data->{orderno} = $orderno;
         my $salesorderhead_pkey = await $sohead->upsert(
@@ -208,16 +211,17 @@ async sub close ($self, $companies_pkey, $users_pkey, $data){
 
     my $err;
     eval {
-        my $customer_fkey = await venditabant::Helpers::Customers::Address->new(
-            db => $self->pg->db
+        my $customer_addresses = await venditabant::Helpers::Customers::Address->new(
+            pg => $self->pg
         )->load_delivery_address_p(
             $companies_pkey, $users_pkey, $data->{customer_addresses_pkey}
-        )->{customer_fkey};
+        );
 
+        my $customers_fkey = $customer_addresses->{customers_fkey};
         my $salesorders_pkey = await venditabant::Model::SalesorderHead->new(
             db => $db
         )->close(
-            $companies_pkey, $users_pkey, $$customer_fkey
+            $companies_pkey, $users_pkey, $customers_fkey
         );
 
         $db->query($salesorder_statistics,($salesorders_pkey));

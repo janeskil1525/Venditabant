@@ -28,7 +28,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
             )->insert_p(
                 $companies_pkey, $users_pkey, $customer
             );
-            if($customer->{type} eq 'INVOICE'){customer_addresses_pkey
+            if($customer->{type} eq 'INVOICE'){
                 my $exists = await venditabant::Model::Customer::CustomerAddress->new(
                     db => $db
                 )->address_type_exists(

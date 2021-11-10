@@ -16,9 +16,9 @@ qx.Class.define("desktop_delivery.models.Stockitems",
                     cb.call ( ctx, (response));
                 },this)
             },
-            loadListSales:function(cb, ctx, customer) {
+            loadListSales:function(cb, ctx, customer_addresses_pkey) {
                 let get = new desktop_delivery.communication.Get;
-                get.load(this._address, "/api/v1/stockitem/load_list/mobile/", customer,function(response){
+                get.load(this._address, "/api/v1/stockitem/load_list/mobile/", customer_addresses_pkey,function(response){
                     cb.call ( ctx, (response));
                 },this)
             }

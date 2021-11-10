@@ -131,19 +131,20 @@ async sub load_list_mobile_nocust_p ($self, $companies_pkey) {
     return $response;
 }
 
-async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
+async sub load_list_mobile_p ($self, $companies_pkey, $customer_addresses_pkey) {
 
     my $db = $self->pg->db;
 
     my $customer = $self->pg->db->select(
-        'customers',
-        undef,
+        ['customers',['customer_addresses', customers_fkey => 'customers_pkey']],
+        ['pricelists_fkey', 'customers_pkey'],
             {
-                customer       => $cust,
-                companies_fkey => $companies_pkey,
+                customer_addresses_pkey => $customer_addresses_pkey,
+                companies_fkey          => $companies_pkey,
             }
     )->hash;
 
+    say "load_list_mobile_p " . Dumper($customer);
     my $mobilelist_stmt = qq{
         SELECT stockitems_pkey, stockitem, description, 0 as quantity,  price
             FROM stockitems JOIN pricelist_items
@@ -162,6 +163,7 @@ async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
                         ON stockitems_pkey = stockitems_fkey
                     JOIN salesorders ON salesorders_fkey = salesorders_pkey
                     AND open = true AND salesorders.companies_fkey = ? AND customers_fkey = ?
+                    AND customer_addresses_fkey = ?
 				)
     };
 
@@ -173,18 +175,20 @@ async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
                 $customer->{pricelists_fkey},
                 $companies_pkey,
                 $customer->{customers_pkey},
+                $customer_addresses_pkey,
             )
     );
 
     my $response = $self->mobile_list_response();
     $response->{stockitems} = $result->hashes if $result and $result->rows > 0;
-
+say "response 1 " . Dumper($response);
     my $salesorders_stmt = qq{
         SELECT stockitems_pkey, stockitem, description, quantity,  price
         FROM stockitems JOIN salesorder_items
             ON stockitems_pkey = stockitems_fkey
         JOIN salesorders ON salesorders_fkey = salesorders_pkey
         AND open = true AND salesorders.companies_fkey = ? AND customers_fkey = ?
+        AND customer_addresses_fkey = ?
     };
 
     $result = $self->pg->db->query(
@@ -192,6 +196,7 @@ async sub load_list_mobile_p ($self, $companies_pkey, $cust) {
         (
             $companies_pkey,
             $customer->{customers_pkey},
+            $customer_addresses_pkey,
         )
     );
 

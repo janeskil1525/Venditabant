@@ -12,6 +12,8 @@ qx.Class.define("desktop_delivery.communication.Get",
                 let address = url + endpoint;
                 if(typeof data !== 'undefined' && data.length > 0) {
                     address = address + data;
+                } else if (typeof data === 'number' ) {
+                    address = address + data;
                 }
 
                 let rpc = new qx.io.request.Xhr (address);

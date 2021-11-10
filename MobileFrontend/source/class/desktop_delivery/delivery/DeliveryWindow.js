@@ -150,7 +150,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 container.add(deliveryaddressview);
                 this.add(container,{left : 10, top : 40});
             },
-            loadStockitemList : function(customer, recreate) {
+            loadStockitemList : function(recreate) {
                 let that = this;
                 let stock = new desktop_delivery.models.Stockitems();
                 let tableData = [];
@@ -192,7 +192,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                         // that.addSaveButton();
                     }
                     this._table.getTableModel().setData(tableData);
-                }, this, customer);
+                }, this, this.getCustomer_addresses_fkey());
 
             },
             _createTable : function() {

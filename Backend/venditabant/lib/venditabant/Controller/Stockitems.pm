@@ -43,8 +43,8 @@ sub load_list_mobile ($self) {
         $self->req->headers->header('X-Token-Check')
     );
 
-    my $customer = $self->param('customer');
-    $self->stockitems->load_list_mobile_p($companies_pkey, $customer)->then(sub ($result) {
+    my $customer_addresses_pkey = $self->param('customer_addresses_pkey');
+    $self->stockitems->load_list_mobile_p($companies_pkey, $customer_addresses_pkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
@@ -52,6 +52,7 @@ sub load_list_mobile ($self) {
         $self->render(json => {'result' => 'failed', data => $err});
     })->wait;
 }
+
 sub load_list_mobile_nocust ($self) {
 
     $self->render_later;
@@ -59,7 +60,7 @@ sub load_list_mobile_nocust ($self) {
         $self->req->headers->header('X-Token-Check')
     );
 
-
+say "load_list_mobile_nocust";
     $self->stockitems->load_list_mobile_nocust_p($companies_pkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});

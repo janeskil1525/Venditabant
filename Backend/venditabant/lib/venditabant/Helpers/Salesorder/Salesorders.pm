@@ -214,7 +214,7 @@ async sub close ($self, $companies_pkey, $users_pkey, $data){
         my $customer_addresses = await venditabant::Helpers::Customers::Address->new(
             pg => $self->pg
         )->load_delivery_address_p(
-            $companies_pkey, $users_pkey, $data->{customer_addresses_pkey}
+            $companies_pkey, $users_pkey, $data->{customer_addresses_fkey}
         );
 
         my $customers_fkey = $customer_addresses->{customers_fkey};
@@ -228,7 +228,10 @@ async sub close ($self, $companies_pkey, $users_pkey, $data){
         $tx->commit();
     };
     $err = $@ if $@;
-    say "error '$err'" if $err;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Salesorder::Salesorders', 'close', $err
+    ) if $err;
 
     return $err ? $err : 'success';
 }

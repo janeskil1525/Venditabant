@@ -6,7 +6,7 @@ use Mojo::Pg;
 use venditabant::Helpers::Login;
 use venditabant::Helpers::Stockitems;
 use venditabant::Helpers::Jwt;
-use venditabant::Helpers::Pricelists;
+use venditabant::Helpers::Pricelist::Pricelists;
 use venditabant::Helpers::Customers::Customers;
 use venditabant::Helpers::Users;
 use venditabant::Helpers::Salesorder::Salesorders;
@@ -54,7 +54,7 @@ sub startup ($self) {
   $self->helper(login => sub {state $login = venditabant::Helpers::Login->new(pg => shift->pg)});
   $self->helper(stockitems => sub {state $stockitems = venditabant::Helpers::Stockitems->new(pg => shift->pg)});
   $self->helper(jwt => sub {state $jwt = venditabant::Helpers::Jwt->new()});
-  $self->helper(pricelists => sub {state $pricelists = venditabant::Helpers::Pricelists->new(pg => shift->pg)});
+  $self->helper(pricelists => sub {state $pricelists = venditabant::Helpers::Pricelist::Pricelists->new(pg => shift->pg)});
   $self->helper(
       salesorders => sub {
         state $salesorders = venditabant::Helpers::Salesorder::Salesorders->new(pg => shift->pg)

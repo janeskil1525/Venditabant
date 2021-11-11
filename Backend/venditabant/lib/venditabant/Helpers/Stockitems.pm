@@ -4,6 +4,7 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 use venditabant::Model::Stockitems;
 use venditabant::Model::Pricelists;
 use venditabant::Model::PricelistItems;
+use venditabant::Helpers::Pricelist::Pricelists;
 
 use Data::Dumper;
 
@@ -30,10 +31,14 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
             $companies_pkey, $users_pkey, $stockitem
         );
 
-        $stockitem->{pricelist} = 'DEFAULT';
+        my $item = await venditabant::Helpers::Pricelist::Pricelists->new(
+            pg => $self->pg
+        )->prepare_upsert_from_stockitem(
+            $companies_pkey, $stockitems_pkey, $stockitem->{price}
+        );
 
         $pricelist_item->insert_item(
-            $companies_pkey, $stockitem
+            $companies_pkey, $item
         );
 
         $tx->commit();

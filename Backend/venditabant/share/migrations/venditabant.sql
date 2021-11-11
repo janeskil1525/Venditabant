@@ -1788,3 +1788,79 @@ CREATE INDEX idx_salesorder_statistics_customer_addresses_fkey
 CREATE INDEX idx_salesorder_items_customer_addresses_fkey
     ON salesorder_items(customer_addresses_fkey);
 -- 40 down
+
+-- 41 up
+CREATE TABLE if not exists delivery_note
+(
+    delivery_note_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    deliverynoteno BIGINT NOT NULL,
+    companies_fkey bigint NOT NULL,
+    customer_addresses_fkey BIGINT NOT NULL,
+    deliverydate timestamp without time zone NOT NULL DEFAULT now(),
+    sent BOOLEAN NOT NULL DEFAULT 'false',
+    CONSTRAINT delivery_note_pkey PRIMARY KEY (delivery_note_pkey),
+    CONSTRAINT delivery_note_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT delivery_note_customer_addresses_fkey FOREIGN KEY (customer_addresses_fkey)
+        REFERENCES customer_addresses (customer_addresses_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE UNIQUE INDEX idx_delivery_note_deliverynoteno_companies_fkey
+    ON delivery_note(deliverynoteno, companies_fkey);
+
+CREATE INDEX idx_delivery_note_companies_fkey
+    ON delivery_note(companies_fkey);
+
+CREATE INDEX idx_delivery_note_customer_addresses_fkey
+    ON delivery_note(customer_addresses_fkey);
+
+CREATE INDEX idx_delivery_note_deliverynoteno
+    ON delivery_note(deliverynoteno);
+
+CREATE INDEX idx_delivery_note_sent
+    ON delivery_note(sent);
+
+CREATE INDEX idx_delivery_note_companies_fkey_sent
+    ON delivery_note(companies_fkey, sent);
+
+CREATE TABLE if not exists delivery_note_items
+(
+    delivery_note_items_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    delivery_note_fkey bigint NOT NULL,
+    stockitems_fkey BIGINT NOT NULL,
+    quantity NUMERIC(10,2) NOT NULL DEFAULT 0.0,
+    CONSTRAINT delivery_note_items_pkey PRIMARY KEY (delivery_note_items_pkey),
+    CONSTRAINT delivery_note_items_delivery_note_fkey FOREIGN KEY (delivery_note_fkey)
+        REFERENCES delivery_note (delivery_note_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT delivery_note_items_stockitems_fkey FOREIGN KEY (stockitems_fkey)
+        REFERENCES stockitems (stockitems_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX idx_delivery_note_items_delivery_note_fkey
+    ON delivery_note_items(delivery_note_fkey);
+
+CREATE INDEX idx_delivery_note_items_stockitems_fkey
+    ON delivery_note_items(stockitems_fkey);
+-- 41 down

@@ -60,10 +60,10 @@ async sub load_list_p ($self, $companies_pkey) {
 			AND pricelist_items_pkey = (
 				SELECT MAX(pricelist_items_pkey) FROM pricelist_items
 					WHERE stockitems_pkey = stockitems_fkey
-						AND pricelists_fkey = (SELECT MAX(pricelists_pkey) FROM pricelists
+						AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists
 											   WHERE pricelist = 'DEFAULT' AND stockitems.companies_fkey = companies_fkey)
-				AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
-								WHERE stockitems_pkey = stockitems_fkey AND todate >= now()))
+				AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items, pricelists
+								WHERE pricelist = 'DEFAULT' AND pricelists_pkey = pricelists_fkey AND stockitems_pkey = stockitems_fkey AND todate >= now()))
 				AND todate >= now()
 			JOIN parameters_items as units ON units.parameters_items_pkey = units_fkey
 			JOIN parameters_items as accounts ON accounts.parameters_items_pkey = accounts_fkey

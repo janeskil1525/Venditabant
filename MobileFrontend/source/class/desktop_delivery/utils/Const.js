@@ -18,7 +18,7 @@ qx.Class.define("desktop_delivery.utils.Const",
                         }
                 },
                 getVersion:function() {
-                    return "0.0.1"
+                    return "0.0.2"
                 },
             }
 

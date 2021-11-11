@@ -24,10 +24,13 @@
         } else {
           return 'https://www.venditabant.net';
         }
+      },
+      getVersion: function getVersion() {
+        return "0.0.1";
       }
     }
   });
   venditabant.application.Const.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Const.js.map?dt=1636115490153
+//# sourceMappingURL=Const.js.map?dt=1636565549992

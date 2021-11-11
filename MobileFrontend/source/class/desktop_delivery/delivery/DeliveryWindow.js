@@ -31,7 +31,8 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 let font = new qx.bom.Font ( 18, [ "Arial" ] );
                 font.setBold ( true );
 
-                let lbl = new qx.ui.basic.Label ( "<center><b style='color: #FFFFFF'>" + this.tr ( "Delivery" ) + "</b></center>" );
+                let version = new desktop_delivery.utils.Const().getVersion();
+                let lbl = new qx.ui.basic.Label ( "<center><b style='color: #FFFFFF'>" + this.tr ( "Delivery" ) + ' ' + version + "</b></center>" );
                 lbl.setFont ( font );
                 lbl.setRich ( true );
                 //lbl.setWidth( this.getWidth ( ) - 20  );

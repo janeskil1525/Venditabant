@@ -13,7 +13,7 @@
         "column": 0
       },
       "end": {
-        "line": 23,
+        "line": 26,
         "column": 7
       }
     }
@@ -68,6 +68,20 @@
         },
         "end": {
           "line": 20,
+          "column": 13
+        }
+      },
+      "type": "function",
+      "access": "public"
+    },
+    "getVersion": {
+      "location": {
+        "start": {
+          "line": 21,
+          "column": 12
+        },
+        "end": {
+          "line": 23,
           "column": 13
         }
       },

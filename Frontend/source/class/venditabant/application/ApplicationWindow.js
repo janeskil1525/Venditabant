@@ -43,7 +43,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 var container = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
                 container.setPadding(5);
                 container.setAllowStretchX(true);
-                container.setBackgroundColor("red");
+                container.setBackgroundColor("white");
                 scroller.add(container);
                 this.add(scroller, {edge: 0});
 

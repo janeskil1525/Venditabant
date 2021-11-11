@@ -19,6 +19,10 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
 
                 var page1 = new qx.ui.tabview.Page("Auto todo's");
                 page1.setLayout(new qx.ui.layout.Canvas());
+                let version = this.tr( "Version" ) + ' ' + new venditabant.application.Const().getVersion();
+
+                let lbl = this._createLbl(version, 100);
+                page1.add ( lbl, { top: 10, left: 10 } );
                 this._createTable();
 
                 page1.add(this._table,{top: 50, left:5, right:5, height:"90%"});

@@ -144,7 +144,6 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customer_addresses_pkey) 
             }
     )->hash;
 
-    say "load_list_mobile_p " . Dumper($customer);
     my $mobilelist_stmt = qq{
         SELECT stockitems_pkey, stockitem, description, 0 as quantity,  price
             FROM stockitems JOIN pricelist_items
@@ -181,7 +180,7 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customer_addresses_pkey) 
 
     my $response = $self->mobile_list_response();
     $response->{stockitems} = $result->hashes if $result and $result->rows > 0;
-say "response 1 " . Dumper($response);
+
     my $salesorders_stmt = qq{
         SELECT stockitems_pkey, stockitem, description, quantity,  price
         FROM stockitems JOIN salesorder_items

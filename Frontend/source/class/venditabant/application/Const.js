@@ -17,7 +17,10 @@ qx.Class.define("venditabant.application.Const",
                     } else {
                             return 'https://www.venditabant.net';
                     }
-            }
+            },
+            getVersion:function() {
+                return "0.0.1"
+            },
         }
 
     });

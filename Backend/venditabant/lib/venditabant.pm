@@ -22,6 +22,7 @@ use venditabant::Helpers::Warehouses::Warehouse;
 use venditabant::Helpers::Checkpoints::Autotodos;
 use venditabant::Helpers::Invoice::Invoices;
 use venditabant::Helpers::System::Settings;
+use venditabant::Helpers::Currency::Currencies;
 
 use Data::Dumper;
 use File::Share;
@@ -110,6 +111,13 @@ sub startup ($self) {
       systemsettings => sub {
         state  $systemsettings = venditabant::Helpers::System::Settings->new(pg => shift->pg)
       });
+
+  $self->helper(
+      currencies => sub {
+        state  $currencies= venditabant::Helpers::Currency::Currencies->new(pg => shift->pg)
+      });
+
+
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -223,6 +231,8 @@ sub startup ($self) {
 
   $auth->get('/systemsettings/load/:setting')->to('systemsettings#load');
   $auth->put('/systemsettings/save/')->to('systemsettings#save_system_parameter');
+
+  $auth->get('/currencies/load_list/')->to('currencies#load_list');
 }
 
 1;

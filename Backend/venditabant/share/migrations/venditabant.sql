@@ -1947,3 +1947,49 @@ CREATE INDEX idx_schedules_nextexecution
 
 INSERT INTO schedules (schedule) VALUES ('Currencies');
 -- 42 down
+
+-- 43 up
+CREATE TABLE if not exists suppliers
+(
+    suppliers_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    supplier VARCHAR UNIQUE NOT NULL,
+    name VARCHAR NOT NULL,
+    CONSTRAINT suppliers_pkey PRIMARY KEY (suppliers_pkey)
+);
+
+CREATE TABLE if not exists supplier_stockitem
+(
+    supplier_stockitem_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    suppliers_fkey BIGINT NOT NULL,
+    stockitems_fkey BIGINT NOT NULL,
+    currencies_fkey BIGINT NOT NULL,
+    price DECIMAL(10,5) NOT NULL,
+    CONSTRAINT supplier_stockitem_pkey PRIMARY KEY (supplier_stockitem_pkey),
+    CONSTRAINT supplier_stockitem_currencies_fkey FOREIGN KEY (currencies_fkey)
+        REFERENCES currencies (currencies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT supplier_stockitem_base_suppliers_fkey FOREIGN KEY (suppliers_fkey)
+        REFERENCES suppliers (suppliers_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT supplier_stockitem_base_stockitems_fkey FOREIGN KEY (suppliers_fkey)
+        REFERENCES stockitems (stockitems_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+-- 43 down

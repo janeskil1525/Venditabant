@@ -1,13 +1,7 @@
 package venditabant::Helpers::Schedules::Currencies;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
-use SOAP::Lite;
 use XML::Hash::XS;
-use LWP::UserAgent;
-use HTTP::Request;
-use XML::Compile::WSDL11;      # use WSDL version 1.1
-use XML::Compile::SOAP12;      # use SOAP version 1.1
-use XML::Compile::Transport::SOAPHTTP;
 use DateTime;
 
 use venditabant::Model::Currency::Currencies;

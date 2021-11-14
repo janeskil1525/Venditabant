@@ -22,7 +22,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 var tabView = new qx.ui.tabview.TabView();
                 view.add(tabView, {top: 0, left: 5, right: 5, height: "50%"});
 
-                var page1 = new qx.ui.tabview.Page("Definition");
+                var page1 = new qx.ui.tabview.Page("Stockitem");
                 //page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
 
@@ -77,6 +77,15 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 page1.add ( purchprice, { top: 50, left: 350 } );
                 this._purchaseprice = purchprice;
+
+                let currency = new venditabant.support.views.CurrenciesSelectBox().set({
+                    width:165,
+                    emptyrow:false,
+                });
+
+                let currencysview = currency.getView()
+                this._currency = currency;
+                page1.add ( currencysview, { top: 50, left: 435 } );
 
                 lbl = this._createLbl(this.tr( "VAT" ),70);
                 page1.add ( lbl, { top: 50, left: 630 } );

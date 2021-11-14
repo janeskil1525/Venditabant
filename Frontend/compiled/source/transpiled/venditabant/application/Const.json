@@ -13,7 +13,7 @@
         "column": 0
       },
       "end": {
-        "line": 26,
+        "line": 25,
         "column": 7
       }
     }
@@ -67,7 +67,7 @@
           "column": 12
         },
         "end": {
-          "line": 20,
+          "line": 19,
           "column": 13
         }
       },
@@ -77,11 +77,11 @@
     "getVersion": {
       "location": {
         "start": {
-          "line": 21,
+          "line": 20,
           "column": 12
         },
         "end": {
-          "line": 23,
+          "line": 22,
           "column": 13
         }
       },

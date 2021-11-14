@@ -20,10 +20,10 @@ async sub upsert($self, $currency) {
     ));
 }
 
-async sub load_currency_list($self) {
+async sub load_currency_list($self, $companies_pkey, $users_pkey) {
 
     my $result = $self->db->select('currencies',
-        ["shortdescription", "longdescription", "description", "seriesid"],
+        ["currencies_pkey", "shortdescription", "longdescription", "description", "seriesid"],
         undef,
         {order_by => {
                 -asc => 'shortdescription'

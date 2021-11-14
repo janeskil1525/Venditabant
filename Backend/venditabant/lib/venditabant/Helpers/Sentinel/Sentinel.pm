@@ -3,9 +3,7 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 
 use venditabant::Model::Sentinel;
 
-use Scalar::Util qw{blessed};
 use Data::Dumper;
-use Try::Tiny;
 
 has 'pg';
 

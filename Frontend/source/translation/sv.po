@@ -1,0 +1,595 @@
+#: venditabant/users/login/LoginWindow.js
+msgid "Log in"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Email"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "Password"
+msgstr ""
+
+#: venditabant/users/login/LoginWindow.js
+msgid "Remember me ?"
+msgstr ""
+
+#: venditabant/users/login/LoginWindow.js
+msgid "Forgot Password ?"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "Sign Up"
+msgstr ""
+
+#: venditabant/users/login/LoginWindow.js
+msgid "Please provide username and password"
+msgstr ""
+
+#: venditabant/users/login/LoginWindow.js
+msgid "Could not log in."
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Home"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Cockpit"
+msgstr "Cockpit"
+
+#: venditabant/company/views/Definition.js
+msgid "Company"
+msgstr "Företag"
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Logout"
+msgstr "Logga av"
+
+#: venditabant/users/login/SignupWindow.js
+msgid "Please provide username, password, and email"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "Could not signup."
+msgstr ""
+
+#: venditabant/users/login/ForgotWindow.js
+msgid "Forgot Password"
+msgstr ""
+
+#: venditabant/users/login/ForgotWindow.js
+msgid "Please provide your email address."
+msgstr ""
+
+#: venditabant/users/login/ForgotWindow.js
+msgid "email"
+msgstr ""
+
+#: venditabant/users/login/ForgotWindow.js
+msgid "Submit"
+msgstr ""
+
+#: venditabant/users/login/ForgotWindow.js
+msgid "Back"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "Passwords do not match."
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Name"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "User name can not be emty"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "Company name can not be emty"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "Org. number"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "Org. no can not be emty"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "Company address"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "Password can not be emty"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "Retype Password"
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Cancel"
+msgstr "Ny"
+
+#: venditabant/stock/warehouse/views/Definition.js
+msgid "Warehouse"
+msgstr "Lager"
+
+#: venditabant/stock/warehouse/views/Definition.js
+msgid "Warehouse is required"
+msgstr "Lager måste anges"
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Description"
+msgstr "Beskrivning"
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Description is required"
+msgstr "Beskrivning måste anges"
+
+#: venditabant/sales/pricelists/views/NewHead.js
+msgid "Save"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Something went wront with the save, please try again"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Definition"
+msgstr ""
+
+#: venditabant/support/views/MailTemplates.js
+msgid "Header"
+msgstr ""
+
+#: venditabant/support/views/MailTemplates.js
+msgid "Body"
+msgstr ""
+
+#: venditabant/support/views/MailTemplates.js
+msgid "Footer"
+msgstr ""
+
+#: venditabant/support/views/MailTemplates.js
+msgid "Sub 1"
+msgstr ""
+
+#: venditabant/support/views/MailTemplates.js
+msgid "Sub 2"
+msgstr ""
+
+#: venditabant/support/views/MailTemplates.js
+msgid "Sub 3"
+msgstr ""
+
+#: venditabant/support/views/MailSettings.js
+msgid "Something went wrong saving the customer"
+msgstr ""
+
+#: venditabant/support/views/Sentinel.js
+msgid "Source"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Customer is required"
+msgstr ""
+
+#: venditabant/support/views/Sentinel.js
+msgid "Method"
+msgstr ""
+
+#: venditabant/support/views/Sentinel.js
+msgid "Message"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Name is requires"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Org. nr"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Org. nr is required"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Phone"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Phone is required"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Homepage"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Homepage is required"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "VAT No"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "VAT No is required"
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Address"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Address is required"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Giro"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Giro is required"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Invoice ref."
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Invoiceref is required"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Email is required"
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Zipcode / City"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Zipcode is required"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "City is required"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Invoice comment"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Sales"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "VAT"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Percentage"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "0-9 %"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Percentage is required"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Delete"
+msgstr ""
+
+#: venditabant/sales/orders/views/SalesordersList.js
+msgid "New"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Invoice days"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Days"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Ds"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Days are required"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Sales units"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Unit"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Unit is required"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Product groups"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Group"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Group is required"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Accounts"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Account"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Account is required"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Currencies"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Currency"
+msgstr ""
+
+#: venditabant/settings/views/Definition.js
+msgid "Currency is required"
+msgstr ""
+
+#: venditabant/sales/orders/views/Salesorder.js
+msgid "Customer"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Pricelist"
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Comment"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/Definition.js
+msgid "Add"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Stockitem"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/Definition.js
+msgid "From"
+msgstr ""
+
+#: venditabant/sales/orders/views/Salesorder.js
+msgid "Something went bad during saving of pricelist item"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Stockitem is required"
+msgstr ""
+
+#: venditabant/sales/orders/views/Salesorder.js
+msgid "Price"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "PO price"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Purchase price"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "Active"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Stocked"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "User"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "User is required"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "Name is required"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "Password 1"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "Password 2"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "Password can't be empty"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "Password is to short"
+msgstr ""
+
+#: venditabant/users/management/views/Definition.js
+msgid "Something went wrong saving the user"
+msgstr ""
+
+#: venditabant/support/views/MailSettings.js
+msgid "Mail"
+msgstr ""
+
+#: venditabant/support/views/MailSettings.js
+msgid "SMTP Address"
+msgstr ""
+
+#: venditabant/support/views/MailSettings.js
+msgid "SMTP"
+msgstr ""
+
+#: venditabant/support/views/MailSettings.js
+msgid "Port"
+msgstr ""
+
+#: venditabant/support/views/MailSettings.js
+msgid "ssl"
+msgstr ""
+
+#: venditabant/support/views/MailSettings.js
+msgid "ssl_username"
+msgstr ""
+
+#: venditabant/support/views/MailSettings.js
+msgid "sasl_password"
+msgstr ""
+
+#: venditabant/settings/models/Settings.js
+msgid "success"
+msgstr ""
+
+#: venditabant/company/models/Company.js
+msgid "Could not save company, please try again"
+msgstr ""
+
+#: venditabant/sales/orders/views/SalesordersList.js
+msgid "Open"
+msgstr ""
+
+#: venditabant/sales/invoices/views/Invoice.js
+msgid "Invoice no"
+msgstr ""
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Invoice time"
+msgstr ""
+
+#: venditabant/sales/invoices/views/Invoice.js
+msgid "Invoice date"
+msgstr ""
+
+#: venditabant/sales/orders/views/Salesorder.js
+msgid "Quantity"
+msgstr ""
+
+#: venditabant/sales/orders/views/Salesorder.js
+msgid "Quantity is required"
+msgstr ""
+
+#: venditabant/sales/orders/views/Salesorder.js
+msgid "Price is required"
+msgstr ""
+
+#: venditabant/sales/orders/views/Salesorder.js
+msgid "Done"
+msgstr ""
+
+#: venditabant/sales/orders/views/Salesorder.js
+msgid "Order no"
+msgstr ""
+
+#: venditabant/sales/orders/views/Salesorder.js
+msgid "Orderno"
+msgstr ""
+
+#: venditabant/sales/orders/views/Salesorder.js
+msgid "Order date"
+msgstr ""
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Invoice"
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Country"
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Mail addressses"
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Comma separated mail adresses"
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Something went wrong saving the invoice address"
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Delivery"
+msgstr ""
+
+#: venditabant/sales/customers/views/StockitemDiscounts.js
+msgid "Stockitems"
+msgstr ""
+
+#: venditabant/sales/customers/views/GeneralDiscounts.js
+msgid "Discount"
+msgstr ""
+
+#: venditabant/sales/customers/views/GeneralDiscounts.js
+msgid "Dicount is required"
+msgstr ""
+
+#: venditabant/sales/customers/views/GeneralDiscounts.js
+msgid "Either amount or percentage ended with %"
+msgstr ""
+
+#: venditabant/sales/customers/views/ProductGroupDiscounts.js
+msgid "Product group"
+msgstr ""
+
+#: venditabant/sales/customers/views/GeneralDiscounts.js
+msgid "General"
+msgstr ""
+
+#: venditabant/sales/customers/views/GeneralDiscounts.js
+msgid "Sum"
+msgstr ""
+
+#: venditabant/cockpit/models/AutoTodos.js
+msgid "Could not save customer, please try again"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/NewHead.js
+msgid "Price list"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/NewHead.js
+msgid "Close"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Version"
+msgstr ""
+
+#: venditabant/sales/customers/models/DeliveryAddress.js
+msgid "Could not save customer address, please try again"
+msgstr ""

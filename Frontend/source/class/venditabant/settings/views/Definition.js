@@ -132,7 +132,26 @@ qx.Class.define ( "venditabant.settings.views.Definition",
 
                 tabView.add(page3);
 
-                var page4 = new qx.ui.tabview.Page("Mails");
+                var page4 = new qx.ui.tabview.Page("Currencies");
+                page4.setLayout(new qx.ui.layout.Canvas());
+                let currencies = new venditabant.settings.views.SettingListBox().set({
+                    width: 200,
+                    height: 200,
+                    savebuttonwidth:40,
+                    parameter: 'CURRENCIES',
+                    groupboxheader: this.tr("Currencies"),
+                    valuelabel: this.tr("Currency"),
+                    valueplaceholder: this.tr("Currency"),
+                    invalidmessage: this.tr("Currency is required"),
+                    descriptionplaceholder: this.tr("Description"),
+                    descriptioninvalidmessage: this.tr("Description is required"),
+                    //valuefilter: /[0-9]/,
+                    savebutton: this.tr("Save"),
+                    deletebutton: this.tr("Delete"),
+                    newbutton: this.tr("New"),
+                    emptyrow:false,
+                }).getView();
+                page4.add ( currencies, { top: 0, left: 10 } );
                 tabView.add(page4);
 
                 return view;

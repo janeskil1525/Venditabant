@@ -14,7 +14,7 @@
     }
   ],
   "defaultTarget": "source",
-  "locales": ["en"],
+  "locales": ["en","sv"],
   "environment": {
       "qx.icontheme": "Tango"
   },

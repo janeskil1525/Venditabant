@@ -1863,4 +1863,87 @@ CREATE INDEX idx_delivery_note_items_delivery_note_fkey
 
 CREATE INDEX idx_delivery_note_items_stockitems_fkey
     ON delivery_note_items(stockitems_fkey);
+
+CREATE TABLE if not exists currencies
+(
+    currencies_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    shortdescription VARCHAR UNIQUE NOT NULL,
+    longdescription VARCHAR NOT NULL,
+    description VARCHAR NOT NULL,
+    seriesid VARCHAR NOT NULL,
+    CONSTRAINT currencies_pkey PRIMARY KEY (currencies_pkey)
+);
+
+CREATE INDEX idx_currencies_seriesid
+    ON currencies(seriesid);
+
+CREATE TABLE if not exists currencies_exchangerates
+(
+    currencies_exchangerates_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    base_currencies_fkey BIGINT NOT NULL,
+    currencies_fkey BIGINT NOT NULL,
+    ratedate timestamp without time zone NOT NULL DEFAULT now(),
+    value DECIMAL(10,5) NOT NULL,
+    seriesid VARCHAR NOT NULL,
+    seriesname VARCHAR NOT NULL,
+    unit VARCHAR NOT NULL,
+    CONSTRAINT currencies_exchangerates_pkey PRIMARY KEY (currencies_exchangerates_pkey),
+    CONSTRAINT currencies_exchangerates_currencies_fkey FOREIGN KEY (currencies_fkey)
+        REFERENCES currencies (currencies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT currencies_exchangerates_base_currencies_fkey FOREIGN KEY (base_currencies_fkey)
+        REFERENCES currencies (currencies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE UNIQUE INDEX idx_currencies_exchangerates_currencies_fkey_ratedate
+    ON currencies_exchangerates(currencies_fkey, ratedate);
+
+CREATE INDEX idx_currencies_exchangerates_currencies_fkey
+    ON currencies_exchangerates(currencies_fkey);
+
+CREATE INDEX idx_currencies_excangerates_base_currencies_fkey
+    ON currencies_exchangerates(base_currencies_fkey);
+
+CREATE INDEX idx_currencies_excangerates_ratedate
+    ON currencies_exchangerates(ratedate);
+
+CREATE INDEX idx_currencies_excangerates_seriesid
+    ON currencies_exchangerates(seriesid);
+
 -- 41 down
+-- 42 up
+CREATE TABLE if not exists schedules
+(
+    schedules_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    schedule VARCHAR UNIQUE NOT NULL,
+    nextexecution timestamp without time zone NOT NULL DEFAULT now(),
+    lastexecution timestamp without time zone NOT NULL DEFAULT now(),
+    active BOOLEAN NOT NULL DEFAULT 'true',
+    CONSTRAINT schedules_pkey PRIMARY KEY (schedules_pkey)
+);
+
+CREATE INDEX idx_schedules_nextexecution
+    ON schedules(nextexecution);
+
+INSERT INTO schedules (schedule) VALUES ('Currencies');
+-- 42 down

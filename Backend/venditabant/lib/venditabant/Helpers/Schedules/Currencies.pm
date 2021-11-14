@@ -8,6 +8,8 @@ use HTTP::Request;
 use XML::Compile::WSDL11;      # use WSDL version 1.1
 use XML::Compile::SOAP12;      # use SOAP version 1.1
 use XML::Compile::Transport::SOAPHTTP;
+use DateTime;
+
 use venditabant::Model::Currency::Currencies;
 use venditabant::Model::Currency::Exchangerates;
 
@@ -22,11 +24,19 @@ has 'db';
 
 async sub work($self) {
 
+    my $next_run = DateTime->now();
+
     my $result = await $self->load_currencies();
     if($result eq 'success') {
         $result = await $self->load_exchangerates();
     }
-    return $result;
+    if($result eq 'success') {
+        $next_run = DateTime->now()->add(days => 1)->set_hour(10)->set_minute(1)->set_second(1);
+    }
+    my $return_val->{nextrun} = "$next_run";
+    $return_val->{result} = $result;
+
+    return $return_val;
 }
 
 async sub load_exchangerates($self) {

@@ -6,7 +6,7 @@ has 'db';
 async sub load_list_p($self) {
 
     my $stmt = qq {
-        SELECT schedule FROM schedules ORDER BY schedule
+        SELECT schedules_pkey, schedule FROM schedules ORDER BY schedule
     };
 
     my $result = $self->db->query(
@@ -17,5 +17,20 @@ async sub load_list_p($self) {
     $hash = $result->hashes if $result and $result->rows > 0;
 
     return $hash;
+}
+
+async sub next_run ($self, $schedule, $next_run) {
+
+    $self->db->update(
+        'schedules',
+            {
+                nextexecution => $next_run,
+                lastexecution => 'now()',
+                moddatetime   => 'now()'
+            },
+            {
+                schedules_pkey => $schedule->{ schedules_pkey }
+            }
+    );
 }
 1;

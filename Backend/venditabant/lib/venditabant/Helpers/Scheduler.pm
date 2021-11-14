@@ -18,7 +18,7 @@ async sub check_all ($self) {
             pg => $self->pg
         );
         foreach my $schedule (@{$schedules}) {
-            await $processor->process(
+            my $next_run = await $processor->process(
                 $schedule
             );
         }

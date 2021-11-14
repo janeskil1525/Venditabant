@@ -16,7 +16,7 @@ use Log::Log4perl qw(:easy);
 use Mojo::Pg;
 use namespace::clean -except => [qw/_options_data _options_config/];
 # use lib '/home/jan/Project/Venditabant/Backend/venditabant/lib/venditabant/Helper/ProcessChecpoints';
-use venditabant::Helpers::ProcessCheckpoints;
+use venditabant::Helpers::Scheduler;
 
 option 'configpath' => (
     is 			=> 'ro',
@@ -31,9 +31,12 @@ sub scheduler {
     my $self = shift;
 
     Log::Log4perl->easy_init($ERROR);
+    my $log = Log::Log4perl->get_logger();
+
     eval {
         Log::Log4perl::init($self->get_configpath() . 'scheduler_log.conf');
     };
+    $log->error('Scheduler ' . $@) if $@;
     say $@ if $@;
 
     $self->_log_script_start();
@@ -42,6 +45,7 @@ sub scheduler {
     eval {
         $config = get_config($self->get_configpath() . 'scheduler.ini');
     };
+    $log->error('Scheduler ' . $@) if $@;
     say $@ if $@;
 
     my $pg = Mojo::Pg->new()->dsn(

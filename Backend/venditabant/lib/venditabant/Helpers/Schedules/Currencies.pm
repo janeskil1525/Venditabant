@@ -20,6 +20,15 @@ use Data::Dumper;
 has 'address' => 'https://swea.riksbank.se:443/sweaWS/services/SweaWebServiceHttpSoap12Endpoint';
 has 'db';
 
+async sub work($self) {
+
+    my $result = await $self->load_currencies();
+    if($result eq 'success') {
+        $result = await $self->load_exchangerates();
+    }
+    return $result;
+}
+
 async sub load_exchangerates($self) {
     my $result;
     my $data = await $self->_exchangerate_request();

@@ -18,7 +18,13 @@ async sub process($self, $schedule) {
     );
 
     if($worker) {
-        await $worker->work();
+        my $result = await $worker->work();
+        if($result ne 'success') {
+            $self->capture_message (
+                $self->pg, '',
+                'venditabant::Helpers::Schedules::Processor', 'process', $class . ' \n' . $result
+            );
+        }
     }
 }
 1;

@@ -7,13 +7,11 @@ sub load_class ($self, $class) { # $class ($class)
 
     chomp $class;
     if (length($class) > 0) {
-        my $err;
         eval "require $class" or sub {
-            $err = $@ if $@;
             $self->capture_message(
                 $self->pg, '',
-                'venditabant::Helpers::Factory::Loader', 'load_class', $err
-            ) if defined $err;
+                'venditabant::Helpers::Factory::Loader', 'load_class', $@
+            );
         }
     }else {
         $class = undef;

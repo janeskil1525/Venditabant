@@ -64,6 +64,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 let price = this._createTxt(
                     this.tr( "Price" ),80,false
                 );
+                price.setFilter(/[0-9\.\,]/);
 
                 page1.add ( price, { top: 50, left: 90 } );
                 this._price = price;
@@ -74,6 +75,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 let purchprice = this._createTxt(
                     this.tr( "Purchase price" ),80,false
                 );
+                purchprice.setFilter(/[0-9\.\,]/);
 
                 page1.add ( purchprice, { top: 50, left: 350 } );
                 this._purchaseprice = purchprice;

@@ -2016,3 +2016,7 @@ CREATE INDEX idx_supplier_stockitem_stockitems_fkey
     ON supplier_stockitem(stockitems_fkey);
 
 -- 43 down
+-- 44 up
+ALTER TABLE stockitems DROP COLUMN purchaseprice;
+
+-- 44 down

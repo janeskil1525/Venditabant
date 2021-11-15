@@ -78,13 +78,13 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( purchprice, { top: 50, left: 350 } );
                 this._purchaseprice = purchprice;
 
-                let currency = new venditabant.support.views.CurrenciesSelectBox().set({
+                let currencies = new venditabant.support.views.CurrenciesSelectBox().set({
                     width:165,
-                    emptyrow:false,
+                    emptyrow:true,
                 });
 
-                let currencysview = currency.getView()
-                this._currency = currency;
+                let currencysview = currencies.getView()
+                this._currencies = currencies;
                 page1.add ( currencysview, { top: 50, left: 435 } );
 
                 lbl = this._createLbl(this.tr( "VAT" ),70);
@@ -171,6 +171,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 let accounts_fkey = this._accounts.getKey();
                 let vat_fkey = this._vat.getKey();
                 let productgroup_fkey = this._productgroups.getKey();
+                let currencies_fkey = this._currencies.getKey();
 
                 let data = {
                     stockitem: stockitem,
@@ -184,7 +185,8 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                     units_fkey: units_fkey,
                     accounts_fkey:accounts_fkey,
                     vat_fkey:vat_fkey,
-                    productgroup_fkey:productgroup_fkey
+                    productgroup_fkey:productgroup_fkey,
+                    currencies_fkey:currencies_fkey,
                 }
                 let com = new venditabant.communication.Post ( );
                 com.send ( this._address, "/api/v1/stockitem/save/", data, function ( success ) {
@@ -210,6 +212,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 this._accounts.setSelectedModel();
                 this._vat.setSelectedModel();
                 this._productgroups.setSelectedModel();
+                this._currencies.setSelectedModel();
             },
             _createTable : function() {
                 // Create the initial data
@@ -219,7 +222,9 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
                 tableModel.setColumns([
-                    "ID", "Stockitem", "Description", "Price","Purchase Price","Active", "Stocked", "Unit", "Account","VAT", "Product group" ]);
+                    "ID", "Stockitem", "Description", "Price","Purchase Price","Active",
+                    "Stocked", "Unit", "Account","VAT", "Product group",
+                    "currencies_fkey", "suppliers_pkey", "PO Currency" ]);
                 tableModel.setData(rowData);
                 //tableModel.setColumnEditable(1, true);
                 //tableModel.setColumnEditable(2, true);
@@ -255,7 +260,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                     that._accounts.setSelectedModel(selectedRows[0][8]);
                     that._vat.setSelectedModel(selectedRows[0][9]);
                     that._productgroups.setSelectedModel(selectedRows[0][10]);
-
+                    that._currencies.setKey(selectedRows[0][11]);
                 });
                 var tcm = table.getTableColumnModel();
                 tcm.setColumnVisible(0,false);
@@ -290,6 +295,9 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                                 response.data[i].account,
                                 response.data[i].vat,
                                 response.data[i].productgroup,
+                                response.data[i].currencies_pkey,
+                                response.data[i].suppliers_pkey,
+                                response.data[i].shortdescription,
                             ]);
                         }
                     }

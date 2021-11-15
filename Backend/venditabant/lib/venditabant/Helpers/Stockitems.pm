@@ -5,6 +5,8 @@ use venditabant::Model::Stockitems;
 use venditabant::Model::Pricelists;
 use venditabant::Model::PricelistItems;
 use venditabant::Helpers::Pricelist::Pricelists;
+use venditabant::Model::Supplier::Stockitems;
+use venditabant::Model::Supplier::Suppliers;
 
 use Data::Dumper;
 
@@ -37,8 +39,24 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
             $companies_pkey, $stockitems_pkey, $stockitem->{price}
         );
 
+
         $pricelist_item->insert_item(
             $companies_pkey, $item
+        );
+
+        my $supplier = await venditabant::Model::Supplier::Suppliers->new(
+            db => $db
+        )->load_supplier(
+            $companies_pkey, $users_pkey, 'DEFAULT'
+        );
+
+        $stockitem->{suppliers_fkey} = $supplier->{suppliers_pkey};
+        $stockitem->{stockitems_pkey} = $stockitems_pkey;
+
+        venditabant::Model::Supplier::Stockitems->new(
+            db => $db
+        )->upsert(
+            $companies_pkey, $users_pkey, $stockitem
         );
 
         $tx->commit();
@@ -56,9 +74,11 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
 async sub load_list_p ($self, $companies_pkey) {
 
     my $stmt = qq {
-        SELECT stockitems_pkey, stockitem, description, active, stocked, price, purchaseprice
+        SELECT stockitems_pkey, stockitems.stockitem, stockitems.description, active, stockitems.stocked,
+                pricelist_items.price, po.price as purchaseprice
             ,units.param_value as unit, accounts.param_value as account
-            ,vat.param_value as vat, productgroup.param_value as productgroup
+            ,vat.param_value as vat, productgroup.param_value as productgroup,
+            currencies_pkey, shortdescription, supplier, suppliers_pkey
              FROM stockitems JOIN pricelist_items ON stockitems_pkey = stockitems_fkey
 				AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists WHERE pricelist = 'DEFAULT'
 									  AND stockitems.companies_fkey = companies_fkey)
@@ -68,12 +88,16 @@ async sub load_list_p ($self, $companies_pkey) {
 						AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists
 											   WHERE pricelist = 'DEFAULT' AND stockitems.companies_fkey = companies_fkey)
 				AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items, pricelists
-								WHERE pricelist = 'DEFAULT' AND pricelists_pkey = pricelists_fkey AND stockitems_pkey = stockitems_fkey AND todate >= now()))
+								WHERE pricelist = 'DEFAULT' AND pricelists_pkey = pricelists_fkey AND
+								stockitems_pkey = stockitems_fkey AND todate >= now()))
 				AND todate >= now()
 			JOIN parameters_items as units ON units.parameters_items_pkey = units_fkey
 			JOIN parameters_items as accounts ON accounts.parameters_items_pkey = accounts_fkey
 			JOIN parameters_items as vat ON vat.parameters_items_pkey = vat_fkey
 			JOIN parameters_items as productgroup ON productgroup.parameters_items_pkey = productgroup_fkey
+			JOIN supplier_stockitem as po ON po.stockitems_fkey = stockitems_pkey
+			JOIN suppliers as su ON su.suppliers_pkey = po.suppliers_fkey AND su.supplier ='DEFAULT'
+			JOIN currencies ON currencies_pkey = currencies_fkey
         WHERE stockitems.companies_fkey = ?
     };
 

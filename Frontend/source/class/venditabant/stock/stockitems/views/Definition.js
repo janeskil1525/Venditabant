@@ -79,7 +79,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 this._purchaseprice = purchprice;
 
                 let currencies = new venditabant.support.views.CurrenciesSelectBox().set({
-                    width:165,
+                    width:70,
                     emptyrow:true,
                 });
 
@@ -222,15 +222,13 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
                 tableModel.setColumns([
-                    "ID", "Stockitem", "Description", "Price","Purchase Price","Active",
-                    "Stocked", "Unit", "Account","VAT", "Product group",
-                    "currencies_fkey", "suppliers_pkey", "PO Currency" ]);
+                    this.tr("ID"), this.tr("Stockitem"), this.tr("Description"), this.tr("Price"),
+                    this.tr("Purchase Price"),this.tr("Active"),
+                    this.tr("Stocked"), this.tr("Unit"), this.tr("Account"),
+                    this.tr("VAT"), this.tr("Product group"),
+                    this.tr("currencies_fkey"), this.tr("suppliers_pkey"), this.tr("PO Currency") ]);
                 tableModel.setData(rowData);
-                //tableModel.setColumnEditable(1, true);
-                //tableModel.setColumnEditable(2, true);
-                //tableModel.setColumnSortable(3, false);
 
-                // table
                 var table = new qx.ui.table.Table(tableModel);
 
                 table.set({
@@ -264,6 +262,8 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 });
                 var tcm = table.getTableColumnModel();
                 tcm.setColumnVisible(0,false);
+                tcm.setColumnVisible(11,false);
+                tcm.setColumnVisible(12,false);
                 // Display a checkbox in column 3
                 tcm.setDataCellRenderer(5, new qx.ui.table.cellrenderer.Boolean());
                 tcm.setDataCellRenderer(6, new qx.ui.table.cellrenderer.Boolean());

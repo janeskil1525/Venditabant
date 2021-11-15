@@ -28,7 +28,7 @@ qx.Class.define("venditabant.support.helpers.CurrenciesList",
                             this.getList().add(item);
                         }
                         for (let i=0; i < response.data.length; i++) {
-                            let row = response.data[i].shortdescription + ' ' + response.data[i].description;
+                            let row = response.data[i].shortdescription;
                             item = new qx.ui.form.ListItem(row, null, response.data[i]);
                             this.getList().add(item);
                             if(this.isKey() === true) {

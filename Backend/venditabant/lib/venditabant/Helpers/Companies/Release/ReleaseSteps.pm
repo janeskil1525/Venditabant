@@ -13,7 +13,7 @@ async sub release ($self, $companies_pkey, $current_version) {
     my $class = 'venditabant::Helpers::Companies::Release::ReleaseStep_';
     my $version = await $self->get_version($companies_pkey);
 
-    return unless $current_version > $version;
+    return unless ($current_version - 1) > $version;
 
     my $load = venditabant::Helpers::Factory::Loader->new(
         db => $self->db

@@ -1957,10 +1957,19 @@ CREATE TABLE if not exists suppliers
     insdatetime timestamp without time zone NOT NULL DEFAULT now(),
     modby varchar NOT NULL DEFAULT 'System',
     moddatetime timestamp without time zone NOT NULL DEFAULT now(),
-    supplier VARCHAR UNIQUE NOT NULL,
+    companies_fkey bigint NOT NULL,
+    supplier VARCHAR NOT NULL,
     name VARCHAR NOT NULL,
-    CONSTRAINT suppliers_pkey PRIMARY KEY (suppliers_pkey)
+    CONSTRAINT suppliers_pkey PRIMARY KEY (suppliers_pkey),
+    CONSTRAINT supplier_companies_fkey FOREIGN KEY (companies_fkey)
+        REFERENCES companies (companies_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
 );
+
+CREATE UNIQUE INDEX idx_suppliers_companies_fkey_supplier
+    ON suppliers(companies_fkey, supplier);
 
 CREATE TABLE if not exists supplier_stockitem
 (
@@ -1973,7 +1982,9 @@ CREATE TABLE if not exists supplier_stockitem
     suppliers_fkey BIGINT NOT NULL,
     stockitems_fkey BIGINT NOT NULL,
     currencies_fkey BIGINT NOT NULL,
-    price DECIMAL(10,5) NOT NULL,
+    stockitem VARCHAR NOT NULL DEFAULT '',
+    description VARCHAR NOT NULL DEFAULT '',
+    price DECIMAL(10,5) NOT NULL DEFAULT 0,
     CONSTRAINT supplier_stockitem_pkey PRIMARY KEY (supplier_stockitem_pkey),
     CONSTRAINT supplier_stockitem_currencies_fkey FOREIGN KEY (currencies_fkey)
         REFERENCES currencies (currencies_pkey) MATCH SIMPLE
@@ -1985,11 +1996,23 @@ CREATE TABLE if not exists supplier_stockitem
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         DEFERRABLE,
-    CONSTRAINT supplier_stockitem_base_stockitems_fkey FOREIGN KEY (suppliers_fkey)
+    CONSTRAINT supplier_stockitem_base_stockitems_fkey FOREIGN KEY (stockitems_fkey)
         REFERENCES stockitems (stockitems_pkey) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         DEFERRABLE
 );
+
+CREATE INDEX idx_supplier_stockitem_currencies_pkey
+    ON supplier_stockitem(currencies_fkey);
+
+CREATE INDEX idx_supplier_stockitem_suppliers_pkey
+    ON supplier_stockitem(suppliers_fkey);
+
+CREATE UNIQUE INDEX idx_supplier_stockitem_suppliers_fkey_stockitems_fkey
+    ON supplier_stockitem(suppliers_fkey, stockitems_fkey);
+
+CREATE INDEX idx_supplier_stockitem_stockitems_fkey
+    ON supplier_stockitem(stockitems_fkey);
 
 -- 43 down

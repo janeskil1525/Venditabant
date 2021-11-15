@@ -22,6 +22,9 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 var tabView = new qx.ui.tabview.TabView();
                 view.add(tabView, {top: 0, left: 5, right: 5, height: "50%"});
 
+                let validator = new qx.ui.form.validation.Manager();
+                this._validator = validator;
+
                 var page1 = new qx.ui.tabview.Page("Stockitem");
                 //page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
@@ -35,6 +38,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 page1.add ( stockitem, { top: 10, left: 90 } );
                 this._stockitem = stockitem;
+                this._validator.add(this._stockitem);
 
                 lbl = this._createLbl(this.tr( "Description" ),70);
                 page1.add ( lbl, { top: 10, left: 250 } );
@@ -44,6 +48,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 );
                 page1.add ( descriptn, { top: 10, left: 350 } );
                 this._description = descriptn;
+                this._validator.add(this._description);
 
                 lbl = this._createLbl(this.tr( "Group" ),70);
                 page1.add ( lbl, { top: 10, left: 630 } );
@@ -140,7 +145,9 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 this._units = units;
 
                 let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
-                    this.saveStockitem ( );
+                    if(this._validator.validate()) {
+                        this.saveStockitem();
+                    }
                 }, this );
                 page1.add ( btnSignup, { bottom: 10, left: 10 } );
 
@@ -174,7 +181,10 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 let vat_fkey = this._vat.getKey();
                 let productgroup_fkey = this._productgroups.getKey();
                 let currencies_fkey = this._currencies.getKey();
-
+                if(currencies_fkey === 0){
+                    this._currencies.setSelectedModel('SEK');
+                    currencies_fkey = this._currencies.getKey();
+                }
                 let data = {
                     stockitem: stockitem,
                     description: description,

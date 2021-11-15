@@ -14,6 +14,7 @@ qx.Class.define("venditabant.support.views.CurrenciesSelectBox",
         },
         members: {
             _selectbox:null,
+            _model:null,
             getView: function () {
                 let selectbox = new qx.ui.form.SelectBox();
                 selectbox.setWidth(this.getWidth());
@@ -52,6 +53,5 @@ qx.Class.define("venditabant.support.views.CurrenciesSelectBox",
                     key:true,
                 }).loadList(key);
             }
-
         }
     });

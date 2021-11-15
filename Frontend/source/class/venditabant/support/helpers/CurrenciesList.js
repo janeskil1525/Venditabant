@@ -37,7 +37,7 @@ qx.Class.define("venditabant.support.helpers.CurrenciesList",
                                 }
                             } else {
                                 if(selected_value === response.data[i].shortdescription){
-                                    this.getList().setSelection([item])
+                                    this.getList().setSelection([item]);
                                 }
                             }
                         }

@@ -8,12 +8,14 @@ install_share  'share';
 
 WriteMakefile(
     NAME => 'venditabant',
-    VERSION   => '0.0.9',
+    VERSION   => '0.1.0',
     PREREQ_PM => {'Mojolicious' => '8.55'},
     AUTHOR       => 'Jan Eskilsson <janeskil1525@cpan.org>',
     test      => {TESTS => 't/*.t'},
     EXE_FILES    => [ qw{
         script/venditabant
+        script/check.pl
+        script/scheduler.pl
     }],
 );
 

@@ -7,6 +7,7 @@ use venditabant::Model::PricelistItems;
 use venditabant::Helpers::Pricelist::Pricelists;
 use venditabant::Model::Supplier::Stockitems;
 use venditabant::Model::Supplier::Suppliers;
+use venditabant::Model::Currency::Currencies;
 
 use Data::Dumper;
 
@@ -24,7 +25,6 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
         $pricelist_item = venditabant::Model::PricelistItems->new(db => $db);
     };
     say "Error 1 " . $@ if $@;
-
 
     eval {
         my $stockitems_pkey = venditabant::Model::Stockitems->new(
@@ -52,7 +52,14 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
 
         $stockitem->{suppliers_fkey} = $supplier->{suppliers_pkey};
         $stockitem->{stockitems_pkey} = $stockitems_pkey;
-
+        if($stockitem->{currencies_fkey} == 0) {
+             my $currency = await venditabant::Model::Currency::Currencies->new(
+                db => $db
+            )->load_currency_pkey(
+                'SEK'
+            );
+            $stockitem->{currencies_fkey} = $currency->{currencies_pkey};
+        }
         venditabant::Model::Supplier::Stockitems->new(
             db => $db
         )->upsert(

@@ -36,4 +36,20 @@ async sub load_currency_list($self, $companies_pkey, $users_pkey) {
 
     return $hash;
 }
+
+async sub load_currency_pkey($self, $shortdescription) {
+
+    my $result = $self->db->select(
+        'currencies',
+            ['currencies_pkey'],
+            {
+                shortdescription => $shortdescription
+            }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash;
+}
 1;

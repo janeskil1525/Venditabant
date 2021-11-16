@@ -181,10 +181,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 let vat_fkey = this._vat.getKey();
                 let productgroup_fkey = this._productgroups.getKey();
                 let currencies_fkey = this._currencies.getKey();
-                if(currencies_fkey === 0){
-                    this._currencies.setSelectedModel('SEK');
-                    currencies_fkey = this._currencies.getKey();
-                }
+
                 let data = {
                     stockitem: stockitem,
                     description: description,

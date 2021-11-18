@@ -1,6 +1,7 @@
 lib/venditabant.pm
 lib/venditabant/Controller/Autotodos.pm
 lib/venditabant/Controller/Companies.pm
+lib/venditabant/Controller/Currencies.pm
 lib/venditabant/Controller/Customeraddresses.pm
 lib/venditabant/Controller/Customers.pm
 lib/venditabant/Controller/Example.pm
@@ -31,7 +32,9 @@ lib/venditabant/Helpers/Companies/Release/ReleaseStep_1.pm
 lib/venditabant/Helpers/Companies/Release/ReleaseStep_2.pm
 lib/venditabant/Helpers/Companies/Release/ReleaseStep_3.pm
 lib/venditabant/Helpers/Companies/Release/ReleaseStep_4.pm
+lib/venditabant/Helpers/Companies/Release/ReleaseStep_5.pm
 lib/venditabant/Helpers/Companies/Release/ReleaseSteps.pm
+lib/venditabant/Helpers/Currency/Currencies.pm
 lib/venditabant/Helpers/Customers/Address.pm
 lib/venditabant/Helpers/Customers/Customers.pm
 lib/venditabant/Helpers/Factory/Loader.pm
@@ -57,10 +60,14 @@ lib/venditabant/Helpers/Mailer/Templates/Mailtemplates.pm
 lib/venditabant/Helpers/OrderNo.pm
 lib/venditabant/Helpers/Parameter/Languages.pm
 lib/venditabant/Helpers/Parameter/Parameters.pm
+lib/venditabant/Helpers/Pricelist/Pricelists.pm
 lib/venditabant/Helpers/Pricelists.pm
 lib/venditabant/Helpers/ProcessCheckpoints.pm
 lib/venditabant/Helpers/RpcException.pm
 lib/venditabant/Helpers/Salesorder/Salesorders.pm
+lib/venditabant/Helpers/Scheduler.pm
+lib/venditabant/Helpers/Schedules/Currencies.pm
+lib/venditabant/Helpers/Schedules/Processor.pm
 lib/venditabant/Helpers/Sentinel/Sentinel.pm
 lib/venditabant/Helpers/Sentinel/Sentinelsender.pm
 lib/venditabant/Helpers/Signup/Signup.pm
@@ -75,6 +82,8 @@ lib/venditabant/Model/Checks.pm
 lib/venditabant/Model/Company.pm
 lib/venditabant/Model/CompanyVersion.pm
 lib/venditabant/Model/Counter.pm
+lib/venditabant/Model/Currency/Currencies.pm
+lib/venditabant/Model/Currency/Exchangerates.pm
 lib/venditabant/Model/Customer/CustomerAddress.pm
 lib/venditabant/Model/Customer/Customers.pm
 lib/venditabant/Model/Invoice/InvoiceHead.pm
@@ -92,8 +101,11 @@ lib/venditabant/Model/PricelistItems.pm
 lib/venditabant/Model/Pricelists.pm
 lib/venditabant/Model/SalesorderHead.pm
 lib/venditabant/Model/SalesorderItem.pm
+lib/venditabant/Model/Scheduler/Schedules.pm
 lib/venditabant/Model/Sentinel.pm
 lib/venditabant/Model/Stockitems.pm
+lib/venditabant/Model/Supplier/Stockitems.pm
+lib/venditabant/Model/Supplier/Suppliers.pm
 lib/venditabant/Model/System/Mappings.pm
 lib/venditabant/Model/System/Settings.pm
 lib/venditabant/Model/Usercompany.pm
@@ -102,6 +114,7 @@ lib/venditabant/Model/Warehouses.pm
 Makefile.PL
 MANIFEST			This list of files
 script/check.pl
+script/scheduler.pl
 script/venditabant
 share/migrations/venditabant.sql
 share/public/background.jpg

@@ -2019,4 +2019,104 @@ CREATE INDEX idx_supplier_stockitem_stockitems_fkey
 -- 44 up
 ALTER TABLE stockitems DROP COLUMN purchaseprice;
 
+ALTER TABLE salesorder_items
+    ADD COLUMN stockitem VARCHAR NOT NULL DEFAULT '';
+ALTER TABLE salesorder_items
+    ADD COLUMN description VARCHAR NOT NULL DEFAULT '';
+ALTER TABLE salesorder_items
+    ADD COLUMN vat NUMERIC(15,2) NOT NULL DEFAULT 0.0;
+ALTER TABLE salesorder_items
+    ADD COLUMN discount NUMERIC(15,2) NOT NULL DEFAULT 0.0;
+ALTER TABLE salesorder_items
+    ADD COLUMN deliverydate timestamp without time zone NOT NULL DEFAULT now();
+
+CREATE TABLE if not exists stockitem_customer_discount
+(
+    stockitem_customer_discount_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    customers_fkey bigint NOT NULL,
+    stockitems_fkey bigint NOT NULL,
+    discount VARCHAR NOT NULL,
+    CONSTRAINT stockitem_customer_discount_pkey PRIMARY KEY (stockitem_customer_discount_pkey),
+    CONSTRAINT stockitem_customer_discount_customers_fkey FOREIGN KEY (customers_fkey)
+        REFERENCES customers (customers_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT stockitem_customer_discount_stockitems_fkey FOREIGN KEY (stockitems_fkey)
+        REFERENCES stockitems (stockitems_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX idx_stockitem_customer_discount_customers_fkey
+    ON stockitem_customer_discount(customers_fkey);
+
+CREATE INDEX idx_stockitem_customer_discount_stockitems_fkey
+    ON stockitem_customer_discount(stockitems_fkey);
+
+CREATE UNIQUE INDEX idx_stockitem_customer_discount_stockitems_fkey_customers_fkey
+    ON stockitem_customer_discount(customers_fkey, stockitems_fkey);
+
+
+CREATE TABLE if not exists productgroup_customer_discount
+(
+    productgroup_customer_discount_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    customers_fkey bigint NOT NULL,
+    productgroups_fkey bigint NOT NULL,
+    discount VARCHAR NOT NULL,
+    CONSTRAINT productgroup_customer_discount_pkey PRIMARY KEY (productgroup_customer_discount_pkey),
+    CONSTRAINT productgroup_customer_discount_customers_fkey FOREIGN KEY (customers_fkey)
+        REFERENCES customers (customers_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT stockitem_customer_discount_stockitems_fkey FOREIGN KEY (productgroups_fkey)
+        REFERENCES parameters (parameters_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX idx_productgroup_customer_discount_customers_fkey
+    ON productgroup_customer_discount(customers_fkey);
+
+CREATE INDEX idx_productgroup_customer_discounts_productgroups_fkey
+    ON productgroup_customer_discount(productgroups_fkey);
+
+CREATE UNIQUE INDEX idx_productgroup_customer_discount_stockitems_fkey_customers_fkey
+    ON productgroup_customer_discount(customers_fkey, productgroups_fkey);
+
+CREATE TABLE if not exists customer_discount
+(
+    customer_discount_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    customers_fkey bigint NOT NULL,
+    minimumsum NUMERIC(15,2) NOT NULL DEFAULT 0.0,
+    discount VARCHAR NOT NULL,
+    CONSTRAINT customer_discount_pkey PRIMARY KEY (customer_discount_pkey),
+    CONSTRAINT customer_discount_customers_fkey FOREIGN KEY (customers_fkey)
+        REFERENCES customers (customers_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX idx_customer_discount_customers_fkey
+    ON productgroup_customer_discount(customers_fkey);
+
 -- 44 down

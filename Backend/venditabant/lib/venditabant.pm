@@ -23,6 +23,7 @@ use venditabant::Helpers::Checkpoints::Autotodos;
 use venditabant::Helpers::Invoice::Invoices;
 use venditabant::Helpers::System::Settings;
 use venditabant::Helpers::Currency::Currencies;
+use venditabant::Helpers::Discount::Discounts;
 
 use Data::Dumper;
 use File::Share;
@@ -111,13 +112,14 @@ sub startup ($self) {
       systemsettings => sub {
         state  $systemsettings = venditabant::Helpers::System::Settings->new(pg => shift->pg)
       });
-
   $self->helper(
       currencies => sub {
         state  $currencies = venditabant::Helpers::Currency::Currencies->new(pg => shift->pg)
       });
-
-
+  $self->helper(
+      discounts => sub {
+        state  $discounts = venditabant::Helpers::Discount::Discounts->new(pg => shift->pg)
+      });
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -125,7 +127,7 @@ sub startup ($self) {
 
   $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-  )->migrate(43);
+  )->migrate(44);
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -233,6 +235,11 @@ sub startup ($self) {
   $auth->put('/systemsettings/save/')->to('systemsettings#save_system_parameter');
 
   $auth->get('/currencies/load_list/')->to('currencies#load_list');
+
+  $auth->get('/discounts/stockitems/load_list/:customers_fkey')->to('discounts#load_list_stockitem_discount');
+  $auth->put('/discounts/stockitems/save/')->to('discounts#save_stockitem_discount');
+
+
 }
 
 1;

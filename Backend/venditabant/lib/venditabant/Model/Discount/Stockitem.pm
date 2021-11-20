@@ -12,7 +12,7 @@ async sub upsert($self, $companies_pkey, $users_pkey, $data) {
         VALUES ((SELECT userid FROM users WHERE users_pkey = ?),
                     (SELECT userid FROM users WHERE users_pkey = ?),?,?,?)
         ON CONFLICT (customers_fkey, stockitems_fkey)
-        DO UPDATE moddatetime = now(),
+        DO UPDATE SET moddatetime = now(),
                 modby = (SELECT userid FROM users WHERE users_pkey = ?),
                 discount = ?
         RETURNING stockitem_customer_discount_pkey;
@@ -29,7 +29,7 @@ async sub upsert($self, $companies_pkey, $users_pkey, $data) {
                 $users_pkey,
                 $data->{discount},
             )
-    )->{stockitem_customer_discount_pkey};
+    )->hash->{stockitem_customer_discount_pkey};
 
     return $stockitem_customer_discount_pkey;
 }

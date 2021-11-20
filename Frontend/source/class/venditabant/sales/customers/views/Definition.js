@@ -25,7 +25,6 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let page1 = this.getDefinition();
                 tabView.add(page1);
 
-
                 //let page2 = this.getInvoice();
                 this._invoice = new venditabant.sales.customers.views.Invoice().set({
                     support:this.isSupport(),
@@ -37,9 +36,8 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 //let page3 = this.getDelivery();
                 tabView.add(this._delivery.getView());
 
-
-                let page4 = this.getDiscounts();
-                tabView.add(page4);
+                this._discounts = new venditabant.sales.customers.views.Discounts();
+                tabView.add(this._discounts.getView());
 
                 this._createTable();
                 view.add(this._table,{top:"52%", left:5, right:5,height:"45%"});
@@ -47,23 +45,8 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                 return view;
             },
-            getDiscounts:function() {
-                var page4 = new qx.ui.tabview.Page("Discounts");
-                page4.setLayout(new qx.ui.layout.Canvas());
-
-
-                let box1 = new venditabant.sales.customers.views.StockitemDiscounts().getView();
-                page4.add ( box1, { top: 0, left: 10 } );
-
-                let box2 = new venditabant.sales.customers.views.ProductGroupDiscounts().getView();
-                page4.add ( box2, { top: 0, left: 250 } );
-
-                let box3 = new venditabant.sales.customers.views.GeneralDiscounts().getView();
-                page4.add ( box3, { top: 0, left: 490 } );
-                return page4;
-            },
             getDefinition:function () {
-                var page1 = new qx.ui.tabview.Page(this.tr("Definition"));
+                var page1 = new qx.ui.tabview.Page(this.tr("Customer"));
                 //page1.setLayout(new qx.ui.layout.VBox(4));
                 page1.setLayout(new qx.ui.layout.Canvas());
 
@@ -215,6 +198,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     that._invoice.setCustomersFkey(selectedRows[0][0]);
                     that._invoice.setCustomerName(selectedRows[0][2]);
                     that._delivery.setCustomersFkey(selectedRows[0][0]);
+                    that._discounts.setCustomersFkey(selectedRows[0][0]);
                     that._comment.setValue(selectedRows[0][7]);
                     that._languages.setKey(selectedRows[0][8])
                 });

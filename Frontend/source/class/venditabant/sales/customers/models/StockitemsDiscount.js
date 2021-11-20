@@ -22,10 +22,10 @@ qx.Class.define("venditabant.sales.customers.models.StockitemsDiscount",
                 let com = new venditabant.communication.Post();
                 com.send(this._address, "/api/v1/discounts/stockitems/save/", data, function (success) {
                     let win = null;
-                    if (success) {
-                        cb.call(ctx,(data));
+                    if (success === 'success') {
+                        cb.call(ctx,(success));
                     } else {
-                        alert(this.tr('Could not save customer, please try again'));
+                        alert(this.tr('Could not save discount, please try again'));
                     }
                 }, this);
             },

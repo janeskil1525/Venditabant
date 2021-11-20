@@ -269,6 +269,7 @@
     "venditabant.sales.invoices.views.InvoiceList",
     "venditabant.sales.invoices.views.Invoice",
     "venditabant.support.views.Settings",
-    "venditabant.support.views.MailSettings"
+    "venditabant.support.views.MailSettings",
+    "venditabant.sales.customers.views.Discounts"
   ]
 }

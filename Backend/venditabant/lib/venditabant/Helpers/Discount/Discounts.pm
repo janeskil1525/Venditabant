@@ -27,7 +27,7 @@ async sub save_stockitem_discount($self, $companies_pkey, $users_pkey, $data) {
         'venditabant::Helpers::Discount::Discounts', 'save_stockitem_discount', $err
     ) if $err;
 
-    return $result;
+    return $err ? $err : 'success';
 }
 
 async sub load_list_stockitem_discount($self, $companies_pkey, $users_pkey, $customers_fkey) {
@@ -36,7 +36,7 @@ async sub load_list_stockitem_discount($self, $companies_pkey, $users_pkey, $cus
     my $err;
 
     eval {
-        my $result = await venditabant::Model::Discount::Stockitem->new(
+        $result = await venditabant::Model::Discount::Stockitem->new(
             db => $self->pg->db
         )->load_list(
             $companies_pkey, $users_pkey, $customers_fkey

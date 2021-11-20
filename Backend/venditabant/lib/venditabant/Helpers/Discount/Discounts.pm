@@ -10,22 +10,43 @@ use Data::Dumper;
 has 'pg';
 
 async sub save_stockitem_discount($self, $companies_pkey, $users_pkey, $data) {
-    my $result = await venditabant::Model::Discount::Stockitem->new(
-        db => $self->pg->db
-    )->upsert(
-        $companies_pkey, $users_pkey, $data
-    );
+
+    my $err;
+    my $result;
+
+    eval {
+        $result = await venditabant::Model::Discount::Stockitem->new(
+            db => $self->pg->db
+        )->upsert(
+            $companies_pkey, $users_pkey, $data
+        );
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Discount::Discounts', 'save_stockitem_discount', $err
+    ) if $err;
 
     return $result;
 }
 
 async sub load_list_stockitem_discount($self, $companies_pkey, $users_pkey, $customers_fkey) {
 
-    my $result = await venditabant::Model::Discount::Stockitem->new(
-        db => $self->pg->db
-    )->load_list(
-        $companies_pkey, $users_pkey, $customers_fkey
-    );
+    my $result;
+    my $err;
+
+    eval {
+        my $result = await venditabant::Model::Discount::Stockitem->new(
+            db => $self->pg->db
+        )->load_list(
+            $companies_pkey, $users_pkey, $customers_fkey
+        );
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Discount::Discounts', 'load_list_stockitem_discount', $err
+    ) if $err;
 
     return $result;
 }

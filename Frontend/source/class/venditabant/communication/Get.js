@@ -10,7 +10,7 @@ qx.Class.define("venditabant.communication.Get",
         members:{
             load:function(url, endpoint, data, cb, ctx){
                 let address = url + endpoint;
-                if(typeof data !== 'undefined' && data.length > 0) {
+                if(typeof data !== 'undefined' && data !== null && data.length > 0) {
                     address = address + data;
                 } else if (typeof data === 'number' ) {
                     address = address + data;

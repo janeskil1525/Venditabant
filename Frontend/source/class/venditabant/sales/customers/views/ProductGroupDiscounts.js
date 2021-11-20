@@ -13,68 +13,68 @@ qx.Class.define ( "venditabant.sales.customers.views.ProductGroupDiscounts",
             },
             members: {
                     // Public functions ...
-                    getView: function () {
-                        let box1 = new qx.ui.groupbox.GroupBox(this.tr("Product group"), null);
-                        box1.setLayout(new qx.ui.layout.VBox());
+                _customers_fkey:0,
+                getView: function () {
+                    let box1 = new qx.ui.groupbox.GroupBox(this.tr("Product group"), null);
+                    box1.setLayout(new qx.ui.layout.VBox());
 
-                        let productgroups = new qx.ui.form.SelectBox();
-                        productgroups.setWidth( 150 );
-                        productgroups.addListener("changeSelection", function(e) {
-                            let selection = e.getData()[0].getLabel();
-                            this._selectedProductgroups= selection;
-                        },this);
-                        this._productgroups = productgroups;
-                        this.loadProductgroups();
-                        box1.add(productgroups);
+                    let productgroups = new qx.ui.form.SelectBox();
+                    productgroups.setWidth( 150 );
+                    productgroups.addListener("changeSelection", function(e) {
+                        let selection = e.getData()[0].getLabel();
+                        this._selectedProductgroups= selection;
+                    },this);
+                    this._productgroups = productgroups;
+                    this.loadProductgroups();
+                    box1.add(productgroups);
 
-                        let container = new qx.ui.container.Composite(new qx.ui.layout.HBox(6));
+                    let container = new qx.ui.container.Composite(new qx.ui.layout.HBox(6));
 
-                        let lbl = this._createLbl(this.tr( "Discount" ),90);
-                        let invoicedays_txt = this._createTxt(
-                            this.tr( "Discount" ),100,true,
-                            this.tr("Dicount is required"),
-                            this.tr("Either amount or percentage ended with %")
-                        );
-                        this._invoicedays_txt = invoicedays_txt;
-                        invoicedays_txt.addListener("input",function(e){
-                            let value = e.getData();
-                        },this);
-                        container.add(lbl,{flex:1});
-                        container.add(invoicedays_txt);
-                        box1.add(container);
+                    let lbl = this._createLbl(this.tr( "Discount" ),90);
+                    let discount_txt = this._createTxt(
+                        this.tr( "Discount" ),100,true,
+                        this.tr("Dicount is required"),
+                        this.tr("Either amount or percentage ended with %")
+                    );
+                    this._discount_txt = discount_txt;
 
-                        //box1.add(invoicedays_desc);
-                        let save_invoicedays = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 120, function ( ) {
-                            // this.save_invoicedays ( );
-                        }, this );
-                        box1.add(save_invoicedays);
+                    container.add(lbl,{flex:1});
+                    container.add(discount_txt);
+                    box1.add(container);
 
-                        var oneList = new qx.ui.form.List();
-                        oneList.addListener("changeSelection",function(e) {
-                            let selection = e.getData()[0].getLabel();
-                            let invoicedays_txt = selection.substring(0,selection.indexOf(' '));
-                            //let invoicedays_desc = selection.substring(selection.indexOf(' '));
+                    //box1.add(invoicedays_desc);
+                    let save_productgroup_discounts = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 120, function ( ) {
+                        this.save_productgroup_discounts ( );
+                    }, this );
+                    box1.add(save_productgroup_discounts );
 
-                            this._invoicedays_txt.setValue(invoicedays_txt);
-                            //this._invoicedays_desc.setValue(invoicedays_desc);
+                    var discountlist  = new qx.ui.form.List();
+                    discountlist.addListener("changeSelection",function(e) {
+                        if(typeof e.getData()[0] !== 'undefined') {
+                            let model = e.getData()[0].getModel();
+                            this.load_productgroup_discounts(model.customers_fkey);
+                            this._discount_txt.setValue(model.discount);
+                        } else {
+                            this._discount_txt.setValue('');
+                        }
 
-                        },this);
+                    },this);
 
-                        oneList.set({ height: 100, width: 200, selectionMode : "one" });
-                        /* let get = new venditabant.settings.models.Settings();
-                        get.loadList(function(response) {
-                            var item;
-                            for (let i=0; i < response.data.length; i++) {
-                                let row = response.data[i].param_value + ' ' + response.data[i].param_description;
-                                item = new qx.ui.form.ListItem(row, null);
-                                oneList.add(item);
-                            }
-                        },this,'INVOICEDAYS');*/
+                    discountlist.set({ height: 100, width: 200, selectionMode : "one" });
+                    this._discountlist = discountlist;
+                    box1.add(discountlist);
+                    if(this.getCustomersFkey() > 0) {
+                        this.load_productgroup_discounts(this.getCustomers_fkey());
+                    }
 
-                        box1.add(oneList);
+                    return box1;
+                },
+                save_productgroup_discounts:function(customers_fkey) {
 
-                        return box1;
-                    },
+                },
+                load_productgroup_discounts:function() {
+
+                },
                 loadProductgroups:function () {
                     let get = new venditabant.settings.models.Settings();
                     get.loadList(function(response) {
@@ -87,6 +87,17 @@ qx.Class.define ( "venditabant.sales.customers.views.ProductGroupDiscounts",
                             }
                         }
                     },this,'PRODUCTGROUPS');
+                },
+                clearScreen:function() {
+
+                },
+                setCustomersFkey:function(customers_fkey) {
+                    this.clearScreen();
+                    this._customers_fkey = customers_fkey;
+                    this.load_productgroup_discounts(customers_fkey);
+                },
+                getCustomersFkey:function() {
+                    return this._customers_fkey;
                 },
             }
     });

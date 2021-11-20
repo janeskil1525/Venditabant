@@ -55,7 +55,6 @@ qx.Class.define ( "venditabant.sales.customers.views.StockitemDiscounts",
                     var discountlist = new qx.ui.form.List();
                     discountlist.addListener("changeSelection",function(e) {
                         if(typeof e.getData()[0] !== 'undefined') {
-                            let selection = e.getData()[0].getLabel();
                             let model = e.getData()[0].getModel();
                             this.loadStockitems(model.stockitems_fkey);
                             this._stockitem_discounts_txt.setValue(model.discount);

@@ -2120,3 +2120,14 @@ CREATE INDEX idx_customer_discount_customers_fkey
     ON productgroup_customer_discount(customers_fkey);
 
 -- 44 down
+
+-- 45 up
+
+ALTER TABLE productgroup_customer_discount
+DROP CONSTRAINT IF EXISTS   stockitem_customer_discount_stockitems_fkey;
+
+ALTER TABLE productgroup_customer_discount
+    ADD CONSTRAINT productgroup_customer_discount_productgroups_fkey FOREIGN KEY (productgroups_fkey)
+    REFERENCES parameters_items (parameters_items_pkey);
+
+-- 45 down

@@ -127,7 +127,7 @@ sub startup ($self) {
 
   $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-  )->migrate(44);
+  )->migrate(45);
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -238,7 +238,11 @@ sub startup ($self) {
 
   $auth->get('/discounts/stockitems/load_list/:customers_fkey')->to('discounts#load_list_stockitem_discount');
   $auth->put('/discounts/stockitems/save/')->to('discounts#save_stockitem_discount');
-
+  $auth->get('/discounts/productgroups/load_list/:customers_fkey')->to('discounts#load_list_productgroups_discount');
+  $auth->put('/discounts/productgroups/save/')->to('discounts#save_productgroups_discount');
+  $auth->get('/discounts/general/load_list/:customers_fkey')->to('discounts#load_list_general_discount');
+  $auth->put('/discounts/general/save/')->to('discounts#save_general_discount');
+  $auth->get('/discounts/general/delete/:customer_discount_pkey')->to('discounts#delete_general_discount');
 
 }
 

@@ -107,7 +107,6 @@ qx.Class.define ( "venditabant.sales.customers.views.StockitemDiscounts",
                     let stockitems = new venditabant.stock.stockitems.models.Stockitem();
                     stockitems.loadList(function(response, rsp) {
                         if(response.data !== null) {
-                            let tableData = [];
                             this._stockitems.removeAll();
                             for(let i = 0; i < response.data.length; i++) {
                                 let tempItem = new qx.ui.form.ListItem(response.data[i].stockitem);

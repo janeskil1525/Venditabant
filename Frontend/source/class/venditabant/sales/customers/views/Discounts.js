@@ -25,8 +25,10 @@ qx.Class.define ( "venditabant.sales.customers.views.Discounts",
                 this._productgroupdiscounts = productgroupdiscounts;
                 page4.add (this._productgroupdiscounts.getView(), { top: 0, left: 250 } );
 
-                let box3 = new venditabant.sales.customers.views.GeneralDiscounts().getView();
-                page4.add ( box3, { top: 0, left: 490 } );
+                let generaldiscounts = new venditabant.sales.customers.views.GeneralDiscounts();
+                this._generaldiscounts = generaldiscounts;
+                page4.add ( generaldiscounts.getView(), { top: 0, left: 490 } );
+
                 return page4;
             },
             setCustomersFkey:function(customers_fkey) {
@@ -34,7 +36,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Discounts",
                 this._customers_fkey = customers_fkey;
                 this._stockitemdiscounts.setCustomersFkey(customers_fkey);
                 this._productgroupdiscounts.setCustomersFkey(customers_fkey);
-                //this._deliveryaddress.setCustomersFkey(customers_fkey) ;
+                this._generaldiscounts.setCustomersFkey(customers_fkey);
             },
             clearScreen:function() {
 

@@ -21,8 +21,10 @@ qx.Class.define ( "venditabant.sales.customers.views.ProductGroupDiscounts",
                     let productgroups = new qx.ui.form.SelectBox();
                     productgroups.setWidth( 150 );
                     productgroups.addListener("changeSelection", function(e) {
-                        let selection = e.getData()[0].getLabel();
-                        this._selectedProductgroups= selection;
+                        if(typeof e.getData()[0] !== 'undefined' && e.getData()[0].getModel() !== null) {
+                            let selection = e.getData()[0].getModel();
+                            this._selectedProductgroups = selection;
+                        }
                     },this);
                     this._productgroups = productgroups;
                     this.loadProductgroups();
@@ -52,7 +54,7 @@ qx.Class.define ( "venditabant.sales.customers.views.ProductGroupDiscounts",
                     discountlist.addListener("changeSelection",function(e) {
                         if(typeof e.getData()[0] !== 'undefined') {
                             let model = e.getData()[0].getModel();
-                            this.load_productgroup_discounts(model.customers_fkey);
+                            this.loadProductgroups(model.productgroups_fkey);
                             this._discount_txt.setValue(model.discount);
                         } else {
                             this._discount_txt.setValue('');
@@ -71,19 +73,50 @@ qx.Class.define ( "venditabant.sales.customers.views.ProductGroupDiscounts",
                 },
                 save_productgroup_discounts:function(customers_fkey) {
 
-                },
-                load_productgroup_discounts:function() {
+                    let that = this;
+                    let data = {
+                        discount:this._discount_txt.getValue(),
+                        customers_fkey:this.getCustomersFkey(),
+                        productgroups_fkey:this._selectedProductgroups.parameters_items_pkey,
+                    };
 
+                    let put = new venditabant.sales.customers.models.ProductgroupsDiscount();
+                    put.saveProductgroupsDiscount(data,function(success) {
+                        if(success !== 'success'){
+                            alert(this.tr('Something went wrong saving the invoice address'));
+                        } else {
+                            that.load_productgroup_discounts(this.getCustomersFkey());
+                        }
+                    }, this);
                 },
-                loadProductgroups:function () {
-                    let get = new venditabant.settings.models.Settings();
+                load_productgroup_discounts:function(customers_fkey) {
+                    let get = new venditabant.sales.customers.models.ProductgroupsDiscount();
                     get.loadList(function(response) {
+                        this._discountlist.removeAll();
                         if(response.data !== null) {
                             var item;
                             for (let i=0; i < response.data.length; i++) {
-                                let row = response.data[i].param_value + ' ' + response.data[i].param_description;
+                                let row = response.data[i].discount + ' ' + response.data[i].productgroup + ' ' + response.data[i].description;
                                 item = new qx.ui.form.ListItem(row, null);
+                                item.setModel(response.data[i]);
+                                this._discountlist.add(item);
+                            }
+                        }
+                    },this, customers_fkey);
+                },
+                loadProductgroups:function (productgroups_fkey) {
+                    let get = new venditabant.settings.models.Settings();
+                    get.loadList(function(response) {
+                        if(response.data !== null) {
+                            this._productgroups.removeAll();
+                            for (let i=0; i < response.data.length; i++) {
+                                let row = response.data[i].param_value + ' ' + response.data[i].param_description;
+                                let item = new qx.ui.form.ListItem(row, null);
+                                item.setModel(response.data[i]);
                                 this._productgroups.add(item);
+                                if(typeof productgroups_fkey !== 'undefined' && productgroups_fkey !== null && productgroups_fkey === response.data[i].parameters_items_pkey) {
+                                    this._productgroups.setSelection([item])
+                                }
                             }
                         }
                     },this,'PRODUCTGROUPS');

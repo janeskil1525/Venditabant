@@ -1,9 +1,9 @@
 package venditabant::Helpers::Salesorder::Salesorders;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Model::SalesorderHead;
+use venditabant::Model::Salesorder::Head;
+use venditabant::Model::Salesorder::Item;
 use venditabant::Model::Counter;
-use venditabant::Model::SalesorderItem;
 use venditabant::Helpers::Customers::Address;
 
 use Data::Dumper;
@@ -42,7 +42,7 @@ async sub load_salesorder_items_list ($self, $companies_pkey, $users_pkey, $sale
     my $result;
     my $err;
     eval {
-        $result = await venditabant::Model::SalesorderItem->new(
+        $result = await venditabant::Model::Salesorder::Item->new(
             db => $self->pg->db
         )->load_items_list (
             $companies_pkey, $users_pkey, $salesorders_fkey
@@ -61,7 +61,7 @@ async sub load_salesorder($self, $companies_pkey, $users_pkey, $salesorders_pkey
     my $result;
     my $err;
     eval {
-        $result = await venditabant::Model::SalesorderHead->new(
+        $result = await venditabant::Model::Salesorder::Head->new(
             db => $self->pg->db
         )->load_salesorder (
             $companies_pkey, $users_pkey, $salesorders_pkey
@@ -81,7 +81,7 @@ async sub load_salesorder_list ($self, $companies_pkey, $users_pkey, $data) {
     my $result;
     my $err;
     eval {
-        $result = venditabant::Model::SalesorderHead->new(
+        $result = venditabant::Model::Salesorder::Head->new(
             db => $self->pg->db
         )->load_salesorder_list (
             $companies_pkey, $users_pkey, $data
@@ -103,13 +103,13 @@ async sub item_upsert($self, $companies_pkey, $users_pkey, $data) {
     eval {
 
         if($data->{quantity} > 0) {
-            await venditabant::Model::SalesorderItem->new(
+            await venditabant::Model::Salesorder::Item->new(
                 db => $db
             )->upsert(
                 $companies_pkey, $data->{salesorders_fkey}, $users_pkey, $data
             );
         } else {
-            await venditabant::Model::SalesorderItem->new(
+            await venditabant::Model::Salesorder::Item->new(
                 db => $db
             )->delete_item(
                 $companies_pkey, $data->{salesorders_fkey}, $data
@@ -141,7 +141,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
         my $customer_fkey = $customer_addresses->{customers_fkey};
 
         $data->{customers_fkey} = $customer_fkey;
-        my $sohead = venditabant::Model::SalesorderHead->new(db => $db);
+        my $sohead = venditabant::Model::Salesorder::Head->new(db => $db);
 
         my $orderno = await $sohead->get_open_so(
             $companies_pkey, $customer_fkey
@@ -162,13 +162,14 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
         );
 
         if($data->{quantity} > 0) {
-            await venditabant::Model::SalesorderItem->new(
+
+            await venditabant::Model::Salesorder::Item->new(
                 db => $db
             )->upsert(
                 $companies_pkey, $salesorderhead_pkey, $users_pkey, $data
             );
         } else {
-            await venditabant::Model::SalesorderItem->new(
+            await venditabant::Model::Salesorder::Item->new(
                 db => $db
             )->delete_item(
                 $companies_pkey, $salesorderhead_pkey, $data
@@ -218,7 +219,7 @@ async sub close ($self, $companies_pkey, $users_pkey, $data){
         );
 
         my $customers_fkey = $customer_addresses->{customers_fkey};
-        my $salesorders_pkey = await venditabant::Model::SalesorderHead->new(
+        my $salesorders_pkey = await venditabant::Model::Salesorder::Head->new(
             db => $db
         )->close(
             $companies_pkey, $users_pkey, $customers_fkey

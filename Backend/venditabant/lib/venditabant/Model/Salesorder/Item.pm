@@ -1,4 +1,4 @@
-package venditabant::Model::SalesorderItem;
+package venditabant::Model::Salesorder::Item;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;
@@ -8,8 +8,9 @@ has 'db';
 async sub load_items_list ($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
 
     my $result = $self->db->select(
-        ['salesorder_items',['stockitems', stockitems_pkey => 'stockitems_fkey']],
-        ['salesorder_items_pkey', 'salesorders_fkey', 'stockitems_fkey', 'stockitem', 'quantity', 'price','units_fkey', 'accounts_fkey','vat_fkey'],
+        'salesorder_items',
+        ['salesorder_items_pkey', 'salesorders_fkey', 'stockitem', 'description',
+                    'quantity', 'price','unit', 'account','vat'],
             {
                 salesorders_fkey => $salesorders_pkey
             },
@@ -41,14 +42,17 @@ async sub upsert ($self, $companies_pkey, $salesorders_pkey, $users_pkey, $data)
 
     my $salesorder_item_stmt = qq{
         INSERT INTO salesorder_items (
-                insby, modby, salesorders_fkey, stockitems_fkey, quantity, price, customer_addresses_fkey
+                insby, modby, salesorders_fkey, stockitem, description,
+                quantity, price, customer_addresses_fkey, vat, discount, unit, account
             ) VALUES (
                     (SELECT userid FROM users WHERE users_pkey = ?),
-                    (SELECT userid FROM users WHERE users_pkey = ?),?,?, ?, ?,?)
-            ON CONFLICT (salesorders_fkey, stockitems_fkey)
+                    (SELECT userid FROM users WHERE users_pkey = ?),?,?,?,?,?,?,?,?,?,?)
+            ON CONFLICT (salesorders_fkey, stockitem)
             DO UPDATE SET modby = (SELECT userid FROM users WHERE users_pkey = ?),
                         moddatetime = now(),
-                        quantity = ?, price = ?, customer_addresses_fkey = ?
+                        quantity = ?, price = ?, customer_addresses_fkey = ?,
+                        description = ?, vat = ?, discount = ?, deliverydate = now(),
+                        unit = ?, account = ?
             RETURNING salesorder_items_pkey
     };
 
@@ -58,14 +62,24 @@ async sub upsert ($self, $companies_pkey, $salesorders_pkey, $users_pkey, $data)
             $users_pkey,
             $users_pkey,
             $salesorders_pkey,
-            $data->{stockitems_fkey},
+            $data->{stockitem},
+            $data->{description},
             $data->{quantity},
             $data->{price},
             $data->{customer_addresses_pkey},
+            $data->{vat},
+            $data->{discount},
             $users_pkey,
             $data->{quantity},
             $data->{price},
             $data->{customer_addresses_pkey},
+            $data->{description},
+            $data->{vat},
+            $data->{unit},
+            $data->{account},
+            $data->{discount},
+            $data->{unit},
+            $data->{account},
         )
     )->hash->{salesorder_items_pkey};
 

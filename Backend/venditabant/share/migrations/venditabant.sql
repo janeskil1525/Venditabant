@@ -2131,3 +2131,16 @@ ALTER TABLE productgroup_customer_discount
     REFERENCES parameters_items (parameters_items_pkey);
 
 -- 45 down
+-- 46 up
+ALTER TABLE salesorder_items
+    ADD COLUMN unit varchar NOT NULL DEFAULT '';
+
+ALTER TABLE salesorder_items
+    ADD COLUMN account varchar NOT NULL DEFAULT '';
+
+DROP INDEX idx_salesorder_item_salesorder_stockitem;
+
+CREATE UNIQUE INDEX idx_unique_salesorder_item_salesorder_stockitem
+    ON salesorder_items(salesorders_fkey, stockitem);
+
+-- 46 down

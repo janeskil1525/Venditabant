@@ -43,7 +43,7 @@ async sub convert($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
                 $companies_pkey, $users_pkey, $invoice_pkey,'SENT'
             );
 
-            await venditabant::Model::SalesorderHead->new(
+            await venditabant::Model::Salesorder::Head->new(
                 db => $db
             )->invoice($salesorders_pkey);
 

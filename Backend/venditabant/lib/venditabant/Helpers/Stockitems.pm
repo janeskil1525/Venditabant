@@ -218,9 +218,8 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customer_addresses_pkey) 
     $response->{stockitems} = $result->hashes if $result and $result->rows > 0;
 
     my $salesorders_stmt = qq{
-        SELECT stockitems_pkey, stockitem, description, quantity,  price
-        FROM stockitems JOIN salesorder_items
-            ON stockitems_pkey = stockitems_fkey
+        SELECT salesorder_items_pkey, stockitem, description, quantity,  price
+        FROM salesorder_items
         JOIN salesorders ON salesorders_fkey = salesorders_pkey
         AND open = true AND salesorders.companies_fkey = ? AND customers_fkey = ?
         AND customer_addresses_fkey = ?
@@ -240,9 +239,9 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customer_addresses_pkey) 
     my $history_stmt = qq {
         SELECT DISTINCT stockitems_pkey, stockitem, description,
             quantity,  price, deliverydate
-	FROM stockitems JOIN salesorder_statistics ON stockitems_pkey = stockitems_fkey
-		AND stockitems.companies_fkey = ? AND customers_fkey = ?
-		AND stockitems_pkey NOT IN(
+        FROM stockitems JOIN salesorder_statistics ON stockitems_pkey = stockitems_fkey
+            AND stockitems.companies_fkey = ? AND customers_fkey = ?
+            AND stockitems_pkey NOT IN(
 				    SELECT stockitems_pkey
                     FROM stockitems JOIN salesorder_items
                         ON stockitems_pkey = stockitems_fkey

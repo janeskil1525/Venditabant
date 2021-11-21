@@ -1,4 +1,4 @@
-package venditabant::Model::SalesorderHead;
+package venditabant::Model::Salesorder::Head;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;

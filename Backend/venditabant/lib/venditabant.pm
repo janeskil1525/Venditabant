@@ -24,6 +24,7 @@ use venditabant::Helpers::Invoice::Invoices;
 use venditabant::Helpers::System::Settings;
 use venditabant::Helpers::Currency::Currencies;
 use venditabant::Helpers::Discount::Discounts;
+use venditabant::Helpers::Stockitems::Mobilelist;
 
 use Data::Dumper;
 use File::Share;
@@ -120,6 +121,10 @@ sub startup ($self) {
       discounts => sub {
         state  $discounts = venditabant::Helpers::Discount::Discounts->new(pg => shift->pg)
       });
+  $self->helper(
+      mobilelist => sub {
+        state  $mobilelist = venditabant::Helpers::Stockitems::Mobilelist->new(pg => shift->pg)
+      });
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -167,8 +172,9 @@ sub startup ($self) {
 
   $auth->put('/stockitem/save/')->to('stockitems#save_stockitem');
   $auth->get('/stockitem/load_list/')->to('stockitems#load_list');
-  $auth->get('/stockitem/load_list/mobile/:customer_addresses_pkey')->to('stockitems#load_list_mobile');
-  $auth->get('/stockitem/load_list/mobile/')->to('stockitems#load_list_mobile_nocust');
+
+  $auth->get('/mobilelist/load_list/:customer_addresses_pkey')->to('mobilelist#load_list_mobile');
+  $auth->get('/mobilelist/load_list/')->to('mobilelist#load_list_mobile_nocust');
 
   $auth->get('/pricelists/heads/load_list/')->to('pricelists#load_list_heads');
   $auth->put('/pricelists/heads/save/')->to('pricelists#upsert_head');

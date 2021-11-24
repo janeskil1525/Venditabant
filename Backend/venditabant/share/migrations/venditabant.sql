@@ -2143,4 +2143,13 @@ DROP INDEX idx_salesorder_item_salesorder_stockitem;
 CREATE UNIQUE INDEX idx_unique_salesorder_item_salesorder_stockitem
     ON salesorder_items(salesorders_fkey, stockitem);
 
+ALTER TABLE salesorder_items
+    DROP COLUMN stockitems_fkey;
+
+ALTER TABLE salesorder_items
+    ADD COLUMN vat_txt varchar NOT NULL DEFAULT '';
+
+ALTER TABLE salesorder_items
+    ADD COLUMN discount_txt varchar NOT NULL DEFAULT '';
+
 -- 46 down

@@ -233,10 +233,11 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 });
                 let tcm = table.getTableColumnModel();
 
-                tcm.setColumnWidth(0,50);
+                tcm.setColumnVisible(0,false);
+
                 tcm.setColumnWidth(1,150);
-                tcm.setColumnWidth(2,50);
-                tcm.setColumnWidth(3,50);
+                tcm.setColumnWidth(2,70);
+                tcm.setColumnWidth(3,80);
                 // Display a checkbox in column 3
                 //tcm.setDataCellRenderer(3, new qx.ui.table.cellrenderer.Boolean());
 

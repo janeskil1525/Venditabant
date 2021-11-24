@@ -5,6 +5,8 @@ use venditabant::Model::Salesorder::Head;
 use venditabant::Model::Salesorder::Item;
 use venditabant::Model::Counter;
 use venditabant::Helpers::Customers::Address;
+use venditabant::Model::Stockitems;
+use venditabant::Helpers::Salesorder::PrepareItem;
 
 use Data::Dumper;
 
@@ -95,6 +97,7 @@ async sub load_salesorder_list ($self, $companies_pkey, $users_pkey, $data) {
 
     return $result;
 }
+
 async sub item_upsert($self, $companies_pkey, $users_pkey, $data) {
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -103,6 +106,12 @@ async sub item_upsert($self, $companies_pkey, $users_pkey, $data) {
     eval {
 
         if($data->{quantity} > 0) {
+            $data = await venditabant::Helpers::Salesorder::PrepareItem->new(
+                pg => $self->pg
+            )->prepare_item(
+                $companies_pkey, $users_pkey, $data->{stockitems_fkey}, $data
+            );
+
             await venditabant::Model::Salesorder::Item->new(
                 db => $db
             )->upsert(
@@ -121,7 +130,7 @@ async sub item_upsert($self, $companies_pkey, $users_pkey, $data) {
     $err = $@ if $@;
     $self->capture_message (
         $self->pg, '',
-        'venditabant::Helpers::Salesorder::Salesorders', 'load_list_p', $err
+        'venditabant::Helpers::Salesorder::Salesorders', 'item_upsert', $err
     ) if $err;
 
     return $err ? $err : 'success';
@@ -162,6 +171,11 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
         );
 
         if($data->{quantity} > 0) {
+            $data = await venditabant::Helpers::Salesorder::PrepareItem->new(
+                pg => $self->pg
+            )->prepare_item(
+                $companies_pkey, $users_pkey, $data->{stockitems_fkey}, $data
+            );
 
             await venditabant::Model::Salesorder::Item->new(
                 db => $db
@@ -179,7 +193,10 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
         $tx->commit();
     };
     $err = $@ if $@;
-    say "error '$err'" if $err;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Salesorder::Salesorders', 'upsert', $@
+    ) if $err;
 
     return $err ? $err : 'success';
 }

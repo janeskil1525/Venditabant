@@ -173,7 +173,7 @@ sub startup ($self) {
   $auth->put('/stockitem/save/')->to('stockitems#save_stockitem');
   $auth->get('/stockitem/load_list/')->to('stockitems#load_list');
 
-  $auth->get('/mobilelist/load_list/:customer_addresses_pkey')->to('mobilelist#load_list_mobile');
+  $auth->get('/mobilelist/load_list/:customers_fkey/:customer_addresses_pkey')->to('mobilelist#load_list_mobile');
   $auth->get('/mobilelist/load_list/')->to('mobilelist#load_list_mobile_nocust');
 
   $auth->get('/pricelists/heads/load_list/')->to('pricelists#load_list_heads');

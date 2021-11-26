@@ -23,7 +23,7 @@ qx.Class.define("desktop_delivery.delivery.DeliveryAddressSelectBox",
                     if(typeof e.getData()[0] !== 'undefined') {
                         this._model = e.getData()[0];
                         if(this._model.getModel() !== null) {
-                            this.getDelivery().setCustomerAddressFkey(this._model.getModel().customer_addresses_pkey)
+                            this.getDelivery().setCustomerAddressModel(this._model.getModel())
                             this.getDelivery().loadStockitemList();
                         }
                     }

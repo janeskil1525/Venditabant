@@ -20,7 +20,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
 
         },
         properties: {
-            customer_addresses_fkey: {nullable:true, check:"Number"},
+            customer_addresses_model: {nullable:true},
         },
         members  : {
             _buildDeliveryWindow:function() {
@@ -45,8 +45,8 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 this._createTable();
                 this._createSaveButton();
             },
-            setCustomerAddressFkey:function(customer_addresses_fkey) {
-                this.setCustomer_addresses_fkey(customer_addresses_fkey);
+            setCustomerAddressModel:function(model) {
+                this.setCustomer_addresses_model(model);
             },
             _createLogoutButton:function() {
                 let that = this;
@@ -67,12 +67,12 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
             },
             saveSalesorder:function() {
 
-                if(this.getCustomer_addresses_fkey() === null || this.getCustomer_addresses_fkey() === ''){
+                if(this.getCustomer_addresses_model().customer_addresses_pkey === null || this.getCustomer_addresses_model() === ''){
                     return;
                 }
 
                 let data = {
-                    customer_addresses_fkey:this.getCustomer_addresses_fkey(),
+                    customer_addresses_fkey:this.getCustomer_addresses_model().customer_addresses_pkey,
                 };
 
                 let sales = new desktop_delivery.models.Salesorders();
@@ -105,7 +105,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                     //let stockitem = stock.substring(0,stock.indexOf(' - '));
 
                     let data = {
-                        customer_addresses_pkey:this.getCustomer_addresses_fkey(),
+                        customer_addresses_pkey:this.getCustomer_addresses_model().customer_addresses_pkey,
                         quantity:this._quantity.getValue(),
                         stockitem:stockitem,
                         stockitems_fkey:this._selectedStockitem_fkey,
@@ -193,7 +193,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                         // that.addSaveButton();
                     }
                     this._table.getTableModel().setData(tableData);
-                }, this, this.getCustomer_addresses_fkey());
+                }, this, this.getCustomer_addresses_model());
 
             },
             _createTable : function() {

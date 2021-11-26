@@ -26,6 +26,10 @@ qx.Class.define("desktop_delivery.helpers.LoadList",
                     }
                     if(response.data !== null) {
                         this.getList().removeAll();
+                        if(this.isEmptyrow()) {
+                            item = new qx.ui.form.ListItem('', null, null);
+                            this.getList().add(item);
+                        }
                         for (let i=0; i < response.data.length; i++) {
                             let row = response.data[i].name;
                             item = new qx.ui.form.ListItem(row, null, response.data[i]);

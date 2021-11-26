@@ -13,7 +13,9 @@ sub load_list_mobile ($self) {
     );
 
     my $customer_addresses_pkey = $self->param('customer_addresses_pkey');
-    $self->mobilelist->load_list_mobile_p($companies_pkey, $customer_addresses_pkey)->then(sub ($result) {
+    my $customers_fkey = $self->param('customers_fkey');
+
+    $self->mobilelist->load_list_mobile_p($companies_pkey, $customers_fkey, $customer_addresses_pkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
@@ -24,6 +26,7 @@ sub load_list_mobile ($self) {
 
 sub load_list_mobile_nocust ($self) {
 
+    say "load_list_mobile_nocust";
     $self->render_later;
     my $companies_pkey = $self->jwt->companise_pkey(
         $self->req->headers->header('X-Token-Check')

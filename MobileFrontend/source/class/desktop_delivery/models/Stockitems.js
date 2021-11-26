@@ -16,9 +16,10 @@ qx.Class.define("desktop_delivery.models.Stockitems",
                     cb.call ( ctx, (response));
                 },this)
             },
-            loadListSales:function(cb, ctx, customer_addresses_pkey) {
+            loadListSales:function(cb, ctx, customer_model) {
                 let get = new desktop_delivery.communication.Get;
-                get.load(this._address, "/api/v1/mobilelist/load_list/", customer_addresses_pkey,function(response){
+                let condition = customer_model.customers_fkey + '/' + customer_model.customer_addresses_pkey;
+                get.load(this._address, "/api/v1/mobilelist/load_list/", condition,function(response){
                     cb.call ( ctx, (response));
                 },this)
             }

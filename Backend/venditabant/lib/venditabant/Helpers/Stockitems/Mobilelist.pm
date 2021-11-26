@@ -7,36 +7,42 @@ has 'pg';
 
 async sub load_list_mobile_nocust_p ($self, $companies_pkey) {
 
+    say "load_list_mobile_nocust_p";
     my $err;
     my $response = $self->mobile_list_response();
     eval {
-        my $pricelists_pkey = $self->pg->db->select(
-            'pricelists',
-            [ 'pricelists_pkey' ],
-            {
-                pricelist      => 'DEFAULT',
-                companies_fkey => $companies_pkey,
-            }
-        )->hash->{pricelists_pkey};
+        # my $pricelists_pkey = $self->pg->db->select(
+        #     'pricelists',
+        #     [ 'pricelists_pkey' ],
+        #     {
+        #         pricelist      => 'DEFAULT',
+        #         companies_fkey => $companies_pkey,
+        #     }
+        # )->hash->{pricelists_pkey};
+
+    #     my $mobilelist_stmt = qq{
+    #     SELECT stockitems_pkey, stockitem, description, 0 as quantity,  price
+    #         FROM stockitems JOIN pricelist_items
+    #         ON stockitems_pkey = stockitems_fkey AND companies_fkey = ?
+	# 			AND pricelists_fkey = ?
+	# 		AND pricelist_items_pkey = (
+	# 			SELECT pricelist_items_pkey FROM pricelist_items
+	# 				WHERE stockitems_pkey = stockitems_fkey
+	# 					AND pricelists_fkey = ?
+	# 			AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
+	# 							WHERE stockitems_pkey = stockitems_fkey AND todate >= now()))
+	# 			AND todate >= now()
+    #
+    # };
 
         my $mobilelist_stmt = qq{
-        SELECT stockitems_pkey, stockitem, description, 0 as quantity,  price
-            FROM stockitems JOIN pricelist_items
-            ON stockitems_pkey = stockitems_fkey AND companies_fkey = ?
-				AND pricelists_fkey = ?
-			AND pricelist_items_pkey = (
-				SELECT pricelist_items_pkey FROM pricelist_items
-					WHERE stockitems_pkey = stockitems_fkey
-						AND pricelists_fkey = ?
-				AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
-								WHERE stockitems_pkey = stockitems_fkey AND todate >= now()))
-				AND todate >= now()
-
-    };
-
+            SELECT stockitems_pkey, stockitem, description, 0 as quantity,  get_price(?,stockitems_pkey, 0) as price
+            FROM stockitems
+        };
+say $mobilelist_stmt;
         my $result = $self->pg->db->query(
             $mobilelist_stmt,
-            ($companies_pkey, $pricelists_pkey, $pricelists_pkey)
+            ($companies_pkey)
         );
 
         my $hash;
@@ -53,38 +59,21 @@ async sub load_list_mobile_nocust_p ($self, $companies_pkey) {
     return $response;
 }
 
-async sub load_list_mobile_p ($self, $companies_pkey, $customer_addresses_pkey) {
+async sub load_list_mobile_p ($self, $companies_pkey, $customers_fkey, $customer_addresses_pkey) {
 
     my $err;
     my $response = $self->mobile_list_response();
     my $db = $self->pg->db;
 
     eval {
-        my $customer = $self->pg->db->select(
-            [ 'customers', [ 'customer_addresses', customers_fkey => 'customers_pkey' ] ],
-            [ 'pricelists_fkey', 'customers_pkey' ],
-            {
-                customer_addresses_pkey => $customer_addresses_pkey,
-                companies_fkey          => $companies_pkey,
-            }
-        )->hash;
 
         my $mobilelist_stmt = qq{
-        SELECT stockitems_pkey, stockitem, description, 0 as quantity,  price
-            FROM stockitems JOIN pricelist_items
-            ON stockitems_pkey = stockitems_fkey AND companies_fkey = ?
-				AND pricelists_fkey = ?
-			AND pricelist_items_pkey = (
-				SELECT pricelist_items_pkey FROM pricelist_items
-					WHERE stockitems_pkey = stockitems_fkey
-						AND pricelists_fkey = ?
-				AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
-								WHERE stockitems_pkey = stockitems_fkey AND todate >= now()))
-				AND todate >= now()
-				AND stockitems_pkey NOT IN(
+        SELECT stockitems_pkey, stockitem, description, 0 as quantity,  get_price(?, stockitems_pkey, ?) as price
+            FROM stockitems WHERE
+				companies_fkey = ? AND stockitems_pkey NOT IN(
 				    SELECT stockitems_pkey
                     FROM stockitems JOIN salesorder_items
-                        ON stockitems_pkey = stockitems_fkey
+                        ON stockitems.stockitem = salesorder_items.stockitem AND stockitems.companies_fkey = ?
                     JOIN salesorders ON salesorders_fkey = salesorders_pkey
                     AND open = true AND salesorders.companies_fkey = ? AND customers_fkey = ?
                     AND customer_addresses_fkey = ?
@@ -95,10 +84,11 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customer_addresses_pkey) 
             $mobilelist_stmt,
             (
                 $companies_pkey,
-                $customer->{pricelists_fkey},
-                $customer->{pricelists_fkey},
+                $customers_fkey,
                 $companies_pkey,
-                $customer->{customers_pkey},
+                $companies_pkey,,
+                $companies_pkey,
+                $customers_fkey,
                 $customer_addresses_pkey,
             )
         );
@@ -117,7 +107,7 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customer_addresses_pkey) 
             $salesorders_stmt,
             (
                 $companies_pkey,
-                $customer->{customers_pkey},
+                $customers_fkey,
                 $customer_addresses_pkey,
             )
         );
@@ -143,9 +133,9 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customer_addresses_pkey) 
             $history_stmt,
             (
                 $companies_pkey,
-                $customer->{customers_pkey},
+                $customers_fkey,
                 $companies_pkey,
-                $customer->{customers_pkey},
+                $$customers_fkey,
             )
         );
 

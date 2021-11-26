@@ -2153,3 +2153,51 @@ ALTER TABLE salesorder_items
     ADD COLUMN discount_txt varchar NOT NULL DEFAULT '';
 
 -- 46 down
+-- 47 up
+
+CREATE OR REPLACE FUNCTION get_price(companies_pkey integer, stockitem_fkey integer, customers_fkey integer) RETURNS numeric(15,2) AS $$
+DECLARE
+    out_price numeric(15,2) := 0.0;
+    pricelist_fkey bigint := 0;
+BEGIN
+    pricelist_fkey := (SELECT pricelists_fkey FROM customers WHERE customers_pkey = customers_fkey);
+    CASE
+        WHEN (SELECT price FROM pricelist_items
+              WHERE stockitems_fkey = stockitem_fkey
+                AND pricelists_fkey = pricelist_fkey
+                AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
+                                WHERE stockitems_fkey = stockitem_fkey AND todate >= now() AND pricelists_fkey = pricelist_fkey)) > 0 THEN
+
+            out_price := (SELECT price FROM pricelist_items WHERE stockitems_fkey = stockitem_fkey
+                                                              AND pricelists_fkey = pricelist_fkey
+                                                              AND pricelist_items_pkey = (
+                    SELECT pricelist_items_pkey FROM pricelist_items
+                    WHERE stockitems_fkey = stockitem_fkey
+                      AND pricelists_fkey = pricelist_fkey
+                      AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
+                                      WHERE stockitems_fkey = stockitem_fkey AND todate >= now() AND pricelists_fkey = pricelist_fkey))
+                                                              AND todate >= now());
+
+        WHEN ((out_price = 0) AND (SELECT price FROM pricelist_items
+                                   WHERE stockitems_fkey = stockitem_fkey
+                                     AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists WHERE companies_fkey = companies_pkey AND pricelist = 'DEFAULT')
+                                     AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
+                                                     WHERE stockitems_fkey = stockitem_fkey AND todate >= now()
+                                                       AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists WHERE companies_fkey = companies_pkey AND pricelist = 'DEFAULT'))) > 0) THEN
+
+            out_price := (SELECT price FROM pricelist_items WHERE stockitems_fkey = stockitem_fkey
+                                                              AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists WHERE companies_fkey = companies_pkey AND pricelist = 'DEFAULT')
+                                                              AND pricelist_items_pkey = (
+                    SELECT pricelist_items_pkey FROM pricelist_items
+                    WHERE stockitems_fkey = stockitem_fkey
+                      AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists WHERE companies_fkey = companies_pkey AND pricelist = 'DEFAULT')
+                      AND fromdate = (SELECT MAX(fromdate) FROM pricelist_items
+                                      WHERE stockitems_fkey = stockitem_fkey AND todate >= now()
+                                        AND pricelists_fkey = (SELECT pricelists_pkey FROM pricelists WHERE companies_fkey = companies_pkey AND pricelist = 'DEFAULT')))
+                                                              AND todate >= now());
+        END CASE ;
+    RETURN out_price;
+END
+$$ LANGUAGE plpgsql;
+
+-- 47 down

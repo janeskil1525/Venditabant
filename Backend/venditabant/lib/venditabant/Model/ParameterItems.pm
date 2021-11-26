@@ -3,6 +3,21 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 
 has 'db';
 
+async sub load_parameter_from_pkey($self, $companies_pkey, $parameters_items_pkey) {
+
+    my $result = await $self->db->select_p('parameters_items',
+        undef,
+        {
+            parameters_items_pkey => $parameters_items_pkey,
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result->rows;
+
+    return $hash;
+}
+
 async sub load_parameter_p ($self, $parameters_fkey, $parameter) {
 
     my $result = await $self->db->select_p('parameters_items',

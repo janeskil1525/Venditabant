@@ -81,4 +81,22 @@ async sub load_customer_from_pkey ($self, $companies_pkey, $customers_pkey) {
 
     return $hash;
 }
+
+async sub load_customer_pricelist_from_pkey ($self, $companies_pkey, $customers_pkey) {
+
+    my $result = $self->db->select(
+        'customers',
+        ['pricelists_fkey'],
+        {
+            companies_fkey      => $companies_pkey,
+            customers_pkey      => $customers_pkey
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash->{pricelists_fkey} if $hash and exists $hash->{pricelists_fkey};
+    return 0;
+}
 1;

@@ -20,9 +20,11 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $stockitems_pkey, $d
             $companies_pkey, $users_pkey, $stockitems_pkey
         );
 
+        say "load_complete_item " . Dumper($stockitem);
+
         $data->{description} = $stockitem->{description} unless exists $data->{description};
-        $data->{units} = $stockitem->{units} unless exists $data->{units};
-        $data->{accounts} = $stockitem->{accounts} unless exists $data->{accounts};
+        $data->{unit} = $stockitem->{units} unless exists $data->{unit};
+        $data->{account} = $stockitem->{accounts} unless exists $data->{account};
         $data->{productgroup} = $stockitem->{productgroup} unless exists $data->{productgroup};
 
         my $discount = await venditabant::Helpers::Discount::Calculate->new(
@@ -43,7 +45,7 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $stockitems_pkey, $d
         my $vat = await venditabant::Helpers::Vat::Calculate->new(
             pg => $self->pg
         )->calculate(
-            $data->{vat}, $data->{quantity}, $data->{price}
+            $companies_pkey, $stockitem->{vat_fkey}, $data->{quantity}, $data->{price}
         );
 
         $data->{vat} = $vat->{vat_sum};

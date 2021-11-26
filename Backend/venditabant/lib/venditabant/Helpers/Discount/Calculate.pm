@@ -12,7 +12,9 @@ async sub calculate_item_discount(
     $self, $companies_pkey, $users_pkey, $customers_fkey, $stockitems_fkey,
     $productgroups_fkey, $quantity, $price) {
 
-    my $discount;
+    my $discount->{discount} = 0;
+    $discount->{discount_txt} = ' ';
+
     my $result = venditabant::Model::Discount::Stockitem->new(
         db => $self->pg->db
     )->load_discount(
@@ -20,7 +22,6 @@ async sub calculate_item_discount(
     );
 
     if(!$result->{discount}) {
-
         $result = venditabant::Model::Discount::Productgroups->new(
             db => $self->pg->db
         )->load_discount(
@@ -40,5 +41,6 @@ async sub calculate_item_discount(
         }
     }
 
+    return $discount;
 }
 1;

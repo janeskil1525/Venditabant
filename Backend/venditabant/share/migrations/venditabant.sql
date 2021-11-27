@@ -2152,6 +2152,12 @@ ALTER TABLE salesorder_items
 ALTER TABLE salesorder_items
     ADD COLUMN discount_txt varchar NOT NULL DEFAULT '';
 
+ALTER TABLE salesorder_statistics
+    DROP COLUMN stockitems_fkey;
+
+ALTER TABLE salesorder_statistics
+    ADD COLUMN stockitem varchar NOT NULL DEFAULT '';
+
 -- 46 down
 -- 47 up
 

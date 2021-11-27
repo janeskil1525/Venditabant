@@ -219,10 +219,10 @@ async sub close ($self, $companies_pkey, $users_pkey, $data){
     my $tx = $db->begin();
 
     my $salesorder_statistics = qq{
-        INSERT INTO salesorder_statistics (salesorders_fkey, stockitems_fkey, customers_fkey,
+        INSERT INTO salesorder_statistics (salesorders_fkey, stockitem, customers_fkey,
             users_fkey, companies_fkey, orderdate, deliverydate, quantity, price, customer_addresses_fkey)
-        SELECT salesorders_pkey, stockitems_fkey, customers_fkey,
-            users_fkey, companies_fkey, orderdate, deliverydate, quantity, price, customer_addresses_fkey
+        SELECT salesorders_pkey, stockitem, customers_fkey,
+            users_fkey, companies_fkey, orderdate, salesorder_items.deliverydate, quantity, price, customer_addresses_fkey
                 FROM salesorders JOIN salesorder_items ON salesorders_pkey = salesorders_fkey
                     where salesorders_pkey = ?
     };

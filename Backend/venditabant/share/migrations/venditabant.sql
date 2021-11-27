@@ -2158,6 +2158,26 @@ ALTER TABLE salesorder_statistics
 ALTER TABLE salesorder_statistics
     ADD COLUMN stockitem varchar NOT NULL DEFAULT '';
 
+ALTER TABLE invoice_items
+    DROP COLUMN stockitems_fkey;
+
+ALTER TABLE invoice_items
+    ADD COLUMN stockitem varchar NOT NULL DEFAULT '';
+
+ALTER TABLE invoice_items
+    ADD COLUMN vat_txt varchar NOT NULL DEFAULT '';
+
+ALTER TABLE invoice_items
+    ADD COLUMN discount_txt varchar NOT NULL DEFAULT '';
+
+ALTER TABLE invoice_items
+    ADD COLUMN discount numeric(15,2) NOT NULL DEFAULT 0;
+
+ALTER TABLE invoice_items
+    ADD COLUMN unit varchar NOT NULL DEFAULT '';
+
+ALTER TABLE invoice_items
+    ADD COLUMN account varchar NOT NULL DEFAULT '';
 -- 46 down
 -- 47 up
 

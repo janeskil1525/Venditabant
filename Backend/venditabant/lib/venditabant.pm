@@ -134,6 +134,8 @@ sub startup ($self) {
       $self->dist_dir->child('migrations/venditabant.sql')
   )->migrate(46);
 
+  $self->plugin('Minion'  => { Pg => $self->pg });
+
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
   ]);

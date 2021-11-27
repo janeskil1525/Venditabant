@@ -244,6 +244,16 @@ async sub close ($self, $companies_pkey, $users_pkey, $data){
 
         $db->query($salesorder_statistics,($salesorders_pkey));
         $tx->commit();
+        my $minion->{salesorders_pkey} = $salesorders_pkey;
+        $minion->{customers_fkey} = $customers_fkey;
+        $minion->{companies_fkey} = $companies_pkey;
+        $minion->{users_pkey} = $users_pkey;
+
+        $self->minion->enqueue(
+            'create_invoice_from_salesorder' => [$minion] => {
+                priority => 0,
+            }
+        );
     };
     $err = $@ if $@;
     $self->capture_message (

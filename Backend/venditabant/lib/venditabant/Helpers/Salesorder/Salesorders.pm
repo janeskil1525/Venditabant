@@ -11,6 +11,7 @@ use venditabant::Helpers::Salesorder::PrepareItem;
 use Data::Dumper;
 
 has 'pg';
+has 'minion';
 
 async sub load_salesorder_full($self, $companies_pkey, $users_pkey, $salesorders_fkey) {
 

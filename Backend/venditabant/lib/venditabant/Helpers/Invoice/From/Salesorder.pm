@@ -2,21 +2,23 @@ package venditabant::Helpers::Invoice::From::Salesorder;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Helpers::Salesorder::Salesorders;
-use venditabant::Model::SalesorderHead;
-use venditabant::Model::InvoiceHead;
-use venditabant::Model::InvoiceItem;
-use venditabant::Model::InvoiceStatus;
+use venditabant::Model::Salesorder::Head;
+use venditabant::Model::Invoice::InvoiceHead;
+use venditabant::Model::Invoice::InvoiceItem;
+use venditabant::Model::Invoice::InvoiceStatus;
 
 use DateTime;
 use Data::Dumper;
 
 has 'pg';
 
-async sub convert($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
+async sub convert($self, $companies_pkey, $users_pkey, $customers_fkey, $salesorders_pkey) {
 
     my $order = await venditabant::Helpers::Salesorder::Salesorders->new(
         pg => $self->pg
-    )->load_salesorder_full($companies_pkey, $users_pkey, $salesorders_pkey);
+    )->load_salesorder_full(
+        $companies_pkey, $users_pkey, $salesorders_pkey
+    );
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -29,6 +31,7 @@ async sub convert($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
             )->insert(
                 $companies_pkey, $users_pkey, $invoicehead
             );
+
             foreach my $item (@{$order->{items}}) {
                 my $invoiceitem = await $self->map_invoiceitem($companies_pkey, $users_pkey, $invoice_pkey, $item);
                 await venditabant::Model::Invoice::InvoiceItem->new(

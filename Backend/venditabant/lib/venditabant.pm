@@ -25,6 +25,7 @@ use venditabant::Helpers::System::Settings;
 use venditabant::Helpers::Currency::Currencies;
 use venditabant::Helpers::Discount::Discounts;
 use venditabant::Helpers::Stockitems::Mobilelist;
+use venditabant::Helpers::Minion;
 
 use Data::Dumper;
 use File::Share;
@@ -51,6 +52,7 @@ sub startup ($self) {
   # Load configuration from config file
   my $config = $self->plugin('Config');
   $self->helper(pg => sub {state $pg = Mojo::Pg->new->dsn(shift->config('pg'))});
+  $self->plugin('Minion'  => { Pg => $self->pg });
   $self->helper(users => sub {
     state $users = venditabant::Helpers::Users->new(pg => $self->pg);
   });
@@ -63,6 +65,7 @@ sub startup ($self) {
         state $salesorders = venditabant::Helpers::Salesorder::Salesorders->new(pg => shift->pg)
       }
   );
+  $self->salesorders->minion($self->minion);
 
   $self->helper(
       customers => sub {
@@ -125,6 +128,11 @@ sub startup ($self) {
       mobilelist => sub {
         state  $mobilelist = venditabant::Helpers::Stockitems::Mobilelist->new(pg => shift->pg)
       });
+  $self->helper(
+      minioninit => sub {
+        state  $minioninit = venditabant::Helpers::Minion->new(pg => shift->pg)
+      });
+  $self->minioninit->init($self->minion);
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -134,7 +142,7 @@ sub startup ($self) {
       $self->dist_dir->child('migrations/venditabant.sql')
   )->migrate(46);
 
-  $self->plugin('Minion'  => { Pg => $self->pg });
+
 
   $self->renderer->paths([
       $self->dist_dir->child('templates'),

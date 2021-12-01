@@ -14,13 +14,8 @@ async sub init($self, $minion) {
 
 sub _create_invoice_from_salesorder($job, $salesorder) {
 
-    venditabant::Helpers::Invoice::From::Salesorder->new(
-            pg => $job->app->pg
-    )->convert(
-            $salesorder->{companies_pkey},
-            $salesorder->{users_pkey},
-            $salesorder->{customers_fkey},
-            $salesorder->{salesorders_pkey},
+    create_invoice_from_salesorder(
+        $job->app->pg, $salesorder
     )->then(sub ($res) {
 
         my $result = "Company " . $salesorder->{companies_pkey} .
@@ -41,6 +36,27 @@ sub _create_invoice_from_salesorder($job, $salesorder) {
         $job->finish({ status => $err});
 
     })->wait;
+
+
+}
+
+async sub create_invoice_from_salesorder($db, $salesorder) {
+
+    return venditabant::Helpers::Invoice::From::Salesorder->new(
+        pg => $job->app->pg
+    )->convert(
+        $salesorder->{companies_pkey},
+        $salesorder->{users_pkey},
+        $salesorder->{customers_fkey},
+        $salesorder->{salesorders_pkey},
+    );
+}
+
+async sub create_invoice_from_salesorder_test($self, $pg, $salesorder) {
+
+    return create_invoice_from_salesorder(
+        $pg, $salesorder
+    );
 
 }
 1;

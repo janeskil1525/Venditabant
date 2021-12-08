@@ -1,0 +1,23 @@
+<workflow>
+    <type>Salesorder Management</type>
+    <persister>SalesordersPersister</persister>
+
+    <state name='INITIAL'>
+        <action name='create_order' resulting_state='Created'/>
+    </state>
+
+    <state name='Created'>
+        <action name='close_order' resulting_state='Closed'/>
+    </state>
+
+    <state name='Closed'>
+        <action name='invoice_order' resulting_state='Invoiced'/>
+    </state>
+
+    <state name='Invoiced'>
+        <action name='archive_order' resulting_state='Archived'/>
+    </state>
+
+    <state name='Archived'>
+    </state>
+</workflow>

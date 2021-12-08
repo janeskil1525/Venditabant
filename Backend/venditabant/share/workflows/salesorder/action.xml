@@ -1,0 +1,9 @@
+
+
+<actions>
+    <type>Salesorder Management</type>
+    <action name="create_order" class="Actions::Mail"/>
+    <action name="close_order" class="Actions::Mail"/>
+    <action name="invoice_order" class="Actions::Mail"/>
+    <action name="archive_order" class="Actions::Mail"/>
+</actions>

@@ -43,7 +43,7 @@ sub _create_invoice_from_salesorder($job, $salesorder) {
 async sub create_invoice_from_salesorder($db, $salesorder) {
 
     return venditabant::Helpers::Invoice::From::Salesorder->new(
-        pg => $job->app->pg
+        pg => $db
     )->convert(
         $salesorder->{companies_pkey},
         $salesorder->{users_pkey},

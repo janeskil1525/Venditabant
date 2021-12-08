@@ -2226,4 +2226,77 @@ BEGIN
 END
 $$ LANGUAGE plpgsql;
 
+
+CREATE TABLE workflow
+(
+    workflow_id       int not null,
+    type              varchar not null,
+    state             varchar not null,
+    last_update       timestamp default current_timestamp,
+    primary key ( workflow_id )
+);
+
+CREATE SEQUENCE workflow_seq;
+
+CREATE TABLE workflow_history
+(
+    workflow_hist_id  int not null,
+    workflow_id       int not null,
+    action            varchar not null,
+    description       varchar null,
+    state             varchar not null,
+    workflow_user     varchar null,
+    history_date      timestamp default current_timestamp,
+    primary key( workflow_hist_id ),
+    foreign key( workflow_id ) references workflow( workflow_id )
+);
+
+CREATE SEQUENCE workflow_history_seq;
+
+CREATE TABLE if not exists workflows
+(
+    workflows_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    workflow varchar unique NOT NULL,
+    CONSTRAINT workflows_pkey PRIMARY KEY (workflows_pkey)
+);
+
+INSERT INTO workflows (workflow)
+VALUES ('Salesorder'),
+       ('Salesorder item'),
+       ('Invoice'),
+       ('Invoice item');
+
+CREATE TYPE workflowtype AS ENUM ('action', 'condition', 'persister', 'validator', 'workflow');
+
+CREATE TABLE if not exists workflow_items
+(
+    workflow_items_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    workflows_fkey bigint NOT NULL,
+    workflow_type workflowtype NOT NULL,
+    workflow TEXT NOT NULL,
+    CONSTRAINT workflow_items_pkey PRIMARY KEY (workflow_items_pkey),
+    CONSTRAINT workflow_items_workflows_fkey FOREIGN KEY (workflows_fkey)
+        REFERENCES workflows (workflows_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE TABLE workflow_salesorders
+(
+    workflow_id  bigint not null,
+    salesorders_fkey  bigint not null,
+    primary key ( workflow_id )
+);
+
 -- 47 down

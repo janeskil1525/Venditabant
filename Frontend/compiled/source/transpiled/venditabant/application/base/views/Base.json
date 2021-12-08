@@ -270,6 +270,7 @@
     "venditabant.sales.invoices.views.Invoice",
     "venditabant.support.views.Settings",
     "venditabant.support.views.MailSettings",
-    "venditabant.sales.customers.views.Discounts"
+    "venditabant.sales.customers.views.Discounts",
+    "venditabant.support.views.Workflows"
   ]
 }

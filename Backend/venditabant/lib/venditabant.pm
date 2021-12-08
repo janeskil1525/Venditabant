@@ -142,8 +142,6 @@ sub startup ($self) {
       $self->dist_dir->child('migrations/venditabant.sql')
   )->migrate(47);
 
-
-
   $self->renderer->paths([
       $self->dist_dir->child('templates'),
   ]);

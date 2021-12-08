@@ -57,6 +57,11 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 this.cockpitButton();
                 this.setStatus("Application is ready");
             },
+            workflowbutton:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.support.views.Workflows();
+                root._basewin.addView(root, view);
+            },
             warehouseButton:function() {
                 let root  = qx.core.Init.getApplication ( ).getRoot();
                 let view = new venditabant.stock.warehouse.views.Definition();
@@ -262,6 +267,10 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let systemSettingsButton = new qx.ui.menu.Button("Settings");
                 systemSettingsButton.addListener("execute", this.systemSettingsButton);
                 menu.add(systemSettingsButton);
+
+                let workflowbutton = new qx.ui.menu.Button("Workflows");
+                workflowbutton.addListener("execute", this.workflowbutton);
+                menu.add(workflowbutton);
 
                 return menu;
             },

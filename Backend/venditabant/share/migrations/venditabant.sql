@@ -2299,4 +2299,7 @@ CREATE TABLE workflow_salesorders
     primary key ( workflow_id )
 );
 
+CREATE UNIQUE INDEX idx_workflows_fkey_workflow_type
+    ON workflow_items(workflows_fkey, workflow_type);
+
 -- 47 down

@@ -26,6 +26,7 @@ use venditabant::Helpers::Currency::Currencies;
 use venditabant::Helpers::Discount::Discounts;
 use venditabant::Helpers::Stockitems::Mobilelist;
 use venditabant::Helpers::Minion;
+use venditabant::Helpers::Workflow::Workflows;
 
 use Data::Dumper;
 use File::Share;
@@ -133,6 +134,12 @@ sub startup ($self) {
         state  $minioninit = venditabant::Helpers::Minion->new(pg => shift->pg)
       });
   $self->minioninit->init($self->minion);
+
+  $self->helper(
+      workflows => sub {
+        state  $workflows = venditabant::Helpers::Workflow::Workflows->new(pg => shift->pg)
+      });
+
 
   # Configure the application
   $self->secrets($config->{secrets});
@@ -258,6 +265,9 @@ sub startup ($self) {
   $auth->put('/discounts/general/save/')->to('discounts#save_general_discount');
   $auth->get('/discounts/general/delete/:customer_discount_pkey')->to('discounts#delete_general_discount');
 
+  $auth->get('/workflows/load_list/')->to('workflows#load_list');
+    $auth->put('/workflows/save/')->to('workflows#save_workflow');
+    $auth->get('/workflows/load/:workflows_fkey/:workflow_type')->to('workflows#load_workflow');
 }
 
 1;

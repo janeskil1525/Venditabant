@@ -1,5 +1,5 @@
 
-qx.Class.define("venditabant.support.views.WorkflowTypeSelectBox",
+qx.Class.define("venditabant.support.views.WorkflowSelectBox",
     {
         extend: qx.core.Object,
         include: [qx.locale.MTranslation],
@@ -20,10 +20,9 @@ qx.Class.define("venditabant.support.views.WorkflowTypeSelectBox",
                 let selectbox = new qx.ui.form.SelectBox();
                 selectbox.setWidth(this.getWidth());
                 selectbox.addListener("changeSelection", function (e) {
-                    this._model = e.getData()[0];
-                    if(e.getData()[0].getModel() !== null) {
-                        this.getCallback().loadWorkflows(e.getData()[0].getModel().workflows_pkey);
-                    }
+                    this._model = e.getData()[0].getModel();
+                    this.getCallback().clearScreen();
+                    this.getCallback().loadWorkflow();
                 }, this);
 
                 new venditabant.support.helpers.WorkflowsList().set({

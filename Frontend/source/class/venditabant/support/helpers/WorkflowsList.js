@@ -20,7 +20,7 @@ qx.Class.define("venditabant.support.helpers.WorkflowsList",
                 let get = new venditabant.support.models.Workflows();
                 this._model = null;
 
-                get.loadMailerList(function(response) {
+                get.loadList(function(response) {
                     var item;
                     if(response.data !== null) {
                         this.getList().removeAll();

@@ -1,0 +1,30 @@
+<workflow>
+    <type>salesorder_simple</type>
+    <description>Create a simple salesorder</description>
+    <persister>SalesordersPersister</persister>
+
+    <state name='INITIAL'>
+        <description>This is the state the workflow enters when
+            instantiated. It's like a 'state zero' but since we're
+            using names rather than IDs we cannot assume
+        </description>
+        <action name='create_orderno' resulting_state='NOCHANGE'/>
+        <action name='create_order' resulting_state='Order Created'/>
+    </state>
+
+    <state name='Order Created'>
+        <action name='additem_to_order' resulting_state='NOCHANGE'/>
+        <action name='close_order' resulting_state='Closed'/>
+    </state>
+
+    <state name='Closed'>
+        <action name='invoice_order' resulting_state='Invoiced'/>
+    </state>
+
+    <state name='Invoiced'>
+        <action name='archive_order' resulting_state='Archived'/>
+    </state>
+
+    <state name='Archived'>
+    </state>
+</workflow>

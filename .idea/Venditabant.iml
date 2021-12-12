@@ -4,7 +4,8 @@
     <exclude-output />
     <perl5>
       <path value="file://$MODULE_DIR$/Backend/venditabant/lib" type="perl-library" />
-      <path value="file://$MODULE_DIR$/Backend/venditabant/Mojolicious-Plugin-Workflow/lib" type="perl-library" />
+      <path value="file://$MODULE_DIR$/Backend/Mojolicious-Plugin-Workflow/lib" type="perl-library" />
+      <path value="file://$MODULE_DIR$/Backend/Engine/lib" type="perl-library" />
     </perl5>
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />

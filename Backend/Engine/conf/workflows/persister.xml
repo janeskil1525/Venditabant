@@ -1,0 +1,8 @@
+<persister name="SalesordersPersister"
+           class="Engine::Persister::DBI::Mojo"
+           dsn="DBI:Pg:dbname=Venditabant;host=192.168.1.108;port=5432;user=postgres; password=PV58nova64"
+           autocommit="1"
+           date_format="%Y-%m-%d %H:%M"
+           extra_table="workflow_salesorders"
+           extra_data_field="salesorders_fkey"
+/>

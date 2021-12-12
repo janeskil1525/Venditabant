@@ -1,7 +1,8 @@
 package venditabant::Helpers::Sentinel::Sentinelsender;
 use Mojo::Base -base, -strict, -signatures, -async_await;
 
-use venditabant::Model::Sentinel;
+use venditabant::Model::Sentinel::Sentinel;
+use venditabant::Model::Sentinel::Log;;
 
 use Scalar::Util qw{blessed};
 use Data::Dumper;
@@ -56,7 +57,7 @@ sub capture_message ($self, $pg, $organisation = 'venditabant', $source = '', $m
     my $data = $self->get_format(
         $organisation, $source, $method, $mess, $recipients
     );
-    venditabant::Model::Sentinel->new(db => $pg->db)->insert($data);
+    venditabant::Model::Sentinel::Sentinel->new(db => $pg->db)->insert($data);
 }
 
 sub get_format ($self, $organisation, $source, $method, $message, $recipients) {
@@ -74,6 +75,25 @@ sub get_format ($self, $organisation, $source, $method, $message, $recipients) {
     $data->{method} = $method;
     $data->{message} = $message;
     $data->{recipients} = $recipients;
+
+    return $data;
+}
+
+sub capture_log($self, $pg, $source, $method, $message) {
+
+    my $data = $self->get_log_format($source, $method, $message);
+    venditabant::Model::Sentinel::Log->new(db => $pg->db)->insert($data);
+}
+
+sub get_log_format ($self, $source, $method, $message ) {
+
+    $source 		= '' unless $source;
+    $method 		= '' unless $method;
+    $message 		= '' unless $message;
+
+    my $data->{source} = $source;
+    $data->{method} = $method;
+    $data->{message} = $message;
 
     return $data;
 }

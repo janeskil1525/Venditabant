@@ -1,0 +1,10 @@
+<actions>
+<type>salesorder_simple</type>
+<action name="create_order" class="Engine::Helpers::Salesorder::Processor">
+    <field name="customers_fkey"
+           description="Foreign key to customer" is_required="yes" ></field>
+</action>
+<action name="close_order" class="Engine::Helpers::Salesorder::Processor"/>
+<action name="invoice_order" class="Engine::Helpers::Salesorder::Processor"/>
+<action name="archive_order" class="Engine::Helpers::Salesorder::Processor"/>
+</actions>

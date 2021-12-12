@@ -1,4 +1,4 @@
-package venditabant::Model::Sentinel;
+package venditabant::Model::Sentinel::Sentinel;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;

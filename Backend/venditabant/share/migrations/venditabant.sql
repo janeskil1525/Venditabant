@@ -2302,4 +2302,18 @@ CREATE TABLE workflow_salesorders
 CREATE UNIQUE INDEX idx_workflows_fkey_workflow_type
     ON workflow_items(workflows_fkey, workflow_type);
 
+CREATE TABLE if not exists sentinel_log
+(
+    sentinel_log_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+    source varchar,
+    method varchar,
+    message varchar,
+    CONSTRAINT sentinel_log_pkey PRIMARY KEY (sentinel_log_pkey)
+);
+
 -- 47 down

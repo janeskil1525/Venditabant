@@ -16,7 +16,7 @@ qx.Class.define("venditabant.support.helpers.PartList",
         members: {
             loadList: function (selected_value) {
                 var item;
-                let parts = ['action', 'condition', 'persister', 'validator', 'workflow'];
+                let parts = ['precheck','action', 'condition', 'persister', 'validator', 'workflow'];
                 this.getList().removeAll();
                 for (let i=0; i < parts.length; i++) {
                     let row = parts[i];

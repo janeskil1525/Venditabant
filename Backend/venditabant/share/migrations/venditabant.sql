@@ -2316,4 +2316,6 @@ CREATE TABLE if not exists sentinel_log
     CONSTRAINT sentinel_log_pkey PRIMARY KEY (sentinel_log_pkey)
 );
 
+ALTER TYPE workflowtype
+    ADD VALUE 'precheck';
 -- 47 down

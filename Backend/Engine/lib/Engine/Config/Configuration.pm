@@ -1,44 +1,67 @@
 package Engine::Config::Configuration;
 use Mojo::Base -base, -signatures, -async_await;
 
-use Workflow::Factory qw(FACTORY);
 use Data::Dumper;
 use Workflow::Config;
-use XML::Hash::XS;
+use XML::Simple qw(:strict);
 
 has 'pg';
 
-async sub load_config($self, $workflow) {
+my %XML_OPTIONS = (
+    precheck => {
+        ForceArray =>
+            [ 'action', 'field'],
+        KeyAttr => [],
+    },
+    action => {
+        ForceArray =>
+            [ 'action', 'field', 'source_list', 'param', 'validator', 'arg' ],
+        KeyAttr => [],
+    },
+    condition => {
+        ForceArray => [ 'condition', 'param' ],
+        KeyAttr    => [],
+    },
+    persister => {
+        ForceArray => ['persister'],
+        KeyAttr    => [],
+    },
+    validator => {
+        ForceArray => [ 'validator', 'param' ],
+        KeyAttr    => [],
+    },
+    workflow => {
+        ForceArray => [
+            'extra_data', 'state',
+            'action',     'resulting_state',
+            'condition',  'observer'
+        ],
+        KeyAttr => [],
+    },
+);
+
+async sub load_config($self, $workflow, $items) {
 
     my $result;
-    my $config = await $self->_load_config($workflow);
+    my $config = await $self->_load_config($workflow, $items);
     my %temp;
     my $hash = \%temp;
 
     foreach my $conf (@{ $config }) {
-        my %string_hash = eval ($conf->{workflow});
-        say  $@ if $@;
-        $hash->{$conf->{workflow_type}} = \%string_hash;
+        my $options = $XML_OPTIONS{$conf->{workflow_type}} || {};
+        $hash->{$conf->{workflow_type}} = XMLin($conf->{workflow}, %{$options});
     }
 
-    # foreach my $conf (@{ $config }) {
-    #     $hash->{$conf->{workflow_type}} =  XML::Hash::XS
-    #         ->new(utf8 => 0, encoding => 'utf-8')  # , use_attr => 1
-    #         ->xml2hash($conf->{workflow}, encoding => 'cp1251');
-    # }
-
-    # await $self->_init_factory($hash);
     return $hash;
 }
 
-
-
-async sub _load_config($self, $workflow) {
+async sub _load_config($self, $workflow, $items) {
 
    my $stmt = qq{
         SELECT workflow_type, workflow_items.workflow as workflow
             FROM workflows, workflow_items
-        WHERE workflows_fkey = workflows_pkey AND workflows.workflow = ?
+        WHERE workflows_fkey = workflows_pkey AND workflows.workflow = ? AND
+        workflow_type IN $items
    };
 
     my $result = $self->pg->db->query($stmt,($workflow));

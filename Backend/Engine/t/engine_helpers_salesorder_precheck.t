@@ -4,7 +4,7 @@ use warnings;
 use Test::More;
 
 use Mojo::Pg;
-use Engine;
+use Engine::Helpers::Salesorder::Precheck;;
 
 sub execute {
 
@@ -29,20 +29,12 @@ sub execute {
     $data->{orderno} = '';
     $data->{invoiced} = '';
     $data->{invoicedays_fkey} = '';
-    $data->{customer_addresses_pkey} = 17;
-    $data->{companies_pkey} = 24;
 
     my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';
     $config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';
-    Engine->new(
+    my $precheck = Engine::Helpers::Salesorder::Precheck->new(
         pg => $pg,
-        config => $config
-    )->execute(
-        'salesorder_simple',$data
-    )->catch(sub{
-        my $err = shift;
-        print $err . '\n';
-    })->wait();
+    );;
 
     return 1;
 }

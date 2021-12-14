@@ -1,4 +1,4 @@
-package Engine::Helpers::Salesorder::Processor;
+package Engine::Helpers::Salesorder::Processor::Archive;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Workflow::Action );
@@ -13,31 +13,11 @@ use Workflow::Exception qw( workflow_error );
 use Engine::Model::Counter;
 use Engine::Model::Salesorder::Head;
 
-sub execute()
+sub execute ($self, $wf) {
 
+    my $pg = $self->get_pg();
 
-sub close_order ($self, $wf) {
     my $context = $wf->context;
-
-
-
 }
 
-sub invoice_order ($self, $wf) {
-    my $context = $wf->context;
-
-
-
-}
-
-sub archive_order ($self, $wf) {
-    my $context = $wf->context;
-
-
-
-}
-
-sub get_pg($self) {
-    return  FACTORY->get_persister( 'SalesordersPersister' )->get_pg();
-}
 1;

@@ -2434,6 +2434,31 @@ sub reftype($) ;
 package Exception::Class::Base {
 sub blessed($) ;
 }
+package FCGI {
+sub Accept($) ;
+sub Attach($) ;
+sub CloseSocket($) ;
+sub DESTROY;
+sub Detach($) ;
+sub Finish($) ;
+sub Flush($) ;
+sub GetEnvironment($) ;
+sub GetHandles($) ;
+sub IsFastCGI($) ;
+sub LastCall($) ;
+sub OpenSocket($$) ;
+sub RequestX(***$$$) ;
+sub StartFilterData($) ;
+}
+package FCGI::Stream {
+sub CLOSE;
+sub EOF;
+sub FILENO;
+sub GETC;
+sub PRINT;
+sub READ;
+sub WRITE;
+}
 package Fcntl {
 sub AUTOLOAD;
 sub FCREAT() ;
@@ -2674,6 +2699,16 @@ sub unbroken_text;
 sub utf8_mode;
 sub xml_mode;
 sub xml_pic;
+}
+package HTML::Tidy {
+sub _tidy_clean($$$) ;
+sub _tidy_messages($$$) ;
+sub _tidyp_version() ;
+}
+package Hash::FieldHash {
+sub fieldhash(\%;$$) ;
+sub from_hash;
+sub to_hash;
 }
 package Hash::StoredIterator {
 sub hash_get_iterator;
@@ -4449,6 +4484,12 @@ sub is_scalarref($) ;
 package Regexp {
 sub DESTROY() ;
 }
+package Regexp::Util {
+sub _regexp_engine_id;
+sub constant;
+sub is_regexp;
+sub regexp_seen_evals;
+}
 package SDBM_File {
 sub DELETE;
 sub DESTROY;
@@ -5072,6 +5113,488 @@ sub _wizard;
 sub cast(\[$@%&*]$@) ;
 sub dispell(\[$@%&*]$) ;
 sub getdata(\[$@%&*]$) ;
+}
+package XML::Hash::XS {
+sub DESTROY;
+sub hash2xml;
+sub new;
+sub xml2hash;
+}
+package XML::LibXML {
+sub AUTOLOAD;
+sub DISABLE_THREAD_SUPPORT;
+sub HAVE_READER;
+sub HAVE_SCHEMAS;
+sub HAVE_STRUCT_ERRORS;
+sub HAVE_THREAD_SUPPORT;
+sub INIT_THREAD_SUPPORT;
+sub LIBXML_DOTTED_VERSION;
+sub LIBXML_RUNTIME_VERSION;
+sub LIBXML_VERSION;
+sub _CLONE;
+sub _default_catalog;
+sub _dump_registry;
+sub _end_push;
+sub _end_sax_push;
+sub _externalEntityLoader;
+sub _leaked_nodes;
+sub _parse_fh;
+sub _parse_file;
+sub _parse_html_fh;
+sub _parse_html_file;
+sub _parse_html_string;
+sub _parse_sax_fh;
+sub _parse_sax_file;
+sub _parse_sax_string;
+sub _parse_sax_xml_chunk;
+sub _parse_string;
+sub _parse_xml_chunk;
+sub _processXIncludes;
+sub _push;
+sub _start_push;
+sub decodeFromUTF8;
+sub encodeToUTF8;
+sub export_GDOME;
+sub import_GDOME;
+sub load_catalog;
+}
+package XML::LibXML::Attr {
+sub _setNamespace;
+sub getNextSibling;
+sub getOwnerElement;
+sub getParentNode;
+sub getPreviousSibling;
+sub getValue;
+sub isId;
+sub name;
+sub new;
+sub nextSibling;
+sub ownerElement;
+sub parentElement;
+sub previousSibling;
+sub serialize;
+sub serializeContent;
+sub setValue;
+sub toString;
+sub value;
+}
+package XML::LibXML::CDATASection {
+sub new;
+}
+package XML::LibXML::Comment {
+sub new;
+}
+package XML::LibXML::Common {
+sub decodeFromUTF8;
+sub encodeToUTF8;
+}
+package XML::LibXML::Devel {
+sub fix_owner;
+sub mem_used;
+sub node_from_perl;
+sub node_to_perl;
+sub refcnt;
+sub refcnt_dec;
+sub refcnt_inc;
+}
+package XML::LibXML::Document {
+sub URI;
+sub _setDocumentElement;
+sub _toString;
+sub adoptNode;
+sub cloneNode;
+sub compression;
+sub createAttribute;
+sub createAttributeNS;
+sub createCDATASection;
+sub createComment;
+sub createDTD;
+sub createDocument;
+sub createDocumentFragment;
+sub createElement;
+sub createElementNS;
+sub createEntityReference;
+sub createExternalSubset;
+sub createInternalSubset;
+sub createPI;
+sub createProcessingInstruction;
+sub createRawElement;
+sub createRawElementNS;
+sub createTextNode;
+sub documentElement;
+sub documentURI;
+sub encoding;
+sub externalSubset;
+sub getDocumentElement;
+sub getElementById;
+sub getElementsById;
+sub getEncoding;
+sub getVersion;
+sub importNode;
+sub indexElements;
+sub internalSubset;
+sub is_valid;
+sub new;
+sub removeExternalSubset;
+sub removeInternalSubset;
+sub serialize_html;
+sub setCompression;
+sub setEncoding;
+sub setExternalSubset;
+sub setInternalSubset;
+sub setStandalone;
+sub setURI;
+sub setVersion;
+sub standalone;
+sub toFH;
+sub toFile;
+sub toStringHTML;
+sub validate;
+sub version;
+sub xmlEncoding;
+sub xmlStandalone;
+sub xmlVersion;
+}
+package XML::LibXML::DocumentFragment {
+sub addNewChild;
+sub appendText;
+sub appendTextNode;
+sub new;
+}
+package XML::LibXML::Dtd {
+sub getPublicId;
+sub getSystemId;
+sub new;
+sub parse_string;
+sub parse_uri;
+sub publicId;
+sub systemId;
+}
+package XML::LibXML::Element {
+sub _getAttribute;
+sub _getAttributeNS;
+sub _getNamespaceDeclURI;
+sub _setAttribute;
+sub _setAttributeNS;
+sub _setNamespace;
+sub addNewChild;
+sub appendText;
+sub appendTextChild;
+sub appendTextNode;
+sub blessed($) ;
+sub getAttributeNode;
+sub getAttributeNodeNS;
+sub hasAttribute;
+sub hasAttributeNS;
+sub new;
+sub removeAttribute;
+sub removeAttributeNS;
+sub removeAttributeNode;
+sub setAttributeNode;
+sub setAttributeNodeNS;
+sub setNamespaceDeclPrefix;
+sub setNamespaceDeclURI;
+sub tagName;
+}
+package XML::LibXML::HashTable {
+sub DESTROY;
+sub new;
+}
+package XML::LibXML::InputCallback {
+sub lib_cleanup_callbacks;
+sub lib_init_callbacks;
+}
+package XML::LibXML::LibError {
+sub code;
+sub context_and_column;
+sub domain;
+sub file;
+sub int1;
+sub int2;
+sub level;
+sub line;
+sub message;
+sub num1;
+sub num2;
+sub str1;
+sub str2;
+sub str3;
+}
+package XML::LibXML::Namespace {
+sub DESTROY;
+sub _isEqual;
+sub declaredPrefix;
+sub declaredURI;
+sub getData;
+sub getLocalName;
+sub getType;
+sub getValue;
+sub href;
+sub localname;
+sub new;
+sub nodeType;
+sub nodeValue;
+sub unique_key;
+sub value2;
+sub value;
+}
+package XML::LibXML::Node {
+sub DESTROY;
+sub _attributes;
+sub _childNodes;
+sub _find;
+sub _findnodes;
+sub _getChildrenByTagNameNS;
+sub _toStringC14N;
+sub addChild;
+sub addSibling;
+sub appendChild;
+sub baseURI;
+sub cloneNode;
+sub firstChild;
+sub firstNonBlankChild;
+sub getAttributes;
+sub getChildnodes;
+sub getData;
+sub getFirstChild;
+sub getLastChild;
+sub getLocalName;
+sub getName;
+sub getNamespace;
+sub getNamespaceURI;
+sub getNamespaces;
+sub getNextSibling;
+sub getOwner;
+sub getOwnerDocument;
+sub getOwnerElement;
+sub getParentNode;
+sub getPrefix;
+sub getPreviousSibling;
+sub getType;
+sub getValue;
+sub hasAttributes;
+sub hasChildNodes;
+sub insertAfter;
+sub insertBefore;
+sub isEqual;
+sub isSameNode;
+sub lastChild;
+sub line_number;
+sub localNS;
+sub localName;
+sub localNamespace;
+sub localname;
+sub lookupNamespacePrefix;
+sub lookupNamespaceURI;
+sub namespaceURI;
+sub namespaces;
+sub nextNonBlankSibling;
+sub nextSibling;
+sub nodeName;
+sub nodePath;
+sub nodeType;
+sub nodeValue;
+sub normalize;
+sub ownerDocument;
+sub ownerNode;
+sub parentNode;
+sub prefix;
+sub previousNonBlankSibling;
+sub previousSibling;
+sub removeChild;
+sub removeChildNodes;
+sub replaceChild;
+sub replaceNode;
+sub serialize;
+sub setBaseURI;
+sub setName;
+sub setNodeName;
+sub setRawName;
+sub string_value;
+sub textContent;
+sub toString;
+sub to_literal;
+sub to_number;
+sub unbindNode;
+sub unique_key;
+sub unlink;
+sub unlinkNode;
+}
+package XML::LibXML::PI {
+sub _setData;
+}
+package XML::LibXML::ParserContext {
+sub DESTROY;
+}
+package XML::LibXML::Pattern {
+sub DESTROY;
+sub _compilePattern;
+sub matchesNode;
+}
+package XML::LibXML::Reader {
+sub _DESTROY;
+sub _close;
+sub _getParserProp;
+sub _newForDOM;
+sub _newForFd;
+sub _newForFile;
+sub _newForIO;
+sub _newForString;
+sub _nodePath;
+sub _preservePattern;
+sub _setParserProp;
+sub _setRelaxNG;
+sub _setRelaxNGFile;
+sub _setXSD;
+sub _setXSDFile;
+sub attributeCount;
+sub baseURI;
+sub byteConsumed;
+sub columnNumber;
+sub copyCurrentNode;
+sub depth;
+sub document;
+sub encoding;
+sub finish;
+sub getAttribute;
+sub getAttributeHash;
+sub getAttributeNo;
+sub getAttributeNs;
+sub hasAttributes;
+sub hasValue;
+sub isDefault;
+sub isEmptyElement;
+sub isNamespaceDecl;
+sub isValid;
+sub lineNumber;
+sub localName;
+sub lookupNamespace;
+sub matchesPattern;
+sub moveToAttribute;
+sub moveToAttributeNo;
+sub moveToAttributeNs;
+sub moveToElement;
+sub moveToFirstAttribute;
+sub moveToNextAttribute;
+sub name;
+sub namespaceURI;
+sub next;
+sub nextElement;
+sub nextPatternMatch;
+sub nextSibling;
+sub nextSiblingElement;
+sub nodeType;
+sub prefix;
+sub preserveNode;
+sub quoteChar;
+sub read;
+sub readAttributeValue;
+sub readInnerXml;
+sub readOuterXml;
+sub readState;
+sub skipSiblings;
+sub standalone;
+sub value;
+sub xmlLang;
+sub xmlVersion;
+}
+package XML::LibXML::RegExp {
+sub DESTROY;
+sub _compile;
+sub isDeterministic;
+sub matches;
+}
+package XML::LibXML::RelaxNG {
+sub DESTROY;
+sub parse_buffer;
+sub parse_document;
+sub parse_location;
+sub validate;
+}
+package XML::LibXML::Schema {
+sub DESTROY;
+sub parse_buffer;
+sub parse_location;
+sub validate;
+}
+package XML::LibXML::Text {
+sub appendData;
+sub data;
+sub deleteData;
+sub insertData;
+sub new;
+sub replaceData;
+sub setData;
+sub substringData;
+}
+package XML::LibXML::XPathContext {
+sub DESTROY;
+sub _find;
+sub _findnodes;
+sub _free_node_pool;
+sub getContextNode;
+sub getContextPosition;
+sub getContextSize;
+sub getVarLookupData;
+sub getVarLookupFunc;
+sub lookupNs;
+sub new;
+sub registerFunctionNS;
+sub registerNs;
+sub registerVarLookupFunc;
+sub setContextNode;
+sub setContextPosition;
+sub setContextSize;
+}
+package XML::LibXML::XPathExpression {
+sub DESTROY;
+sub new;
+}
+package XML::Parser::Expat {
+sub DefaultCurrent;
+sub Do_External_Parse;
+sub ElementIndex;
+sub ErrorString;
+sub FreeEncoding;
+sub GenerateNSName;
+sub GetBase;
+sub GetCurrentByteIndex;
+sub GetCurrentColumnNumber;
+sub GetCurrentLineNumber;
+sub GetErrorCode;
+sub GetSpecifiedAttributeCount;
+sub LoadEncoding;
+sub OriginalString;
+sub ParseDone;
+sub ParsePartial;
+sub ParseStream;
+sub ParseString;
+sub ParserCreate;
+sub ParserFree;
+sub ParserRelease;
+sub PositionContext;
+sub RecognizedString;
+sub SetAttListDeclHandler;
+sub SetBase;
+sub SetCharacterDataHandler;
+sub SetCommentHandler;
+sub SetDefaultHandler;
+sub SetDoctypeHandler;
+sub SetElementDeclHandler;
+sub SetEndCdataHandler;
+sub SetEndDoctypeHandler;
+sub SetEndElementHandler;
+sub SetEntityDeclHandler;
+sub SetExtEntFinishHandler;
+sub SetExternalEntityRefHandler;
+sub SetNotationDeclHandler;
+sub SetProcessingInstructionHandler;
+sub SetStartCdataHandler;
+sub SetStartElementHandler;
+sub SetUnparsedEntityDeclHandler;
+sub SetXMLDeclHandler;
+sub SkipUntil;
+sub UnsetAllHandlers;
 }
 package XString {
 sub cstring;

@@ -2318,4 +2318,8 @@ CREATE TABLE if not exists sentinel_log
 
 ALTER TYPE workflowtype
     ADD VALUE 'precheck';
+
+ALTER TABLE workflow_salesorders
+    RENAME COLUMN salesorders_fkey TO salesorders_pkey;
+
 -- 47 down

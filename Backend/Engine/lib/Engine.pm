@@ -15,6 +15,7 @@ has 'workflow';
 async sub execute  {
     my ($self, $workflow, $data) = @_;
 
+
     $data = await Engine::Load::DataPrecheck->new(
         pg => $self->pg
     )->precheck(
@@ -30,6 +31,7 @@ async sub execute  {
             $workflow, $data
         );
         say $wf->id;
+        $wf->execute_action($data->{action});
     }
 }
 

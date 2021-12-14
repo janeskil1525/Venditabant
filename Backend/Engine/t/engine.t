@@ -20,17 +20,17 @@ sub execute {
     $data->{insdatetime} = '';
     $data->{modby} = '';
     $data->{moddatetime} = '';
-    $data->{customers_fkey} = '';
-    $data->{users_fkey} = '';
-    $data->{companies_fkey} = '';
-    $data->{orderdate} = '';
-    $data->{deliverydate} = '';
+    $data->{customers_fkey} = 0;
+    $data->{users_fkey} = 24;
+    $data->{companies_fkey} = 24;
+    $data->{orderdate} = '2021-12-14';
+    $data->{deliverydate} = '2021-12-14';
     $data->{open} = '';
-    $data->{orderno} = '';
+    $data->{orderno} = 0;
     $data->{invoiced} = '';
-    $data->{invoicedays_fkey} = '';
+    $data->{invoicedays_fkey} = 0;
     $data->{customer_addresses_pkey} = 17;
-    $data->{companies_pkey} = 24;
+    $data->{action} = 'create_order';
 
     my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';
     $config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';

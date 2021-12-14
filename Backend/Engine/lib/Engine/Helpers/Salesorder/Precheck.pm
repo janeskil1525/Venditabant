@@ -13,12 +13,12 @@ async sub find_open_salesorder($self, $data) {
         "Engine::Helpers::Salesorder::Precheck find_open_salesorder start" . Dumper($data)
     );
 
-    $data->{salesorders_pkey} = 0 unless exists $data->{salesorders_pkey};
+    $data->{salesorders_pkey} = 0 unless exists $data->{salesorders_pkey} and $data->{salesorders_pkey} > 0;
     if($data->{salesorders_pkey} == 0) {
         my $result = $self->pg->db->select(
             'salesorders', ['salesorders_pkey'],
             {
-                companies_fkey => $data->{companies_pkey},
+                companies_fkey => $data->{companies_fkey},
                 customers_fkey => $data->{customers_fkey},
                 open           => 'true',
             }
@@ -47,7 +47,7 @@ async sub find_wf_id($self, $data) {
         $data->{workflow_id} = $self->pg->db->select(
             'workflow_salesorders', ['workflow_id'],
                 {
-                    salesorders_fkey => $data->{salesorders_pkey}
+                    salesorders_pkey => $data->{salesorders_pkey}
                 }
         )->hash->{workflow_id};
     } else {
@@ -68,7 +68,7 @@ async sub find_customers_fkey($self, $data) {
         "Engine::Helpers::Salesorder::Precheck find_customers_fkey start" . Dumper($data)
     );
 
-    $data->{customers_fkey} = 0 unless exists $data->{customers_fkey};
+    $data->{customers_fkey} = 0 unless exists $data->{customers_fkey} and $data->{customers_fkey} > 0;
     if($data->{customer_addresses_pkey} > 0 and $data->{customers_fkey} == 0) {
         $data->{customers_fkey} = $self->pg->db->select(
             'customer_addresses',
@@ -77,6 +77,35 @@ async sub find_customers_fkey($self, $data) {
                 customer_addresses_pkey => $data->{customer_addresses_pkey},
             }
         )->hash->{customers_fkey};
+    } else {
+        $log->debug(
+            "Engine::Helpers::Salesorder::Precheck find_customers_fkey customer_addresses_pkey is missing"
+        );
+    }
+    $log->debug(
+        "Engine::Helpers::Salesorder::Precheck find_customers_fkey end" . Dumper($data)
+    );
+
+    return $data;
+}
+
+async sub find_invoicedays_fkey($self, $data) {
+
+    my $log = Log::Log4perl->get_logger();
+    $log->debug(
+        "Engine::Helpers::Salesorder::Precheck find_invoicedays_fkey start" . Dumper($data)
+    );
+
+    $data->{invoicedays_fkey} = 0 unless exists $data->{invoicedays_fkey} and $data->{invoicedays_fkey} > 0;
+    if( $data->{invoicedays_fkey} == 0) {
+        $data->{invoicedays_fkey} = $self->pg->db->select(
+            'customer_addresses',
+            ['invoicedays_fkey'],
+            {
+                customers_fkey => $data->{customers_fkey},
+                type           => 'INVOICE',
+            }
+        )->hash->{invoicedays_fkey};
     } else {
         $log->debug(
             "Engine::Helpers::Salesorder::Precheck find_customers_fkey customer_addresses_pkey is missing"

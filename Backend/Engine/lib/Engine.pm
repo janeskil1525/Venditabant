@@ -3,6 +3,7 @@ use Mojo::Base -base, -signatures, -async_await;
 
 use Log::Log4perl qw(:easy);
 use Workflow::Factory qw(FACTORY);
+use Workflow::State;
 use Data::Dumper;
 
 use Engine::Load::Workflow;
@@ -30,8 +31,10 @@ async sub execute  {
         )->load (
             $workflow, $data
         );
-        say $wf->id;
-        $wf->execute_action($data->{action});
+
+        foreach my $action (@{$data->{actions}}) {
+            $wf->execute_action($action);
+        }
     }
 }
 

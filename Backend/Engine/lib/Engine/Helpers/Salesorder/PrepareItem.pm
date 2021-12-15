@@ -1,9 +1,9 @@
 package Engine::Helpers::Salesorder::PrepareItem;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base -base, -signatures, -async_await;
 
-use venditabant::Model::Stockitems;
-use venditabant::Helpers::Discount::Calculate;
-use venditabant::Helpers::Vat::Calculate;
+use Engine::Model::Stock::Stockitems;;
+use Engine::Helpers::Discount::Calculate;
+use Engine::Helpers::Vat::Calculate;
 
 use Data::Dumper;
 
@@ -13,21 +13,20 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $stockitems_pkey, $d
 
     my $err;
     my $stockitem;
+    my $log = Log::Log4perl->get_logger();
     eval {
-        $stockitem = await venditabant::Model::Stockitems->new(
+        $stockitem = await Engine::Model::Stock::Stockitems->new(
             db => $self->pg->db
         )->load_complete_item(
             $companies_pkey, $users_pkey, $stockitems_pkey
         );
-
-        say "load_complete_item " . Dumper($stockitem);
 
         $data->{description} = $stockitem->{description} unless exists $data->{description};
         $data->{unit} = $stockitem->{units} unless exists $data->{unit};
         $data->{account} = $stockitem->{accounts} unless exists $data->{account};
         $data->{productgroup} = $stockitem->{productgroup} unless exists $data->{productgroup};
 
-        my $discount = await venditabant::Helpers::Discount::Calculate->new(
+        my $discount = await Engine::Helpers::Discount::Calculate->new(
             pg => $self->pg
         )->calculate_item_discount(
             $companies_pkey,
@@ -42,7 +41,7 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $stockitems_pkey, $d
         $data->{discount} = $discount->{discount};
         $data->{discount_txt} = $discount->{discount_txt};
 
-        my $vat = await venditabant::Helpers::Vat::Calculate->new(
+        my $vat = await Engine::Helpers::Vat::Calculate->new(
             pg => $self->pg
         )->calculate(
             $companies_pkey, $stockitem->{vat_fkey}, $data->{quantity}, $data->{price}
@@ -53,9 +52,8 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $stockitems_pkey, $d
 
     };
     $err = $@ if $@;
-    $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Salesorder::PrepareItem', 'prepare_item', $err
+    $log->error(
+        "Engine::Helpers::Salesorder::PrepareItem " . $err
     ) if $err;
 
     return $data;

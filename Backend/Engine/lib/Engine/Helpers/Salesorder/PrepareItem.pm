@@ -21,6 +21,7 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $stockitems_pkey, $d
             $companies_pkey, $users_pkey, $stockitems_pkey
         );
 
+        $data->{stockitem} = $stockitem->{stockitem} unless exists $data->{stockitem};
         $data->{description} = $stockitem->{description} unless exists $data->{description};
         $data->{unit} = $stockitem->{units} unless exists $data->{unit};
         $data->{account} = $stockitem->{accounts} unless exists $data->{account};

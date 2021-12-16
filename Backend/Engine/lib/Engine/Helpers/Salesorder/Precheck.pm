@@ -20,12 +20,12 @@ async sub find_open_salesorder($self, $data) {
             {
                 companies_fkey => $data->{companies_fkey},
                 customers_fkey => $data->{customers_fkey},
-                open           => 'true',
+                open           => 1,
             }
         );
 
         my $hash;
-        $hash = $result->hash if $result and $result->rows < 0;
+        $hash = $result->hash if $result and $result->rows > 0;
 
         $data->{salesorders_pkey} = $hash->{salesorders_pkey} if exists $hash->{salesorders_pkey};
     }

@@ -8,13 +8,12 @@ use Engine;
 
 sub execute {
 
-
     my $pg = Mojo::Pg->new->dsn(
         "dbi:Pg:dbname=Venditabant;host=192.168.1.108;port=5432;user=postgres;password=PV58nova64"
     );
 
     my $item->{salesorders_fkey} = 0;
-    $item->{quantity} = 5;
+    $item->{quantity} = 15;
     $item->{price} = 17;
     $item->{customer_addresses_fkey} = 0;
     $item->{stockitems_fkey} = 7;
@@ -64,6 +63,7 @@ sub execute {
 
     return 1;
 }
+
 
 ok(execute() == 1);
 

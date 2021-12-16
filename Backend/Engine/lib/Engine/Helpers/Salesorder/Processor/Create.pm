@@ -46,8 +46,8 @@ sub execute ($self, $wf) {
             );
             $wf->add_history(
                 Workflow::History->new({
-                    action      => "New order",
-                    description => "Order with key $salesorders_pkey and orderno $orderno created",
+                    action      => "Save order",
+                    description => "Order with key $salesorders_pkey and orderno $orderno saved or created",
                     user        => $context->param('history')->{userid},
                 })
             );

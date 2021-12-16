@@ -16,7 +16,6 @@ has 'workflow';
 async sub execute  {
     my ($self, $workflow, $data) = @_;
 
-
     $data = await Engine::Load::DataPrecheck->new(
         pg => $self->pg
     )->precheck(
@@ -33,8 +32,16 @@ async sub execute  {
         );
 
         foreach my $action (@{$data->{actions}}) {
-            $wf->execute_action($action);
+            my @avail = $wf->get_current_actions();
+            if ($action ~~ @avail) {
+                $wf->context(Workflow::Context->new(
+                    %{ $data }
+                ));
+                $wf->execute_action($action);
+            }
         }
+    } else {
+        say Dumper($data->{error});
     }
 }
 

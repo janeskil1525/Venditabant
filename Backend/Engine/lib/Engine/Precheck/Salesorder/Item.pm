@@ -1,4 +1,4 @@
-package Engine::Helpers::Salesorder::PrecheckItem;
+package Engine::Precheck::Salesorder::Item;
 use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;
@@ -10,7 +10,7 @@ has 'pg';
 
 async sub precheck ($self, $data) {
 
-    my $prep = Engine::Helpers::Salesorder::PrepareItem->new(
+    my $prep = Engine::Precheck::Salesorder::PrepareItem->new(
         pg => $self->pg
     );
 

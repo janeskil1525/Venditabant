@@ -1,4 +1,4 @@
-package Engine::Persister::DBI::Mojo;
+package Engine::Workflow::Persister::DBI::Mojo;
 use strict;
 use warnings FATAL => 'all';
 use base qw (Workflow::Persister::DBI::ExtraData);

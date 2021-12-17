@@ -1,4 +1,4 @@
-package Engine::Helpers::Salesorder::Processor::Close;
+package Engine::Action::Salesorder::Close;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Workflow::Action );

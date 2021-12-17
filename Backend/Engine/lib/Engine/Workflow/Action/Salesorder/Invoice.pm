@@ -1,4 +1,4 @@
-package Engine::Helpers::Salesorder::Processor::Invoice;
+package Engine::Workflow::Action::Salesorder::Invoice;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Workflow::Action );

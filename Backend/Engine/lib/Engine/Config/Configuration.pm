@@ -10,7 +10,7 @@ has 'pg';
 my %XML_OPTIONS = (
     precheck => {
         ForceArray =>
-            [ 'action', 'field'],
+            [ 'action', 'field', 'group'],
         KeyAttr => [],
     },
     action => {

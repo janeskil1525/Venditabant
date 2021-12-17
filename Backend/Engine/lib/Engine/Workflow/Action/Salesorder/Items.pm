@@ -1,4 +1,4 @@
-package Engine::Helpers::Salesorder::Processor::Items;
+package Engine::Workflow::Action::Salesorder::Items;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Workflow::Action );
@@ -66,7 +66,7 @@ sub item_upsert($self, $companies_pkey, $users_pkey, $data, $pg) {
     };
     $err = $@ if $@;
     $log->error(
-        "Engine::Helpers::Salesorder::Processor::Items " . $err
+        "Engine::Action::Salesorder::Items " . $err
     ) if $err;
 
     return $err ? $err : $salesorder_items_pkey;

@@ -1,4 +1,4 @@
-package Engine::Helpers::Salesorder::PrepareItem;
+package Engine::Precheck::Salesorder::PrepareItem;
 use Mojo::Base -base, -signatures, -async_await;
 
 use Engine::Model::Stock::Stockitems;;
@@ -54,7 +54,7 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $stockitems_pkey, $d
     };
     $err = $@ if $@;
     $log->error(
-        "Engine::Helpers::Salesorder::PrepareItem " . $err
+        "Engine::Precheck::Salesorder::PrepareItem " . $err
     ) if $err;
 
     return $data;

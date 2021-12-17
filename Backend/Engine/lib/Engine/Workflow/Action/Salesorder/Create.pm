@@ -1,4 +1,4 @@
-package Engine::Helpers::Salesorder::Processor::Create;
+package Engine::Workflow::Action::Salesorder::Create;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Workflow::Action );

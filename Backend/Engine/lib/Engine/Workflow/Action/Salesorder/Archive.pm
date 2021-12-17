@@ -1,4 +1,4 @@
-package Engine::Helpers::Salesorder::Processor::Archive;
+package Engine::Workflow::Action::Salesorder::Archive;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Workflow::Action );

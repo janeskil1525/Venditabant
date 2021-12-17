@@ -4,7 +4,7 @@ use warnings;
 use Test::More;
 
 use Mojo::Pg;
-use Engine::Helpers::Salesorder::Precheck;;
+use Engine::Precheck::Precheck;;
 
 sub execute {
 
@@ -32,7 +32,7 @@ sub execute {
 
     my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';
     $config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';
-    my $precheck = Engine::Helpers::Salesorder::Precheck->new(
+    my $precheck = Engine::Precheck::Salesorder::Precheck->new(
         pg => $pg,
     );;
 

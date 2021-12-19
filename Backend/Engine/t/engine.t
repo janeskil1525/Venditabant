@@ -16,7 +16,7 @@ sub execute {
     $item->{quantity} = 15;
     $item->{price} = 17;
     $item->{customer_addresses_fkey} = 0;
-    $item->{stockitems_fkey} = 7;
+    $item->{stockitems_fkey} = 8;
 
     # $item->{description} = '';
     # $item->{vat} = 0;

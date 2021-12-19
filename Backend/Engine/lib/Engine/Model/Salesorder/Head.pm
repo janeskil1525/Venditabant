@@ -36,21 +36,20 @@ sub upsert ($self, $companies_pkey, $users_pkey, $data) {
     return $salesorders_pkey;
 }
 
-async sub close ($self, $companies_pkey, $users_pkey, $customer_fkey) {
+async sub close ($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
 
     my $soclose_stmt = qq {
         UPDATE salesorders SET open = false,
             modby = (SELECT userid FROM users WHERE users_pkey = ?),
             moddatetime = now()
             WHERE open = true AND
-            companies_fkey = ?
-            AND customers_fkey = ?
+            salesorders_pkey = ?
         RETURNING salesorders_pkey
     };
 
     my $result = $self->db->query(
         $soclose_stmt,
-        ($users_pkey, $companies_pkey, $customer_fkey)
+        ($users_pkey, $salesorders_pkey)
     );
 
     my $hash;

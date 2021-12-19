@@ -10,7 +10,7 @@ has 'pg';
 my %XML_OPTIONS = (
     precheck => {
         ForceArray =>
-            [ 'action', 'field', 'group'],
+            [ 'action', 'field', 'groups'],
         KeyAttr => [],
     },
     action => {
@@ -42,7 +42,6 @@ my %XML_OPTIONS = (
 
 async sub load_config($self, $workflow, $items) {
 
-    my $result;
     my $config = await $self->_load_config($workflow, $items);
     my %temp;
     my $hash = \%temp;

@@ -1,4 +1,4 @@
-package Engine::Action::Salesorder::Close;
+package Engine::Workflow::Action::Salesorder::Close;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Workflow::Action );
@@ -11,17 +11,23 @@ use Workflow::Factory qw( FACTORY );
 use Workflow::Exception qw( workflow_error );
 
 use Engine::Model::Salesorder::Head;
+use Minion;
 
 sub execute ($self, $wf) {
 
     my $pg = $self->get_pg();
 
     my $context = $wf->context;
-    $self->close ($context->param('companies_fkey'), $context->param('users_fkey'), $context)
+    my $result = $self->close (
+        $context->param('companies_fkey'), $context->param('users_fkey'), $context
+    );
+
+    return $result;
 }
 
-sub close ($self, $companies_pkey, $users_pkey, $data){
+sub close ($self, $companies_pkey, $users_pkey, $context){
 
+    my $log = Log::Log4perl->get_logger();
     my $db = $self->get_pg->db;
     my $tx = $db->begin();
 
@@ -36,39 +42,28 @@ sub close ($self, $companies_pkey, $users_pkey, $data){
 
     my $err;
     eval {
-        my $customer_addresses = await venditabant::Helpers::Customers::Address->new(
-            pg => $self->pg
-        )->load_delivery_address_p(
-            $companies_pkey, $users_pkey, $data->{customer_addresses_fkey}
-        );
 
-        my $customers_fkey = $customer_addresses->{customers_fkey};
-        my $salesorders_pkey = await venditabant::Model::Salesorder::Head->new(
+        Engine::Model::Salesorder::Head->new(
             db => $db
         )->close(
-            $companies_pkey, $users_pkey, $customers_fkey
+            $companies_pkey, $users_pkey, $context->param('salesorders_pkey')
         );
 
-        $db->query($salesorder_statistics,($salesorders_pkey));
+        $db->query($salesorder_statistics,($context->param('salesorders_pkey')));
         $tx->commit();
-        my $minion->{salesorders_pkey} = $salesorders_pkey;
-        $minion->{customers_fkey} = $customers_fkey;
-        $minion->{companies_fkey} = $companies_pkey;
-        $minion->{users_pkey} = $users_pkey;
 
-        $self->minion->enqueue(
-            'create_invoice_from_salesorder' => [$minion] => {
-                priority => 0,
-            }
-        );
     };
     $err = $@ if $@;
-    $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Salesorder::Salesorders', 'close', $err
+    $log->error(
+        "Engine::Action::Salesorder::Close close " . $err
     ) if $err;
 
-    return $err ? $err : 'success';
+    my $result->{minion} = 'create_invoice_from_salesorder';
+    $result->{salesorders_pkey} = $context->param('salesorders_pkey');
+    $result->{companies_pkey} = $companies_pkey;
+    $result->{users_pkey} = $users_pkey;
+
+    return $result;
 }
 
 sub get_pg($self) {

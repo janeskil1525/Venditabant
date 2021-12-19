@@ -50,6 +50,9 @@ sub set_pg($self, $pg) {
 }
 
 sub get_pg($self) {
-    return $self->{pg};
+    my $pg = Mojo::Pg->new->dsn( $self->dsn
+        #"dbi:Pg:dbname=Venditabant;host=192.168.1.108;port=5432;user=postgres;password=PV58nova64"
+    );
+    return $pg;
 }
 1;

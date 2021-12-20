@@ -20,6 +20,12 @@ qx.Class.define("desktop_delivery.models.Salesorders",
                 post.send(this._address, "/api/v1/salesorders/close/", data,function(response){
                     cb.call ( ctx, (response));
                 },this)
-            }
+            },
+            loadSalesorderKey:function(cb, ctx,data) {
+                let post = new desktop_delivery.communication.Post;
+                post.send(this._address, "/api/v1/salesorders/load_key/", data,function(response){
+                    cb.call ( ctx,(response));
+                },this);
+            },
         }
     });

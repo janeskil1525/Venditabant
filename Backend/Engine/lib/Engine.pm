@@ -6,12 +6,13 @@ use Workflow::Factory qw(FACTORY);
 use Workflow::State;
 use Data::Dumper;
 
+our $VERSION = '0.01';
+
 use Engine::Load::Workflow;
 use Engine::Load::DataPrecheck;
 
 has 'pg';
 has 'config';
-has 'workflow';
 
 async sub execute  {
     my ($self, $workflow, $data) = @_;

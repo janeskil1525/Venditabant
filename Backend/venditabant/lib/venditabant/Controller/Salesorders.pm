@@ -76,6 +76,34 @@ sub item_save ($self) {
 
 }
 
+sub load_salesorder_pkey ($self) {
+
+    $self->render_later;
+    my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+    my $json_hash = decode_json ($self->req->body);
+
+    my $salesorders_pkey = await $self->salesorders->get_open_so_pkey(
+        $companies_pkey, $users_pkey, $json_hash->{customer_addresses_pkey}
+    );
+
+    if($salesorders_pkey == 0) {
+        my $data->{customer_addresses_pkey} = $json_hash->{customer_addresses_pkey};
+        $data->{companies_fkey} = $companies_pkey;
+        $data->{users_fkey} = $users_pkey;
+        push @{$data->{actions}}, 'create_order';
+        $self->workflow(
+            'salesorder_simple', $data
+        );
+        $salesorders_pkey = await $self->salesorders->get_open_so_pkey(
+            $companies_pkey, $users_pkey, $json_hash->{customer_addresses_pkey}
+        );
+    }
+
+    $self->render(json => {'result' => {salesorders_pkey => $salesorders_pkey}});
+}
+
 sub save_salesorder ($self) {
 
     $self->render_later;

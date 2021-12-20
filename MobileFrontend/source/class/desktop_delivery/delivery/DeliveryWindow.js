@@ -21,6 +21,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
         },
         properties: {
             customer_addresses_model: {nullable:true},
+            salesorders_pkey: {nullable:true, check:'number'},
         },
         members  : {
             _buildDeliveryWindow:function() {
@@ -98,6 +99,9 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                 let quantity = this._createTxt(this.tr("Quantity"), 70, false);
                 this.add ( quantity, { top: 100, left: 250 } );
                 this._quantity = quantity
+            },
+            loadSalesorderKey:function() {
+
             },
             saveSalesorderItem:function(){
                 if(this._selectedCustomer !== '') {

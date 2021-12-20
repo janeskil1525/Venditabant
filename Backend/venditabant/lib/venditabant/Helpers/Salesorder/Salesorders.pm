@@ -11,7 +11,6 @@ use venditabant::Model::Stockitems;
 use Data::Dumper;
 
 has 'pg';
-has 'minion';
 
 async sub load_salesorder_full($self, $companies_pkey, $users_pkey, $salesorders_fkey) {
 
@@ -214,54 +213,28 @@ async sub imvoice ($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
     );
 }
 
-async sub close ($self, $companies_pkey, $users_pkey, $data){
+async sub get_open_so_pkey($self, $companies_pkey, $users_pkey, $customer_addresses_pkey) {
 
-    my $db = $self->pg->db;
-    my $tx = $db->begin();
+    my $stmt = qq {
+            SELECT salesorders_pkey FROM
+                salesorders as a JOIN customer_addresses as b
+            ON a.customers_fkey = b.customers_fkey
+            WHERE open = true
+                AND customer_addresses_pkey = ?
+                AND companies_fkey = ?
+                AND type = 'INVOICE'
+        };
 
-    my $salesorder_statistics = qq{
-        INSERT INTO salesorder_statistics (salesorders_fkey, stockitem, customers_fkey,
-            users_fkey, companies_fkey, orderdate, deliverydate, quantity, price, customer_addresses_fkey)
-        SELECT salesorders_pkey, stockitem, customers_fkey,
-            users_fkey, companies_fkey, orderdate, salesorder_items.deliverydate, quantity, price, customer_addresses_fkey
-                FROM salesorders JOIN salesorder_items ON salesorders_pkey = salesorders_fkey
-                    where salesorders_pkey = ?
-    };
+    my $result = $self->pg->db->query(
+        $stmt,
+        ($customer_addresses_pkey, $companies_pkey)
+    );
 
-    my $err;
-    eval {
-        my $customer_addresses = await venditabant::Helpers::Customers::Address->new(
-            pg => $self->pg
-        )->load_delivery_address_p(
-            $companies_pkey, $users_pkey, $data->{customer_addresses_fkey}
-        );
-
-        my $customers_fkey = $customer_addresses->{customers_fkey};
-        my $salesorders_pkey = await venditabant::Model::Salesorder::Head->new(
-            db => $db
-        )->close(
-            $companies_pkey, $users_pkey, $customers_fkey
-        );
-
-        $db->query($salesorder_statistics,($salesorders_pkey));
-        $tx->commit();
-        my $minion->{salesorders_pkey} = $salesorders_pkey;
-        $minion->{customers_fkey} = $customers_fkey;
-        $minion->{companies_fkey} = $companies_pkey;
-        $minion->{users_pkey} = $users_pkey;
-
-        $self->minion->enqueue(
-            'create_invoice_from_salesorder' => [$minion] => {
-                priority => 0,
-            }
-        );
-    };
-    $err = $@ if $@;
-    $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Salesorder::Salesorders', 'close', $err
-    ) if $err;
-
-    return $err ? $err : 'success';
+    my $hash;
+    $hash = $result->hash if $result and $result->rows;
+    if (defined $hash) {
+        return $hash->{salesorders_pkey};
+    }
+    return 0;
 }
 1;

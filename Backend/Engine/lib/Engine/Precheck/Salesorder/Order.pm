@@ -46,7 +46,7 @@ async sub find_wf_id($self, $data) {
     my $salesorders_pkey = 0;
     $salesorders_pkey = $data->{salesorders_pkey} if exists $data->{salesorders_pkey} and $data->{salesorders_pkey} > 0;
     $salesorders_pkey = $data->{salesorders_fkey} if exists $data->{salesorders_fkey} and $data->{salesorders_fkey} > 0;
-    say "find_wf_id = $salesorders_pkey";
+
     if ($salesorders_pkey > 0) {
         $data->{workflow_id} = $self->pg->db->select(
             'workflow_salesorders', ['workflow_id'],

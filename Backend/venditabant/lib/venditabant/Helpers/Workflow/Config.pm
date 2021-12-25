@@ -35,7 +35,7 @@ async sub _init_factory ($self, $config){
     $self->capture_log(
         $self->pg, 'venditabant::Helpers::Workflow::Config', '_init_factory',"Will use parser of class: " . Workflow::Config->get_factory_class( 'xml' )
     );
-say Dumper($config);
+
     FACTORY->add_config(
         %{ $config }
     );

@@ -121,7 +121,6 @@ sub save_item ($self) {
 
     push @{$data->{actions}}, 'additem_to_order';
     eval {
-        say Dumper($data);
         $self->workflow->execute(
             'salesorder_simple', $data
         );
@@ -152,20 +151,22 @@ sub save_salesorder ($self) {
 
 sub close_salesorder ($self) {
 
-    $self->render_later;
     my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
         $self->req->headers->header('X-Token-Check')
     );
-    my $json_hash = decode_json ($self->req->body);
 
-    $self->salesorders->close(
-        $companies_pkey, $users_pkey, $json_hash
-    )->then(sub ($result) {
-        $self->render(json => {'result' => $result});
-    })->catch( sub ($err) {
+    my $data = decode_json ($self->req->body);
+    $data->{companies_fkey} = $companies_pkey;
+    $data->{users_fkey} = $users_pkey;
 
-        $self->render(json => {'result' => $err});
-    })->wait;
+    push @{$data->{actions}}, 'close_order';
+    eval {
+        $self->workflow->execute(
+            'salesorder_simple', $data
+        );
+        $self->render(json => { result => 'success'});
+    };
+    $self->render(json => { result => 'failure', error => $@}) if $@;
 
 }
 1;

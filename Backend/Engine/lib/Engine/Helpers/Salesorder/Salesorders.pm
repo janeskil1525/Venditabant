@@ -164,7 +164,6 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $data) {
             );
         }
 
-        say Dumper($data);
 
         $data->{orderno} = $orderno;
         my $salesorderhead_pkey = await $sohead->upsert(

@@ -22,7 +22,7 @@ sub execute ($self, $wf) {
     my $pg = $self->get_pg();
 
     my $context = $wf->context;
-    my $item = $self->_get_data($self, $context);
+    my $item = $self->_get_data($context);
 
     $self->item_upsert(
         $context->param('companies_fkey'), $context->param('users_fkey'), $item, $pg

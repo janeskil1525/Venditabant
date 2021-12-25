@@ -43,11 +43,14 @@ async sub find_wf_id($self, $data) {
         "Engine::Precheck::Salesorder::Precheck find_wf_id start" . Dumper($data)
     );
 
-    if($data->{salesorders_pkey} > 0) {
+    my $salesorders_pkey = 0;
+    $salesorders_pkey = $data->{salesorders_pkey} if exists $data->{salesorders_pkey} and $data->{salesorders_pkey} > 0;
+    $salesorders_pkey = $data->{salesorders_fkey} if exists $data->{salesorders_fkey} and $data->{salesorders_fkey} > 0;
+    if($salesorders_pkey > 0) {
         $data->{workflow_id} = $self->pg->db->select(
             'workflow_salesorders', ['workflow_id'],
                 {
-                    salesorders_pkey => $data->{salesorders_pkey}
+                    salesorders_pkey => $salesorders_pkey
                 }
         )->hash->{workflow_id};
     } else {

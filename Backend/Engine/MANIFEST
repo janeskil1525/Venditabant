@@ -2,6 +2,7 @@ lib/Engine.pm
 lib/Engine/Config/Configuration.pm
 lib/Engine/Helpers/Discount/Calculate.pm
 lib/Engine/Helpers/Salesorder/DbFields/Head.pm
+lib/Engine/Helpers/Salesorder/DbFields/Item.pm
 lib/Engine/Helpers/Salesorder/Salesorders.pm
 lib/Engine/Helpers/Vat/Calculate.pm
 lib/Engine/Load/DataPrecheck.pm
@@ -27,6 +28,7 @@ lib/Engine/Workflow/Action/Salesorder/Archive.pm
 lib/Engine/Workflow/Action/Salesorder/Close.pm
 lib/Engine/Workflow/Action/Salesorder/Create.pm
 lib/Engine/Workflow/Action/Salesorder/Invoice.pm
+lib/Engine/Workflow/Action/Salesorder/Item.pm
 lib/Engine/Workflow/Action/Salesorder/Items.pm
 lib/Engine/Workflow/Persister/DBI/Mojo.pm
 lib/Engine/Workflow/Validator/SalesordersFkey.pm

@@ -120,7 +120,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
 
                     let data = {
                         salesorders_fkey:this.getSalesorders_pkey(),
-                        customer_addresses_pkey:this.getCustomer_addresses_model().customer_addresses_pkey,
+                        customer_addresses_fkey:this.getCustomer_addresses_model().customer_addresses_pkey,
                         quantity:this._quantity.getValue(),
                         stockitem:stockitem,
                         stockitems_fkey:this._selectedStockitem_fkey,

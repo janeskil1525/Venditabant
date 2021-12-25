@@ -8,14 +8,15 @@ has 'db';
 
 async sub delete_item ($self, $companies_pkey, $salesorders_pkey, $data) {
 
+    say "delete_item " . $salesorders_pkey . " " . Dumper($data);
     my $salesorder_item_stmt = qq{
         DELETE FROM salesorder_items WHERE salesorders_fkey = ?
-            AND stockitems_fkey = ?
+            AND stockitem = ?
     };
 
     $self->db->query(
         $salesorder_item_stmt,
-            ($salesorders_pkey, $data->{stockitems_fkey})
+            ($salesorders_pkey, $data->{stockitem})
     );
 }
 

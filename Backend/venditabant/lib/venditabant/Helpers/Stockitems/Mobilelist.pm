@@ -96,12 +96,14 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customers_fkey, $customer
         $response->{stockitems} = $result->hashes if $result and $result->rows > 0;
 
         my $salesorders_stmt = qq{
-        SELECT salesorder_items_pkey, stockitem, description, quantity,  price
-        FROM salesorder_items
-        JOIN salesorders ON salesorders_fkey = salesorders_pkey
-        AND open = true AND salesorders.companies_fkey = ? AND customers_fkey = ?
-        AND customer_addresses_fkey = ?
-    };
+            SELECT stockitems_pkey, salesorder_items.stockitem, salesorder_items.description, quantity,  price
+                FROM salesorder_items
+            JOIN salesorders ON salesorders_fkey = salesorders_pkey
+            JOIN stockitems ON salesorders.companies_fkey = stockitems.companies_fkey
+                AND salesorder_items.stockitem = stockitems.stockitem
+                AND open = true AND salesorders.companies_fkey = ? AND customers_fkey = ?
+                AND customer_addresses_fkey = ?
+        };
 
         $result = $self->pg->db->query(
             $salesorders_stmt,
@@ -129,7 +131,7 @@ async sub load_list_mobile_p ($self, $companies_pkey, $customers_fkey, $customer
                     )
             ORDER BY deliverydate DESC
         };
-say " load_list_mobile_p " . $companies_pkey . " " . $customers_fkey . " " . $customer_addresses_pkey;
+
         $result = $self->pg->db->query(
             $history_stmt,
             (

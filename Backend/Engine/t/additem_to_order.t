@@ -4,10 +4,9 @@ use warnings;
 use Test::More;
 
 use Mojo::Pg;
-use Engine::Precheck::Salesorder::Item;
+use Engine;
 
 sub execute {
-
 
     my $pg = Mojo::Pg->new->dsn(
         "dbi:Pg:dbname=Venditabant;host=192.168.1.108;port=5432;user=postgres;password=PV58nova64"
@@ -20,17 +19,22 @@ sub execute {
     $item->{stockitems_fkey} = 8;
     $item->{companies_fkey} = 24;
     $item->{users_fkey} = 24;
-
+    push @{$item->{actions}}, 'additem_to_order';
+    #
     my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';
     $config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';
-    $item = Engine::Precheck::Salesorder::Item->new(
+    Engine->new(
         pg => $pg,
-    )->precheck($item);
+        config => $config
+    )->execute(
+        'salesorder_simple',$item
+    )->catch(sub{
+        my $err = shift;
+        print $err . '\n';
+    })->wait();
 
     return 1;
 }
 
 ok(execute() == 1);
-
 done_testing();
-

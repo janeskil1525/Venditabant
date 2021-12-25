@@ -1,4 +1,4 @@
-package Engine::Workflow::Action::Salesorder::Items;
+package Engine::Workflow::Action::Salesorder::Item;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Workflow::Action );
@@ -14,6 +14,7 @@ use Workflow::History;
 use Engine::Model::Counter;
 use Engine::Model::Salesorder::Head;
 use Engine::Model::Salesorder::Item;
+use Engine::Helpers::Salesorder::DbFields::Item;
 
 
 sub execute ($self, $wf) {
@@ -21,20 +22,20 @@ sub execute ($self, $wf) {
     my $pg = $self->get_pg();
 
     my $context = $wf->context;
-    my $items = $context->param('items');
+    my $item = $self->_get_data($self, $context);
 
-    foreach my $item (@{$items}) {
-        $item->{salesorders_fkey} = $context->param('salesorders_pkey');
-        $self->item_upsert(
-            $context->param('companies_fkey'), $context->param('users_fkey'), $item, $pg);
-        $wf->add_history(
-            Workflow::History->new({
-                action      => "Save item",
-                description => "Stockitem $item->{stockitem} saved or created",
-                user        => $context->param('history')->{userid},
-            })
-        );
-    }
+    $self->item_upsert(
+        $context->param('companies_fkey'), $context->param('users_fkey'), $item, $pg
+    );
+
+    $wf->add_history(
+        Workflow::History->new({
+            action      => "Save item",
+            description => "Stockitem $item->{stockitem} saved or created",
+            user        => $context->param('history')->{userid},
+        })
+    );
+
 }
 
 sub item_upsert($self, $companies_pkey, $users_pkey, $data, $pg) {
@@ -48,7 +49,6 @@ sub item_upsert($self, $companies_pkey, $users_pkey, $data, $pg) {
     eval {
 
         if($data->{quantity} > 0) {
-
             $salesorder_items_pkey = Engine::Model::Salesorder::Item->new(
                 db => $db
             )->upsert(
@@ -71,6 +71,19 @@ sub item_upsert($self, $companies_pkey, $users_pkey, $data, $pg) {
 
     return $err ? $err : $salesorder_items_pkey;
 }
+
+sub _get_data($self, $context) {
+
+    my $data;
+    my $fields = Engine::Helpers::Salesorder::DbFields::Item->new->upsert_fields();
+
+    foreach my $field (@{$fields}) {
+        $data->{$field} = $context->param($field);
+    }
+
+    return $data;
+}
+
 
 sub get_pg($self) {
     return  FACTORY->get_persister( 'SalesordersPersister' )->get_pg();

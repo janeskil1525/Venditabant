@@ -43,6 +43,7 @@ sub load_workflow($self) {
 
     my $workflows_fkey = $self->param('workflows_fkey');
     my $workflow_type = $self->param('workflow_type');
+
     $self->workflows->load_workflow(
         $companies_pkey, $users_pkey, $workflows_fkey, $workflow_type
     )->then(sub ($result) {

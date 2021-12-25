@@ -21,7 +21,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
         },
         properties: {
             customer_addresses_model: {nullable:true},
-            salesorders_pkey: {nullable:true, check:'number'},
+            salesorders_pkey: {nullable:true, check:'Number'},
         },
         members  : {
             _buildDeliveryWindow:function() {
@@ -102,6 +102,16 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
             },
             loadSalesorderKey:function() {
 
+                let customer_addresses_pkey = this.getCustomer_addresses_model().customer_addresses_pkey;
+
+                let sales = new desktop_delivery.models.Salesorders();
+                sales.loadSalesorderKey(function(response) {
+                    if (response.result === 'success') {
+                        this.setSalesorders_pkey(response.salesorders_pkey);
+                    } else {
+                        alert(this.tr("Could not load salesorder, please try again"));
+                    }
+                }, this, customer_addresses_pkey);
             },
             saveSalesorderItem:function(){
                 if(this._selectedCustomer !== '') {
@@ -109,6 +119,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                     //let stockitem = stock.substring(0,stock.indexOf(' - '));
 
                     let data = {
+                        salesorders_fkey:this.getSalesorders_pkey(),
                         customer_addresses_pkey:this.getCustomer_addresses_model().customer_addresses_pkey,
                         quantity:this._quantity.getValue(),
                         stockitem:stockitem,
@@ -117,7 +128,7 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
                     };
 
                     let sales = new desktop_delivery.models.Salesorders();
-                    sales.add(function(success) {
+                    sales.addItem(function(success) {
                         if (success) {
                             this._quantity.setValue('0');
                             this._selectedStockitem.setValue('No stockitem selected');

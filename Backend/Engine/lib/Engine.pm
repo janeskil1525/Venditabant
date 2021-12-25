@@ -6,7 +6,7 @@ use Workflow::Factory qw(FACTORY);
 use Workflow::State;
 use Data::Dumper;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Engine::Load::Workflow;
 use Engine::Load::DataPrecheck;
@@ -23,7 +23,6 @@ async sub execute  {
         $workflow, $data
     );
 
-    # my $prelude = Engine
     if(!exists $data->{error}) {
         my $wf = await Engine::Load::Workflow->new(
             pg     => $self->pg,

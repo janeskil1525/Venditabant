@@ -9,7 +9,7 @@ use Data::Dumper;
 
 has 'pg';
 
-async sub prepare_item($self, $companies_pkey, $users_pkey, $stockitems_pkey, $data) {
+async sub prepare_item($self, $companies_pkey, $users_pkey, $data) {
 
     my $err;
     my $stockitem;
@@ -18,7 +18,7 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $stockitems_pkey, $d
         $stockitem = await Engine::Model::Stock::Stockitems->new(
             db => $self->pg->db
         )->load_complete_item(
-            $companies_pkey, $users_pkey, $stockitems_pkey
+            $companies_pkey, $users_pkey, $data->{stockitems_fkey}
         );
 
         $data->{stockitem} = $stockitem->{stockitem} unless exists $data->{stockitem};
@@ -33,7 +33,7 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $stockitems_pkey, $d
             $companies_pkey,
             $users_pkey,
             $data->{customers_fkey},
-            $stockitems_pkey,
+            $data->{stockitems_fkey},
             $stockitem->{productgroups_fkey},
             $data->{quantity},
             $data->{price}

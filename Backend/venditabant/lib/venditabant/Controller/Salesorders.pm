@@ -1,5 +1,5 @@
 package venditabant::Controller::Salesorders;
-use Mojo::Base 'Mojolicious::Controller', -signatures;
+use Mojo::Base 'Mojolicious::Controller', -signatures, -async_await;
 
 use Data::Dumper;
 use Mojo::JSON qw {decode_json};
@@ -82,26 +82,53 @@ sub load_salesorder_pkey ($self) {
     my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
         $self->req->headers->header('X-Token-Check')
     );
-    my $json_hash = decode_json ($self->req->body);
+    my $customer_addresses_pkey = $self->param('customer_addresses_pkey');
 
-    my $salesorders_pkey = await $self->salesorders->get_open_so_pkey(
-        $companies_pkey, $users_pkey, $json_hash->{customer_addresses_pkey}
+    my $salesorders_pkey = $self->salesorders->get_open_so_pkey(
+        $companies_pkey, $users_pkey, $customer_addresses_pkey
     );
 
     if($salesorders_pkey == 0) {
-        my $data->{customer_addresses_pkey} = $json_hash->{customer_addresses_pkey};
+        my $data->{customer_addresses_pkey} = $customer_addresses_pkey;
         $data->{companies_fkey} = $companies_pkey;
         $data->{users_fkey} = $users_pkey;
         push @{$data->{actions}}, 'create_order';
-        $self->workflow(
-            'salesorder_simple', $data
-        );
-        $salesorders_pkey = await $self->salesorders->get_open_so_pkey(
-            $companies_pkey, $users_pkey, $json_hash->{customer_addresses_pkey}
+        say 'Enter workflow' ;
+        eval {
+            # say Dumper($self->workflow);
+            $self->workflow->execute(
+                'salesorder_simple', $data
+            );
+        };
+        say $@ if $@;
+        $salesorders_pkey = $self->salesorders->get_open_so_pkey(
+            $companies_pkey, $users_pkey, $customer_addresses_pkey
         );
     }
 
-    $self->render(json => {'result' => {salesorders_pkey => $salesorders_pkey}});
+    $self->render(json => {salesorders_pkey => $salesorders_pkey, result => 'success'});
+}
+
+sub save_item ($self) {
+
+    my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+
+    my $data = decode_json ($self->req->body);
+    $data->{companies_fkey} = $companies_pkey;
+    $data->{users_fkey} = $users_pkey;
+
+    push @{$data->{actions}}, 'additem_to_order';
+    eval {
+        say Dumper($data);
+        $self->workflow->execute(
+            'salesorder_simple', $data
+        );
+        $self->render(json => { result => 'success'});
+    };
+    $self->render(json => { result => 'failure', error => $@}) if $@;
+
 }
 
 sub save_salesorder ($self) {

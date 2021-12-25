@@ -213,7 +213,7 @@ async sub imvoice ($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
     );
 }
 
-async sub get_open_so_pkey($self, $companies_pkey, $users_pkey, $customer_addresses_pkey) {
+sub get_open_so_pkey($self, $companies_pkey, $users_pkey, $customer_addresses_pkey) {
 
     my $stmt = qq {
             SELECT salesorders_pkey FROM
@@ -222,7 +222,7 @@ async sub get_open_so_pkey($self, $companies_pkey, $users_pkey, $customer_addres
             WHERE open = true
                 AND customer_addresses_pkey = ?
                 AND companies_fkey = ?
-                AND type = 'INVOICE'
+                AND type = 'DELIVERY'
         };
 
     my $result = $self->pg->db->query(

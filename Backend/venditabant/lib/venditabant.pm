@@ -170,13 +170,13 @@ sub startup ($self) {
     my $r = $self->routes;
 
     my $auth = $r->under('/api/v1' => sub {
-    my $c = shift;
-    #say "authentichate " . $c->req->headers->header('X-Token-Check');
-    # Authenticated
-    return 1 if $c->login->authenticate($c->req->headers->header('X-Token-Check'));
-    # Not authenticated
-    $c->render(json => '{"error":"unknown error"}');
-    return undef;
+        my $c = shift;
+        #say "authentichate " . $c->req->headers->header('X-Token-Check');
+        # Authenticated
+        return 1 if $c->login->authenticate($c->req->headers->header('X-Token-Check'));
+        # Not authenticated
+        $c->render(json => '{"error":"unknown error"}');
+        return undef;
     });
 
     $r->get('/')->to('Example#welcome');
@@ -218,11 +218,13 @@ sub startup ($self) {
 
     $auth->put('/salesorders/save/')->to('salesorders#save_salesorder');
     $auth->put('/salesorders/close/')->to('salesorders#close_salesorder');
-    $auth->put('/salesorders/load_key/')->to('salesorders#load_salesorder_pkey');
+    $auth->get('/salesorders/load_key/:customer_addresses_pkey')->to('salesorders#load_salesorder_pkey');
     $auth->get('/salesorders/load_salesorder_list/:open')->to('salesorders#load_salesorder_list');
     $auth->get('/salesorders/load_salesorder/:salesorders_pkey')->to('salesorders#load_salesorder');
     $auth->get('/salesorders/items/load_list/:salesorders_fkey')->to('salesorders#load_salesorder_items_list');
     $auth->put('/salesorders/items/save/')->to('salesorders#item_save');
+    $auth->put('/salesorders/items/save_item/')->to('salesorders#save_item');
+
 
     $auth->get('/parameters/load_list/:parameter')->to('parameters#load_list');
     $auth->put('/parameters/save/')->to('parameters#save_parameter');

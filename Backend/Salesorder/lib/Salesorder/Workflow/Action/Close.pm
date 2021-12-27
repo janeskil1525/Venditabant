@@ -12,7 +12,6 @@ use Workflow::History;
 use Workflow::Exception qw( workflow_error );
 
 use Salesorder::Model::Head;
-use Minion;
 
 sub execute ($self, $wf) {
 
@@ -52,7 +51,7 @@ sub close ($self, $companies_pkey, $users_pkey, $context){
     my $err;
     eval {
 
-        Engine::Model::Salesorder::Head->new(
+        Salesorder::Model::Salesorder::Head->new(
             db => $db
         )->close(
             $companies_pkey, $users_pkey, $context->param('salesorders_pkey')

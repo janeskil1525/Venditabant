@@ -1,4 +1,4 @@
-package Engine::Helpers::Discount::Calculate;
+package Salesorder::Helpers::Discount::Calculate;
 use Mojo::Base -base, -signatures, -async_await;
 
 use Engine::Model::Discount::Stockitem;

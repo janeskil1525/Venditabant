@@ -1,0 +1,18 @@
+lib/Salesorder.pm
+lib/Salesorder/Helpers/DbFields/Head.pm
+lib/Salesorder/Helpers/DbFields/Item.pm
+lib/Salesorder/Model/Head.pm
+lib/Salesorder/Model/Item.pm
+lib/Salesorder/Model/Workflow.pm
+lib/Salesorder/PreCheck/Close.pm
+lib/Salesorder/PreCheck/Item.pm
+lib/Salesorder/PreCheck/Order.pm
+lib/Salesorder/PreCheck/PrepareItem.pm
+lib/Salesorder/PreCheck/WfFromSo.pm
+lib/Salesorder/Workflow/Action/Archive.pm
+lib/Salesorder/Workflow/Action/Close.pm
+lib/Salesorder/Workflow/Action/Create.pm
+lib/Salesorder/Workflow/Action/Invoice.pm
+lib/Salesorder/Workflow/Action/Item.pm
+Makefile.PL
+MANIFEST			This list of files

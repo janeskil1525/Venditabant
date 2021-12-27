@@ -11,7 +11,7 @@ use Workflow::Factory qw( FACTORY );
 use Workflow::Exception qw( workflow_error );
 
 use Engine::Model::Counter;
-use Engine::Model::Salesorder::Head;
+use Salesorder::Model::Head;
 
 sub execute ($self, $wf) {
 

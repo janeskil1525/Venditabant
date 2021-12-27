@@ -12,9 +12,9 @@ use Workflow::Exception qw( workflow_error );
 use Workflow::History;
 
 use Engine::Model::Counter;
-use Engine::Model::Salesorder::Head;
-use Engine::Model::Salesorder::Item;
-use Engine::Helpers::Salesorder::DbFields::Item;
+use Salesorder::Model::Head;
+use Salesorder::Model::Item;
+use Salesorder::Helpers::DbFields::Item;
 
 
 sub execute ($self, $wf) {
@@ -49,13 +49,13 @@ sub item_upsert($self, $companies_pkey, $users_pkey, $data, $pg) {
     eval {
 
         if($data->{quantity} > 0) {
-            $salesorder_items_pkey = Engine::Model::Salesorder::Item->new(
+            $salesorder_items_pkey = Salesorder::Model::Item->new(
                 db => $db
             )->upsert(
                 $companies_pkey, $data->{salesorders_fkey}, $users_pkey, $data
             );
         } else {
-            $salesorder_items_pkey = Engine::Model::Salesorder::Item->new(
+            $salesorder_items_pkey = Salesorder::Model::Item->new(
                 db => $db
             )->delete_item(
                 $companies_pkey, $data->{salesorders_fkey}, $data
@@ -75,7 +75,7 @@ sub item_upsert($self, $companies_pkey, $users_pkey, $data, $pg) {
 sub _get_data($self, $context) {
 
     my $data;
-    my $fields = Engine::Helpers::Salesorder::DbFields::Item->new->upsert_fields();
+    my $fields = Salesorder::Helpers::DbFields::Item->new->upsert_fields();
 
     foreach my $field (@{$fields}) {
         $data->{$field} = $context->param($field);

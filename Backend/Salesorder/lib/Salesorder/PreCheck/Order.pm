@@ -1,4 +1,4 @@
-package Salesorder::Precheck::Order;
+package Salesorder::PreCheck::Order;
 use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;

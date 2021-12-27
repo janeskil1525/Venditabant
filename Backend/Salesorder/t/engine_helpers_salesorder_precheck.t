@@ -3,11 +3,14 @@ use strict;
 use warnings;
 use Test::More;
 
+use feature 'signatures';
+use feature 'say';
+
+use Data::Dumper;
 use Mojo::Pg;
-use Engine::Precheck::Salesorder::Item;
+use Salesorder::PreCheck::Item;
 
 sub execute {
-
 
     my $pg = Mojo::Pg->new->dsn(
         "dbi:Pg:dbname=Venditabant;host=192.168.1.108;port=5432;user=postgres;password=PV58nova64"
@@ -23,9 +26,14 @@ sub execute {
 
     my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';
     $config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';
-    $item = Engine::Precheck::Salesorder::Item->new(
+
+    Salesorder::PreCheck::Item->new(
         pg => $pg,
-    )->precheck($item);
+    )->precheck($item)->then(sub($item) {
+        say Dumper($item);
+    })->catch(sub($err) {
+        say $err;
+    })->wait();
 
     return 1;
 }

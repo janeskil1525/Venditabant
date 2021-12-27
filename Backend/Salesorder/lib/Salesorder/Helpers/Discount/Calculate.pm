@@ -1,8 +1,8 @@
 package Salesorder::Helpers::Discount::Calculate;
 use Mojo::Base -base, -signatures, -async_await;
 
-use Engine::Model::Discount::Stockitem;
-use Engine::Model::Discount::Productgroups;
+use Salesorder::Model::Discount::Stockitem;
+use Salesorder::Model::Discount::Productgroups;
 
 use Data::Dumper;
 
@@ -15,7 +15,7 @@ async sub calculate_item_discount(
     my $discount->{discount} = 0;
     $discount->{discount_txt} = ' ';
 
-    my $result = Engine::Model::Discount::Stockitem->new(
+    my $result = Salesorder::Model::Discount::Stockitem->new(
         db => $self->pg->db
     )->load_discount(
         $companies_pkey, $users_pkey, $customers_fkey, $stockitems_fkey

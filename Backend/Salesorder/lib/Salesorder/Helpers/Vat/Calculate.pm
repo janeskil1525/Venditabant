@@ -1,7 +1,7 @@
 package Salesorder::Helpers::Vat::Calculate;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Helpers::Parameter::Parameters;;
+use venditabant::Helpers::Parameter::Parameters;
 
 use Data::Dumper;
 

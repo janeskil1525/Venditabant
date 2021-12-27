@@ -7,6 +7,8 @@
       <path value="file://$MODULE_DIR$/Backend/Mojolicious-Plugin-Workflow/lib" type="perl-library" />
       <path value="file://$MODULE_DIR$/Backend/Engine/lib" type="perl-library" />
       <path value="file://$MODULE_DIR$/Backend/Mojolicious-Plugin-Workflow/blib/lib" type="perl-library" />
+      <path value="file://$MODULE_DIR$/Backend/Salesorder/lib" type="perl-library" />
+      <path value="file://$MODULE_DIR$/Backend/Invoice/lib" type="perl-library" />
     </perl5>
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />

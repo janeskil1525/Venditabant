@@ -1,16 +1,16 @@
-package Salesorder::Precheck::Salesorder::Item;
+package Salesorder::PreCheck::Item;
 use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;
 use Log::Log4perl qw(:easy);
 
-use Engine::Precheck::Salesorder::PrepareItem;
+use Salesorder::PreCheck::PrepareItem;
 
 has 'pg';
 
 async sub precheck ($self, $data) {
 
-    my $prep = Engine::Precheck::Salesorder::PrepareItem->new(
+    my $prep = Salesorder::PreCheck::PrepareItem->new(
         pg => $self->pg
     );
 

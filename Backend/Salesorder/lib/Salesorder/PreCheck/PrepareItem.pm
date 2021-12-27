@@ -1,7 +1,7 @@
-package Salesorder::Precheck::PrepareItem;
+package Salesorder::PreCheck::PrepareItem;
 use Mojo::Base -base, -signatures, -async_await;
 
-use Salesorder::Model::Stock::Stockitems;;
+use Engine::Model::Stock::Stockitems;
 use Salesorder::Helpers::Discount::Calculate;
 use Salesorder::Helpers::Vat::Calculate;
 
@@ -27,7 +27,7 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $data) {
         $data->{account} = $stockitem->{accounts} unless exists $data->{account};
         $data->{productgroup} = $stockitem->{productgroup} unless exists $data->{productgroup};
 
-        my $discount = await Engine::Helpers::Discount::Calculate->new(
+        my $discount = await Salesorder::Helpers::Discount::Calculate->new(
             pg => $self->pg
         )->calculate_item_discount(
             $companies_pkey,
@@ -42,7 +42,7 @@ async sub prepare_item($self, $companies_pkey, $users_pkey, $data) {
         $data->{discount} = $discount->{discount};
         $data->{discount_txt} = $discount->{discount_txt};
 
-        my $vat = await Engine::Helpers::Vat::Calculate->new(
+        my $vat = await Salesorder::Helpers::Vat::Calculate->new(
             pg => $self->pg
         )->calculate(
             $companies_pkey, $stockitem->{vat_fkey}, $data->{quantity}, $data->{price}

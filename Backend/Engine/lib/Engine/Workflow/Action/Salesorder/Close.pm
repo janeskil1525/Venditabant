@@ -8,6 +8,7 @@ use feature 'signatures';
 
 use Data::Dumper;
 use Workflow::Factory qw( FACTORY );
+use Workflow::History;
 use Workflow::Exception qw( workflow_error );
 
 use Engine::Model::Salesorder::Head;
@@ -20,6 +21,14 @@ sub execute ($self, $wf) {
     my $context = $wf->context;
     my $result = $self->close (
         $context->param('companies_fkey'), $context->param('users_fkey'), $context
+    );
+
+    $wf->add_history(
+        Workflow::History->new({
+            action      => "Close order",
+            description => "Order with key $context->param('salesorders_pkey') closed",
+            user        => $context->param('history')->{userid},
+        })
     );
 
     return $result;

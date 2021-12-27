@@ -74,12 +74,17 @@ qx.Class.define ( "desktop_delivery.delivery.DeliveryWindow",
 
                 let data = {
                     customer_addresses_fkey:this.getCustomer_addresses_model().customer_addresses_pkey,
+                    salesorders_pkey:this.getSalesorders_pkey(),
                 };
 
                 let sales = new desktop_delivery.models.Salesorders();
                 sales.close(function(success) {
                     if (success) {
+                        this.setSalesorders_pkey(0),
                         this.loadStockitemList(this._selectedCustomer, true);
+                        if(this.getCustomer_addresses_model().customer_addresses_pkey > 0 && this.getSalesorders_pkey() === 0) {
+                            this.loadSalesorderKey();
+                        }
                     } else {
                         alert(this.tr("Could not save order, please try again"));
                     }

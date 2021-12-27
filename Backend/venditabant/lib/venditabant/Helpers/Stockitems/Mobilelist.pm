@@ -39,7 +39,7 @@ async sub load_list_mobile_nocust_p ($self, $companies_pkey) {
             SELECT stockitems_pkey, stockitem, description, 0 as quantity,  get_price(?,stockitems_pkey, 0) as price
             FROM stockitems
         };
-say $mobilelist_stmt;
+
         my $result = $self->pg->db->query(
             $mobilelist_stmt,
             ($companies_pkey)

@@ -15,7 +15,7 @@ use Salesorder::Model::Head;
 
 sub execute ($self, $wf) {
 
-    my $pg = $self->get_pg();
+    #my $pg = $self->get_pg();
 
     my $context = $wf->context;
     my $result = $self->close (
@@ -51,7 +51,7 @@ sub close ($self, $companies_pkey, $users_pkey, $context){
     my $err;
     eval {
 
-        Salesorder::Model::Salesorder::Head->new(
+        Salesorder::Model::Head->new(
             db => $db
         )->close(
             $companies_pkey, $users_pkey, $context->param('salesorders_pkey')

@@ -1,4 +1,4 @@
-package Salesorder::Precheck::WfFromSo;
+package Salesorder::PreCheck::WfFromSo;
 use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;
@@ -10,7 +10,7 @@ has 'pg';
 
 async sub load_workflow_id ($self, $data) {
 
-    $data->{workflow_id} = Engine::Model::Salesorder::Workflow->new(
+    $data->{workflow_id} = Salesorder::Model::Workflow->new(
         db => $self->pg->db
     )->load_workflow_id(
         $data->{salesorders_pkey}

@@ -93,7 +93,7 @@ sub load_salesorder_pkey ($self) {
         $data->{companies_fkey} = $companies_pkey;
         $data->{users_fkey} = $users_pkey;
         push @{$data->{actions}}, 'create_order';
-        say 'Enter workflow' ;
+
         eval {
             # say Dumper($self->workflow);
             $self->workflow->execute(

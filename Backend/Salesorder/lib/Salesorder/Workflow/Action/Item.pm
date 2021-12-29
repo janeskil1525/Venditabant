@@ -1,4 +1,4 @@
-package Engine::Workflow::Action::Salesorder::Item;
+package Salesorder::Workflow::Action::Item;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Workflow::Action );

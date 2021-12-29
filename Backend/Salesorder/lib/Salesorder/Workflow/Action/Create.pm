@@ -65,6 +65,8 @@ sub execute ($self, $wf) {
             workflow_error
                 "Cannot create new salesorder for customer '", $context->param( 'company_fkey' ), "': $@";
         }
+    } else {
+        $salesorders_pkey = $context->param('salesorders_pkey');
     }
 
     return $salesorders_pkey;

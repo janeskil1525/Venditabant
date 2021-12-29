@@ -16,4 +16,5 @@ async sub check_key($self, $key, $required, $data) {
 
     return $data;
 }
+
 1;

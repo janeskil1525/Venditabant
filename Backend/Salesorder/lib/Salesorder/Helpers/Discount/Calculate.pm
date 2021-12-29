@@ -22,7 +22,7 @@ async sub calculate_item_discount(
     );
 
     if(!$result->{discount}) {
-        $result = Engine::Model::Discount::Productgroups->new(
+        $result = Salesorder::Model::Discount::Productgroups->new(
             db => $self->pg->db
         )->load_discount(
             $companies_pkey, $users_pkey, $customers_fkey, $productgroups_fkey

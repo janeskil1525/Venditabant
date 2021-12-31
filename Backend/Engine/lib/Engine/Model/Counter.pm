@@ -1,5 +1,5 @@
 package Engine::Model::Counter;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base -base, -signatures, -async_await;
 
 
 has 'db';

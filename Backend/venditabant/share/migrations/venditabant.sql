@@ -2322,4 +2322,29 @@ ALTER TYPE workflowtype
 ALTER TABLE workflow_salesorders
     RENAME COLUMN salesorders_fkey TO salesorders_pkey;
 
+
+CREATE TABLE if not exists transit
+(
+    transit_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System',
+    insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+    modby varchar NOT NULL DEFAULT 'System',
+    moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
+    type varchar,
+    activity varchar,
+    payload jsonb,
+    status varchar,
+    CONSTRAINT transit_pkey PRIMARY KEY (transit_pkey)
+);
+
+CREATE INDEX idx_transit_status
+    ON transit(status);
+
+CREATE INDEX idx_transit_type_status
+    ON transit(type, status);
+
+CREATE INDEX idx_transit_type_activity
+    ON transit(type, activity);
+
 -- 47 down

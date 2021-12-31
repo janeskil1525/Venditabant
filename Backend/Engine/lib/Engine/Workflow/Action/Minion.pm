@@ -5,6 +5,7 @@ use base qw( Workflow::Action );
 no warnings  'experimental';
 
 use feature 'signatures';
+use feature 'say';
 
 use Data::Dumper;
 use Workflow::Factory qw( FACTORY );
@@ -26,11 +27,12 @@ sub execute($self, $wf) {
     }
 
     my $min = Minion->new(Pg => $pg);
-    $min->enqueue(
-        $minion->{minion} => [$minion] => {
-            priority => 0,
-        }
-    );
+    eval {
+        $min->enqueue(
+            $params->{minion} => [$minion]
+        );
+    };
+    say $@ if $@;
 
     $wf->add_history(
         Workflow::History->new({

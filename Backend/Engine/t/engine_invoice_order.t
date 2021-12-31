@@ -13,8 +13,10 @@ sub execute() {
     my $data->{minion} = 'create_invoice_from_salesorder';
     $data->{users_pkey} = 24;
     $data->{companies_pkey} = 24;
-    $data->{salesorders_pkey} = 96;
-    $data->{workflow_id} = 44;
+    $data->{payload}->{users_pkey} = 24;
+    $data->{payload}->{companies_pkey} = 24;
+    $data->{payload}->{salesorders_pkey} = 103;
+    $data->{workflow_id} = 55;
     push @{$data->{actions}}, 'invoice_order';
 
     my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';

@@ -1,4 +1,4 @@
-package Invoice::Workflow::Action::ConvertSo;
+package Import::Workflow::Action::InvoiceFromSo;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Workflow::Action );
@@ -11,8 +11,8 @@ use Workflow::Factory qw( FACTORY );
 use Workflow::Exception qw( workflow_error );
 use Workflow::History;
 
-use Engine::Helpers::Invoice::DbFields::Head;
-use Engine::Helpers::Salesorder::Salesorders;
+use Invoice::Helpers::DbFields::Head;
+use Import::Helpers::Salesorders;
 use Invoice::Model::InvoiceHead;
 use Invoice::Model::InvoiceItem;
 
@@ -31,7 +31,7 @@ sub execute ($self, $wf) {
             })
         );
 
-        my $order = Salesorder::Helpers::Salesorders->new(
+        my $order = Import::Helpers::Salesorders->new(
             pg => $pg
         )->load_salesorder_full(
             $context->param('companies_fkey'), $context->param('users_fkey') , $context->param('salesorders_pkey')

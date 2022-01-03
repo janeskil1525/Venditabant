@@ -2332,6 +2332,7 @@ CREATE TABLE if not exists transit
     modby varchar NOT NULL DEFAULT 'System',
     moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
     type varchar,
+    workflow varchar,
     activity varchar,
     payload jsonb,
     status varchar,

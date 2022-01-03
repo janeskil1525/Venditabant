@@ -10,7 +10,8 @@ sub execute() {
     my $pg = Mojo::Pg->new->dsn(
         "dbi:Pg:dbname=Venditabant;host=192.168.1.108;port=5432;user=postgres;password=PV58nova64"
     );
-    my $data->{minion} = 'create_invoice_from_salesorder';
+    my $data->{activity} = 'convert_order_to_invoice_simple';
+    $data->{type} = 'workflow';
     $data->{users_pkey} = 24;
     $data->{companies_pkey} = 24;
     $data->{payload}->{users_pkey} = 24;

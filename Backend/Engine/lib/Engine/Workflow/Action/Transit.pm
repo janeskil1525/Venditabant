@@ -23,6 +23,7 @@ sub execute($self, $wf) {
     my $data->{payload} = encode_json $params->{payload};
     $data->{type} = $params->{type};
     $data->{activity} = $params->{activity};
+    $data->{users_pkey} = $params->{users_pkey};
     $data->{status} = 0;
 
     my $transit_pkey = Engine::Model::Transit->new(db => $pg->db)->insert($data);

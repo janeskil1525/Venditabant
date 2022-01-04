@@ -67,6 +67,17 @@ async sub load_invoice_address_p($self, $companies_pkey, $users_pkey, $customers
     return $result;
 }
 
+sub load_invoice_address($self, $companies_pkey, $users_pkey, $customers_pkey) {
+
+    my $result = Engine::Model::Customer::CustomerAddress->new(
+        db => $self->pg->db
+    )->load_invoice_address(
+        $customers_pkey
+    );
+
+    return $result;
+}
+
 async sub load_delivery_address_p($self, $companies_pkey, $users_pkey, $customer_addresses_pkey) {
 
     my $result = Engine::Model::Customer::CustomerAddress->new(

@@ -19,6 +19,8 @@ async sub load ($self, $workflow, $data)  {
         %{$data}
     );
 
+    $data->{workflow_id} = 0 unless exists $data->{workflow_id};
+
     if($data->{workflow_id} > 0) {
         $wf = FACTORY->fetch_workflow( $workflow, $data->{workflow_id}, $context );
     } else {

@@ -72,4 +72,19 @@ async sub invoice ($self, $salseorders_pkey) {
             }
     );
 }
+
+sub load_salesorder ($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
+
+    my $result = $self->db->select (
+        'salesorders', ['*'],
+        {
+            companies_fkey    => $companies_pkey,
+            salesorders_pkey => $salesorders_pkey,
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result->rows;
+    return $hash;
+}
 1;

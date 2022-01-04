@@ -11,15 +11,18 @@ use Workflow::Factory qw( FACTORY );
 use Workflow::Exception qw( workflow_error );
 use Workflow::History;
 
+use Engine::Model::Counter;
+
 use Invoice::Helpers::DbFields::Head;
 use Import::Helpers::Salesorders;
-use Invoice::Model::InvoiceHead;
-use Invoice::Model::InvoiceItem;
+use Invoice::Model::Head;
+use Invoice::Model::Item;
 
 sub execute ($self, $wf) {
 
     my $pg =  $self->get_pg();
 
+    my $result;
     my $invoice_pkey = 0;
     my $context = $wf->context;
     if($context->param('salesorders_pkey') > 0) {
@@ -34,7 +37,7 @@ sub execute ($self, $wf) {
         my $order = Import::Helpers::Salesorders->new(
             pg => $pg
         )->load_salesorder_full(
-            $context->param('companies_fkey'), $context->param('users_fkey') , $context->param('salesorders_pkey')
+            $context->param('companies_pkey'), $context->param('users_pkey') , $context->param('salesorders_pkey')
         );
 
         eval {
@@ -42,21 +45,21 @@ sub execute ($self, $wf) {
             my $tx = $db->begin();
 
             my $invoicehead = $self->map_invoicehead(
-                $context->param('companies_fkey'), $context->param('users_fkey'), $order, $db
+                $context->param('companies_pkey'), $context->param('users_pkey'), $order, $db
             );
 
             $wf->add_history(
                 Workflow::History->new({
                     action      => "New invoiceno",
-                    description => "Invoice no $invoicehead->{invoice} created",
+                    description => "Invoice no $invoicehead->{invoiceno} created",
                     user        => $context->param('history')->{userid},
                 })
             );
 
-            $invoice_pkey = Invoice::Model::InvoiceHead->new(
+            $invoice_pkey = Invoice::Model::Head->new(
                 db => $db
             )->insert(
-                $context->param('companies_fkey'), $context->param('users_fkey'), $invoicehead
+                $context->param('companies_pkey'), $context->param('users_pkey'), $invoicehead
             );
             $context->param(invoice_pkey => $invoice_pkey);
 
@@ -70,12 +73,12 @@ sub execute ($self, $wf) {
 
             foreach my $item (@{$order->{items}}) {
                 my $invoiceitem = $self->map_invoiceitem(
-                    $context->param('companies_fkey'), $context->param('users_fkey'), $invoice_pkey, $item
+                    $context->param('companies_pkey'), $context->param('users_pkey'), $invoice_pkey, $item
                 );
-                Invoice::Model::InvoiceItem->new(
+                Invoice::Model::Item->new(
                     db => $db
                 )->insert(
-                    $context->param('companies_fkey'), $context->param('users_fkey'), $invoiceitem
+                    $context->param('companies_pkey'), $context->param('users_pkey'), $invoiceitem
                 );
                 $wf->add_history(
                     Workflow::History->new({
@@ -93,24 +96,41 @@ sub execute ($self, $wf) {
                     user        => $context->param('history')->{userid},
                 })
             );
+            $tx->commit();
+
+            $result->{activity} = 'create_invoice';
+            $result->{workflow} = 'invoice_simple';
+            $result->{type} = 'workflow';
+            $result->{payload}->{invoice_pkey} = $context->param('invoice_pkey');
+            $result->{payload}->{companies_pkey} = $context->param('companies_pkey');
+            $result->{payload}->{users_pkey} = $context->param('users_pkey');
+            $result->{users_pkey} = $context->param('users_pkey');
+            $result->{companies_pkey} = $context->param('companies_pkey');
         };
         if ( $@ ) {
+            say $@;
             workflow_error
                 "Cannot create new invoice for salesorder '", $context->param( 'salesorders_pkey' ), "': $@";
         }
     }
+    return $result;
 }
 
 sub map_invoiceitem ($self, $companies_pkey, $users_pkey, $invoice_pkey, $item_in) {
 
     my $item->{invoice_fkey} = $invoice_pkey;
-    $item->{stockitems_fkey} = $item_in->{stockitems_fkey};
+    $item->{stockitem} = $item_in->{stockitem};
     $item->{quantity} = $item_in->{quantity} ? $item_in->{quantity} : 0;
     $item->{price} = $item_in->{price} ? $item_in->{price} : 0;
     $item->{vat} = $item_in->{vat} ? $item_in->{vat} : 0;
     $item->{vatsum} = $item_in->{vatsum} ? $item_in->{vatsum} : 0;
     $item->{netsum} = $item_in->{netsum} ? $item_in->{netsum} : 0;
     $item->{total} = $item_in->{total} ? $item_in->{total} : 0;
+    $item->{vat_txt} = $item_in->{vat_txt} ? $item_in->{vat_txt} :  ' ';
+    $item->{discount_txt} = $item_in->{discount_txt} ? $item_in->{discount_txt} : ' ';
+    $item->{discount} = $item_in->{discount} ? $item_in->{discount} : 0;
+    $item->{unit} = $item_in->{unit} ? $item_in->{unit} : ' ';
+    $item->{account} = $item_in->{account} ? $item_in->{account} : ' ';
 
     return $item;
 }
@@ -120,7 +140,7 @@ sub map_invoicehead($self, $companies_pkey, $users_pkey, $order, $db) {
     $order->{salesorder}->{invoicedays} = 30 unless $order->{salesorder}->{invoicedays};
     my $now = DateTime->now();
     my $counter = Engine::Model::Counter->new(db => $db);
-    my $invoiceno = await $counter->nextid(
+    my $invoiceno = $counter->nextid(
         $companies_pkey, $users_pkey, 'invoice'
     );
     my $invoicehead->{invoiceno} = $invoiceno;

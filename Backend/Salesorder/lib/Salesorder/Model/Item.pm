@@ -79,4 +79,18 @@ async sub upsert ($self, $companies_pkey, $salesorders_pkey, $users_pkey, $data)
     return $salesorder_items_pkey;
 }
 
+sub load_items_list($self, $companies_pkey, $users_pkey, $salesorders_fkey) {
+
+    my $result = $self->db->select(
+        'salesorder_items', ['*'],
+            {
+                salesorders_fkey => $salesorders_fkey
+            }
+    );
+
+    my $hash;
+    $hash = $result->hashes if $result and $result->rows() > 0;
+
+    return $hash;
+}
 1;

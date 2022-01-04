@@ -66,7 +66,7 @@ sub close ($self, $companies_pkey, $users_pkey, $context){
         "Engine::Action::Salesorder::Close close " . $err
     ) if $err;
 
-    my $result->{activity} = 'create_invoice_from_salesorder';
+    my $result->{activity} = 'create_invoice_from_salesorder, process_invoice';
     $result->{type} = 'minion';
     $result->{payload}->{salesorders_pkey} = $context->param('salesorders_pkey');
     $result->{payload}->{companies_pkey} = $companies_pkey;

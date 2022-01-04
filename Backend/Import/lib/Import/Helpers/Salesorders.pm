@@ -22,7 +22,7 @@ sub load_salesorder_full($self, $companies_pkey, $users_pkey, $salesorders_fkey)
         );
         $order->{invaddress} = Engine::Helpers::Customers::Address->new(
             pg => $self->pg
-        )->load_invoice_address_p(
+        )->load_invoice_address(
             $companies_pkey, $users_pkey, $order->{salesorder}->{customers_fkey}
         );
 
@@ -54,7 +54,7 @@ sub load_salesorder_items_list ($self, $companies_pkey, $users_pkey, $salesorder
     return $result;
 }
 
-async sub load_salesorder($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
+sub load_salesorder($self, $companies_pkey, $users_pkey, $salesorders_pkey) {
 
     my $log = Log::Log4perl->get_logger();
     my $result;

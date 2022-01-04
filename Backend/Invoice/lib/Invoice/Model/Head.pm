@@ -1,11 +1,11 @@
-package Invoice::Model::InvoiceHead;
+package Invoice::Model::Head;
 use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;
 
 has 'db';
 
-async sub insert ($self, $companies_pkey, $users_pkey, $invoicehead) {
+sub insert ($self, $companies_pkey, $users_pkey, $invoicehead) {
     my $stmt = qq {
         INSERT INTO invoice (
 	        insby,  modby, customers_fkey, companies_fkey, invoicedate, paydate, invoiceno,

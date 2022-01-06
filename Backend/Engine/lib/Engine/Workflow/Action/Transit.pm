@@ -32,6 +32,6 @@ sub execute($self, $wf) {
 }
 
 sub get_pg($self) {
-    return  FACTORY->get_persister( 'SalesordersPersister' )->get_pg();
+    return  FACTORY->get_persister( 'TransitPersister' )->get_pg();
 }
 1;

@@ -49,6 +49,9 @@ async sub load_config($self, $workflow, $items) {
     foreach my $conf (@{ $config }) {
         my $options = $XML_OPTIONS{$conf->{workflow_type}} || {};
         $hash->{$conf->{workflow_type}} = XMLin($conf->{workflow}, %{$options});
+        if($conf->{workflow_type} eq 'persister') {
+            $hash->{$conf->{workflow_type}} = $hash->{$conf->{workflow_type}}->{persister};
+        }
     }
 
     return $hash;

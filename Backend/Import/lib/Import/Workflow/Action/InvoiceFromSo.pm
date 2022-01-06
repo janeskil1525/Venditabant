@@ -98,14 +98,16 @@ sub execute ($self, $wf) {
             );
             $tx->commit();
 
-            $result->{activity} = 'create_invoice';
-            $result->{workflow} = 'invoice_simple';
-            $result->{type} = 'workflow';
-            $result->{payload}->{invoice_pkey} = $context->param('invoice_pkey');
-            $result->{payload}->{companies_pkey} = $context->param('companies_pkey');
-            $result->{payload}->{users_pkey} = $context->param('users_pkey');
-            $result->{users_pkey} = $context->param('users_pkey');
-            $result->{companies_pkey} = $context->param('companies_pkey');
+            $context->param(activity => 'create_invoice');
+            $context->param(workflow => 'invoice_simple');
+            $context->param(type => 'workflow');
+
+            my $payload->{invoice_pkey} = $context->param('invoice_pkey');
+            $payload->{companies_pkey} = $context->param('companies_pkey');
+            $payload->{users_pkey} = $context->param('users_pkey');
+            $context->param(payload => $payload);
+            $context->param(context_set => 1);
+            $context->param(workflow_id => $wf->id);
         };
         if ( $@ ) {
             say $@;

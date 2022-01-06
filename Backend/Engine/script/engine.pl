@@ -66,7 +66,7 @@ sub execute {
             $log->debug('execute ' . $transit->{workflow} . ' ' . $transit->{activity});
 
             my $data = decode_json $transit->{payload};
-            if(index(transit->{activity},',') > -1) {
+            if(index($transit->{activity},',') > -1) {
                 @{$data->{actions}} = split(', ', $transit->{activity});
             } else {
                 push @{$data->{actions}}, $transit->{activity};

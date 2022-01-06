@@ -34,9 +34,11 @@ async sub execute  {
         foreach my $action (@{$data->{actions}}) {
             my @avail = $wf->get_current_actions();
             if ($action ~~ @avail) {
-                $wf->context(Workflow::Context->new(
-                    %{ $data }
-                ));
+                if((!$wf->context->param('context_set')) or ($wf->context->param('context_set') == 0)) {
+                    $wf->context(Workflow::Context->new(
+                        %{ $data }
+                    ));
+                }
                 $wf->execute_action($action);
             }
         }

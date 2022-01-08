@@ -13,10 +13,11 @@ use Workflow::History;
 
 use Engine::Model::Counter;
 
-use Invoice::Helpers::DbFields::Head;
 use Import::Helpers::Salesorders;
+use Import::Model::Workflow;
 use Invoice::Model::Head;
 use Invoice::Model::Item;
+use Invoice::Helpers::DbFields::Head;
 
 sub execute ($self, $wf) {
 
@@ -96,6 +97,11 @@ sub execute ($self, $wf) {
                     user        => $context->param('history')->{userid},
                 })
             );
+
+            Import::Model::Workflow->new(db => $db)->upsert(
+                $context->param('salesorders_pkey'),  $context->param('invoice_pkey'), 'invoice_from_so'
+            );
+
             $tx->commit();
 
             $context->param(activity => 'create_invoice');

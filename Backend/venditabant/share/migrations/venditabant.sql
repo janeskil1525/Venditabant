@@ -2348,11 +2348,19 @@ CREATE INDEX idx_transit_type_status
 CREATE INDEX idx_transit_type_activity
     ON transit(type, activity);
 
-CREATE TABLE workflow_salesorders_conversion
+CREATE TABLE workflow_import
 (
     workflow_id  bigint not null,
-    salesorders_pkey  bigint not null,
-    invoice_pkey  bigint not null,
+    source_pkey  bigint not null,
+    target_pkey  bigint not null,
+    import_type varchar,
+    primary key ( workflow_id )
+);
+
+CREATE TABLE workflow_invoice
+(
+    workflow_id  bigint not null,
+    invoice_fkey  bigint not null,
     primary key ( workflow_id )
 );
 -- 47 down

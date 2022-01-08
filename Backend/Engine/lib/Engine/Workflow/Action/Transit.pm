@@ -24,6 +24,7 @@ sub execute($self, $wf) {
     $data->{type} = $params->{type};
     $data->{activity} = $params->{activity};
     $data->{users_pkey} = $params->{users_pkey};
+    $data->{workflow} = $params->{workflow};
     $data->{status} = 0;
 
     my $transit_pkey = Engine::Model::Transit->new(db => $pg->db)->insert($data);

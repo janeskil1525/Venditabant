@@ -1,0 +1,95 @@
+package Document::Helpers::Create;
+use Mojo::Base -base, -signatures, -async_await;
+
+use venditabant::Helpers::Invoice::Invoices;
+use venditabant::Helpers::Mailer::Mails::Loader::Templates;
+use venditabant::Helpers::Mailer::Mails::Invoice::Text;
+use venditabant::Helpers::System::Pdf;
+use venditabant::Helpers::Mailer::System::Processor;
+use venditabant::Model::Mail::MailerMailsAttachments;
+use venditabant::Model::Mail::MailerMails;
+use venditabant::Model::Lan::Translations;
+use venditabant::Helpers::Mailer::Mails::Utils::Subject;
+use venditabant::Helpers::Mailer::Mails::Utils::Recipients;
+# use venditabant::Helpers::Mailer::System::Sender;
+
+
+use Data::UUID;
+use Data::Dumper;
+
+has 'pg';
+
+async sub create($self, $db, $companies_pkey, $users_pkey, $languages_pkey, $document, $data) {
+
+    my $tx = $db->begin();
+
+    my $err;
+    eval {
+
+
+        my $ug = Data::UUID->new();
+        my $token = $ug->create();
+        $invoice->{id_token} = $ug->to_string($token);
+
+        my $template = await venditabant::Helpers::Mailer::Mails::Loader::Templates->new(
+            pg => $self->pg
+        )->load_template(
+            $companies_pkey, $users_pkey, $languages_pkey, $document
+        );
+
+        my $mail_content = await venditabant::Helpers::Mailer::Mails::Invoice::Text->new(
+            pg => $self->pg
+        )->map_text(
+            $companies_pkey, $users_pkey, $invoice, $template
+        );
+
+        # my $path = await venditabant::Helpers::System::Pdf->new(
+        #     pg => $self->pg
+        # )->create(
+        #     $companies_pkey, $users_pkey, $mail_content
+        # );
+
+        my $subject = await venditabant::Helpers::Mailer::Mails::Utils::Subject->new(
+            pg             => $self->pg,
+            companyname    => $invoice->{company}->{name},
+            idno           => $invoice->{invoice}->{invoiceno},
+            languages_fkey => $invoice->{customer}->{languages_fkey},
+            module         => 'INVOICE_MAIL',
+            tag            => 'SUBJECT',
+        )->get_subject();
+
+        my $recipients = await venditabant::Helpers::Mailer::Mails::Utils::Recipients->new(
+            pg              => $self->pg,
+            mailaddresses   => $invoice->{invoice}->{mailaddresses},
+            users_pkey      => $users_pkey,
+            companies_pkey  => $companies_pkey
+        )->get_recipients();
+
+        my $mailer_mails_pkey = await venditabant::Model::Mail::MailerMails->new(
+            db => $db
+        )->insert(
+            $companies_pkey, $recipients, $subject, $mail_content
+        );
+
+        # await venditabant::Model::Mail::MailerMailsAttachments->new(
+        #     db => $db
+        # )->insert(
+        #     $mailer_mails_pkey, $path
+        # );
+
+        $tx->commit();
+
+        await venditabant::Helpers::Mailer::System::Processor->new(
+            pg => $self->pg
+        )->process(
+            $mailer_mails_pkey
+        );
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Mailer::Mails::Invoice::Create', 'create', $err
+    ) if $err;
+}
+
+1;

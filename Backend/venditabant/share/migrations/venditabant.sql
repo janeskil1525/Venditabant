@@ -2363,4 +2363,69 @@ CREATE TABLE workflow_invoice
     invoice_fkey  bigint not null,
     primary key ( workflow_id )
 );
+
+CREATE TABLE IF NOT EXISTS documents
+(
+    documents_pkey serial NOT NULL ,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby character varying COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby character varying COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    document character varying(200) COLLATE pg_catalog."default" NOT NULL DEFAULT ''::character varying,
+    description character varying COLLATE pg_catalog."default" NOT NULL DEFAULT ''::character varying,
+    CONSTRAINT documents_pkey PRIMARY KEY (documents_pkey)
+);
+
+CREATE TABLE IF NOT EXISTS default_documents
+(
+    default_documents_pkey integer NOT NULL DEFAULT nextval('default_mailer_mails_default_mailer_mails_pkey_seq'::regclass),
+    editnum bigint NOT NULL DEFAULT 1,
+    insby character varying COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby character varying COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    documents_fkey bigint NOT NULL,
+    header_value text COLLATE pg_catalog."default" NOT NULL DEFAULT ''::text,
+    body_value text COLLATE pg_catalog."default" NOT NULL DEFAULT ''::text,
+    footer_value text COLLATE pg_catalog."default" NOT NULL DEFAULT ''::text,
+    languages_fkey integer NOT NULL DEFAULT 0,
+    sub1 text COLLATE pg_catalog."default" NOT NULL DEFAULT ''::text,
+    sub2 text COLLATE pg_catalog."default" NOT NULL DEFAULT ''::text,
+    sub3 text COLLATE pg_catalog."default" NOT NULL DEFAULT ''::text,
+    CONSTRAINT default_documents_pkey PRIMARY KEY (default_documents_pkey),
+    CONSTRAINT default_documents_documents_fkey FOREIGN KEY (documents_fkey)
+        REFERENCES documents (documents_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT default_documents_translations_fkey FOREIGN KEY (languages_fkey)
+        REFERENCES languages (languages_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX default_documents_languages_fkey
+    ON public.default_documents USING btree
+        (languages_fkey ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: default_mailer_mails_mailer_fkey
+
+-- DROP INDEX public.default_mailer_mails_mailer_fkey;
+
+CREATE INDEX default_documentsr_documents_fkey
+    ON public.default_documents USING btree
+        (documents_fkey ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: idx_default_mailer_mails_mailer_fkey_languages_fkey
+
+-- DROP INDEX public.idx_default_mailer_mails_mailer_fkey_languages_fkey;
+
+CREATE UNIQUE INDEX idx_default_documents_documents_fkey_languages_fkey
+    ON public.default_documents USING btree
+        (documents_fkey ASC NULLS LAST, languages_fkey ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+
 -- 47 down

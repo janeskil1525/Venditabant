@@ -1,11 +1,11 @@
-package Document::Model::Templates;
-use Mojo::Base -base, -signatures, -async_await;
+package Document::Model::Documents;
+use Mojo::Base -base, -signatures;
 
 use Data::Dumper;
 
 has 'db';
 
-async sub load_template($self, $companies_pkey, $users_pkey, $language_fkey, $template) {
+sub load_template($self, $companies_pkey, $users_pkey, $language_fkey, $template) {
 
     my $result = $self->db->select(
         ['default_documents',

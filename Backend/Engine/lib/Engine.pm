@@ -10,6 +10,7 @@ our $VERSION = '0.07';
 
 use Engine::Load::Workflow;
 use Engine::Load::DataPrecheck;
+use Engine::Load::Transit;
 
 has 'pg';
 has 'config';
@@ -47,5 +48,13 @@ async sub execute  {
     }
 }
 
+async sub auto_transits ($self) {
+    # Engine::Load::Transit;
 
+    my $data = Engine::Load::Transit->new(
+        pg => $self->pg
+    )->auto_transit('invoice_simple');
+
+
+}
 1;;

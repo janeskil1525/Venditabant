@@ -1,11 +1,12 @@
 package RuleEngine;
-use strict;
-use warnings FATAL => 'all';
+use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
+has 'pg';
 
 our $VERSION = '0.01';
 
-sub execute () {
+sub execute ($self, $ruleset, $data) {
+
 
 
 }

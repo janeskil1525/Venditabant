@@ -2427,5 +2427,9 @@ CREATE UNIQUE INDEX idx_default_documents_documents_fkey_languages_fkey
         (documents_fkey ASC NULLS LAST, languages_fkey ASC NULLS LAST)
     TABLESPACE pg_default;
 
+ALTER TYPE workflowtype
+    ADD VALUE 'auto_transit';
 
+ALTER TABLE workflow_invoice
+    ADD COLUMN closed BOOLEAN NOT NULL DEFAULT 'false'
 -- 47 down

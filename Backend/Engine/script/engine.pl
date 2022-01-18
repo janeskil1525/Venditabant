@@ -63,7 +63,7 @@ sub execute {
     $self->_log_script_done();
 }
 
-sub _process_conditions($self, $log, $pg) {
+sub _process_auto_conditions($self, $log, $pg) {
 
     try {
 

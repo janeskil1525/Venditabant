@@ -29,7 +29,7 @@ sub _create_body ($self, $invoice, $template, $summary) {
         my $hash_body = $self->_get_body_hash($item);
         $body .= $body_templ->fill_in(HASH => $hash_body);
     }
-    my $summary = $self->get_summary($invoice, $summary);
+    $summary = $self->get_summary($invoice, $summary);
     $body .= $summary;
 
     return $body;

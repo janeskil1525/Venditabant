@@ -22,8 +22,11 @@ sub execute ($self, $wf) {
         # Create invoice here
         Invoice::Model::Workflow->new(
             db => $pg->db
-        )->upsert(
-            $wf->id, $context->param('invoice_pkey')
+        )->insert(
+            $wf->id,
+            $context->param('invoice_pkey'),
+            $context->param('users_pkey'),
+            $context->param('companies_pkey')
         );
 
         $wf->add_history(

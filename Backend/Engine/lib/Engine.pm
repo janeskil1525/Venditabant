@@ -11,6 +11,7 @@ our $VERSION = '0.07';
 use Engine::Load::Workflow;
 use Engine::Load::DataPrecheck;
 use Engine::Load::Transit;
+use Engine::Model::Transit;
 
 has 'pg';
 has 'config';
@@ -51,10 +52,18 @@ async sub execute  {
 async sub auto_transits ($self) {
     # Engine::Load::Transit;
 
-    my $data = Engine::Load::Transit->new(
+    my $items = await Engine::Load::Transit->new(
         pg => $self->pg
-    )->auto_transit('invoice_simple');
+    )->auto_transit();
 
-
+    foreach my $item (@{$items}) {
+        foreach my $transit (@{$item->{data}}) {
+            my $wf = FACTORY->fetch_workflow( $item->{workflow}, $transit->{workflow_id});
+            my @avail = $wf->get_current_actions();
+            if ($item->{activity} ~~ @avail) {
+                $wf->execute_action($item->{activity});
+            }
+        }
+    }
 }
 1;;

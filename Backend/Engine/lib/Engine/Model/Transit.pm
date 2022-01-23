@@ -5,18 +5,24 @@ has 'db';
 
 sub insert($self, $data) {
 
+    my $users = '';
+    if (exists  $data->{users_pkey}) {
+        $users = qq{
+            (SELECT userid FROM users WHERE users_pkey = $data->{users_pkey}),
+                    (SELECT userid FROM users WHERE users_pkey = $data->{users_pkey}),
+        };
+    } else {
+        $users = "'System', System',"
+    }
     my $stmt = qq{
         INSERT INTO transit(insby, modby, type, activity, payload, status)
-            VALUES ((SELECT userid FROM users WHERE users_pkey = ?),
-                    (SELECT userid FROM users WHERE users_pkey = ?), ?,?,?,?)
+            VALUES ($users ?,?,?,?)
         RETURNING transit_pkey
     };
     my $transit_pkey;
     eval {
         $transit_pkey = $self->db->query(
             $stmt,(
-                $data->{users_pkey},
-                $data->{users_pkey},
                 $data->{type},
                 $data->{activity},
                 $data->{payload},

@@ -1,10 +1,12 @@
 package Engine::Load::Transit;
 use Mojo::Base -base, -signatures, -async_await;
 
+use Engine::Model::Workflows;
+use Engine::Config::Configuration;
+
 has 'pg';
 
-
-async sub auto_transit ($self, $worlflow) {
+async sub auto_transit ($self) {
 
     my $class;
     my $required_classes = '';
@@ -16,37 +18,43 @@ async sub auto_transit ($self, $worlflow) {
         "Engine::Load::Transit auto_transit Starting precheck"
     );
 
-    my $config = await $self->_auto_transit($worlflow);
-    my $transits = $config->{auto_transit}->{actions};
-    my $error = 0;
-    my $err;
-    
-    foreach my $transit (@{$transits}) {
-        $log->debug(
-            "Engine::Load::Transit auto_transit will create $transit->{class}"
-        );
+    my $workflows = await Engine::Model::Workflows->new(
+        db => $self->pg->db
+    )->load_list();
 
+    foreach my $workflow (@{$workflows}) {
+        my $transits = await $self->_auto_transit($workflow->{workflow});
+
+        my $error = 0;
         my $err;
-        eval {
-            $class = await $self->_require($required_classes, $transit->{class});
-            if (ref $class ne $transit->{class}) {
-                $class = $transit->{class}->new(pg => $self->pg);
-            }
 
+        foreach my $transit (@{$transits}) {
+            $transit = $transit->{transit};
             $log->debug(
-                "Engine::Load::Transit auto_transit will perform action $transit->{name}"
+                "Engine::Load::Transit auto_transit will create $transit->{class}"
             );
 
-            my $method = $transit->{method};
-            $data->{data} = await $class->$method();
-            $data->{action} = $transit->{action};
-            push @{$result}, $data;
-        };
-        $err = $@ if $@;
-        $log->error(
-            "Engine::Load::Transit auto_transit  " . $err
-        ) if $err;
+            eval {
+                $class = await $self->_require($required_classes, $transit->{class});
+                if (ref $class ne $transit->{class}) {
+                    $class = $transit->{class}->new(pg => $self->pg);
+                }
 
+                $log->debug(
+                    "Engine::Load::Transit auto_transit will perform action $transit->{name}"
+                );
+
+                my $method = $transit->{method};
+                $data->{data} = await $class->$method();
+                $data->{activity} = $transit->{activity};
+                $data->{workflow} = $workflow;
+                push @{$result}, $data;
+            };
+            $err = $@ if $@;
+            $log->error(
+                "Engine::Load::Transit auto_transit  " . $err
+            ) if defined $err;
+        }
     }
 
     return $result;
@@ -85,7 +93,11 @@ async sub _auto_transit($self, $workflow) {
         $workflow, $types
     );
 
-    return $config;
+    my $result;
+    if(exists $config->{auto_transit}) {
+        $result = $config->{auto_transit}->{transits};
+    }
+    return $result;
 }
 
 1;

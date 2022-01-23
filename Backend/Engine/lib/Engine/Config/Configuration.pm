@@ -13,6 +13,11 @@ my %XML_OPTIONS = (
             [ 'action', 'field', 'groups'],
         KeyAttr => [],
     },
+    auto_transit => {
+        ForceArray =>
+            [ 'transits'],
+        KeyAttr => [],
+    },
     action => {
         ForceArray =>
             [ 'action', 'field', 'source_list', 'param', 'validator', 'arg' ],

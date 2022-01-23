@@ -20,7 +20,7 @@ sub execute() {
     $data->{workflow_id} = 55;
     push @{$data->{actions}}, 'invoice_order';
 
-    my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';
+    my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_transit_log.conf';
     $config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';
     Engine->new(
         pg => $pg,

@@ -5,13 +5,15 @@ use Data::Dumper;
 
 has 'db';
 
-sub upsert($self, $workflow_id, $invoice_pkey) {
+sub insert($self, $workflow_id, $invoice_pkey, $users_pkey, $companies_pkey) {
 
     $self->db->insert(
         'workflow_invoice',
             {
-                workflow_id      => $workflow_id,
-                invoice_fkey => $invoice_pkey,
+                workflow_id    => $workflow_id,
+                invoice_fkey   => $invoice_pkey,
+                users_fkey     => $users_pkey,
+                companies_fkey => $companies_pkey
             }
     );
 }
@@ -35,7 +37,7 @@ sub load_workflow_list ($self) {
 
     my $result = $self->db->select(
         'workflow_invoice',
-            ['workflow_id'],
+            ['*'],
             {
                 closed => 'false',
             }

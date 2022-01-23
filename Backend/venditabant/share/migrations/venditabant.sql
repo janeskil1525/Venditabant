@@ -2431,5 +2431,10 @@ ALTER TYPE workflowtype
     ADD VALUE 'auto_transit';
 
 ALTER TABLE workflow_invoice
-    ADD COLUMN closed BOOLEAN NOT NULL DEFAULT 'false'
+    ADD COLUMN closed BOOLEAN NOT NULL DEFAULT 'false';
+
+ALTER TABLE workflow_invoice
+    ADD COLUMN users_fkey BIGINT NOT NULL DEFAULT 0,
+    ADD COLUMN companies_fkey BIGINT NOT NULL DEFAULT 0;
+
 -- 47 down

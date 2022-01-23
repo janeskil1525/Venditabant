@@ -10,6 +10,8 @@ use MooX::Options;
 use Data::Dumper;
 use feature 'say';
 use feature 'signatures';
+no warnings 'experimental';
+
 use POSIX qw(strftime);
 use Config::Tiny;
 use Try::Tiny;
@@ -37,7 +39,7 @@ sub execute {
 
     Log::Log4perl->easy_init($ERROR);
     eval {
-        Log::Log4perl::init($self->get_configpath() . 'engine_log.conf');
+        Log::Log4perl::init($self->get_configpath() . 'engine_auto_log.conf');
     };
     say $@ if $@;
 
@@ -45,7 +47,7 @@ sub execute {
 
     my $config;
     eval {
-        $config = get_config($self->get_configpath() . 'engine.ini');
+        $config = get_config($self->get_configpath() . 'engine_auto.ini');
     };
     say $@ if $@;
 
@@ -56,67 +58,31 @@ sub execute {
     #say $pg->db->query('select version() as version')->hash->{version};
     my $log = Log::Log4perl->get_logger();
 
-    # $self->_process_conditions($log, $pg);
-    $self->_process_transit($log, $pg);
-
+    $self->_process_auto_conditions($log, $pg, $config);
 
     $self->_log_script_done();
 }
 
-sub _process_auto_conditions($self, $log, $pg) {
+sub _process_auto_conditions($self, $log, $pg, $config) {
 
     try {
+        Engine->new(
+            pg => $pg,
+            config => $config
+        )->auto_transits()->then(sub{
+            my $result = shift;
+            $result = $result;
+        })->catch(sub{
+            my $err = shift;
+            $log->error('execute ' . $err);
 
+        })->wait();
     } catch {
         say $_;
         $log->error('execute ' . $_)
     };
 }
 
-sub _process_transit($self, $log, $pg) {
-
-    try {
-        my $transits = Engine::Model::Transit->new(db => $pg->db)->load_transits('workflow', 0);
-        foreach my $transit (@{$transits}) {
-            Engine::Model::Transit->new(
-                db => $pg->db
-            )->set_status(
-                $transit->{transit_pkey}, 1
-            );
-
-            $log->debug('execute ' . $transit->{workflow} . ' ' . $transit->{activity});
-
-            my $data = decode_json $transit->{payload};
-            if(index($transit->{activity},',') > -1) {
-                @{$data->{actions}} = split(', ', $transit->{activity});
-            } else {
-                push @{$data->{actions}}, $transit->{activity};
-            }
-
-            Engine->new(
-                pg => $pg,
-                config => $config
-            )->execute(
-                $transit->{workflow}, $data
-            )->then(sub{
-                my $result = shift;
-                Engine::Model::Transit->new(
-                    db => $pg->db
-                )->set_status($transit->{transit_pkey}, 2);
-            })->catch(sub{
-                my $err = shift;
-                $log->error('execute ' . $err);
-                Engine::Model::Transit->new(
-                    db => $pg->db
-                )->set_status($transit->{transit_pkey}, 0);
-            })->wait();
-        }
-
-    } catch {
-        say $_;
-        $log->error('execute ' . $_)
-    };
-}
 
 sub get_config{
     my ($configfile) = @_;

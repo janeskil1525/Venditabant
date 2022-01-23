@@ -24,7 +24,7 @@ sub execute {
     $item->{companies_fkey} = 24;
     $item->{users_fkey} = 24;
 
-    my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';
+    my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_transit_log.conf';
     $config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';
 
     Salesorder::PreCheck::Item->new(

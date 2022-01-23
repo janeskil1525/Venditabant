@@ -2437,4 +2437,6 @@ ALTER TABLE workflow_invoice
     ADD COLUMN users_fkey BIGINT NOT NULL DEFAULT 0,
     ADD COLUMN companies_fkey BIGINT NOT NULL DEFAULT 0;
 
+INSERT INTO system_settings (setting, value)
+    VALUES ('INVOICE_STORE', '/home/jan/Publikt/');
 -- 47 down

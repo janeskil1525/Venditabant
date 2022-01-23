@@ -7,6 +7,7 @@ use Document::Helpers::Store;
 
 use Data::UUID;
 use Data::Dumper;
+use Pandoc;
 
 has 'pg';
 
@@ -31,12 +32,13 @@ sub create($self, $companies_pkey, $users_pkey, $languages_pkey, $document, $dat
             $companies_pkey, $users_pkey, $data, $template
         );
 
-        Document::Helpers::Store->new(
+        my $path = Document::Helpers::Store->new(
             pg => $self->pg
         )->store(
-            $document_content,
-
+            $document_content, $companies_pkey, $users_pkey, $languages_pkey, $data->{id_token}
         );
+
+        # Pandoc
 
     };
     $err = $@ if $@;

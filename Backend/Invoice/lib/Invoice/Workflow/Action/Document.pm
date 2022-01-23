@@ -19,29 +19,52 @@ sub execute ($self, $wf) {
     my $pg =  $self->get_pg();
     my $context = $wf->context;
 
-    if($context->param('invoice_pkey') == 0) {
+    if($context->param('invoice_fkey') == 0) {
         # Create invoice document here
+        $wf->add_history(
+            Workflow::History->new({
+                action      => "Create document started",
+                description => "Documents for invoice with key $context->param('invoice_fkey') creation process started",
+                user        => $context->param('history')->{userid},
+            })
+        );
 
         my $data = Invoice::Helpers::Load->new(
             pg => $pg
         )->load_invoice_full(
-            $context->param('companies_pkey'),
-            $context->param('users_pkey'),
-            $context->param('invoice_pkey')
+            $context->param('companies_fkey'),
+            $context->param('users_fkey'),
+            $context->param('invoice_fkey')
+        );
+
+        $wf->add_history(
+            Workflow::History->new({
+                action      => "Create document invoice loaded",
+                description => "Loaded full invoice with key $context->param('invoice_fkey') ",
+                user        => $context->param('history')->{userid},
+            })
         );
 
         Document::Helpers::Create->new(
             pg => $pg
         )->create(
-            $context->param('companies_pkey'),
-            $context->param('users_pkey'),
+            $context->param('companies_fkey'),
+            $context->param('users_fkey'),
             $data->{company}->{languages_fkey},
             'Invoice',
             $data
         );
+
+        $wf->add_history(
+            Workflow::History->new({
+                action      => "document created for invoice",
+                description => "Documents created for invoice with key $context->param('invoice_fkey') ",
+                user        => $context->param('history')->{userid},
+            })
+        );
     }
 
-    return $context->param('invoice_pkey');
+    return $context->param('invoice_fkey');
 }
 
 sub get_pg($self) {

@@ -60,15 +60,15 @@ async sub auto_transits ($self) {
         foreach my $transit (@{$item->{data}}) {
             my $data;
             $data->{workflow_id} = $transit->{workflow_id};
-            $data->{invoice_pkey} = $transit->{invoice_pkey};
-            $data->{users_pkey} = $transit->{users_pkey};
-            $data->{companies_pkey} = $transit->{companies_pkey};
+            $data->{invoice_pkey} = $transit->{invoice_fkey};
+            $data->{users_pkey} = $transit->{users_fkey};
+            $data->{companies_pkey} = $transit->{companies_fkey};
 
             my $wf = await Engine::Load::Workflow->new(
                 pg     => $self->pg,
                 config => $self->config,
             )->load (
-                $item->{workflow}, $data
+                $item->{workflow}->{workflow}, $data
             );
             my @avail = $wf->get_current_actions();
             if ($item->{activity} ~~ @avail) {

@@ -39,7 +39,7 @@ sub execute {
 
     Log::Log4perl->easy_init($ERROR);
     eval {
-        Log::Log4perl::init($self->get_configpath() . 'engine_transitlog.conf');
+        Log::Log4perl::init($self->get_configpath() . 'engine_transit_log.conf');
     };
     say $@ if $@;
 

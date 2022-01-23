@@ -58,7 +58,18 @@ async sub auto_transits ($self) {
 
     foreach my $item (@{$items}) {
         foreach my $transit (@{$item->{data}}) {
-            my $wf = FACTORY->fetch_workflow( $item->{workflow}, $transit->{workflow_id});
+            my $data;
+            $data->{workflow_id} = $transit->{workflow_id};
+            $data->{invoice_pkey} = $transit->{invoice_pkey};
+            $data->{users_pkey} = $transit->{users_pkey};
+            $data->{companies_pkey} = $transit->{companies_pkey};
+
+            my $wf = await Engine::Load::Workflow->new(
+                pg     => $self->pg,
+                config => $self->config,
+            )->load (
+                $item->{workflow}, $data
+            );
             my @avail = $wf->get_current_actions();
             if ($item->{activity} ~~ @avail) {
                 $wf->execute_action($item->{activity});

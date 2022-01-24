@@ -5,12 +5,14 @@ use Data::Dumper;
 
 use Invoice::Model::Head;
 use Invoice::Model::Item;
-use venditabant::Model::Company;
-use venditabant::Model::Customer::Customers;
+use Invoice::Model::Company;
+use Invoice::Model::Customers;
 
 has 'pg';
 
 sub load_invoice_full ($self, $companies_pkey, $users_pkey, $invoice_pkey) {
+
+    my $logpath = "/home/jan/Project/Venditabant/Backend/venditabant/conf/";
 
     my $log = Log::Log4perl->get_logger();
 

@@ -45,7 +45,7 @@ sub insert ($self, $companies_pkey, $users_pkey, $invoicehead) {
 
 }
 
-async sub load_invoice($self, $companies_pkey, $users_pkey, $invoice_fkey) {
+async sub load_invoice_p ($self, $companies_pkey, $users_pkey, $invoice_fkey) {
 
     my $result = $self->db->select (
         'invoice', ['*'],
@@ -60,4 +60,18 @@ async sub load_invoice($self, $companies_pkey, $users_pkey, $invoice_fkey) {
     return $hash;
 }
 
+sub load_invoice($self, $companies_pkey, $users_pkey, $invoice_fkey) {
+
+    my $result = $self->db->select (
+        'invoice', ['*'],
+        {
+            companies_fkey    => $companies_pkey,
+            invoice_pkey => $invoice_fkey,
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result->rows;
+    return $hash;
+}
 1;

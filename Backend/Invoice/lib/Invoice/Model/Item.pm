@@ -38,11 +38,30 @@ sub insert ($self, $companies_pkey, $users_pkey, $invoiceitem) {
     );
 }
 
-async sub load_items_list ($self, $companies_pkey, $users_pkey, $invoice_pkey) {
+async sub load_items_list_p ($self, $companies_pkey, $users_pkey, $invoice_pkey) {
 
     my $result = $self->db->select(
-        ['invoice_items',['stockitems', stockitems_pkey => 'stockitems_fkey']],
-        ['invoice_items_pkey', 'invoice_fkey', 'stockitems_fkey', 'stockitem', 'quantity', 'price','description', 'vat','vatsum','netsum','total'],
+        'invoice_items',
+        ['invoice_items_pkey', 'invoice_fkey', 'stockitem', 'quantity', 'price','description', 'vat','vatsum','netsum','total'],
+        {
+            invoice_fkey => $invoice_pkey
+        },
+        {
+            order_by => 'stockitem'
+        }
+    );
+
+    my $hash;
+    $hash = $result->hashes if $result and $result->rows > 0;
+
+    return $hash;
+}
+
+sub load_items_list ($self, $companies_pkey, $users_pkey, $invoice_pkey) {
+
+    my $result = $self->db->select(
+        'invoice_items',
+        ['invoice_items_pkey', 'invoice_fkey', 'stockitem', 'quantity', 'price','description', 'vat','vatsum','netsum','total'],
         {
             invoice_fkey => $invoice_pkey
         },

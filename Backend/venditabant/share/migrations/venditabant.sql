@@ -2439,4 +2439,8 @@ ALTER TABLE workflow_invoice
 
 INSERT INTO system_settings (setting, value)
     VALUES ('INVOICE_STORE', '/home/jan/Publikt/');
+
+ALTER TABLE invoice_items
+    ADD COLUMN description VARCHAR NOT NULL DEFAULT '';
+
 -- 47 down

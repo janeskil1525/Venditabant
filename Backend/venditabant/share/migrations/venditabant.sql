@@ -2368,9 +2368,9 @@ CREATE TABLE IF NOT EXISTS documents
 (
     documents_pkey serial NOT NULL ,
     editnum bigint NOT NULL DEFAULT 1,
-    insby character varying COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    insby varchar NOT NULL DEFAULT 'System'::character varying,
     insdatetime timestamp without time zone NOT NULL DEFAULT now(),
-    modby character varying COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    modby varchar NOT NULL DEFAULT 'System'::character varying,
     moddatetime timestamp without time zone NOT NULL DEFAULT now(),
     document character varying(200) COLLATE pg_catalog."default" NOT NULL DEFAULT ''::character varying,
     description character varying COLLATE pg_catalog."default" NOT NULL DEFAULT ''::character varying,
@@ -2381,9 +2381,9 @@ CREATE TABLE IF NOT EXISTS default_documents
 (
     default_documents_pkey integer NOT NULL DEFAULT nextval('default_mailer_mails_default_mailer_mails_pkey_seq'::regclass),
     editnum bigint NOT NULL DEFAULT 1,
-    insby character varying COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    insby varchar NOT NULL DEFAULT 'System'::character varying,
     insdatetime timestamp without time zone NOT NULL DEFAULT now(),
-    modby character varying COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    modby varchar NOT NULL DEFAULT 'System'::character varying,
     moddatetime timestamp without time zone NOT NULL DEFAULT now(),
     documents_fkey bigint NOT NULL,
     header_value text COLLATE pg_catalog."default" NOT NULL DEFAULT ''::text,
@@ -2442,5 +2442,50 @@ INSERT INTO system_settings (setting, value)
 
 ALTER TABLE invoice_items
     ADD COLUMN description VARCHAR NOT NULL DEFAULT '';
+
+CREATE TABLE IF NOT EXISTS files
+(
+    files_pkey serial NOT NULL ,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby varchar NOT NULL DEFAULT 'System'::character varying,
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby varchar NOT NULL DEFAULT 'System'::character varying,
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    name varchar NOT NULL,
+    path varchar NOT NULL,
+    type varchar NOT NULL,
+    full_path  varchar UNIQUE NOT NULL,
+    CONSTRAINT files_pkey PRIMARY KEY (files_pkey)
+
+);
+
+CREATE TABLE IF NOT EXISTS files_invoice
+(
+    files_invoice_pkey  serial                                     NOT NULL,
+    editnum         bigint                                         NOT NULL DEFAULT 1,
+    insby           varchar NOT NULL DEFAULT 'System'::character varying,
+    insdatetime     timestamp without time zone                    NOT NULL DEFAULT now(),
+    modby           varchar COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime     timestamp without time zone                    NOT NULL DEFAULT now(),
+    files_fkey      BIGINT NOT NULL,
+    invoice_fkey    BIGINT NOT NULL,
+    CONSTRAINT files_invoice_pkey PRIMARY KEY (files_invoice_pkey),
+    CONSTRAINT files_invoice_files_fkey FOREIGN KEY (files_fkey)
+        REFERENCES files (files_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT files_invoice_invoice_fkey FOREIGN KEY (invoice_fkey)
+        REFERENCES invoice (invoice_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX idx_files_invoice_files_fkey
+    ON files_invoice(files_fkey);
+
+CREATE INDEX idx_files_invoice_invoice_fkey
+    ON files_invoice(invoice_fkey);
 
 -- 47 down

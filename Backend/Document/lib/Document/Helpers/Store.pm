@@ -8,23 +8,22 @@ use Document::Model::SystemSettings;
 
 has 'pg';
 
-sub store ($self, $document_content, $companies_pkey, $users_pkey, $languages_pkey, $filename) {
+sub store ($self, $document_content, $companies_pkey, $users_pkey, $path, $filename, $filetype) {
 
     my $response;
     my $log = Log::Log4perl->get_logger();
 
-    my $path = Document::Model::SystemSettings->new(
+    my $base_path = Document::Model::SystemSettings->new(
         db => $self->pg->db
     )->load_setting(
-        'INVOICE_STORE'
+        $filetype
     );
 
-    $path . $companies_pkey . '/' . $languages_pkey . '/';
     my $err;
     eval {
-        my $file = Mojo::File->new();
+        my $file = Mojo::File->new($base_path->{value});
 
-        my $file_path = $file->path($path)->make_path;
+        my $file_path = $file->path($path . $filetype . '/')->make_path();
 
         $response = $file_path->child($filename)->spurt($document_content);
     };

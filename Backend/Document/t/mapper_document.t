@@ -6,6 +6,11 @@ use Test::More;
 use Document::Helpers::Mapper;
 use Document::Model::Documents;
 use Invoice::Helpers::Load;
+use Document::Helpers::Store;
+use Data::UUID;
+use Invoice::Helpers::Files;
+use Document::Helpers::Files;
+
 use Log::Log4perl qw(:easy);
 
 use Mojo::Pg;
@@ -47,7 +52,33 @@ sub execute {
         $template
     );
 
-    return defined $document_content;
+    my $ug = Data::UUID->new();
+    my $token = $ug->create();
+
+    my $filename = $ug->to_string($token) . '.html';
+    my $doc_path = 24 . '/' . 1 . '/';
+    my $path = Document::Helpers::Store->new(
+        pg => $pg
+    )->store(
+        $document_content, 24, 24, $doc_path, $filename, 'INVOICE_STORE'
+    );
+
+    my $file_data->{name} = $filename;
+    $file_data->{path} = $doc_path . 'INVOICE_STORE/';
+    $file_data->{type} = 'html';
+    $file_data->{full_path} = $path;
+
+    # Invoice::Helpers::Files->
+    my $files_pkey = Document::Helpers::Files->new(pg => $pg)->insert($file_data);
+    my $files_invoice->{invoice_fkey} = $data->{invoice}->{invoice_pkey};
+    $files_invoice->{files_fkey} = $files_pkey;
+
+    my $files_invoice_pkey = Invoice::Helpers::Files->new(pg => $pg)->insert($files_invoice);
+
+    if(defined $files_invoice_pkey) {
+        $files_invoice_pkey = $files_invoice_pkey;
+    }
+    return defined $path;
 }
 
 

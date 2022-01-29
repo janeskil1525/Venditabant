@@ -59,10 +59,18 @@ async sub auto_transits ($self) {
     foreach my $item (@{$items}) {
         foreach my $transit (@{$item->{data}}) {
             my $data;
+
             $data->{workflow_id} = $transit->{workflow_id};
             $data->{invoice_pkey} = $transit->{invoice_fkey};
             $data->{users_pkey} = $transit->{users_fkey};
             $data->{companies_pkey} = $transit->{companies_fkey};
+            $data->{actions} = $item->{activity};
+
+            $data = await Engine::Load::DataPrecheck->new(
+                pg => $self->pg
+            )->precheck(
+                $item->{workflow}->{workflow}, $data
+            );
 
             my $wf = await Engine::Load::Workflow->new(
                 pg     => $self->pg,
@@ -72,6 +80,7 @@ async sub auto_transits ($self) {
             );
             my @avail = $wf->get_current_actions();
             if ($item->{activity} ~~ @avail) {
+                $wf->context->param(history => $data->{history});
                 $wf->execute_action($item->{activity});
             }
         }

@@ -19,7 +19,7 @@ sub execute ($self, $wf) {
     my $pg =  $self->get_pg();
     my $context = $wf->context;
 
-    if($context->param('invoice_fkey') == 0) {
+    if($context->param('invoice_fkey') > 0) {
         # Create invoice document here
         $wf->add_history(
             Workflow::History->new({

@@ -73,11 +73,18 @@ async sub precheck ($self, $worlflow, $data) {
 sub check_condition($self, $condition, $actions) {
 
     my $exists = 0;
-    foreach my $action (@{$actions}) {
-        if(index($condition, $action) > -1) {
+    if(ref $actions eq 'ARRAY') {
+        foreach my $action (@{$actions}) {
+            if(index($condition, $action) > -1) {
+                $exists = 1;
+            }
+        }
+    } else {
+        if(index($condition, $actions) > -1) {
             $exists = 1;
         }
     }
+
     return $exists;
 }
 

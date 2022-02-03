@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::System::Processor;
+package Mailer::Helpers::Mailer::System::Processor;
 use Mojo::Base 'venditabant::Helpers::Mailer::System::Sender', -signatures, -async_await;
 
 use venditabant::Model::Mail::MailerMails;
@@ -23,7 +23,7 @@ async sub _set_mail_sent($self, $mailer_mails_pkey) {
 
     my $err;
     eval {
-        venditabant::Model::Mail::MailerMails->new(
+        Model::MailerMails->new(
             db => $self->pg->db
         )->set_sent(
             $mailer_mails_pkey
@@ -51,7 +51,7 @@ async sub _load_smtp_settings($self) {
 }
 
 async sub _load_mail ($self, $mailer_mails_pkey) {
-    return await venditabant::Model::Mail::MailerMails->new(
+    return await Model::MailerMails->new(
         db => $self->pg->db
     )->load_mail(
         $mailer_mails_pkey

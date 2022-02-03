@@ -69,7 +69,7 @@ sub execute {
     $file_data->{full_path} = $path;
 
     # Invoice::Helpers::Files->
-    my $files_pkey = Document::Helpers::Files->new(pg => $pg)->insert($file_data);
+    my $files_pkey = DMS::Helpers::Files->new(pg => $pg)->insert($file_data);
     my $files_invoice->{invoice_fkey} = $data->{invoice}->{invoice_pkey};
     $files_invoice->{files_fkey} = $files_pkey;
 

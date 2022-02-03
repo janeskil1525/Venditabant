@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::Mails::Loader::Templates;
+package Mailer::Helpers::Mailer::Mails::Loader::Templates;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::Mail::Mailtemplates;
@@ -12,7 +12,7 @@ async sub load_template($self, $companies_pkey, $users_pkey, $languages_fkey, $t
     my $err;
     my $template_obj;
     eval {
-        $template_obj = await venditabant::Model::Mail::Mailtemplates->new(
+        $template_obj = await Model::Mailtemplates->new(
             db => $self->pg->db
         )->load_template(
             $companies_pkey, $users_pkey, $languages_fkey, $template

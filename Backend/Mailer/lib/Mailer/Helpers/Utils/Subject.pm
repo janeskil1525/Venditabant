@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::Mails::Utils::Subject;
+package Mailer::Helpers::Mailer::Mails::Utils::Subject;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::Lan::Translations;

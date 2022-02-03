@@ -1,13 +1,13 @@
-package Document::Helpers::Files;
+package DMS::Helpers::Files;
 use Mojo::Base -base, -signatures;
 
-use Document::Model::Files;
+use DMS::Model::Files;
 
 has 'pg';
 
 sub insert ($self, $data) {
 
-    my $files_pkey = Document::Model::Files->new(
+    my $files_pkey = DMS::Model::Files->new(
         db => $self->pg->db
     )->insert(
         $data

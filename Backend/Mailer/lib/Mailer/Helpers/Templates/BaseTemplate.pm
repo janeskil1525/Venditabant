@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::Templates::BaseTemplate;
+package Mailer::Helpers::Mailer::Templates::BaseTemplate;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 

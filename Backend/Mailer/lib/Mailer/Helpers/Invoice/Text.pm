@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::Mails::Invoice::Text;
+package Mailer::Helpers::Mailer::Mails::Invoice::Text;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use HTML::Entities;

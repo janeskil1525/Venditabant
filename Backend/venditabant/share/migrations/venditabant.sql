@@ -2488,4 +2488,10 @@ CREATE INDEX idx_files_invoice_files_fkey
 CREATE INDEX idx_files_invoice_invoice_fkey
     ON files_invoice(invoice_fkey);
 
+CREATE UNIQUE INDEX idx_files_invoice_files_fkey_invoice_fkey
+    ON files_invoice(files_fkey, invoice_fkey);
+
+ALTER TABLE customer_addresses
+    ADD COLUMN mail_invoice BIGINT NOT NULL DEFAULT 0;
+
 -- 47 down

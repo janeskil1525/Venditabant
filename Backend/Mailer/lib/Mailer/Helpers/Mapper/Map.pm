@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::Mails::Mapper::Map;
+package Mailer::Helpers::Mailer::Mails::Mapper::Map;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::System::Mappings;

@@ -11,10 +11,19 @@ use Workflow::Factory qw( FACTORY );
 use Workflow::History;
 use Workflow::Exception qw( workflow_error );
 
+use Invoice::Helpers::Files;
+
 sub execute ($self, $wf) {
 
     my $pg =  $self->get_pg();
     my $context = $wf->context;
+
+    my $file = Invoice::Helpers::Files->new(
+        pg => $pg
+    )->load_file(
+        $context->param('invoice_fkey'), 'pdf'
+    );
+
 
 }
 

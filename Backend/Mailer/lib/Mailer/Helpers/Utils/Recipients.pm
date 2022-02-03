@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::Mails::Utils::Recipients;
+package Mailer::Helpers::Mailer::Mails::Utils::Recipients;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::Users;

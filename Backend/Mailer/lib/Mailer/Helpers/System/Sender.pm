@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::System::Sender;
+package Mailer::Helpers::Mailer::System::Sender;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Helpers::System::Settings;

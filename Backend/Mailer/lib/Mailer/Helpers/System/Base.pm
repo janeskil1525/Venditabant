@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::System::Base;
+package Mailer::Helpers::Mailer::System::Base;
 use Mojo::Base 'Daje::Utils::Sentinelsender';
 
 

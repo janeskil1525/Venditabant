@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::Templates::Mailtemplates;
+package Mailer::Helpers::Mailer::Templates::Mailtemplates;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 
@@ -15,13 +15,13 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $json_hash) {
     my $err;
     eval {
         if(exists $json_hash->{default_mailer_mails_pkey} and $json_hash->{default_mailer_mails_pkey} > 0) {
-            my $hashes = venditabant::Model::Mail::Mailtemplates->new(
+            my $hashes = Model::Mailtemplates->new(
                 db => $db
             )->update (
                 $companies_pkey, $users_pkey, $json_hash
             );
         } else {
-            my $hashes = venditabant::Model::Mail::Mailtemplates->new(
+            my $hashes = Model::Mailtemplates->new(
                 db => $db
             )->upsert (
                 $companies_pkey, $users_pkey, $json_hash
@@ -42,7 +42,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $json_hash) {
 
 async sub load_list ($self, $mailer_pkey) {
 
-    my $hashes = venditabant::Model::Mail::Mailtemplates->new(
+    my $hashes = Model::Mailtemplates->new(
         db => $self->pg->db
     )->load_list(
         $mailer_pkey
@@ -53,7 +53,7 @@ async sub load_list ($self, $mailer_pkey) {
 
 async sub load_mailer_list ($self) {
 
-    my $hashes = venditabant::Model::Mail::Mailtemplates->new(
+    my $hashes = Model::Mailtemplates->new(
         db => $self->pg->db
     )->load_mailer_list();
 

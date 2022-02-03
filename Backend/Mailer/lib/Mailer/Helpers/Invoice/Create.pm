@@ -1,4 +1,4 @@
-package venditabant::Helpers::Mailer::Mails::Invoice::Create;
+package Mailer::Helpers::Mailer::Mails::Invoice::Create;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Helpers::Invoice::Invoices;
@@ -6,7 +6,7 @@ use venditabant::Helpers::Mailer::Mails::Loader::Templates;
 use venditabant::Helpers::Mailer::Mails::Invoice::Text;
 use venditabant::Helpers::System::Pdf;
 use venditabant::Helpers::Mailer::System::Processor;
-use venditabant::Model::Mail::MailerMailsAttachments;
+use Model::MailerMailsAttachments;
 use venditabant::Model::Mail::MailerMails;
 use venditabant::Model::Lan::Translations;
 use venditabant::Helpers::Mailer::Mails::Utils::Subject;
@@ -70,13 +70,13 @@ async sub create($self, $companies_pkey, $users_pkey, $invoice_pkey) {
             companies_pkey  => $companies_pkey
         )->get_recipients();
 
-        my $mailer_mails_pkey = await venditabant::Model::Mail::MailerMails->new(
+        my $mailer_mails_pkey = await Model::MailerMails->new(
             db => $db
         )->insert(
             $companies_pkey, $recipients, $subject, $mail_content
         );
 
-        # await venditabant::Model::Mail::MailerMailsAttachments->new(
+        # await Model::MailerMailsAttachments->new(
         #     db => $db
         # )->insert(
         #     $mailer_mails_pkey, $path

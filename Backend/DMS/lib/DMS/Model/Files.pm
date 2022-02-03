@@ -1,4 +1,4 @@
-package Document::Model::Files;
+package DMS::Model::Files;
 use Mojo::Base -base, -signatures;
 
 

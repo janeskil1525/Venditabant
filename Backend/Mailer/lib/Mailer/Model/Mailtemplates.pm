@@ -1,4 +1,4 @@
-package venditabant::Model::Mail::Mailtemplates;
+package Model::Mailtemplates;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;

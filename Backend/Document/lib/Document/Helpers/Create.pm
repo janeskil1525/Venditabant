@@ -5,13 +5,13 @@ use Document::Model::Documents;
 use Document::Helpers::Mapper;
 use Document::Helpers::Store;
 
-use Document::Helpers::Files;
+use DMS::Helpers::Files;
 use Invoice::Helpers::Files;
 
 use Data::UUID;
 use Data::Dumper;
 
-use Pandoc;
+use PDF::WebKit;
 
 has 'pg';
 
@@ -49,45 +49,20 @@ sub create($self, $companies_pkey, $users_pkey, $languages_pkey, $document, $dat
         $file_data->{path} = $doc_path . 'INVOICE_STORE/';
         $file_data->{type} = 'html';
         $file_data->{full_path} = $path;
+        $self->_save_document($file_data, $data->{invoice}->{invoice_pkey});
 
-        # Invoice::Helpers::Files->
-        my $files_pkey = Document::Helpers::Files->new(
-            pg => $self->pg
-        )->insert(
-            $file_data
-        );
-        my $files_invoice->{invoice_fkey} = $data->{invoice}->{invoice_pkey};
-        $files_invoice->{files_fkey} = $files_pkey;
-
-        my $files_invoice_pkey = Invoice::Helpers::Files->new(
-            pg => $self->pg
-        )->insert(
-            $files_invoice
-        );
-
-        # Pandoc
         $filename = $data->{id_token} . '.pdf';
 
-        my $pdf_path = $path =~ s/html/pdf/r;
-        pandoc ['-pdf-engine' => 'pdflatex', -f => 'html', -t => 'pdf'], { in => \$path, out => \$pdf_path };
+        my $pdf_path = $path;
+        $pdf_path =~ s/html/pdf/ig;
 
+        my $kit = PDF::WebKit->new($path);
+        my $file = $kit->to_file($pdf_path);
         $file_data->{name} = $filename;
 
         $file_data->{type} = 'pdf';
         $file_data->{full_path} = $pdf_path;
-        $files_pkey = Document::Helpers::Files->new(
-            pg => $self->pg
-        )->insert(
-            $file_data
-        );
-        $files_invoice->{files_fkey} = $files_pkey;
-
-        $files_invoice_pkey = Invoice::Helpers::Files->new(
-            pg => $self->pg
-        )->insert(
-            $files_invoice
-        );
-
+        $self->_save_document($file_data, $data->{invoice}->{invoice_pkey});
     };
     $err = $@ if $@;
     $log->debug (
@@ -97,4 +72,24 @@ sub create($self, $companies_pkey, $users_pkey, $languages_pkey, $document, $dat
     return 1;
 }
 
+sub _save_document($self, $file_data, $invoice_pkey) {
+
+    my $files_pkey = DMS::Helpers::Files->new(
+        pg => $self->pg
+    )->insert(
+        $file_data
+    );
+
+    my $files_invoice->{invoice_fkey} = $invoice_pkey;
+    $files_invoice->{files_fkey} = $files_pkey;
+
+    # Måste generaliseras
+    my $files_invoice_pkey = Invoice::Helpers::Files->new(
+        pg => $self->pg
+    )->insert(
+        $files_invoice
+    );
+
+    return $files_invoice_pkey;
+}
 1;

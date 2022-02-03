@@ -29,7 +29,10 @@ async sub auto_transit ($self) {
         my $err;
 
         foreach my $transit (@{$transits}) {
-            $transit = $transit->{transit};
+            if(exists $transit->{transit}) {
+                $transit = $transit->{transit};
+            }
+
             $log->debug(
                 "Engine::Load::Transit auto_transit will create $transit->{class}"
             );
@@ -44,9 +47,13 @@ async sub auto_transit ($self) {
                     "Engine::Load::Transit auto_transit will perform action $transit->{name}"
                 );
 
+                my @activities = split(",", $transit->{activity});
+
                 my $method = $transit->{method};
                 $data->{data} = await $class->$method();
-                $data->{activity} = $transit->{activity};
+                foreach my $activity (@activities) {
+                    push @{$data->{activity}}, $activity;
+                }
                 $data->{workflow} = $workflow;
                 push @{$result}, $data;
             };
@@ -95,7 +102,12 @@ async sub _auto_transit($self, $workflow) {
 
     my $result;
     if(exists $config->{auto_transit}) {
-        $result = $config->{auto_transit}->{transits};
+        if(ref $config->{auto_transit}->{transits} eq 'ARRAY') {
+            $result = $config->{auto_transit}->{transits}[0]->{transit};
+        } else {
+            $result = $config->{auto_transit}->{transits};
+        }
+
     }
     return $result;
 }

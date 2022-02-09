@@ -1,4 +1,4 @@
-package Model::Mailtemplates;
+package Mailer::Model::Mailtemplates;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;
@@ -102,7 +102,25 @@ sub load_list ($self, $mailer_pkey) {
     return $hash
 }
 
-async sub load_template($self, $companies_pkey, $users_pkey, $language_fkey, $template) {
+async sub load_template_p($self, $companies_pkey, $users_pkey, $language_fkey, $template) {
+
+    my $result = $self->db->select(
+        ['default_mailer_mails',
+            ['mailer', 'mailer_pkey' => 'mailer_fkey']],
+        ['header_value', 'body_value', 'footer_value','sub1', 'sub2', 'sub3'],
+        {
+            languages_fkey => $language_fkey,
+            mailtemplate       => $template,
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash
+}
+
+sub load_template($self, $companies_pkey, $users_pkey, $language_fkey, $template) {
 
     my $result = $self->db->select(
         ['default_mailer_mails',

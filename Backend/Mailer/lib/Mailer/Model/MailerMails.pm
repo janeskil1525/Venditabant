@@ -1,5 +1,5 @@
-package Model::MailerMails;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package Mailer::Model::MailerMails;
+use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;
 

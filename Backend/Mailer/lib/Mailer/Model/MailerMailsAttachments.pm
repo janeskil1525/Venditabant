@@ -1,4 +1,4 @@
-package Model::MailerMailsAttachments;
+package Mailer::Model::MailerMailsAttachments;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Helpers::Files::File;

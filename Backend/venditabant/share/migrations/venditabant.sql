@@ -2494,4 +2494,15 @@ CREATE UNIQUE INDEX idx_files_invoice_files_fkey_invoice_fkey
 ALTER TABLE customer_addresses
     ADD COLUMN mail_invoice BIGINT NOT NULL DEFAULT 0;
 
+INSERT INTO workflows (workflow) VALUES ('invoice_mail');
+
+CREATE TABLE workflow_mail
+(
+    workflow_id  bigint not null,
+    mailer_mails_fkey bigint not null,
+    sent bigint not null DEFAULT 0,
+    primary key ( workflow_id )
+);
+
+
 -- 47 down

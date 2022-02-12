@@ -5,6 +5,7 @@ use base qw( Workflow::Action );
 no warnings  'experimental';
 
 use feature 'signatures';
+use feature 'say';
 
 use Data::Dumper;
 use Workflow::Factory qw( FACTORY );
@@ -14,12 +15,21 @@ use Workflow::Exception qw( workflow_error );
 use Mojo::JSON qw{encode_json};
 
 use Invoice::Helpers::Files;
+use Invoice::Helpers::Language;
+use Invoice::Model::Status;
+use Translations::Helpers::Translation;
 use Engine::Model::Transit;
 
 sub execute ($self, $wf) {
 
     my $pg =  $self->get_pg();
     my $context = $wf->context;
+
+    my $lan = Invoice::Helpers::Language->new(
+        pg => $pg
+    )->get_invoice_language(
+        $context->param('invoice_fkey')
+    );
 
     $wf->add_history(
         Workflow::History->new({
@@ -60,6 +70,22 @@ sub execute ($self, $wf) {
         db => $pg->db
     )->insert(
         $data
+    );
+
+    my $status = '';
+    eval {
+        $status = Translations::Helpers::Translation->new(
+            pg => $pg
+        )->get_translation(
+            $lan, 'MAILS', 'INVOICE_MAIL_INPROCESS'
+        );
+    };
+    say $@ if $@;
+
+    Invoice::Model::Status->new(
+        db => $pg->db
+    )->insert(
+        $file->{invoice_fkey}, $status
     );
 
     $wf->add_history(

@@ -2504,5 +2504,11 @@ CREATE TABLE workflow_mail
     primary key ( workflow_id )
 );
 
+INSERT INTO translations (languages_fkey, module, tag, translation)
+VALUES((SELECT languages_pkey FROM languages WHERE lan ='swe'),
+       'MAILS', 'INVOICE_MAIL_INPROCESS', 'Mail process påbörjad'),
+      ((SELECT languages_pkey FROM languages WHERE lan ='swe'),
+    'MAILS', 'INVOICE_DOCUMENTS_CREATED', 'Faktura dokument skapade');
+
 
 -- 47 down

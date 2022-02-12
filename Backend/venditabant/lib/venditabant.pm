@@ -17,7 +17,7 @@ use venditabant::Helpers::Customers::Address;
 use venditabant::Helpers::Companies::Company;
 use venditabant::Helpers::Sentinel::Sentinel;
 use venditabant::Helpers::Parameter::Languages;
-use venditabant::Helpers::Mailer::Templates::Mailtemplates;
+# use venditabant::Helpers::Mailer::Templates::Mailtemplates;
 use venditabant::Helpers::Warehouses::Warehouse;
 use venditabant::Helpers::Checkpoints::Autotodos;
 use venditabant::Helpers::Invoice::Invoices;

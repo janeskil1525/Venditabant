@@ -12,11 +12,11 @@ sub insert($self, $data) {
                     (SELECT userid FROM users WHERE users_pkey = $data->{users_pkey}),
         };
     } else {
-        $users = "'System', System',"
+        $users = "'System', 'System',"
     }
     my $stmt = qq{
-        INSERT INTO transit(insby, modby, type, activity, payload, status)
-            VALUES ($users ?,?,?,?)
+        INSERT INTO transit (insby, modby, type, activity, payload, status, workflow)
+            VALUES ($users ?,?,?,?,?)
         RETURNING transit_pkey
     };
     my $transit_pkey;
@@ -27,6 +27,7 @@ sub insert($self, $data) {
                 $data->{activity},
                 $data->{payload},
                 $data->{status},
+                $data->{workflow},
             )
         )->hash->{transit_pkey};
     };

@@ -13,6 +13,9 @@ use Workflow::Exception qw( workflow_error );
 
 use Document::Helpers::Create;
 use Invoice::Helpers::Load;
+use Invoice::Helpers::Language;
+use Translations::Helpers::Translation;
+use Invoice::Model::Status;
 
 sub execute ($self, $wf) {
 
@@ -20,6 +23,13 @@ sub execute ($self, $wf) {
     my $context = $wf->context;
 
     if($context->param('invoice_fkey') > 0) {
+
+        my $lan = Invoice::Helpers::Language->new(
+            pg => $pg
+        )->get_invoice_language(
+            $context->param('invoice_fkey')
+        );
+
         # Create invoice document here
         $wf->add_history(
             Workflow::History->new({
@@ -35,6 +45,18 @@ sub execute ($self, $wf) {
             $context->param('companies_fkey'),
             $context->param('users_fkey'),
             $context->param('invoice_fkey')
+        );
+
+        my $status = Translations::Helpers::Translation->new(
+            pg => $pg
+        )->get_translation(
+            $lan, 'MAILS', 'INVOICE_DOCUMENTS_CREATED'
+        );
+
+        Invoice::Model::Status->new(
+            db => $pg->db
+        )->insert(
+            $context->param('invoice_fkey'), $status
         );
 
         $wf->add_history(

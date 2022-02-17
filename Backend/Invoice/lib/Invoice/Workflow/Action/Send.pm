@@ -59,6 +59,7 @@ sub execute ($self, $wf) {
     $payload->{name} = $file->{name};
     $payload->{path} = $file->{path};
     $payload->{type} = $file->{type};
+    $payload->{template} = 'Invoice Mail';
 
     my $data->{type} = 'workflow';
     $data->{activity} = 'create_mail';

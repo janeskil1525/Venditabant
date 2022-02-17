@@ -13,9 +13,19 @@ use Workflow::Exception qw( workflow_error );
 
 sub execute ($self, $wf) {
 
-    my $pg = $self->get_pg();
+    my $pg =  $self->get_pg();
     my $context = $wf->context;
 
 
+    foreach my $recipient (@{$data->{customer}->{mailadresses}}) {
+
+    }
+
+
+
+}
+
+sub get_pg($self) {
+    return  FACTORY->get_persister( 'MailPersister' )->get_pg();
 }
 1;

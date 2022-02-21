@@ -2510,5 +2510,6 @@ VALUES((SELECT languages_pkey FROM languages WHERE lan ='swe'),
       ((SELECT languages_pkey FROM languages WHERE lan ='swe'),
     'MAILS', 'INVOICE_DOCUMENTS_CREATED', 'Faktura dokument skapade');
 
-
+ALTER TYPE workflowtype
+    ADD VALUE 'mappings';
 -- 47 down

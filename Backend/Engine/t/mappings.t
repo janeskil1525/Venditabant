@@ -15,7 +15,7 @@ sub mapping() {
     );
 
     my $data;
-    Engine::Load::Mappings->new(pg => $pg)->mappings('invoice_mail', $data)->then(sub{
+    Engine::Load::Mappings->new(pg => $pg)->mappings('invoice_mail', 'create_mail', $data)->then(sub{
         my $result = shift;
 
         $result = $result;

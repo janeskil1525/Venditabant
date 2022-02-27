@@ -2512,4 +2512,8 @@ VALUES((SELECT languages_pkey FROM languages WHERE lan ='swe'),
 
 ALTER TYPE workflowtype
     ADD VALUE 'mappings';
+
+ALTER TABLE customer_addresses
+    ADD COLUMN reference VARCHAR NOT NULL DEFAULT '';
+
 -- 47 down

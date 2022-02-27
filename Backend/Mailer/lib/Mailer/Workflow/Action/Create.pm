@@ -15,10 +15,16 @@ sub execute ($self, $wf) {
 
     my $pg =  $self->get_pg();
     my $context = $wf->context;
+    my $used_recipients = '';
+
+    $context = $context;
+    my $recipients = $context->params('recipients');
+    foreach my $recipient (@{$recipients}) {
+        if(index($used_recipients, $recipient) == -1) {
+            $used_recipients .= $recipient;
 
 
-    foreach my $recipient (@{$data->{customer}->{mailadresses}}) {
-
+        }
     }
 
 

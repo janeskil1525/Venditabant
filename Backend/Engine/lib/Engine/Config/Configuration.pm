@@ -9,8 +9,7 @@ has 'pg';
 
 my %XML_OPTIONS = (
     mappings => {
-        ForceArray =>
-            [ 'mapping', 'groups'],
+        ForceArray => [],
         KeyAttr => [],
     },
     precheck => {

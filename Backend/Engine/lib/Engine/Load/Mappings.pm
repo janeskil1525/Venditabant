@@ -8,7 +8,7 @@ use Log::Log4perl qw(:easy);
 
 has 'pg';
 
-async sub mappings($self, $workflow, $data) {
+async sub mappings($self, $workflow, $action, $data) {
 
     my $types = "('mappings')";
 
@@ -18,11 +18,21 @@ async sub mappings($self, $workflow, $data) {
         $workflow, $types
     );
 
-
-    $data->{mappings} = $config if(defined $config) ;
+    if(defined $config and exists $config->{mappings}) {
+        if (ref $config->{mappings}->{groups} eq 'ARRAY') {
+            foreach my $group (@{$config->{mappings}->{groups}}) {
+                if ($group->{condition} eq $action) {
+                    $data->{mappings} = $group
+                }
+            }
+        } else {
+            if($config->{mappings}->{groups}->{condition} eq $action) {
+                $data->{mappings} = $config->{mappings}->{groups}
+            }
+        }
+    }
 
     return $data;
-
 }
 
 1;

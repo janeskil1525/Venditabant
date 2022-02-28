@@ -2,7 +2,7 @@ package venditabant::Helpers::Login;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::Login;
-use venditabant::Helpers::Jwt;
+use System::Helpers::Jwt;
 
 use Data::Dumper;
 use Digest::SHA qw{sha512_base64};
@@ -25,7 +25,7 @@ async sub login_user ($self, $userid, $password) {
 
     if($login) {
         #my $json = encode_json($login);
-        $jwt = await venditabant::Helpers::Jwt->new()->encode_jwt_p($login);
+        $jwt = await System::Helpers::Jwt->new()->encode_jwt_p($login);
         $result = {
             userid   => $userid,
             jwt      => $jwt,
@@ -39,7 +39,7 @@ async sub login_user ($self, $userid, $password) {
 
 sub authenticate ($self, $payload) {
 
-    my $claim = venditabant::Helpers::Jwt->new()->decode_jwt($payload);
+    my $claim = System::Helpers::Jwt->new()->decode_jwt($payload);
     my $login = venditabant::Model::Login->new(
         pg => $self->pg
     )->check_creds(

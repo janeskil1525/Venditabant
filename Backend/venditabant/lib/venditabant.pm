@@ -5,7 +5,7 @@ use Mojo::Pg;
 
 use venditabant::Helpers::Login;
 use venditabant::Helpers::Stockitems;
-use venditabant::Helpers::Jwt;
+use System::Helpers::Jwt;
 use venditabant::Helpers::Pricelist::Pricelists;
 use venditabant::Helpers::Customers::Customers;
 use venditabant::Helpers::Users;
@@ -21,7 +21,7 @@ use venditabant::Helpers::Parameter::Languages;
 use venditabant::Helpers::Warehouses::Warehouse;
 use venditabant::Helpers::Checkpoints::Autotodos;
 use venditabant::Helpers::Invoice::Invoices;
-use venditabant::Helpers::System::Settings;
+use System::Helpers::Settings;
 use venditabant::Helpers::Currency::Currencies;
 use venditabant::Helpers::Discount::Discounts;
 use venditabant::Helpers::Stockitems::Mobilelist;
@@ -61,7 +61,7 @@ sub startup ($self) {
     });
     $self->helper(login => sub {state $login = venditabant::Helpers::Login->new(pg => shift->pg)});
     $self->helper(stockitems => sub {state $stockitems = venditabant::Helpers::Stockitems->new(pg => shift->pg)});
-    $self->helper(jwt => sub {state $jwt = venditabant::Helpers::Jwt->new()});
+    $self->helper(jwt => sub {state $jwt = System::Helpers::Jwt->new()});
     $self->helper(pricelists => sub {state $pricelists = venditabant::Helpers::Pricelist::Pricelists->new(pg => shift->pg)});
     $self->helper(
       salesorders => sub {
@@ -115,7 +115,7 @@ sub startup ($self) {
       });
     $self->helper(
       systemsettings => sub {
-        state  $systemsettings = venditabant::Helpers::System::Settings->new(pg => shift->pg)
+        state  $systemsettings = System::Helpers::Settings->new(pg => shift->pg)
       });
     $self->helper(
       currencies => sub {

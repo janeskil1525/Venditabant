@@ -2499,7 +2499,7 @@ INSERT INTO workflows (workflow) VALUES ('invoice_mail');
 CREATE TABLE workflow_mail
 (
     workflow_id  bigint not null,
-    mailer_mails_fkey bigint not null,
+    mailer_mails_fkeys varchar not null,
     sent bigint not null DEFAULT 0,
     primary key ( workflow_id )
 );
@@ -2508,12 +2508,15 @@ INSERT INTO translations (languages_fkey, module, tag, translation)
 VALUES((SELECT languages_pkey FROM languages WHERE lan ='swe'),
        'MAILS', 'INVOICE_MAIL_INPROCESS', 'Mail process påbörjad'),
       ((SELECT languages_pkey FROM languages WHERE lan ='swe'),
-    'MAILS', 'INVOICE_DOCUMENTS_CREATED', 'Faktura dokument skapade');
+    'MAILS', 'INVOICE_DOCUMENTS_CREATED', 'Faktura dokument skapade'),
+      ((SELECT languages_pkey FROM languages WHERE lan ='swe'),
+       'Invoice Mail', 'Subject', 'Faktura från {$company_name}');
 
 ALTER TYPE workflowtype
     ADD VALUE 'mappings';
 
 ALTER TABLE customer_addresses
     ADD COLUMN reference VARCHAR NOT NULL DEFAULT '';
+
 
 -- 47 down

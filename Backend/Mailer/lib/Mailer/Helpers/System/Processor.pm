@@ -1,5 +1,5 @@
 package Mailer::Helpers::System::Processor;
-use Mojo::Base 'venditabant::Helpers::Mailer::System::Sender', -signatures, -async_await;
+use Mojo::Base -base, -signatures;
 
 use Mailer::Model::MailerMails;
 use venditabant::Model::System::Settings;

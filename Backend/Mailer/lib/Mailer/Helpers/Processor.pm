@@ -12,7 +12,7 @@ has 'pg';
 
 sub create ($self, $company, $customer, $mappings, $template) {
 
-    my $data->{mail_content} = $self->create_mail_context($company, $customer, $template);
+    my $data->{mail_content} = $self->create_mail_context($company, $customer, $mappings, $template);
 
     $data->{subject} = $self->create_subject($company, $customer, $template);
 
@@ -46,16 +46,16 @@ sub create_mail_context($self, $company, $customer, $mappings, $template_name) {
 
     my $hash;
 
-    foreach my $map (@{$mappings}) {
+    foreach my $map (@{$mappings->{map}}) {
         if($map->{source} eq 'company') {
-            $hash->{$map->{templ_key}} = encode_entities>($company->{$map->{source_key}});
-        } elsif (map->{source} eq 'customer') {
-            $hash->{$map->{templ_key}} = encode_entities>($customer->{$map->{source_key}});
+            $hash->{$map->{templ_key}} = encode_entities($company->{$map->{source_key}});
+        } elsif ($map->{source} eq 'customer') {
+            $hash->{$map->{templ_key}} = encode_entities($customer->{$map->{source_key}});
         }
     }
 
     my $result = Mailer::Helpers::Mapper->new()->map_text(
-        $hash, $templaate
+        $hash, $templaate->{body_value}
     );
 
     return $result;

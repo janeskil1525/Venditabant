@@ -24,7 +24,11 @@ async sub find_recipients ($self, $data) {
 
     if(defined $hash) {
         my @mailadresses;
-        $data->{customer} = $hash;
+
+        my @keys = keys %{ $hash };
+        foreach my $key (@keys) {
+            $data->{customer}->{$key} = $hash->{$key};
+        }
 
         if(index($hash->{mailadresses},',') > -1) {
             @mailadresses = split(',',$hash->{mailadresses});

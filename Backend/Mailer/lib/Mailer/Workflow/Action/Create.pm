@@ -24,21 +24,25 @@ sub execute ($self, $wf) {
     $wf->add_history(
         Workflow::History->new({
             action      => "New mail process started",
-            description => "To be sent to recipients connected to $comntext->params('customer')->{name} ",
+            description => "To be sent to recipients connected to $context->param('customer')->{name} ",
             user        => 'System',
         })
     );
 
+    my $company = $context->param('company');
+    my $customer = $context->param('customer');
+    my $mappings = $context->param('mappings');
+    my $template = $context->param('template');
     my $mail = Mailer::Helpers::Processor->new(
         pg => $pg
     )->create(
-        $comntext->params('company'),
-        $comntext->params('customer'),
-        $comntext->params('mappings'),
-        $comntext->params('template')
+        $company,
+        $customer,
+        $mappings,
+        $template
     );
 
-    my $recipients = $context->params('recipients');
+    my $recipients = $context->param('recipients');
     my $mailer_mails_fkeys = '';
     foreach my $recipient (@{$recipients}) {
         if(index($used_recipients, $recipient) == -1) {
@@ -47,7 +51,7 @@ sub execute ($self, $wf) {
             my $mailer_mails_pkey = Mailer::Model::MailerMails->new(
                 db => $pg->db
             )->insert(
-                $comntext->params('company')->{companies_pkey},
+                $context->param('company')->{companies_pkey},
                 $recipient,
                 $mail->{subject},
                 $mail->{mail_content},

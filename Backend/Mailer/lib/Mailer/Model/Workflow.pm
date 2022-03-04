@@ -16,7 +16,7 @@ sub insert($self, $workflow_id, $mailer_mails_fkey) {
     );
 }
 
-sub load_workflow_id($self, $mailer_mails_fkey {
+sub load_workflow_id($self, $mailer_mails_fkey) {
 
     my $result = $self->db->select(
         'workflow_mail',['workflow_id'],

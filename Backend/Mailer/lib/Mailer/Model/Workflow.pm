@@ -16,6 +16,21 @@ sub insert($self, $workflow_id, $mailer_mails_fkey) {
     );
 }
 
+sub load_workflow($self, $workflow_id) {
+
+    my $result = $self->db->select(
+        'workflow_mail',['*'],
+        {
+            workflow_id => $workflow_id,
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows;
+
+    return $hash;
+}
+
 sub load_workflow_id($self, $mailer_mails_fkey) {
 
     my $result = $self->db->select(

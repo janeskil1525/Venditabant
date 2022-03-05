@@ -12,23 +12,23 @@ has 'pg';
 
 sub create ($self, $company, $customer, $mappings, $template) {
 
-    my $data->{mail_content} = $self->create_mail_context($company, $customer, $mappings, $template);
-
-    $data->{subject} = $self->create_subject($company, $customer, $template);
+    my $hash = $self->map_hash($company, $customer, $mappings);
+    my $data->{mail_content} = $self->create_mail_context($hash, $company, $customer, $template);
+    $data->{subject} = $self->create_subject($hash, $template);
 
     return $data;
 }
 
-sub create_subject($self, $company, $customer, $mappings, $template) {
+sub create_subject($self, $hash, $template) {
 
-    my $text = 'Faktura från {$company_name}';
+    # my $text = 'Faktura från {$company_name}';
     my $text = Translations::Helpers::Translation->new(
         pg => $self->pg
     )->get_translation(
         'swe', $template, 'Subject'
     );
 
-    my $hash->{company_name} = $company->{name};
+    # my $hash->{company_name} = $company->{name};
     my $result = Mailer::Helpers::Mapper->new()->map_text(
         $hash, $text
     );
@@ -36,13 +36,22 @@ sub create_subject($self, $company, $customer, $mappings, $template) {
     return $result;
 }
 
-sub create_mail_context($self, $company, $customer, $mappings, $template_name) {
+sub create_mail_context($self, $hash, $company, $customer, $template_name) {
 
     my $templaate = Mailer::Model::Mailtemplates->new(
         db => $self->pg->db
     )->load_template (
         $company->{companies_pkey}, 0, $customer->{languages_fkey}, $template_name
     );
+
+    my $result = Mailer::Helpers::Mapper->new()->map_text(
+        $hash, $templaate->{body_value}
+    );
+
+    return $result;
+}
+
+sub map_hash($self, $company, $customer, $mappings) {
 
     my $hash;
 
@@ -54,10 +63,7 @@ sub create_mail_context($self, $company, $customer, $mappings, $template_name) {
         }
     }
 
-    my $result = Mailer::Helpers::Mapper->new()->map_text(
-        $hash, $templaate->{body_value}
-    );
+    return $hash;
 
-    return $result;
 }
 1;

@@ -11,6 +11,7 @@ use Workflow::Factory qw( FACTORY );
 use Workflow::History;
 use Workflow::Exception qw( workflow_error );
 
+use Mailer::Model::MailerMailsAttachments;
 use Mailer::Helpers::Processor;
 use Mailer::Model::MailerMails;
 use Mailer::Model::Workflow;
@@ -42,12 +43,12 @@ sub execute ($self, $wf) {
         $template
     );
 
-    my $recipients = $context->param('recipients');
+    my $recipients = $context->param('customer')->{recipients};
     my $mailer_mails_fkeys = '';
     foreach my $recipient (@{$recipients}) {
+        $recipient =~ s/^\s+|\s+$//g;
         if(index($used_recipients, $recipient) == -1) {
             $used_recipients .= $recipient;
-
             my $mailer_mails_pkey = Mailer::Model::MailerMails->new(
                 db => $pg->db
             )->insert(
@@ -55,6 +56,12 @@ sub execute ($self, $wf) {
                 $recipient,
                 $mail->{subject},
                 $mail->{mail_content},
+            );
+
+            Mailer::Model::MailerMailsAttachments->new(
+                db => $pg->db
+            )->insert(
+                $mailer_mails_pkey, $context->param('full_path')
             );
 
             if(defined $mailer_mails_fkeys) {

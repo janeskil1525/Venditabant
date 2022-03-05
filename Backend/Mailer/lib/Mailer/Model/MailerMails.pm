@@ -5,7 +5,7 @@ use Data::Dumper;
 
 has 'db';
 
-async sub insert ($self, $companies_pkey, $recipients, $subject, $content) {
+sub insert ($self, $companies_pkey, $recipients, $subject, $content) {
 
     my $mailer_mails_pkey = $self->db->insert(
         'mailer_mails',

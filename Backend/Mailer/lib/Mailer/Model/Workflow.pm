@@ -8,10 +8,10 @@ has 'db';
 sub insert($self, $workflow_id, $mailer_mails_fkey) {
 
     $self->db->insert(
-        'workflow_invoice',
+        'workflow_mail',
             {
                 workflow_id         => $workflow_id,
-                mailer_mails_fkey   => $mailer_mails_fkey,
+                mailer_mails_fkeys   => $mailer_mails_fkey,
             }
     );
 }

@@ -70,10 +70,12 @@ async sub auto_transits ($self) {
         foreach my $transit (@{$item->{data}}) {
             foreach my $activity (@{$item->{activity}}) {
 
-                my $data->{workflow_id} = $transit->{workflow_id};
-                $data->{invoice_pkey} = $transit->{invoice_fkey};
-                $data->{users_pkey} = $transit->{users_fkey};
-                $data->{companies_pkey} = $transit->{companies_fkey};
+                my $data;
+                my @keys= keys %{$transit};
+                foreach my $key (@keys) {
+                    $data->{$key} = $transit->{$key}
+                }
+
                 $data->{actions} = $activity;
 
                 $data = await Engine::Load::DataPrecheck->new(

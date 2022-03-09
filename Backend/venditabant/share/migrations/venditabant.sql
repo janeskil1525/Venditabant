@@ -2518,5 +2518,33 @@ ALTER TYPE workflowtype
 ALTER TABLE customer_addresses
     ADD COLUMN reference VARCHAR NOT NULL DEFAULT '';
 
+CREATE TABLE IF NOT EXISTS mails_invoice
+(
+    mails_invoice_pkey  serial                                     NOT NULL,
+    editnum         bigint                                         NOT NULL DEFAULT 1,
+    insby           varchar NOT NULL DEFAULT 'System'::character varying,
+    insdatetime     timestamp without time zone                    NOT NULL DEFAULT now(),
+    modby           varchar COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime     timestamp without time zone                    NOT NULL DEFAULT now(),
+    mailer_mails_fkey      BIGINT NOT NULL,
+    invoice_fkey    BIGINT NOT NULL,
+    CONSTRAINT mails_invoice_pkey PRIMARY KEY (mails_invoice_pkey),
+    CONSTRAINT mailer_mails_invoice_fkey FOREIGN KEY (mailer_mails_fkey)
+        REFERENCES mailer_mails (mailer_mails_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT mails_invoice_invoice_fkey FOREIGN KEY (invoice_fkey)
+        REFERENCES invoice (invoice_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX idx_mails_invoice_invoice_fkey
+    ON mails_invoice(invoice_fkey);
+
+CREATE UNIQUE INDEX idx_mails_invoice_mailer_mails_fkey
+    ON mails_invoice(mailer_mails_fkey);
 
 -- 47 down

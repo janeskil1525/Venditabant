@@ -52,7 +52,7 @@ sub load_workflow_list ($self) {
         'workflow_mail',
             ['*'],
             {
-                semt => 'false',
+                sent => 0,
             }
     );
 

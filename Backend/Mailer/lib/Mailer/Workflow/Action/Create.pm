@@ -15,6 +15,7 @@ use Mailer::Model::MailerMailsAttachments;
 use Mailer::Helpers::Processor;
 use Mailer::Model::MailerMails;
 use Mailer::Model::Workflow;
+use Mailer::Helpers::Dependencies;
 
 sub execute ($self, $wf) {
 
@@ -22,10 +23,11 @@ sub execute ($self, $wf) {
     my $context = $wf->context;
     my $used_recipients = '';
 
+    my $hist_name = $context->param('customer')->{name};
     $wf->add_history(
         Workflow::History->new({
             action      => "New mail process started",
-            description => "To be sent to recipients connected to $context->param('customer')->{name} ",
+            description => "To be sent to recipients connected to $hist_name ",
             user        => 'System',
         })
     );
@@ -64,11 +66,25 @@ sub execute ($self, $wf) {
                 $mailer_mails_pkey, $context->param('full_path')
             );
 
-            if(defined $mailer_mails_fkeys) {
+            Mailer::Helpers::Dependencies->new(
+                pg => $pg
+            )->create_dependencies(
+                $mailer_mails_pkey, $context
+            );
+
+            if(length($mailer_mails_fkeys) > 0) {
                 $mailer_mails_fkeys .= ',' . $mailer_mails_pkey;
             } else {
                 $mailer_mails_fkeys = $mailer_mails_pkey;
             }
+
+            $wf->add_history(
+                Workflow::History->new({
+                    action      => "Mail created for $recipient",
+                    description => "With the pk = $mailer_mails_pkey for $hist_name",
+                    user        => 'System',
+                })
+            );
         }
     }
 

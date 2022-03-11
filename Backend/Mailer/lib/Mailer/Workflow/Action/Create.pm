@@ -91,7 +91,7 @@ sub execute ($self, $wf) {
     Mailer::Model::Workflow->new(
         db => $pg->db
     )->insert(
-        $wf->id, $mailer_mails_fkeys
+        $wf->id, $mailer_mails_fkeys, $context->param('company')->{companies_pkey}
     );
 
     return 1;

@@ -19,7 +19,7 @@ has 'passwd';
 sub process($self, $mailer_mails_pkey) {
 
     my $mail = $self->_load_mail($mailer_mails_pkey);
-    my $settings = $self->_load_smtp_settings();
+
     my $mailed = $self->_send_mail( $mail);
 
     if($mailed eq '1') {
@@ -33,7 +33,7 @@ sub _set_mail_sent($self, $mailer_mails_pkey) {
 
     my $err;
     eval {
-        Model::MailerMails->new(
+        Mailer::Model::MailerMails->new(
             db => $self->pg->db
         )->set_sent(
             $mailer_mails_pkey
@@ -45,22 +45,8 @@ sub _set_mail_sent($self, $mailer_mails_pkey) {
     return $err;
 }
 
-sub _load_smtp_settings ($self) {
-
-    my $setting = System::Helpers::Settings->new(
-        pg => $self->pg
-    )->load_system_setting(
-        0,0,'SMTP'
-    );
-    $self->server_adress($setting->{value}->{server_adress});
-    $self->smtp($setting->{value}->{smtp});
-    $self->account($setting->{value}->{account});
-    $self->passwd($setting->{value}->{passwd});
-    return $setting;
-}
-
 sub _load_mail ($self, $mailer_mails_pkey) {
-    return Model::MailerMails->new(
+    return Mailer::Model::MailerMails->new(
         db => $self->pg->db
     )->load_mail(
         $mailer_mails_pkey

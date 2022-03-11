@@ -5,13 +5,14 @@ use Data::Dumper;
 
 has 'db';
 
-sub insert($self, $workflow_id, $mailer_mails_fkey) {
+sub insert($self, $workflow_id, $mailer_mails_fkey, $companies_fkey) {
 
     $self->db->insert(
         'workflow_mail',
             {
-                workflow_id         => $workflow_id,
-                mailer_mails_fkeys   => $mailer_mails_fkey,
+                workflow_id        => $workflow_id,
+                mailer_mails_fkeys => $mailer_mails_fkey,
+                companies_fkey     => $companies_fkey,
             }
     );
 }

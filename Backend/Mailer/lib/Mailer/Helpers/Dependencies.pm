@@ -16,4 +16,5 @@ sub create_dependencies($self, $mails_invoice_fkey, $context) {
     } # Else if something here
 
 }
+
 1;

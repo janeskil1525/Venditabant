@@ -13,6 +13,7 @@ use Workflow::Exception qw( workflow_error );
 
 use Mailer::Helpers::Sender;
 use Mailer::Model::Workflow;
+use Mailer::Model::MailerMails;
 use System::Helpers::Settings;
 
 sub execute ($self, $wf) {
@@ -33,22 +34,31 @@ sub execute ($self, $wf) {
         push (@mailer_mails_fkeys, $workflow->{mailer_mails_fkeys});
     }
 
-    my $smtp = System::Helpers::Settings->new()->load_system_setting(0,0,'SMTP');
+    my $smtp = System::Helpers::Settings->new(
+        pg => $pg
+    )->load_system_setting(
+        0,0,'SMTP'
+    );
 
     my $mailer = Mailer::Helpers::Sender->new(
         pg            => $pg,
-        server_adress => $smtp->{server_adress},
-        smtp          => $smtp->{smtp},
-        account       => $smtp->{account},
-        passwd        => $smtp->{passwd},
+        server_adress => $smtp->{value}->{server_adress},
+        smtp          => $smtp->{value}->{smtp},
+        account       => $smtp->{value}->{sasl_username},
+        passwd        => $smtp->{value}->{sasl_password},
     );
+
+    my $mailermails = Mailer::Model::MailerMails->new(db => $pg->db);
 
     foreach my $mailer_mails_fkey (@mailer_mails_fkeys) {
         my $mail_result = $mailer->process(
             $mailer_mails_fkey
         );
+
+        $mailermails->set_sent($mailer_mails_fkey);
     }
 
+    return 1;
 }
 
 sub get_pg($self) {

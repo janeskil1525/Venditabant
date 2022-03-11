@@ -71,7 +71,7 @@ async sub auto_transits ($self) {
             foreach my $activity (@{$item->{activity}}) {
 
                 my $data;
-                my @keys= keys %{$transit};
+                my @keys = keys %{$transit};
                 foreach my $key (@keys) {
                     $data->{$key} = $transit->{$key}
                 }
@@ -100,7 +100,7 @@ async sub auto_transits ($self) {
                     );
 
                     $wf->context->param(history => $data->{history});
-                    if(exist $data->{mappings}) {
+                    if(exists $data->{mappings}) {
                         $wf->context->param(mappings => $data->{mappings});
                     }
                     $wf->execute_action($activity);

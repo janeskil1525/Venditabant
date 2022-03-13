@@ -7,20 +7,21 @@ use Email::Simple;
 use Email::MIME;
 
 use Mailer::Model::MailerMails;
+use Mailer::Model::MailerMailsAttachments;
 use System::Model::Settings;
 
 has 'pg';
-has 'server_adress';
-has 'smtp';
+has 'host';
 has 'account';
 has 'passwd';
 
 
 sub process($self, $mailer_mails_pkey) {
 
-    my $mail = $self->_load_mail($mailer_mails_pkey);
+    my $mail = $self->_load_mail ($mailer_mails_pkey);
+    my $attachements = $self->_load_attachements ($mailer_mails_pkey);
 
-    my $mailed = $self->_send_mail( $mail);
+    my $mailed = $self->_send_mail($mail->{recipients}, $mail->{subject}, $mail->{content}, $attachements);
 
     if($mailed eq '1') {
         $self->_set_mail_sent($mailer_mails_pkey)
@@ -29,7 +30,18 @@ sub process($self, $mailer_mails_pkey) {
     return 1;
 }
 
-sub _set_mail_sent($self, $mailer_mails_pkey) {
+sub _load_attachements ($self, $mailer_mails_pkey) {
+
+    my $attachements = Mailer::Model::MailerMailsAttachments->new(
+        db => $self->pg->db
+    )->load(
+        $mailer_mails_pkey
+    );
+
+    return $attachements;
+}
+
+sub _set_mail_sent ($self, $mailer_mails_pkey) {
 
     my $err;
     eval {
@@ -55,21 +67,32 @@ sub _load_mail ($self, $mailer_mails_pkey) {
 
 
 sub _send_mail{
-    my ($self, $to, $subject, $attachment) = @_;
+    my ($self, $to, $subject, $content, $attachments) = @_;
 
     my @parts;
-    my $length = scalar @{$attachment};
-    for (my $i = 0; $i < $length; $i++){
+
+    push @parts,  Email::MIME->create(
+        attributes => {
+            content_type => 'text/plain',
+            disposition  => "body",
+            charset      => "utf-8",
+            encoding     => "base64",
+            encode_check => 0,
+        },
+        body_str => $content,
+    );
+
+
+    foreach my $attachement (@{$attachments}) {
 
         push @parts,  Email::MIME->create(
             attributes => {
-                content_type => @{$attachment}[$i]->{type},
-                disposition  => "attachment",
-                charset      => "US-ASCII",
-                encoding     => 'base64',
-                encode_check => 0,
+                content_type => "application/pdf",
+                encoding     => "quoted-printable",
+                filename     => 'invoice.pdf',
+                name         => 'invoice.pdf'
             },
-            body_str => @{$attachment}[$i]->{data},
+            body => $attachement->{file},
         );
     }
 
@@ -83,7 +106,7 @@ sub _send_mail{
     );
 
     my $transport = Email::Sender::Transport::SMTP->new({
-        host          => $self->smtp,
+        host          => $self->host,
         port          => 587,
         ssl           => 'starttls',
         sasl_username => $self->account,

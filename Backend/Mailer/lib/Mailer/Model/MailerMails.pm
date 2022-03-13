@@ -43,7 +43,22 @@ async sub insert_p ($self, $companies_pkey, $recipients, $subject, $content) {
 
 }
 
-async sub load_mail ($self, $mailer_mails_pkey) {
+sub load_mail ($self, $mailer_mails_pkey) {
+
+    my $result = $self->db->select(
+        'mailer_mails', ['*'],
+        {
+            mailer_mails_pkey => $mailer_mails_pkey
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash if $result and $result->rows() > 0;
+
+    return $hash;
+}
+
+async sub load_mail_p ($self, $mailer_mails_pkey) {
 
     my $result = $self->db->select(
         'mailer_mails', ['*'],

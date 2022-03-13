@@ -5,6 +5,7 @@ use Email::Sender::Simple qw(sendmail);
 use Email::Sender::Transport::SMTP;
 use Email::Simple;
 use Email::MIME;
+use IO::All;
 
 use Mailer::Model::MailerMails;
 use Mailer::Model::MailerMailsAttachments;
@@ -66,8 +67,7 @@ sub _load_mail ($self, $mailer_mails_pkey) {
 }
 
 
-sub _send_mail{
-    my ($self, $to, $subject, $content, $attachments) = @_;
+sub _send_mail($self, $to, $subject, $content, $attachments) {
 
     my @parts;
 
@@ -81,18 +81,17 @@ sub _send_mail{
         },
         body_str => $content,
     );
-
-
+    
     foreach my $attachement (@{$attachments}) {
 
         push @parts,  Email::MIME->create(
             attributes => {
                 content_type => "application/pdf",
-                encoding     => "quoted-printable",
+                encoding     => "base64",
                 filename     => 'invoice.pdf',
                 name         => 'invoice.pdf'
             },
-            body => $attachement->{file},
+            body => io( $attachement->{path} )->binary->all,
         );
     }
 

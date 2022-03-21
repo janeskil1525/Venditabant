@@ -152,16 +152,16 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 frame.add(menubar);
 
                 var homeMenu = new qx.ui.menubar.Button(this.tr("Home"), null, this.getHomeMenu());
-                var adminhMenu = new qx.ui.menubar.Button("Administration", null, this.getAdminMenu());
-                let salesMenu = new qx.ui.menubar.Button("Sales", null, this.getSalesMenu());
-                let stockMenu = new qx.ui.menubar.Button("Stock", null, this.getStockMenu());
+                var adminhMenu = new qx.ui.menubar.Button(this.tr("Administration"), null, this.getAdminMenu());
+                let salesMenu = new qx.ui.menubar.Button(this.tr("Sales"), null, this.getSalesMenu());
+                let stockMenu = new qx.ui.menubar.Button(this.tr("Stock"), null, this.getStockMenu());
 
                 menubar.add(homeMenu);
                 menubar.add(adminhMenu);
                 menubar.add(salesMenu);
                 menubar.add(stockMenu);
                 if(this.isSupport() === true) {
-                    var supportMenu = new qx.ui.menubar.Button("Support", null, this.getSupportMenu());
+                    var supportMenu = new qx.ui.menubar.Button(this.tr("Support"), null, this.getSupportMenu());
                     menubar.add(supportMenu);
                 }
 
@@ -189,12 +189,12 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let that = this;
                 let menu = new qx.ui.menu.Menu();
 
-                let usersButton = new qx.ui.menu.Button("Users");
-                let stockitemButton = new qx.ui.menu.Button("Stockitems");
-                let pricelistButton = new qx.ui.menu.Button("Pricelists");
-                let customerButton = new qx.ui.menu.Button("Customers");
-                let warehouseButton = new qx.ui.menu.Button("Warehouse");
-                let commissionButton = new qx.ui.menu.Button("Commission");
+                let usersButton = new qx.ui.menu.Button(this.tr("Users"));
+                let stockitemButton = new qx.ui.menu.Button(this.tr("Stockitems"));
+                let pricelistButton = new qx.ui.menu.Button(this.tr("Pricelists"));
+                let customerButton = new qx.ui.menu.Button(this.tr("Customers"));
+                let warehouseButton = new qx.ui.menu.Button(this.tr("Warehouse"));
+                let commissionButton = new qx.ui.menu.Button(this.tr("Commission"));
 
                 let settingsButton = new qx.ui.menu.Button("Settings");
                 /* var replaceButton = new qx.ui.menu.Button("Replace");
@@ -227,10 +227,10 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let that = this;
                 let menu = new qx.ui.menu.Menu();
 
-                let userssalesorderButton = new qx.ui.menu.Button("Salesorders");
+                let userssalesorderButton = new qx.ui.menu.Button(this.tr("Salesorders"));
                 userssalesorderButton.addListener("execute", this.salesordersButton);
 
-                let invoiceButton = new qx.ui.menu.Button("Invoices");
+                let invoiceButton = new qx.ui.menu.Button(this.tr("Invoices"));
                 invoiceButton.addListener("execute", this.invoicesButton);
 
                 menu.add(userssalesorderButton);
@@ -242,7 +242,7 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let that = this;
                 let menu = new qx.ui.menu.Menu();
 
-                let stockButton = new qx.ui.menu.Button("Stock");
+                let stockButton = new qx.ui.menu.Button(this.tr("Stock"));
                 stockButton.addListener("execute", this.stockButton);
 
                 menu.add(stockButton);
@@ -252,23 +252,23 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
             getSupportMenu:function() {
                 let menu = new qx.ui.menu.Menu();
                 let that = this;
-                let usersButton = new qx.ui.menu.Button("Users");
+                let usersButton = new qx.ui.menu.Button(this.tr("Users"));
                 usersButton.addListener("execute", this.usersButton);
                 menu.add(usersButton);
 
-                let sentinelButton = new qx.ui.menu.Button("Sentinel");
+                let sentinelButton = new qx.ui.menu.Button(this.tr("Sentinel"));
                 sentinelButton.addListener("execute", this.sentinelButton);
                 menu.add(sentinelButton);
 
-                let mailTemplatesButton = new qx.ui.menu.Button("Mail templates");
+                let mailTemplatesButton = new qx.ui.menu.Button(this.tr("Mail templates"));
                 mailTemplatesButton.addListener("execute", this.mailTemplatesButton);
                 menu.add(mailTemplatesButton);
 
-                let systemSettingsButton = new qx.ui.menu.Button("Settings");
+                let systemSettingsButton = new qx.ui.menu.Button(this.tr("Settings"));
                 systemSettingsButton.addListener("execute", this.systemSettingsButton);
                 menu.add(systemSettingsButton);
 
-                let workflowbutton = new qx.ui.menu.Button("Workflows");
+                let workflowbutton = new qx.ui.menu.Button(this.tr("Workflows"));
                 workflowbutton.addListener("execute", this.workflowbutton);
                 menu.add(workflowbutton);
 

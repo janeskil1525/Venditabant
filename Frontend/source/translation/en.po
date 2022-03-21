@@ -130,7 +130,7 @@ msgstr ""
 msgid "Description is required"
 msgstr ""
 
-#: venditabant/sales/pricelists/views/NewHead.js
+#: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Save"
 msgstr ""
 
@@ -138,7 +138,7 @@ msgstr ""
 msgid "Something went wront with the save, please try again"
 msgstr ""
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/support/views/Sentinel.js
 msgid "Definition"
 msgstr ""
 
@@ -286,7 +286,7 @@ msgstr ""
 msgid "Percentage is required"
 msgstr ""
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Delete"
 msgstr ""
 
@@ -538,7 +538,7 @@ msgstr ""
 msgid "Comma separated mail adresses"
 msgstr ""
 
-#: venditabant/sales/customers/views/Delivery.js
+#: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Something went wrong saving the invoice address"
 msgstr ""
 
@@ -592,4 +592,96 @@ msgstr ""
 
 #: venditabant/sales/customers/models/DeliveryAddress.js
 msgid "Could not save customer address, please try again"
+msgstr ""
+
+#: venditabant/support/views/Workflows.js
+msgid "Workflows"
+msgstr ""
+
+#: venditabant/support/views/Workflows.js
+msgid "Workflow"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "ID"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Purchase Price"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "currencies_fkey"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "suppliers_pkey"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "PO Currency"
+msgstr ""
+
+#: venditabant/sales/customers/views/GeneralDiscounts.js
+msgid "Sum is required"
+msgstr ""
+
+#: venditabant/sales/customers/views/GeneralDiscounts.js
+msgid "Minimum sum to triggerdiscount is requires"
+msgstr ""
+
+#: venditabant/sales/customers/views/GeneralDiscounts.js
+msgid "Something went wrong deleteing the general discount"
+msgstr ""
+
+#: venditabant/sales/customers/models/GeneralDiscounts.js
+msgid "Could not save discount, please try again"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Administration"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Stock"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Support"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Users"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Pricelists"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Customers"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Commission"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Salesorders"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Invoices"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Sentinel"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Mail templates"
+msgstr ""
+
+#: venditabant/application/ApplicationWindow.js
+msgid "Settings"
 msgstr ""

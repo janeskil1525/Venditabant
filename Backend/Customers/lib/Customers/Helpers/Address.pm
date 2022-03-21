@@ -1,8 +1,8 @@
-package Engine::Helpers::Customers::Address;
+package Customers::Helpers::Address;
 use Mojo::Base -base, -signatures, -async_await;
 
-use Engine::Model::Customer::CustomerAddress;
-use Engine::Model::Customer::Customers;
+use Customers::Model::CustomerAddress;
+use Customers::Model::Customers;
 
 use Data::Dumper;
 
@@ -17,19 +17,19 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
     my $customer_addresses_pkey;
     eval {
         if(exists $customer->{customer_addresses_pkey} and $customer->{customer_addresses_pkey} > 0) {
-            $customer_addresses_pkey = await Engine::Model::Customer::CustomerAddress->new(
+            $customer_addresses_pkey = await Customers::Model::CustomerAddress->new(
                 db => $db
             )->update_p(
                 $companies_pkey, $users_pkey, $customer
             );
         } else {
-            $customer_addresses_pkey = await Engine::Model::Customer::CustomerAddress->new(
+            $customer_addresses_pkey = await Customers::Model::CustomerAddress->new(
                 db => $db
             )->insert_p(
                 $companies_pkey, $users_pkey, $customer
             );
             if($customer->{type} eq 'INVOICE'){
-                my $exists = await Engine::Model::Customer::CustomerAddress->new(
+                my $exists = await Customers::Model::CustomerAddress->new(
                     db => $db
                 )->address_type_exists(
                     $companies_pkey, $users_pkey, $customer->{customers_fkey}, 'DELIVERY'
@@ -37,7 +37,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
                 say "customer 2 " . Dumper($customer);
                 if($exists == 0) {
                     $customer->{type} = 'DELIVERY';
-                    $customer_addresses_pkey = await Engine::Model::Customer::CustomerAddress->new(
+                    $customer_addresses_pkey = await Customers::Model::CustomerAddress->new(
                         db => $db
                     )->insert_p(
                         $companies_pkey, $users_pkey, $customer
@@ -58,7 +58,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
 
 async sub load_invoice_address_p($self, $companies_pkey, $users_pkey, $customers_pkey) {
 
-    my $result = Engine::Model::Customer::CustomerAddress->new(
+    my $result = Customers::Model::CustomerAddress->new(
         db => $self->pg->db
     )->load_invoice_address_p(
         $customers_pkey
@@ -69,7 +69,7 @@ async sub load_invoice_address_p($self, $companies_pkey, $users_pkey, $customers
 
 sub load_invoice_address($self, $companies_pkey, $users_pkey, $customers_pkey) {
 
-    my $result = Engine::Model::Customer::CustomerAddress->new(
+    my $result = Customers::Model::CustomerAddress->new(
         db => $self->pg->db
     )->load_invoice_address(
         $customers_pkey
@@ -80,7 +80,7 @@ sub load_invoice_address($self, $companies_pkey, $users_pkey, $customers_pkey) {
 
 async sub load_delivery_address_p($self, $companies_pkey, $users_pkey, $customer_addresses_pkey) {
 
-    my $result = Engine::Model::Customer::CustomerAddress->new(
+    my $result = Customers::Model::CustomerAddress->new(
         db => $self->pg->db
     )->load_delivery_address_p(
         $customer_addresses_pkey
@@ -91,7 +91,7 @@ async sub load_delivery_address_p($self, $companies_pkey, $users_pkey, $customer
 
 async sub load_delivery_address_list_p($self, $companies_pkey, $users_pkey, $customers_pkey) {
 
-    my $result = Engine::Model::Customer::CustomerAddress->new(
+    my $result = Customers::Model::CustomerAddress->new(
         db => $self->pg->db
     )->load_delivery_address_list_p(
         $customers_pkey
@@ -104,13 +104,13 @@ async sub load_delivery_address_list_p($self, $companies_pkey, $users_pkey, $cus
      my $err;
      my $result;
      eval {
-         my $customers = await Engine::Model::Customer::Customers->new(
+         my $customers = await Customers::Model::Customers->new(
              db => $self->pg->db
          )->load_customer(
              $companies_pkey, $customer
          );
 
-         $result = Engine::Model::Customer::CustomerAddress->new(
+         $result = Customers::Model::CustomerAddress->new(
              db => $self->pg->db
          )->load_delivery_address_list_p(
              $customers->{customers_pkey}

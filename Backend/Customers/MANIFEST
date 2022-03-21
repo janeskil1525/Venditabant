@@ -1,0 +1,7 @@
+lib/Customers.pm
+lib/Customers/Helpers/Address.pm
+lib/Customers/Helpers/Customer.pm
+lib/Customers/Model/CustomerAddress.pm
+lib/Customers/Model/Customers.pm
+Makefile.PL
+MANIFEST			This list of files

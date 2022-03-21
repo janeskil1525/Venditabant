@@ -47,6 +47,7 @@ sub execute ($self, $wf) {
 
     my $recipients = $context->param('customer')->{recipients};
     my $mailer_mails_fkeys = '';
+
     foreach my $recipient (@{$recipients}) {
         $recipient =~ s/^\s+|\s+$//g;
         if(index($used_recipients, $recipient) == -1) {

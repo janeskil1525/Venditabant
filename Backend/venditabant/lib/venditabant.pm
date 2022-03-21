@@ -7,13 +7,13 @@ use venditabant::Helpers::Login;
 use venditabant::Helpers::Stockitems;
 use System::Helpers::Jwt;
 use venditabant::Helpers::Pricelist::Pricelists;
-use venditabant::Helpers::Customers::Customers;
+use Customers::Helpers::Customer;
 use venditabant::Helpers::Users;
 use venditabant::Helpers::Salesorder::Salesorders;
 use venditabant::Helpers::Companies::Release::Release;
 use venditabant::Helpers::Sentinel::Sentinelsender;
 use venditabant::Helpers::Parameter::Parameters;
-use venditabant::Helpers::Customers::Address;
+use Customers::Helpers::Address;
 use venditabant::Helpers::Companies::Company;
 use venditabant::Helpers::Sentinel::Sentinel;
 use venditabant::Helpers::Parameter::Languages;
@@ -70,7 +70,7 @@ sub startup ($self) {
     );
     $self->helper(
       customers => sub {
-    state  $customers = venditabant::Helpers::Customers::Customers->new(pg => shift->pg)
+    state  $customers = Customers::Helpers::Customer->new(pg => shift->pg)
     });
     $self->helper(
       parameters => sub {
@@ -78,7 +78,7 @@ sub startup ($self) {
       });
     $self->helper(
       customeraddress => sub {
-        state  $customeraddress = venditabant::Helpers::Customers::Address->new(pg => shift->pg)
+        state  $customeraddress = Customers::Helpers::Address->new(pg => shift->pg)
       });
 
     $self->helper(

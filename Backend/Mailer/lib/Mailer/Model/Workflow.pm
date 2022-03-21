@@ -75,12 +75,14 @@ sub set_workflow_status ($self, $id, $status) {
     $self->db->update(
         'workflow_mail',
             {
+                sent        => $status,
+            },
+            {
                 workflow_id => $id,
-                sent        => $status
             }
 
     );
 
-
+    return 1;
 }
 1;

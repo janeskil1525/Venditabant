@@ -2550,4 +2550,7 @@ CREATE UNIQUE INDEX idx_mails_invoice_mailer_mails_fkey
 ALTER TABLE workflow_mail
     ADD COLUMN companies_fkey BIGINT NOT NULL;
 
+CREATE UNIQUE INDEX idx_invoice_status_invoice_fkey_status
+    ON invoice_status(invoice_fkey, status);
+
 -- 47 down

@@ -1,5 +1,5 @@
-package venditabant::Helpers::Jwt;
-use Mojo::Base 'Mojolicious::Plugin', -signatures, -async_await;
+package System::Helpers::Jwt;
+use Mojo::Base -base,  -signatures, -async_await;
 
 use Data::Dumper;
 use Mojo::JWT;

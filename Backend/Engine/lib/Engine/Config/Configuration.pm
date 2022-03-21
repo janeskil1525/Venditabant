@@ -8,6 +8,10 @@ use XML::Simple qw(:strict);
 has 'pg';
 
 my %XML_OPTIONS = (
+    mappings => {
+        ForceArray => [],
+        KeyAttr => [],
+    },
     precheck => {
         ForceArray =>
             [ 'action', 'field', 'groups'],

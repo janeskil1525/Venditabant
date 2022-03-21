@@ -2499,7 +2499,7 @@ INSERT INTO workflows (workflow) VALUES ('invoice_mail');
 CREATE TABLE workflow_mail
 (
     workflow_id  bigint not null,
-    mailer_mails_fkey bigint not null,
+    mailer_mails_fkeys varchar not null,
     sent bigint not null DEFAULT 0,
     primary key ( workflow_id )
 );
@@ -2508,7 +2508,49 @@ INSERT INTO translations (languages_fkey, module, tag, translation)
 VALUES((SELECT languages_pkey FROM languages WHERE lan ='swe'),
        'MAILS', 'INVOICE_MAIL_INPROCESS', 'Mail process påbörjad'),
       ((SELECT languages_pkey FROM languages WHERE lan ='swe'),
-    'MAILS', 'INVOICE_DOCUMENTS_CREATED', 'Faktura dokument skapade');
+    'MAILS', 'INVOICE_DOCUMENTS_CREATED', 'Faktura dokument skapade'),
+      ((SELECT languages_pkey FROM languages WHERE lan ='swe'),
+       'Invoice Mail', 'Subject', 'Faktura från {$company_name}');
 
+ALTER TYPE workflowtype
+    ADD VALUE 'mappings';
+
+ALTER TABLE customer_addresses
+    ADD COLUMN reference VARCHAR NOT NULL DEFAULT '';
+
+CREATE TABLE IF NOT EXISTS mails_invoice
+(
+    mails_invoice_pkey  serial                                     NOT NULL,
+    editnum         bigint                                         NOT NULL DEFAULT 1,
+    insby           varchar NOT NULL DEFAULT 'System'::character varying,
+    insdatetime     timestamp without time zone                    NOT NULL DEFAULT now(),
+    modby           varchar COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime     timestamp without time zone                    NOT NULL DEFAULT now(),
+    mailer_mails_fkey      BIGINT NOT NULL,
+    invoice_fkey    BIGINT NOT NULL,
+    CONSTRAINT mails_invoice_pkey PRIMARY KEY (mails_invoice_pkey),
+    CONSTRAINT mailer_mails_invoice_fkey FOREIGN KEY (mailer_mails_fkey)
+        REFERENCES mailer_mails (mailer_mails_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT mails_invoice_invoice_fkey FOREIGN KEY (invoice_fkey)
+        REFERENCES invoice (invoice_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+CREATE INDEX idx_mails_invoice_invoice_fkey
+    ON mails_invoice(invoice_fkey);
+
+CREATE UNIQUE INDEX idx_mails_invoice_mailer_mails_fkey
+    ON mails_invoice(mailer_mails_fkey);
+
+ALTER TABLE workflow_mail
+    ADD COLUMN companies_fkey BIGINT NOT NULL;
+
+CREATE UNIQUE INDEX idx_invoice_status_invoice_fkey_status
+    ON invoice_status(invoice_fkey, status);
 
 -- 47 down

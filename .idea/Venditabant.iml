@@ -15,6 +15,8 @@
       <path value="file://$MODULE_DIR$/Backend/DMS/lib" type="perl-library" />
       <path value="file://$MODULE_DIR$/Backend/Mailer/lib" type="perl-library" />
       <path value="file://$MODULE_DIR$/Backend/Translations/lib" type="perl-library" />
+      <path value="file://$MODULE_DIR$/Backend/Customers/lib" type="perl-library" />
+      <path value="file://$MODULE_DIR$/Backend/System/lib" type="perl-library" />
     </perl5>
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />

@@ -6,7 +6,9 @@ use Data::Dumper;
 has 'pg';
 
 
-async sub find_customer($self, $invoice_fkey, $data) {
+async sub find_customer($self, $data) {
+
+    my $invoice_fkey = $data->{invoice_fkey};
 
     my $stmt = qq {
         SELECT customers_pkey, a.name, a.companies_fkey, a.languages_fkey FROM customers a JOIN invoice b

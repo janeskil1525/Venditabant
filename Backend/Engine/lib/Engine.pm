@@ -11,6 +11,7 @@ our $VERSION = '0.07';
 use Engine::Load::Workflow;
 use Engine::Load::DataPrecheck;
 use Engine::Load::Transit;
+use Engine::Load::Mappings;
 use Engine::Model::Transit;
 
 has 'pg';
@@ -41,6 +42,15 @@ async sub execute  {
                         %{ $data }
                     ));
                 }
+                $data = await Engine::Load::Mappings->new(
+                    pg => $self->pg
+                )->mappings(
+                    $workflow, $action, $data
+                );
+
+                if(exists $data->{mappings}) {
+                    $wf->context->param(mappings => $data->{mappings});
+                }
                 $wf->execute_action($action);
             }
         }
@@ -60,10 +70,12 @@ async sub auto_transits ($self) {
         foreach my $transit (@{$item->{data}}) {
             foreach my $activity (@{$item->{activity}}) {
 
-                my $data->{workflow_id} = $transit->{workflow_id};
-                $data->{invoice_pkey} = $transit->{invoice_fkey};
-                $data->{users_pkey} = $transit->{users_fkey};
-                $data->{companies_pkey} = $transit->{companies_fkey};
+                my $data;
+                my @keys = keys %{$transit};
+                foreach my $key (@keys) {
+                    $data->{$key} = $transit->{$key}
+                }
+
                 $data->{actions} = $activity;
 
                 $data = await Engine::Load::DataPrecheck->new(
@@ -80,8 +92,17 @@ async sub auto_transits ($self) {
                 );
                 my @avail = $wf->get_current_actions();
 
-                if ($activity~~ @avail) {
+                if ($activity ~~ @avail) {
+                    $data = await Engine::Load::Mappings->new(
+                        pg => $self->pg
+                    )->mappings(
+                        $item->{workflow}->{workflow}, $activity, $data
+                    );
+
                     $wf->context->param(history => $data->{history});
+                    if(exists $data->{mappings}) {
+                        $wf->context->param(mappings => $data->{mappings});
+                    }
                     $wf->execute_action($activity);
                 }
             }

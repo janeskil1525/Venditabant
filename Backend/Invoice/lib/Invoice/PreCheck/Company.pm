@@ -5,7 +5,9 @@ use Data::Dumper;
 
 has 'pg';
 
-async sub load_company ($self, $invoice_fkey, $data) {
+async sub load_company ($self, $data) {
+
+    my $invoice_fkey = $data->{invoice_fkey};
 
     my $stmt = qq {
         SELECT a.company, a.name, a.homepage, a.phone, a.address1, a.address2, a.address3, a.zipcode, a.city,

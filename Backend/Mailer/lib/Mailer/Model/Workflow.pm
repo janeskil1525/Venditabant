@@ -7,14 +7,21 @@ has 'db';
 
 sub insert($self, $workflow_id, $mailer_mails_fkey, $companies_fkey) {
 
-    $self->db->insert(
-        'workflow_mail',
+    my $err;
+    eval {
+        $self->db->insert(
+            'workflow_mail',
             {
                 workflow_id        => $workflow_id,
                 mailer_mails_fkeys => $mailer_mails_fkey,
                 companies_fkey     => $companies_fkey,
             }
-    );
+        );
+    };
+    $err = $@ if $@;
+
+    return '1' unless $err;
+    return $err;
 }
 
 sub load_workflow($self, $workflow_id) {
@@ -61,5 +68,19 @@ sub load_workflow_list ($self) {
     $hash = $result->hashes if $result and $result->rows;
 
     return $hash;
+}
+
+sub set_workflow_status ($self, $id, $status) {
+
+    $self->db->update(
+        'workflow_mail',
+            {
+                workflow_id => $id,
+                sent        => $status
+            }
+
+    );
+
+
 }
 1;

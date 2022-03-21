@@ -81,7 +81,7 @@ sub _send_mail($self, $to, $subject, $content, $attachments) {
         },
         body_str => $content,
     );
-    
+
     foreach my $attachement (@{$attachments}) {
 
         push @parts,  Email::MIME->create(
@@ -91,7 +91,8 @@ sub _send_mail($self, $to, $subject, $content, $attachments) {
                 filename     => 'invoice.pdf',
                 name         => 'invoice.pdf'
             },
-            body => io( $attachement->{path} )->binary->all,
+            # body => io( $attachement->{path} )->binary->all,
+            body => $attachement->{file}
         );
     }
 

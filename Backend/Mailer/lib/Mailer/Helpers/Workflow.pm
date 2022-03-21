@@ -13,4 +13,14 @@ async sub load_workflow_list($self) {
 
 }
 
+sub set_workflow_status ($self, $id, $status) {
+
+    my $result = Mailer::Model::Workflow->new(
+        db => $self->pg->db
+    )->set_workflow_status (
+        $id, $status
+    );
+
+    return $result;
+}
 1;

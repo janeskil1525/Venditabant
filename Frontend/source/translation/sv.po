@@ -32,7 +32,7 @@ msgstr ""
 
 #: venditabant/application/ApplicationWindow.js
 msgid "Home"
-msgstr ""
+msgstr "Hem"
 
 #: venditabant/application/ApplicationWindow.js
 msgid "Cockpit"
@@ -132,11 +132,11 @@ msgstr "Beskrivning måste anges"
 
 #: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Save"
-msgstr ""
+msgstr "Spara"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Something went wront with the save, please try again"
-msgstr ""
+msgstr "Något gick fel när artikeln sparades, kontrollera och försök igen"
 
 #: venditabant/support/views/Sentinel.js
 msgid "Definition"
@@ -268,11 +268,11 @@ msgstr ""
 
 #: venditabant/settings/views/Definition.js
 msgid "Sales"
-msgstr ""
+msgstr "Försäljning"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "VAT"
-msgstr ""
+msgstr "Moms"
 
 #: venditabant/settings/views/Definition.js
 msgid "Percentage"
@@ -288,19 +288,19 @@ msgstr ""
 
 #: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Delete"
-msgstr ""
+msgstr "Ta bort"
 
 #: venditabant/sales/orders/views/SalesordersList.js
 msgid "New"
-msgstr ""
+msgstr "Ny"
 
 #: venditabant/settings/views/Definition.js
 msgid "Invoice days"
-msgstr ""
+msgstr "Dagar netto"
 
 #: venditabant/settings/views/Definition.js
 msgid "Days"
-msgstr ""
+msgstr "Dagar"
 
 #: venditabant/settings/views/Definition.js
 msgid "Ds"
@@ -308,39 +308,39 @@ msgstr ""
 
 #: venditabant/settings/views/Definition.js
 msgid "Days are required"
-msgstr ""
+msgstr "Dagar netto måste anges"
 
 #: venditabant/settings/views/Definition.js
 msgid "Sales units"
-msgstr ""
+msgstr "Försäljnings enhet"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Unit"
-msgstr ""
+msgstr "Enhet"
 
 #: venditabant/settings/views/Definition.js
 msgid "Unit is required"
-msgstr ""
+msgstr "Enhet måste anges"
 
 #: venditabant/settings/views/Definition.js
 msgid "Product groups"
-msgstr ""
+msgstr "Produktgrupp"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Group"
-msgstr ""
+msgstr "Grupp"
 
 #: venditabant/settings/views/Definition.js
 msgid "Group is required"
-msgstr ""
+msgstr "Grupp är obligatorisk"
 
 #: venditabant/settings/views/Definition.js
 msgid "Accounts"
-msgstr ""
+msgstr "Konton"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Account"
-msgstr ""
+msgstr "Konto"
 
 #: venditabant/settings/views/Definition.js
 msgid "Account is required"
@@ -548,7 +548,7 @@ msgstr "Leverans"
 
 #: venditabant/sales/customers/views/StockitemDiscounts.js
 msgid "Stockitems"
-msgstr ""
+msgstr "Artiklar"
 
 #: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Discount"
@@ -604,11 +604,11 @@ msgstr ""
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "ID"
-msgstr ""
+msgstr "Id"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Purchase Price"
-msgstr ""
+msgstr "Inköpspris"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "currencies_fkey"
@@ -620,23 +620,23 @@ msgstr ""
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "PO Currency"
-msgstr ""
+msgstr "Inköpsvaluta"
 
 #: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Sum is required"
-msgstr ""
+msgstr "Summa måste anges"
 
 #: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Minimum sum to triggerdiscount is requires"
-msgstr ""
+msgstr "Minimal summa för att rabatt ska ges måste anges"
 
 #: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Something went wrong deleteing the general discount"
-msgstr ""
+msgstr "Något gick fel när den generella rabatten skulle tas bort, kntrollera och försök igen"
 
 #: venditabant/sales/customers/models/GeneralDiscounts.js
 msgid "Could not save discount, please try again"
-msgstr ""
+msgstr "Kiunde inte spara rabatt, vänligen kontrollera och försök igen"
 
 #: venditabant/application/ApplicationWindow.js
 msgid "Administration"
@@ -660,7 +660,7 @@ msgstr "Prisltor"
 
 #: venditabant/application/ApplicationWindow.js
 msgid "Customers"
-msgstr ""
+msgstr "Kunder"
 
 #: venditabant/application/ApplicationWindow.js
 msgid "Commission"
@@ -685,3 +685,19 @@ msgstr "e-Mail Tempates"
 #: venditabant/application/ApplicationWindow.js
 msgid "Settings"
 msgstr "Inställningar"
+
+#: venditabant/sales/customers/views/Discounts.js
+msgid "Discounts"
+msgstr "Rabatter"
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Org. nr."
+msgstr "Organisations nr."
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "languages_fkey"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Language"
+msgstr ""

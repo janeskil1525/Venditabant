@@ -685,3 +685,19 @@ msgstr ""
 #: venditabant/application/ApplicationWindow.js
 msgid "Settings"
 msgstr ""
+
+#: venditabant/sales/customers/views/Discounts.js
+msgid "Discounts"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Org. nr."
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "languages_fkey"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Language"
+msgstr ""

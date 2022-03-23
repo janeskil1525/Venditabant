@@ -94,6 +94,9 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 page1.add ( homepage, { top: 80, left: 350 } );
                 this._homepage = homepage
 
+                lbl = this._createLbl(this.tr( "Language" ), 70);
+                page1.add ( lbl, { top: 115, left: 10 } );
+
                 let languages = new venditabant.support.views.LanguageSelectBox().set({
                     width:150,
                     emptyrow:false,
@@ -169,7 +172,17 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Customer", "Name", "Pricelist", "Org. nr.", "Phone", "Homepage", "Comment", "languages_fkey" ]);
+                tableModel.setColumns([
+                    this.tr("ID"),
+                    this.tr("Customer"),
+                    this.tr("Name"),
+                    this.tr("Pricelist"),
+                    this.tr("Org. nr."),
+                    this.tr("Phone"),
+                    this.tr("Homepage"),
+                    this.tr("Comment"),
+                    this.tr("languages_fkey")
+                ]);
                 tableModel.setData(rowData);
 
                 // table

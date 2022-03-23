@@ -13,7 +13,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Discounts",
             // Public functions ...
             _customers_fkey: 0,
             getView: function () {
-                var page4 = new qx.ui.tabview.Page("Discounts");
+                var page4 = new qx.ui.tabview.Page(this.tr("Discounts"));
                 page4.setLayout(new qx.ui.layout.Canvas());
 
 

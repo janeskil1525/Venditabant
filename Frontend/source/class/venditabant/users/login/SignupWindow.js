@@ -161,7 +161,7 @@ qx.Class.define("venditabant.users.login.SignupWindow",
                 }, this );
                 this.add ( btnSignup, { bottom: 10, left: 10 } );
 
-                let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
+                let btnCancel = this._createBtn ( this.tr ( "GoBack" ), "#FFAAAA70", 135, function ( ) {
                     this.login ( );
                 }, this );
                 this.add ( btnCancel, { bottom: 10, right: 10 } );

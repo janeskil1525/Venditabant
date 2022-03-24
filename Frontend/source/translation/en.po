@@ -634,7 +634,7 @@ msgstr ""
 msgid "Something went wrong deleteing the general discount"
 msgstr ""
 
-#: venditabant/sales/customers/models/GeneralDiscounts.js
+#: venditabant/sales/customers/models/StockitemsDiscount.js
 msgid "Could not save discount, please try again"
 msgstr ""
 
@@ -700,4 +700,8 @@ msgstr ""
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Language"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "GoBack"
 msgstr ""

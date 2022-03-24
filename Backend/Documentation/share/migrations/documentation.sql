@@ -51,7 +51,6 @@ create table if not exists documentation
     slug           varchar,
     markdown        text,
     html            text,
-    sortorder       bigint not null default 0,
     CONSTRAINT documentation_pkey PRIMARY KEY (documentation_pkey),
     CONSTRAINT documentation_languages_fkey FOREIGN KEY (languages_fkey)
         REFERENCES languages (languages_pkey) MATCH SIMPLE

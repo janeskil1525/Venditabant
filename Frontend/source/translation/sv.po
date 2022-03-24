@@ -1,34 +1,34 @@
 #: venditabant/users/login/LoginWindow.js
 msgid "Log in"
-msgstr ""
+msgstr "Logga in"
 
 #: venditabant/company/views/Definition.js
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: venditabant/users/management/views/Definition.js
 msgid "Password"
-msgstr ""
+msgstr "Lösenord"
 
 #: venditabant/users/login/LoginWindow.js
 msgid "Remember me ?"
-msgstr ""
+msgstr "Komma ihåg mig"
 
 #: venditabant/users/login/LoginWindow.js
 msgid "Forgot Password ?"
-msgstr ""
+msgstr "Glömt lösenord"
 
 #: venditabant/users/login/SignupWindow.js
 msgid "Sign Up"
-msgstr ""
+msgstr "Registrera dig"
 
 #: venditabant/users/login/LoginWindow.js
 msgid "Please provide username and password"
-msgstr ""
+msgstr "Vänligen ange användar id och lösenord"
 
 #: venditabant/users/login/LoginWindow.js
 msgid "Could not log in."
-msgstr ""
+msgstr "Kunde inte logga in"
 
 #: venditabant/application/ApplicationWindow.js
 msgid "Home"
@@ -48,35 +48,35 @@ msgstr "Logga av"
 
 #: venditabant/users/login/SignupWindow.js
 msgid "Please provide username, password, and email"
-msgstr ""
+msgstr "Vänligen ange användar id lösenord och email"
 
 #: venditabant/users/login/SignupWindow.js
 msgid "Could not signup."
-msgstr ""
+msgstr "Kunde inte registrera dig"
 
 #: venditabant/users/login/ForgotWindow.js
 msgid "Forgot Password"
-msgstr ""
+msgstr "Glömt lösenord"
 
 #: venditabant/users/login/ForgotWindow.js
 msgid "Please provide your email address."
-msgstr ""
+msgstr "Vänligen ange din emailaddress"
 
 #: venditabant/users/login/ForgotWindow.js
 msgid "email"
-msgstr ""
+msgstr "Email"
 
 #: venditabant/users/login/ForgotWindow.js
 msgid "Submit"
-msgstr ""
+msgstr "Spara"
 
 #: venditabant/users/login/ForgotWindow.js
 msgid "Back"
-msgstr ""
+msgstr "Tiilbaka"
 
 #: venditabant/users/management/views/Definition.js
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Lösenorden är olika, korrigera och försök igen"
 
 #: venditabant/sales/customers/views/Delivery.js
 msgid "Name"
@@ -84,31 +84,31 @@ msgstr "Namn"
 
 #: venditabant/users/login/SignupWindow.js
 msgid "User name can not be emty"
-msgstr ""
+msgstr "Användarnamn kan inte vara tomt"
 
 #: venditabant/users/login/SignupWindow.js
 msgid "Company name can not be emty"
-msgstr ""
+msgstr "Företag måste anges"
 
 #: venditabant/users/login/SignupWindow.js
 msgid "Org. number"
-msgstr ""
+msgstr "Organisations nr."
 
 #: venditabant/users/login/SignupWindow.js
 msgid "Org. no can not be emty"
-msgstr ""
+msgstr "Organisations nummer kan inte vara tomt"
 
 #: venditabant/users/login/SignupWindow.js
 msgid "Company address"
-msgstr ""
+msgstr "Företags address"
 
 #: venditabant/users/login/SignupWindow.js
 msgid "Password can not be emty"
-msgstr ""
+msgstr "Lösenord måste anges"
 
 #: venditabant/users/login/SignupWindow.js
 msgid "Retype Password"
-msgstr ""
+msgstr "Lösenord igen"
 
 #: venditabant/sales/customers/views/Delivery.js
 msgid "Cancel"
@@ -144,27 +144,23 @@ msgstr "Definition"
 
 #: venditabant/support/views/MailTemplates.js
 msgid "Header"
-msgstr ""
+msgstr "Header"
 
 #: venditabant/support/views/MailTemplates.js
 msgid "Body"
-msgstr ""
+msgstr "Body"
 
 #: venditabant/support/views/MailTemplates.js
 msgid "Footer"
-msgstr ""
+msgstr "Footer"
 
 #: venditabant/support/views/MailTemplates.js
 msgid "Sub 1"
-msgstr ""
-
-#: venditabant/support/views/MailTemplates.js
-msgid "Sub 2"
-msgstr ""
+msgstr "Sub 1"
 
 #: venditabant/support/views/MailTemplates.js
 msgid "Sub 3"
-msgstr ""
+msgstr "Sub 3"
 
 #: venditabant/support/views/MailSettings.js
 msgid "Something went wrong saving the customer"
@@ -172,7 +168,7 @@ msgstr "Något gick fel när kunden skulle sparas, kontrollera och försök igen
 
 #: venditabant/support/views/Sentinel.js
 msgid "Source"
-msgstr ""
+msgstr "Källa"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Customer is required"
@@ -180,15 +176,15 @@ msgstr "Kund är obligatorisk"
 
 #: venditabant/support/views/Sentinel.js
 msgid "Method"
-msgstr ""
+msgstr "Metod"
 
 #: venditabant/support/views/Sentinel.js
 msgid "Message"
-msgstr ""
+msgstr "Meddelande"
 
 #: venditabant/company/views/Definition.js
 msgid "Name is requires"
-msgstr ""
+msgstr "Företags måste anges"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Org. nr"
@@ -196,7 +192,7 @@ msgstr "Org. nr."
 
 #: venditabant/company/views/Definition.js
 msgid "Org. nr is required"
-msgstr ""
+msgstr "Organisationsnummer måste anges"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Phone"
@@ -204,7 +200,7 @@ msgstr "Telefon"
 
 #: venditabant/company/views/Definition.js
 msgid "Phone is required"
-msgstr ""
+msgstr "Telefon måste anges"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Homepage"
@@ -212,15 +208,15 @@ msgstr "Hemsida"
 
 #: venditabant/company/views/Definition.js
 msgid "Homepage is required"
-msgstr ""
+msgstr "Hemsida kan inte vara tomt"
 
 #: venditabant/company/views/Definition.js
 msgid "VAT No"
-msgstr ""
+msgstr "VAT Nr"
 
 #: venditabant/company/views/Definition.js
 msgid "VAT No is required"
-msgstr ""
+msgstr "VAT Nummer måste anges"
 
 #: venditabant/sales/customers/views/Delivery.js
 msgid "Address"
@@ -228,27 +224,27 @@ msgstr "Address"
 
 #: venditabant/company/views/Definition.js
 msgid "Address is required"
-msgstr ""
+msgstr "Address måste anges"
 
 #: venditabant/company/views/Definition.js
 msgid "Giro"
-msgstr ""
+msgstr "Giro"
 
 #: venditabant/company/views/Definition.js
 msgid "Giro is required"
-msgstr ""
+msgstr "Giro måste anges"
 
 #: venditabant/company/views/Definition.js
 msgid "Invoice ref."
-msgstr ""
+msgstr "Faktura referens"
 
 #: venditabant/company/views/Definition.js
 msgid "Invoiceref is required"
-msgstr ""
+msgstr "Faktura referens krävs"
 
 #: venditabant/company/views/Definition.js
 msgid "Email is required"
-msgstr ""
+msgstr "Faktura referens måste anges"
 
 #: venditabant/sales/customers/views/Delivery.js
 msgid "Zipcode / City"
@@ -256,15 +252,15 @@ msgstr "Postnummer / Ort"
 
 #: venditabant/company/views/Definition.js
 msgid "Zipcode is required"
-msgstr ""
+msgstr "Postnummer måste anges"
 
 #: venditabant/company/views/Definition.js
 msgid "City is required"
-msgstr ""
+msgstr "Post ort måste anges"
 
 #: venditabant/company/views/Definition.js
 msgid "Invoice comment"
-msgstr ""
+msgstr "Faktura kommentar"
 
 #: venditabant/settings/views/Definition.js
 msgid "Sales"
@@ -276,15 +272,15 @@ msgstr "Moms"
 
 #: venditabant/settings/views/Definition.js
 msgid "Percentage"
-msgstr ""
+msgstr "Procent"
 
 #: venditabant/settings/views/Definition.js
 msgid "0-9 %"
-msgstr ""
+msgstr "0-9%"
 
 #: venditabant/settings/views/Definition.js
 msgid "Percentage is required"
-msgstr ""
+msgstr "Procent måste anges"
 
 #: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Delete"
@@ -304,7 +300,7 @@ msgstr "Dagar"
 
 #: venditabant/settings/views/Definition.js
 msgid "Ds"
-msgstr ""
+msgstr "Ds"
 
 #: venditabant/settings/views/Definition.js
 msgid "Days are required"
@@ -344,19 +340,19 @@ msgstr "Konto"
 
 #: venditabant/settings/views/Definition.js
 msgid "Account is required"
-msgstr ""
+msgstr "Konto krävs"
 
 #: venditabant/settings/views/Definition.js
 msgid "Currencies"
-msgstr ""
+msgstr "Valutor"
 
 #: venditabant/settings/views/Definition.js
 msgid "Currency"
-msgstr ""
+msgstr "Valuta"
 
 #: venditabant/settings/views/Definition.js
 msgid "Currency is required"
-msgstr ""
+msgstr "Valuta måste anges"
 
 #: venditabant/sales/orders/views/Salesorder.js
 msgid "Customer"
@@ -428,7 +424,7 @@ msgstr "Lösenord 1"
 
 #: venditabant/users/management/views/Definition.js
 msgid "Password 2"
-msgstr ""
+msgstr "Lösenord 2"
 
 #: venditabant/users/management/views/Definition.js
 msgid "Password can't be empty"
@@ -496,31 +492,31 @@ msgstr "Faktura datum"
 
 #: venditabant/sales/orders/views/Salesorder.js
 msgid "Quantity"
-msgstr ""
+msgstr "Antal"
 
 #: venditabant/sales/orders/views/Salesorder.js
 msgid "Quantity is required"
-msgstr ""
+msgstr "Antal måste anges"
 
 #: venditabant/sales/orders/views/Salesorder.js
 msgid "Price is required"
-msgstr ""
+msgstr "Pris måste anges"
 
 #: venditabant/sales/orders/views/Salesorder.js
 msgid "Done"
-msgstr ""
+msgstr "Klar"
 
 #: venditabant/sales/orders/views/Salesorder.js
 msgid "Order no"
-msgstr ""
+msgstr "Order nr"
 
 #: venditabant/sales/orders/views/Salesorder.js
 msgid "Orderno"
-msgstr ""
+msgstr "Order nr"
 
 #: venditabant/sales/orders/views/Salesorder.js
 msgid "Order date"
-msgstr ""
+msgstr "Order datum"
 
 #: venditabant/sales/customers/views/Invoice.js
 msgid "Invoice"
@@ -580,15 +576,15 @@ msgstr "Kunde inte spara kund, kontrollera och test aigen"
 
 #: venditabant/sales/pricelists/views/NewHead.js
 msgid "Price list"
-msgstr ""
+msgstr "Pris lista"
 
 #: venditabant/sales/pricelists/views/NewHead.js
 msgid "Close"
-msgstr ""
+msgstr "Stäng"
 
 #: venditabant/cockpit/views/AutoTodo.js
 msgid "Version"
-msgstr ""
+msgstr "Version"
 
 #: venditabant/sales/customers/models/DeliveryAddress.js
 msgid "Could not save customer address, please try again"
@@ -596,11 +592,11 @@ msgstr "Kunde inte spara leverans adress, kontrollera och testa igen"
 
 #: venditabant/support/views/Workflows.js
 msgid "Workflows"
-msgstr ""
+msgstr "Workflows"
 
 #: venditabant/support/views/Workflows.js
 msgid "Workflow"
-msgstr ""
+msgstr "Workflow"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "ID"
@@ -612,11 +608,11 @@ msgstr "Inköpspris"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "currencies_fkey"
-msgstr ""
+msgstr "currencies_fkey"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "suppliers_pkey"
-msgstr ""
+msgstr "suppliers_pkey"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "PO Currency"
@@ -696,8 +692,16 @@ msgstr "Organisations nr."
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "languages_fkey"
-msgstr ""
+msgstr "languages_fkey"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Language"
+msgstr "Språk"
+
+#: venditabant/users/login/SignupWindow.js
+msgid "GoBack"
+msgstr "Avbryt"
+
+#: venditabant/support/views/MailTemplates.js
+msgid "Sub 2"
 msgstr ""

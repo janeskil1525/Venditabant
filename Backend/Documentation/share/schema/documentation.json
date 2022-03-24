@@ -36,10 +36,9 @@
     "x-id-field": "pathtodoc",
     "x-list-columns": [
       "pathtodoc",
-      "slug",
-      "languages_fkey"
+      "slug"
     ],
-    "x-view-item-url": "/{path}",
+    "x-view-item-url": "/{pathtodoc}",
     "title": "Dokumentation",
     "description": "Venditabant dokumentation",
     "properties": {
@@ -74,11 +73,33 @@
       },
       "html": {
         "type": "string"
-      },
-      "sortorder": {
+      }
+    }
+  },
+  "languages": {
+    "title": "Språk",
+    "description": "De språk som stöds av LagaPro",
+    "x-id-field": "languages_pkey",
+    "x-list-columns": [
+      "lan",
+      "lan_name"
+    ],
+    "properties": {
+      "languages_pkey": {
         "type": "integer",
-        "x-order": 6,
-        "title": "Sorteras efter"
+        "title": "Språk id",
+        "x-order": 1,
+        "readOnly": true
+      },
+      "lan": {
+        "type": "string",
+        "title": "Språk kort",
+        "x-order": 2
+      },
+      "lan_name": {
+        "type": "string",
+        "title": "Beskrivning",
+        "x-order": 1
       }
     }
   }

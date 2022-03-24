@@ -70,11 +70,13 @@ sub startup ($self) {
           backend               => { Pg => $self->pg },
           schema                => $schema,
           read_schema           => 0,
-          'editor.require_user' => undef,
+          editor => {
+              require_user => undef,
+              return_to     => '/yancy'
+          },
           file                  => {
 
           },
-          return_to     => '/yancy'
       }
   );
 
@@ -89,7 +91,7 @@ sub startup ($self) {
                   password_digest => {
                       type => 'SHA-256'
                   },
-                  return_to     => '/yancy'
+
                   # allow_register        => 1,
               },
           ],
@@ -102,6 +104,13 @@ sub startup ($self) {
 
   # Normal route to controller
   $r->get('/documentation')->to('login#showlogin');
+    $r->get('/*pathtodoc')->to(
+        id         => 'index',
+        controller => 'yancy',
+        action     => 'get',
+        schema     => 'documentation',
+        template   => 'pages/pages',
+    );
   $r->post('/login')->to('login#login');
 }
 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/yancy/bootstrap.css">
+    <title><%= title %></title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-sm sticky-top">
+        <a class="navbar-brand" href="/">LagaPro</a>
+        <div class="collapse navbar-collapse" id="navbar">
+
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+</header>
+<main class="container">
+<%= content %>
+</main>
+%= javascript '/yancy/jquery.js'
+        %= javascript '/yancy/popper.js'
+        %= javascript '/yancy/bootstrap.js'
+    </body>
+</html>

@@ -1,0 +1,85 @@
+{
+  "users": {
+    "x-id-field": "userid",
+    "x-list-columns": [
+      "userid",
+      "username"
+    ],
+    "title": "Användare",
+    "description": "Venditabant dokumentation användare",
+    "properties": {
+      "users_pkey": {
+        "type": "integer",
+        "readOnly": true,
+        "x-order": 1,
+        "title": "Id"
+      },
+      "userid": {
+        "type": "string",
+        "x-order": 2,
+        "title": "Användar id"
+      },
+      "username": {
+        "type": "string",
+        "x-order": 3,
+        "title": "Användar namn"
+      },
+      "passwd": {
+        "format": "password",
+        "type": "string",
+        "x-order": 3,
+        "title": "Password"
+      }
+    }
+  },
+  "documentation": {
+    "x-id-field": "pathtodoc",
+    "x-list-columns": [
+      "pathtodoc",
+      "slug",
+      "languages_fkey"
+    ],
+    "x-view-item-url": "/{path}",
+    "title": "Dokumentation",
+    "description": "Venditabant dokumentation",
+    "properties": {
+      "documentation_pkey": {
+        "type": "integer",
+        "readOnly": true,
+        "x-order": 1,
+        "title": "Id"
+      },
+      "languages_fkey": {
+        "type": "integer",
+        "x-foreign-key": "languages",
+        "title": "Språk",
+        "x-order": 2
+      },
+      "pathtodoc": {
+        "type": "string",
+        "x-order": 3,
+        "title": "Sokvag"
+      },
+      "slug": {
+        "type": "string",
+        "x-order": 4,
+        "title": "Titel"
+      },
+      "markdown": {
+        "type": "string",
+        "format": "markdown",
+        "x-html-field": "html",
+        "x-order": 5,
+        "title": "Documentation"
+      },
+      "html": {
+        "type": "string"
+      },
+      "sortorder": {
+        "type": "integer",
+        "x-order": 6,
+        "title": "Sorteras efter"
+      }
+    }
+  }
+}

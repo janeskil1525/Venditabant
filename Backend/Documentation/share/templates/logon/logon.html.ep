@@ -1,0 +1,6 @@
+
+
+
+%= link_to Login => 'yancy.auth.password.login_form'
+<%= link_to 'yancy.auth.password.login_form', begin %>Login<% end %>
+<p>Login here: <%= url_for 'yancy.auth.password.login_form' %></p>

@@ -1,0 +1,9 @@
+% layout 'documenationbase';
+% for my $item ( @{ stash 'items' } ) {
+    <h3><a href="https://admin.laga.se/api/documentation/<%= $item->{path} %>"  target="_blank">
+            <%= $item->{sortorder} . ". " . $item->{slug} %></a></h3>
+
+% }
+
+
+

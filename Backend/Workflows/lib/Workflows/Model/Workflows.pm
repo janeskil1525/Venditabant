@@ -1,5 +1,5 @@
-package venditabant::Model::Workflow::Workflows;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package Workflows::Model::Workflows;
+use Mojo::Base -base, -signatures, -async_await;
 
 has 'db';
 
@@ -11,6 +11,5 @@ async sub load_list ($self, $companies_pkey, $users_pkey) {
         ['*']
     )->hashes();
 }
-
 
 1;

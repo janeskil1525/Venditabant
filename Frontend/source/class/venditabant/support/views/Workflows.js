@@ -63,12 +63,27 @@ qx.Class.define ( "venditabant.support.views.Workflows",
                 this._part = part;
                 page1.add ( partview, { top: 10, left: 270 } );
 
+                let btnExport = this._createBtn ( this.tr ( "Export" ), "#FFAAAA70", 135, function ( ) {
+                    this.exportWorkflows ( );
+                }, this );
+                page1.add ( btnExport, { bottom: 5, right: 200 } );
+
                 let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
                     this.clearScreen ( );
                 }, this );
                 page1.add ( btnCancel, { bottom: 5, right: 10 } );
 
                 return page1;
+            },
+            exportWorkflows:function() {
+                let workflow = new venditabant.support.models.Workflows();
+                workflow.export(function(response) {
+                    let tableData = [];
+                    if(response.data !== null) {
+                        this._workflow_xml.setValue(response.data.workflow);
+                    }
+                    //alert("Set table data here");
+                }, this);
             },
             saveWorkflow:function() {
                 let that = this;

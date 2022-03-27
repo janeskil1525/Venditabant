@@ -1,0 +1,9 @@
+lib/Document.pm
+lib/Document/Helpers/Create.pm
+lib/Document/Helpers/Mapper.pm
+lib/Document/Helpers/Store.pm
+lib/Document/Model/Documents.pm
+lib/Document/Model/SystemSettings.pm
+Makefile.PL
+MANIFEST			This list of files
+

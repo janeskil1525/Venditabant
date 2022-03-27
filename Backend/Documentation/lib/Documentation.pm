@@ -98,6 +98,10 @@ sub startup ($self) {
       ],
   } );
 
+    $self->yancy->plugin( 'File' => {
+        file_root => 'public/help',
+        file_root => '/help'
+    } );
 
   # Router
   my $r = $self->routes;
@@ -105,7 +109,7 @@ sub startup ($self) {
   # Normal route to controller
   $r->get('/documentation')->to('login#showlogin');
     $r->get('/*pathtodoc')->to(
-        id         => 'index',
+        pathtodoc         => 'index',
         controller => 'yancy',
         action     => 'get',
         schema     => 'documentation',

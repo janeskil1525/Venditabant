@@ -6,7 +6,7 @@ use Workflow::Factory qw(FACTORY);
 use Workflow::State;
 use Data::Dumper;
 
-our $VERSION = '0.07';
+our $VERSION = '0.09';
 
 use Engine::Load::Workflow;
 use Engine::Load::DataPrecheck;

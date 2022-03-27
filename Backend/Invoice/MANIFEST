@@ -1,7 +1,21 @@
 lib/Invoice.pm
-lib/Invoice/Model/InvoiceHead.pm
-lib/Invoice/Model/InvoiceItem.pm
-lib/Invoice/Workflow/Action/ConvertSo.pm
+lib/Invoice/Helpers/DbFields/Head.pm
+lib/Invoice/Helpers/Files.pm
+lib/Invoice/Helpers/Language.pm
+lib/Invoice/Helpers/Load.pm
+lib/Invoice/Helpers/Mailsent.pm
+lib/Invoice/Helpers/Workflow.pm
+lib/Invoice/Model/Company.pm
+lib/Invoice/Model/Customers.pm
+lib/Invoice/Model/Files.pm
+lib/Invoice/Model/Head.pm
+lib/Invoice/Model/Item.pm
+lib/Invoice/Model/Mails.pm
+lib/Invoice/Model/Status.pm
+lib/Invoice/Model/Workflow.pm
+lib/Invoice/PreCheck/Company.pm
+lib/Invoice/PreCheck/Customer.pm
+lib/Invoice/PreCheck/Recipients.pm
 lib/Invoice/Workflow/Action/Create.pm
 lib/Invoice/Workflow/Action/Document.pm
 lib/Invoice/Workflow/Action/Pay.pm
@@ -10,5 +24,8 @@ lib/Invoice/Workflow/Action/Remind.pm
 lib/Invoice/Workflow/Action/Reprint.pm
 lib/Invoice/Workflow/Action/Resend.pm
 lib/Invoice/Workflow/Action/Send.pm
+lib/Invoice/Workflow/Action/Sent.pm
+lib/Invoice/Workflow/Condition/IsToBeMailed.pm
 Makefile.PL
-MANIFEST			This list of files
+MANIFEST
+

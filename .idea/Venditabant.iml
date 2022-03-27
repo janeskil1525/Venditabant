@@ -18,7 +18,7 @@
       <path value="file://$MODULE_DIR$/Backend/Customers/lib" type="perl-library" />
       <path value="file://$MODULE_DIR$/Backend/System/lib" type="perl-library" />
       <path value="file://$MODULE_DIR$/Backend/Documentation/lib" type="perl-library" />
-      <path value="file://$MODULE_DIR$/Backend/Documentation/templates" type="mojo-template" />
+      <path value="file://$MODULE_DIR$/Backend/Workflows/lib" type="perl-library" />
     </perl5>
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />

@@ -1,6 +1,10 @@
 lib/Salesorder.pm
 lib/Salesorder/Helpers/DbFields/Head.pm
 lib/Salesorder/Helpers/DbFields/Item.pm
+lib/Salesorder/Helpers/Discount/Calculate.pm
+lib/Salesorder/Helpers/Vat/Calculate.pm
+lib/Salesorder/Model/Discount/Productgroups.pm
+lib/Salesorder/Model/Discount/Stockitem.pm
 lib/Salesorder/Model/Head.pm
 lib/Salesorder/Model/Item.pm
 lib/Salesorder/Model/Workflow.pm

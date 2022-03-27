@@ -1,5 +1,5 @@
-package venditabant::Model::Workflow::WorkflowItems;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package Workflows::Model::WorkflowItems;
+use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;
 
@@ -36,7 +36,6 @@ sub upsert ($self, $companies_pkey, $users_pkey, $workflow) {
 
 async sub load_workflow($self, $companies_pkey, $users_pkey, $workflows_fkey, $workflow_type) {
 
-    say "$workflows_fkey, $workflow_type";
     my $result;
 
     eval {
@@ -53,6 +52,27 @@ async sub load_workflow($self, $companies_pkey, $users_pkey, $workflows_fkey, $w
 
     my $hash;
     $hash = $result->hash if $result and $result->rows > 0;
+
+    return $hash;
+}
+
+async sub load_workflow_items($self,  $workflows_fkey ) {
+
+    my $result;
+
+    eval {
+        $result =  $self->db->select(
+            'workflow_items',
+            ['*'],
+            {
+                workflows_fkey => $workflows_fkey,
+            }
+        );
+    };
+    say $@ if $@;
+
+    my $hash;
+    $hash = $result->hashes if $result and $result->rows > 0;
 
     return $hash;
 }

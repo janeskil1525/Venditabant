@@ -19,7 +19,7 @@ async sub export($self) {
 
     my $wf_items = Workflows::Model::WorkflowItems->new(db => $self->pg->db);
     foreach my $workflow (@{$workflows}) {
-        $stmt .= await $self->generate_wfl_upsert($workflow);
+        $stmt .= await $self->generate_wfl_upsert($workflow->{workflow});
         my $items = await $wf_items->load_workflow_items($workflow->{workflows_pkey});
         foreach my $item (@{$items}) {
             $stmt .= $self->generate_wfl_upsert_item($item);
@@ -49,7 +49,7 @@ async sub generate_wfl_upsert($self, $wfl) {
 
     return qq{
         INSERT INTO workflows (workflow) VALUES ('$wfl')
-            ON CONFLICT (workflows)
+            ON CONFLICT (workflow)
         DO UPDATE SET moddatetime = now();
     };
 

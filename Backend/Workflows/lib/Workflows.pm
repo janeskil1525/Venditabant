@@ -13,7 +13,7 @@ has 'pg';
 async sub export($self) {
 
     return Workflows::Helper::Export->new(
-        db => $self->pg->db
+        pg => $self->pg
     )->export();
 }
 

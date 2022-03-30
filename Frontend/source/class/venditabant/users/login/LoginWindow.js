@@ -12,10 +12,10 @@ qx.Class.define ( "venditabant.users.login.LoginWindow",
         construct : function ( ) {
             this.base ( arguments );
             this.setLayout ( new qx.ui.layout.Canvas ( ) );
-            this.set ( { width: 300, height: 200 } );
+            this.set ( { width: 500, height: 200 } );
             this._buildLogin ( );
             var top  = parseInt ( ( qx.bom.Document.getHeight ( ) - 200 ) / 2, 10 );
-            var left = parseInt ( ( qx.bom.Document.getWidth  ( ) - 300 ) / 2, 10 );
+            var left = parseInt ( ( qx.bom.Document.getWidth  ( ) - 500 ) / 2, 10 );
             var app  = qx.core.Init.getApplication ( );
             var root = app.getRoot( );
             root.add ( this, { top: top, left: left } );
@@ -42,14 +42,20 @@ qx.Class.define ( "venditabant.users.login.LoginWindow",
                 line.set ( { height: 2, backgroundColor: '#FFFFFF' } );
                 this.add ( line, { top: 50, left: 10, right: 10 } );
 
+                let lbl1 = this._createLBL(this.tr ( "Email" ));
+                this.add ( lbl1, { top: 65, left: 10 } );
+
                 var name = new qx.ui.form.TextField ( );
                 name.setPlaceholder ( this.tr ( "Email" ) );
-                this.add ( name, { top: 65, left: 10, right: 10 } );
+                this.add ( name, { top: 65, left: 160, right: 10 } );
                 this._name = name;
+
+                lbl1 = this._createLBL(this.tr ( "Password" ));
+                this.add ( lbl1, { top: 100, left: 10 } );
 
                 var pass = new qx.ui.form.PasswordField ( );
                 pass.setPlaceholder ( this.tr ( "Password" ) );
-                this.add ( pass, { top: 100, left: 10, right: 10 } );
+                this.add ( pass, { top: 100, left: 160, right: 10 } );
                 this._pass = pass;
 
                 var chk = new qx.ui.form.CheckBox ( "<b style='color: #FFFFFF'>" + this.tr ( "Remember me ?" ) + "</b>" );
@@ -96,6 +102,16 @@ qx.Class.define ( "venditabant.users.login.LoginWindow",
                 var forgot = new venditabant.users.login.ForgotWindow ( );
                 forgot.show  ( );
                 this.destroy ( );
+            },
+            _createLBL : function(txt) {
+                let font = new qx.bom.Font ( 14, [ "Arial" ] );
+
+                let lbl = new qx.ui.basic.Label ( "<b style='color: #FFFFFF'>" + txt + "</b>" );
+                lbl.setFont ( font );
+                lbl.setRich ( true );
+                lbl.setWidth( 130 );
+
+                return lbl;
             },
             login : function ( )  {
                 let that = this;

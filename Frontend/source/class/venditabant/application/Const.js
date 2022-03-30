@@ -18,7 +18,7 @@ qx.Class.define("venditabant.application.Const",
                 }
             },
             getVersion:function() {
-                return "0.0.3"
+                return "0.0.5"
             },
         }
 

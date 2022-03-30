@@ -26,11 +26,11 @@
         }
       },
       getVersion: function getVersion() {
-        return "0.0.3";
+        return "0.0.5";
       }
     }
   });
   venditabant.application.Const.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Const.js.map?dt=1648387791216
+//# sourceMappingURL=Const.js.map?dt=1648661183951

@@ -1,12 +1,12 @@
 package Workflows;
 use Mojo::Base -base, -signatures, -async_await;
 
-our $VERSION = '0.2';
-
+our $VERSION = '0.07';
 
 use Data::Dumper;
 use Workflows::Helper::Workflows;
 use Workflows::Helper::Export;
+use Workflows::Helper::WorkflowItems;
 
 has 'pg';
 
@@ -37,11 +37,12 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $workflow ) {
 
 async sub load_workflow($self, $companies_pkey, $users_pkey, $workflows_fkey, $workflow_type) {
 
-    my $customers_pkey = Workflows::Helper::WorkflowItems->new(
-        db => $self->pg->db
+    my $result = Workflows::Helper::WorkflowItems->new(
+        pg => $self->pg
     )->load_workflow(
         $companies_pkey, $users_pkey, $workflows_fkey, $workflow_type
     );
 
+    return $result;
 }
 1;

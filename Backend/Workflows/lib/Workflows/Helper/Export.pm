@@ -26,8 +26,7 @@ async sub export($self) {
         }
     }
 
-    my $path = Mojo::File->new('/home/jan/Publikt/workflow.sql')->spurt($stmt);
-
+    return $stmt;
 }
 
 async sub generate_wfl_upsert_item($self, $workflow, $item) {

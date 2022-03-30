@@ -12,7 +12,7 @@ qx.Class.define("venditabant.support.models.Workflows",
         },
         members: {
             _address: new venditabant.application.Const().venditabant_endpoint(),
-            export:function() {
+            export:function(cb, ctx) {
                 let get = new venditabant.communication.Get;
                 get.load(this._address, "/api/v1/workflows/export/", '',function(response){
                     cb.call ( ctx, (response));

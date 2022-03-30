@@ -1,4 +1,22 @@
+/*function onStartedDownload(id) {
+    console.log(`Started downloading: ${id}`);
+}
 
+function onFailed(error) {
+    console.log(`Download failed: ${error}`);
+}*/
+
+var downloadUrl = new venditabant.application.Const().venditabant_endpoint() + '/api/v1/workflows/export/';
+
+/*var downloading = browser.downloads.download({
+    url : downloadUrl,
+    filename : 'workflows.sql',
+    conflictAction : 'uniquify'
+});*/
+
+function request() {
+    window.location = downloadUrl;
+}
 
 qx.Class.define ( "venditabant.support.views.Workflows",
     {
@@ -80,7 +98,7 @@ qx.Class.define ( "venditabant.support.views.Workflows",
                 workflow.export(function(response) {
                     let tableData = [];
                     if(response.data !== null) {
-                        this._workflow_xml.setValue(response.data.workflow);
+                       this._workflow_xml.setValue(response.data);
                     }
                     //alert("Set table data here");
                 }, this);

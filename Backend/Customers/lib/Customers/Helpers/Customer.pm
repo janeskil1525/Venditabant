@@ -2,6 +2,7 @@ package Customers::Helpers::Customer;
 use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;
+use Customers::Model::Customers;
 
 has 'pg';
 
@@ -51,7 +52,7 @@ async sub load_list ($self, $companies_pkey, $users_pkey) {
     return $hashes;
 }
 
-async sub upsert ($self, $companies_pkey, $users_pkey, $customers ) {
+async sub upsert_p ($self, $companies_pkey, $users_pkey, $customers ) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -59,6 +60,29 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customers ) {
     my $err;
     eval {
         my $customers_pkey = venditabant::Model::Customer::Customers->new(
+            db => $db
+        )->upsert(
+            $companies_pkey, $users_pkey, $customers
+        );
+        $tx->commit();
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, '',
+        'venditabant::Helpers::Customers::Customers', 'upsert', $err
+    ) if $err;
+
+    return $err ? $err : 'success';
+}
+
+sub upsert ($self, $companies_pkey, $users_pkey, $customers ) {
+
+    my $db = $self->pg->db;
+    my $tx = $db->begin();
+
+    my $err;
+    eval {
+        my $customers_pkey = Customers::Model::Customers->new(
             db => $db
         )->upsert(
             $companies_pkey, $users_pkey, $customers

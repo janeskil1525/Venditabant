@@ -6,17 +6,26 @@ use Mojo::JSON qw {decode_json};
 
 sub save_customer ($self) {
 
-    $self->render_later;
     my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
         $self->req->headers->header('X-Token-Check')
     );
-    my $json_hash = decode_json ($self->req->body);
-    $self->customers->upsert($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
-        $self->render(json => {'result' => 'success', data => $result});
-    })->catch( sub ($err) {
 
-        $self->render(json => {'result' => $err});
-    })->wait;
+    my $data->{customer} = decode_json ($self->req->body);
+    $data->{companies_fkey} = $companies_pkey;
+    $data->{users_fkey} = $users_pkey;
+    if(exists $data->{customer}->{customers_pkey} and $data->{customer}->{customers_pkey} > 0) {
+        push @{$data->{actions}}, 'update_customer';
+    } else {
+        push @{$data->{actions}}, 'create_customer';
+    }
+
+    eval {
+        $self->workflow->execute(
+            'customer_simple', $data
+        );
+        $self->render(json => { result => 'success'});
+    };
+    $self->render(json => { result => 'failure', error => $@}) if $@;
 
 }
 

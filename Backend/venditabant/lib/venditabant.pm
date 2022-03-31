@@ -13,7 +13,7 @@ use venditabant::Helpers::Salesorder::Salesorders;
 use venditabant::Helpers::Companies::Release::Release;
 use venditabant::Helpers::Sentinel::Sentinelsender;
 use venditabant::Helpers::Parameter::Parameters;
-use Customers::Helpers::Address;
+use Customers;
 use venditabant::Helpers::Companies::Company;
 use venditabant::Helpers::Sentinel::Sentinel;
 use venditabant::Helpers::Parameter::Languages;
@@ -57,7 +57,7 @@ sub startup ($self) {
     $self->plugin('Workflow');
 
     $self->helper(users => sub {
-    state $users = venditabant::Helpers::Users->new(pg => $self->pg);
+        state $users = venditabant::Helpers::Users->new(pg => $self->pg);
     });
     $self->helper(login => sub {state $login = venditabant::Helpers::Login->new(pg => shift->pg)});
     $self->helper(stockitems => sub {state $stockitems = venditabant::Helpers::Stockitems->new(pg => shift->pg)});
@@ -70,7 +70,7 @@ sub startup ($self) {
     );
     $self->helper(
       customers => sub {
-    state  $customers = Customers::Helpers::Customer->new(pg => shift->pg)
+        state  $customers = Customers->new(pg => shift->pg)
     });
     $self->helper(
       parameters => sub {
@@ -147,7 +147,7 @@ sub startup ($self) {
 
     $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-    )->migrate(47);
+    )->migrate(48);
 
     $self->renderer->paths([
       $self->dist_dir->child('templates'),

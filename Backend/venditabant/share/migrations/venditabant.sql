@@ -2554,3 +2554,19 @@ CREATE UNIQUE INDEX idx_invoice_status_invoice_fkey_status
     ON invoice_status(invoice_fkey, status);
 
 -- 47 down
+-- 48 up
+INSERT INTO workflows (workflow)
+    VALUES ('customer_simple');
+
+
+CREATE TABLE workflow_customer
+(
+    workflow_id  bigint not null,
+    customers_fkey  bigint not null,
+    users_fkey  bigint not null,
+    companies_fkey  bigint not null,
+    closed boolean not null default 'false',
+    primary key ( workflow_id )
+);
+
+-- 48 down

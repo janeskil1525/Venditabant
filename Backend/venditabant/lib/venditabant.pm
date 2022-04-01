@@ -140,14 +140,13 @@ sub startup ($self) {
         state  $workflows = Workflows->new(pg => shift->pg)
       });
 
-
     # Configure the application
     $self->secrets($config->{secrets});
     $self->log->path($self->home() . $self->config('log'));
 
     $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-    )->migrate(48);
+    )->migrate(49);
 
     $self->renderer->paths([
       $self->dist_dir->child('templates'),

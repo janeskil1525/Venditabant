@@ -8,11 +8,26 @@ qx.Class.define("venditabant.widget.button.Standard",
 
         },
         members: {
+            createChkBox : function(txt, clr, width, cb, ctx) {
+                let box = new qx.ui.form.CheckBox (  txt  );
+                box.set ( { width: width, cursor: 'pointer' } );
+                box.addListenerOnce ( "appear", function ( )  {
+                    this.setBGColor ( box, "#AAAAAA00", "#AAAAAA00" );
+                },this );
+                box.addListener ( "mouseover", function ( )  {
+                    this.setBGColor ( box, clr, clr );
+                },this );
+                box.addListener ( "mouseout", function ( )  {
+                    this.setBGColor ( box, "#AAAAAA00", "#AAAAAA00" );
+                },this );
+                box.addListener ( "execute", function ( e )  {
+                    cb.call ( this );
+                }, ctx );
+                return box;
+            },
             createBtn : function (txt, clr, width, cb, ctx) {
                 let btn = new qx.ui.form.Button (  txt  );
                 btn.set ( { width: width, cursor: 'pointer' } );
-                let lbl = btn.getChildControl ( "label" );
-                lbl.setRich ( true );
                 btn.addListenerOnce ( "appear", function ( )  {
                     this.setBGColor ( btn, "#AAAAAA00", "#AAAAAA00" );
                 },this );

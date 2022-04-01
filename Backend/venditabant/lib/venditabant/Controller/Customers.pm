@@ -10,27 +10,25 @@ sub save_customer ($self) {
         $self->req->headers->header('X-Token-Check')
     );
 
-    say "1";
     my $data->{customer} = decode_json ($self->req->body);
     $data->{companies_fkey} = $companies_pkey;
     $data->{users_fkey} = $users_pkey;
     if(exists $data->{customer}->{customers_pkey} and $data->{customer}->{customers_pkey} > 0) {
+        say 'Update';
         push @{$data->{actions}}, 'update_customer';
     } else {
+        say 'Create';
         push @{$data->{actions}}, 'create_customer';
     }
-    say "2";
-    say Dumper($data);
+
     eval {
         $self->workflow->execute(
             'customer_simple', $data
         );
-        say "3";
         $self->render(json => { result => 'success'});
     };
-    say "4";
-    $self->render(json => { result => 'failure', error => $@}) if $@;
 
+    $self->render(json => { result => 'failure', error => $@}) if $@;
 }
 
 sub load_list ($self) {

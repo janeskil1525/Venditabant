@@ -20,10 +20,11 @@ sub execute ($self, $wf) {
     my $pg = $self->get_pg('CustomerPersister');
     my $context = $wf->context;
 
+    my $customer = $context->param('customer')->{customer};
     $wf->add_history(
         Workflow::History->new({
             action      => "New customer",
-            description => "Customer  $context->param('customer')->{customer} will be created",
+            description => "Customer $customer will be created",
             user        => $context->param('history')->{userid},
         })
     );
@@ -41,7 +42,7 @@ sub execute ($self, $wf) {
     $wf->add_history(
         Workflow::History->new({
             action      => "New customer created",
-            description => "Customer  $context->param('customer')->{customer} was created",
+            description => "Customer  $customer was created",
             user        => $context->param('history')->{userid},
         })
     );

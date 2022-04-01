@@ -2570,3 +2570,10 @@ CREATE TABLE workflow_customer
 );
 
 -- 48 down
+-- 49 up
+
+ALTER TABLE customers
+    ADD COLUMN active boolean not null default 'false',
+    ADD COLUMN blocked boolean not null default 'false';
+
+-- 49 down

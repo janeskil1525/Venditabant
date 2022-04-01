@@ -20,6 +20,10 @@
     construct: function construct() {},
     destruct: function destruct() {},
     members: {
+      _createChkBox: function _createChkBox(txt, clr, width, cb, ctx) {
+        var btn = new venditabant.widget.button.Standard().createChkBox(txt, clr, width, cb, ctx);
+        return btn;
+      },
       _createBtn: function _createBtn(txt, clr, width, cb, ctx) {
         var btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx);
         return btn;
@@ -42,4 +46,4 @@
   venditabant.application.base.views.Base.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Base.js.map?dt=1634201629225
+//# sourceMappingURL=Base.js.map?dt=1648826825465

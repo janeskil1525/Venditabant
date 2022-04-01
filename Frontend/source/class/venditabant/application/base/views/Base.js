@@ -7,6 +7,10 @@ qx.Class.define ( "venditabant.application.base.views.Base",
         destruct: function () {
         },
         members: {
+            _createChkBox: function (txt, clr, width, cb, ctx) {
+                let btn = new venditabant.widget.button.Standard().createChkBox(txt, clr, width, cb, ctx);
+                return btn;
+            },
             _createBtn: function (txt, clr, width, cb, ctx) {
                 let btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx)
                 return btn;

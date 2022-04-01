@@ -13,7 +13,7 @@
         "column": 0
       },
       "end": {
-        "line": 28,
+        "line": 32,
         "column": 7
       }
     }
@@ -46,7 +46,7 @@
     "jsdoc": {}
   },
   "members": {
-    "_createBtn": {
+    "_createChkBox": {
       "location": {
         "start": {
           "line": 10,
@@ -60,7 +60,7 @@
       "type": "function",
       "access": "protected"
     },
-    "_createTxt": {
+    "_createBtn": {
       "location": {
         "start": {
           "line": 14,
@@ -74,7 +74,7 @@
       "type": "function",
       "access": "protected"
     },
-    "_createLbl": {
+    "_createTxt": {
       "location": {
         "start": {
           "line": 18,
@@ -88,14 +88,28 @@
       "type": "function",
       "access": "protected"
     },
-    "_createTextArea": {
+    "_createLbl": {
       "location": {
         "start": {
           "line": 22,
           "column": 12
         },
         "end": {
+          "line": 25,
+          "column": 13
+        }
+      },
+      "type": "function",
+      "access": "protected"
+    },
+    "_createTextArea": {
+      "location": {
+        "start": {
           "line": 26,
+          "column": 12
+        },
+        "end": {
+          "line": 30,
           "column": 13
         }
       },

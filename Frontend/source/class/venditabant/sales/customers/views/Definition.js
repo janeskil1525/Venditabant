@@ -91,7 +91,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 lbl = this._createLbl(this.tr( "Homepage" ), 70);
                 page1.add ( lbl, { top: 80, left: 250 } );
 
-                let homepage = this._createTxt("Homepage", 250, false);
+                let homepage = this._createTxt(this.tr("Homepage"), 250, false);
                 page1.add ( homepage, { top: 80, left: 350 } );
                 this._homepage = homepage
 
@@ -105,6 +105,18 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let languagesview = languages.getView()
                 this._languages = languages;
                 page1.add ( languagesview, { top: 115, left: 90 } );
+
+                let active = this._createChkBox(this.tr ( "Active" ), "#FFAAAA70", 135, function ( ) {
+                    //this.clearScreen();
+                }, this );
+                this._active = active;
+                page1.add ( active, { bottom: 65, left: 10 } );
+
+                let blocked = this._createChkBox(this.tr ( "Blocked" ), "#FFAAAA70", 135, function ( ) {
+                    //this.clearScreen();
+                }, this );
+                this._blocked = blocked;
+                page1.add ( blocked, { bottom: 65, left: 90 } );
 
                 lbl = this._createLbl(this.tr( "Comment" ), 120);
                 page1.add ( lbl, { top: 115, left: 250 } );
@@ -135,10 +147,12 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 this._phone.setValue('');
                 this._pricelists.setSelectedModel();
                 this._comment.setValue('')
+                this._active.setValue(1);
+                this._blocked.setValue(0);
             },
             saveCustomer:function() {
                 let that = this;
-                let customers_pkey = this._customers_pkey.getValue();
+                let customers_pkey = this._customers_pkey;
                 let customer = this._customer.getValue();
                 let name  = this._name.getValue();
                 let registrationnumber = this._registrationnumber.getValue();
@@ -147,7 +161,8 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let pricelists_fkey = this._pricelists.getKey();;
                 let comment = this._comment.getValue();
                 let languages_fkey = this._languages.getKey();
-
+                let active = this._active.getValue();
+                let blocked = this._blocked.getValue();
                 let data = {
                     customers_pkey: customers_pkey,
                     customer: customer,
@@ -157,7 +172,9 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     phone: phone,
                     pricelists_fkey: pricelists_fkey,
                     comment:comment,
-                    languages_fkey:languages_fkey
+                    languages_fkey:languages_fkey,
+                    active:active,
+                    blocked:blocked,
                 }
                 let model = new venditabant.sales.customers.models.Customers();
                 model.saveCustomer(data,function ( success ) {
@@ -205,7 +222,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                         selectedRows.push(table.getTableModel().getRowData(index));
                     });
 
-                    that._customers_pkey.setValue(selectedRows[0][0]);
+                    that._customers_pkey = selectedRows[0][0];
                     that._customer.setValue(selectedRows[0][1]);
                     that._name.setValue(selectedRows[0][2]);
                     that._registrationnumber.setValue(selectedRows[0][4]);

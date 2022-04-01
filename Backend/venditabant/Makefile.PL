@@ -8,7 +8,7 @@ install_share  'share';
 
 WriteMakefile(
     NAME => 'venditabant',
-    VERSION   => '0.1.3',
+    VERSION   => '0.1.5',
     PREREQ_PM => {'Mojolicious' => '8.55'},
     AUTHOR       => 'Jan Eskilsson <janeskil1525@cpan.org>',
     test      => {TESTS => 't/*.t'},

@@ -13,6 +13,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
         members: {
             // Public functions ...
             __table : null,
+            _customers_pkey:0,
             setParams: function (params) {
             },
             getView: function () {
@@ -126,6 +127,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 return page1;
             },
             clearScreen:function() {
+                this._customers_pkey.setValue(0);
                 this._customer.setValue('');
                 this._name.setValue('');
                 this._registrationnumber.setValue('')
@@ -136,6 +138,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
             },
             saveCustomer:function() {
                 let that = this;
+                let customers_pkey = this._customers_pkey.getValue();
                 let customer = this._customer.getValue();
                 let name  = this._name.getValue();
                 let registrationnumber = this._registrationnumber.getValue();
@@ -146,6 +149,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let languages_fkey = this._languages.getKey();
 
                 let data = {
+                    customers_pkey: customers_pkey,
                     customer: customer,
                     name: name,
                     registrationnumber: registrationnumber,
@@ -159,7 +163,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 model.saveCustomer(data,function ( success ) {
                     if (success) {
                         that.loadCustomers();
-                        this.clearScreen();
+                        that.clearScreen();
                     } else {
                         alert(this.tr('Something went wrong saving the customer'));
                     }
@@ -201,6 +205,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                         selectedRows.push(table.getTableModel().getRowData(index));
                     });
 
+                    that._customers_pkey.setValue(selectedRows[0][0]);
                     that._customer.setValue(selectedRows[0][1]);
                     that._name.setValue(selectedRows[0][2]);
                     that._registrationnumber.setValue(selectedRows[0][4]);

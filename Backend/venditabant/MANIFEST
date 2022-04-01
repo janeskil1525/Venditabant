@@ -70,7 +70,6 @@ lib/venditabant/Helpers/System/Pdf.pm
 lib/venditabant/Helpers/System/TextMapper.pm
 lib/venditabant/Helpers/Users.pm
 lib/venditabant/Helpers/Warehouses/Warehouse.pm
-lib/venditabant/Helpers/Workflow/Workflows.pm
 lib/venditabant/Model/AutoTodo.pm
 lib/venditabant/Model/Checks.pm
 lib/venditabant/Model/Company.pm
@@ -105,8 +104,6 @@ lib/venditabant/Model/System/Mappings.pm
 lib/venditabant/Model/Usercompany.pm
 lib/venditabant/Model/Users.pm
 lib/venditabant/Model/Warehouses.pm
-lib/venditabant/Model/Workflow/WorkflowItems.pm
-lib/venditabant/Model/Workflow/Workflows.pm
 Makefile.PL
 MANIFEST
 script/check.pl
@@ -118,4 +115,3 @@ share/public/index.html
 share/public/kaffebonor-fotona.jpg
 share/templates/example/welcome.html.ep
 share/templates/layouts/default.html.ep
-

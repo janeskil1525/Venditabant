@@ -3,7 +3,7 @@ use Mojo::Base -base, -signatures, -async_await;
 
 use Customers::Helpers::Customer;
 
-our $VERSION = '0.02';
+our $VERSION = '0.05';
 
 has 'pg';
 

@@ -18,6 +18,7 @@ lib/Engine/Model/Workflows.pm
 lib/Engine/Parameter/Parameters.pm
 lib/Engine/Precheck/History/Data.pm
 lib/Engine/Precheck/Keyvalidator.pm
+lib/Engine/Workflow/Action/Base.pm
 lib/Engine/Workflow/Action/Minion.pm
 lib/Engine/Workflow/Action/Transit.pm
 lib/Engine/Workflow/Observers/AddTodo.pm

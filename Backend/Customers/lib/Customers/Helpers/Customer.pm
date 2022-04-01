@@ -80,9 +80,10 @@ sub upsert ($self, $companies_pkey, $users_pkey, $customers ) {
     my $db = $self->pg->db;
     my $tx = $db->begin();
 
+    my $customers_pkey;
     my $err;
     eval {
-        my $customers_pkey = Customers::Model::Customers->new(
+        $customers_pkey = Customers::Model::Customers->new(
             db => $db
         )->upsert(
             $companies_pkey, $users_pkey, $customers
@@ -90,11 +91,7 @@ sub upsert ($self, $companies_pkey, $users_pkey, $customers ) {
         $tx->commit();
     };
     $err = $@ if $@;
-    $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Customers::Customers', 'upsert', $err
-    ) if $err;
 
-    return $err ? $err : 'success';
+    return $customers_pkey;
 }
 1;

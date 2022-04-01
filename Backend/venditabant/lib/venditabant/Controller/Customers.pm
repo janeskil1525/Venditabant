@@ -10,6 +10,7 @@ sub save_customer ($self) {
         $self->req->headers->header('X-Token-Check')
     );
 
+    say "1";
     my $data->{customer} = decode_json ($self->req->body);
     $data->{companies_fkey} = $companies_pkey;
     $data->{users_fkey} = $users_pkey;
@@ -18,13 +19,16 @@ sub save_customer ($self) {
     } else {
         push @{$data->{actions}}, 'create_customer';
     }
-
+    say "2";
+    say Dumper($data);
     eval {
         $self->workflow->execute(
             'customer_simple', $data
         );
+        say "3";
         $self->render(json => { result => 'success'});
     };
+    say "4";
     $self->render(json => { result => 'failure', error => $@}) if $@;
 
 }

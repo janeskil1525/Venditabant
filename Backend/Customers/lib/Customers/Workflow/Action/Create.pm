@@ -45,6 +45,8 @@ sub execute ($self, $wf) {
             user        => $context->param('history')->{userid},
         })
     );
+
+    return $customers_pkey;
 }
 
 1;

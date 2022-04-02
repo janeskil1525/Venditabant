@@ -8,7 +8,7 @@ use Data::Dumper;
 
 has 'pg';
 
-async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
+async sub upsert_p ($self, $companies_pkey, $users_pkey, $customer ) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -99,7 +99,8 @@ async sub load_delivery_address_list_p($self, $companies_pkey, $users_pkey, $cus
 
     return $result;
 }
- async sub load_delivery_address_from_customer_list_p ($self, $companies_pkey, $users_pkey, $customer){
+
+async sub load_delivery_address_from_customer_list_p ($self, $companies_pkey, $users_pkey, $customer){
 
      my $err;
      my $result;

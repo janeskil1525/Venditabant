@@ -12,7 +12,8 @@ sub invoice_customer ($self, $customer_pkey) {
         ['customers', ['customer_addresses',  customers_fkey => 'customers_pkey']],
             [
                 'customers_pkey', 'customer_addresses_pkey', 'customer', 'name', 'address1', 'address2',
-                'address3', 'city', 'zipcode', 'comment', 'mail_invoice', 'reference', 'homepage', 'languages_fkey'
+                'address3', 'city', 'zipcode', 'comment', 'mail_invoice', 'reference', 'homepage', 'languages_fkey',
+                'active', 'blocked'
             ],
             {
                 customers_pkey => $customer_pkey,
@@ -31,7 +32,7 @@ async sub load_list ($self, $companies_pkey, $users_pkey) {
     my $load_stmt = qq {
         SELECT customers_pkey, customer, name, registrationnumber, homepage, phone,
             (SELECT pricelist FROM pricelists WHERE pricelists_pkey = pricelists_fkey) as pricelist,
-            comment, languages_fkey
+            comment, languages_fkey, active, blocked
             FROM customers
         WHERE companies_fkey = ?
     };

@@ -11,7 +11,7 @@ sub save_address ($self) {
         $self->req->headers->header('X-Token-Check')
     );
     my $json_hash = decode_json ($self->req->body);
-    $self->customeraddress->upsert($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
+    $self->customers->upsert($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => $result});
     })->catch( sub ($err) {
 
@@ -27,7 +27,7 @@ sub load_delivery_address_list ($self) {
         $self->req->headers->header('X-Token-Check')
     );
     my $customers_fkey = $self->param('customers_fkey');
-    $self->customeraddress->load_delivery_address_list_p($companies_pkey, $users_pkey, $customers_fkey)->then(sub ($result) {
+    $self->customers->load_delivery_address_list_p($companies_pkey, $users_pkey, $customers_fkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
@@ -42,7 +42,7 @@ sub load_delivery_address_from_customer_list ($self) {
         $self->req->headers->header('X-Token-Check')
     );
     my $customer = $self->param('customer');
-    $self->customeraddress->load_delivery_address_from_customer_list_p(
+    $self->customers->load_delivery_address_from_customer_list_p(
         $companies_pkey, $users_pkey, $customer
     )->then(sub ($result) {
 
@@ -60,7 +60,7 @@ sub load_delivery_address_from_company_list($self) {
         $self->req->headers->header('X-Token-Check')
     );
 
-    $self->customeraddress->load_delivery_address_from_company_list(
+    $self->customers->load_delivery_address_from_company_list(
         $companies_pkey, $users_pkey
     )->then(sub ($result) {
 
@@ -79,7 +79,7 @@ sub load_invoice_address ($self) {
     );
 
     my $customers_fkey = $self->param('customers_fkey');
-    $self->customeraddress->load_invoice_address_p(
+    $self->customers->load_invoice_address_p(
         $companies_pkey, $users_pkey, $customers_fkey
     )->then(sub ($result) {
         $self->render(json => {'result' => 'success', data => $result});
@@ -97,7 +97,7 @@ sub load_delivery_address ($self) {
     );
 
     my $customer_addresses_pkey= $self->param('customer_addresses_pkey');
-    $self->customeraddress->load_delivery_address_p(
+    $self->customers->load_delivery_address_p(
         $companies_pkey, $users_pkey, $customer_addresses_pkey
     )->then(sub ($result) {
         $self->render(json => {'result' => 'success', data => $result});

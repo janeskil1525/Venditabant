@@ -2576,4 +2576,6 @@ ALTER TABLE customers
     ADD COLUMN active boolean not null default 'false',
     ADD COLUMN blocked boolean not null default 'false';
 
+UPDATE customers SET active = 'true';
+
 -- 49 down

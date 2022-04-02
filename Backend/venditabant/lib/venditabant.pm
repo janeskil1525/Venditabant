@@ -76,10 +76,6 @@ sub startup ($self) {
       parameters => sub {
         state  $parameters= venditabant::Helpers::Parameter::Parameters->new(pg => shift->pg)
       });
-    $self->helper(
-      customeraddress => sub {
-        state  $customeraddress = Customers::Helpers::Address->new(pg => shift->pg)
-      });
 
     $self->helper(
       companies => sub {

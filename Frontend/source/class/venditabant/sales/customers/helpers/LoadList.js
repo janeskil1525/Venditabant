@@ -27,6 +27,7 @@ qx.Class.define("venditabant.sales.customers.helpers.LoadList",
                         }
                         if(response.data !== null) {
                             this.getList().removeAll();
+                            let pp = response.data.length;
                             for (let i=0; i < response.data.length; i++) {
                                 let row = response.data[i].name;
                                 item = new qx.ui.form.ListItem(row, null, response.data[i]);

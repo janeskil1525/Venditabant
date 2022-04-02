@@ -109,12 +109,14 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let active = this._createChkBox(this.tr ( "Active" ), "#FFAAAA70", 135, function ( ) {
                     //this.clearScreen();
                 }, this );
+                active.setEnabled(false);
                 this._active = active;
                 page1.add ( active, { bottom: 65, left: 10 } );
 
                 let blocked = this._createChkBox(this.tr ( "Blocked" ), "#FFAAAA70", 135, function ( ) {
                     //this.clearScreen();
                 }, this );
+                blocked.setEnabled(false);
                 this._blocked = blocked;
                 page1.add ( blocked, { bottom: 65, left: 90 } );
 
@@ -139,7 +141,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 return page1;
             },
             clearScreen:function() {
-                this._customers_pkey.setValue(0);
+                this._customers_pkey = 0;
                 this._customer.setValue('');
                 this._name.setValue('');
                 this._registrationnumber.setValue('')
@@ -147,8 +149,8 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 this._phone.setValue('');
                 this._pricelists.setSelectedModel();
                 this._comment.setValue('')
-                this._active.setValue(1);
-                this._blocked.setValue(0);
+                this._active.setValue(true);
+                this._blocked.setValue(false);
             },
             saveCustomer:function() {
                 let that = this;
@@ -202,7 +204,9 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     this.tr("Phone"),
                     this.tr("Homepage"),
                     this.tr("Comment"),
-                    this.tr("languages_fkey")
+                    this.tr("languages_fkey"),
+                    this.tr("active"),
+                    this.tr("blocked")
                 ]);
                 tableModel.setData(rowData);
 
@@ -236,10 +240,16 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                     that._discounts.setCustomersFkey(selectedRows[0][0]);
                     that._comment.setValue(selectedRows[0][7]);
                     that._languages.setKey(selectedRows[0][8])
+                    let active = selectedRows[0][9] ? true : false;
+                    let blocked = selectedRows[0][10] ? true : false;
+                    that._active.setValue(active);
+                    that._blocked.setValue(blocked);
                 });
                 var tcm = table.getTableColumnModel();
                 tcm.setColumnVisible(0,false);
                 tcm.setColumnVisible(8,false);
+                tcm.setColumnVisible(9,false);
+                tcm.setColumnVisible(10,false);
                 tcm.setColumnWidth(7,300)
                 tcm.setColumnWidth(2,200)
 
@@ -263,6 +273,8 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                                 response.data[i].homepage,
                                 response.data[i].comment,
                                 response.data[i].languages_fkey,
+                                response.data[i].active,
+                                response.data[i].blocked,
                             ]);
                         }
                         this._table.getTableModel().setData(tableData);

@@ -3,10 +3,35 @@ use Mojo::Base -base, -signatures, -async_await;
 
 use Customers::Helpers::Customer;
 use Customers::Helpers::Address;
+use Customers::Helpers::Workflow;
 
-our $VERSION = '0.09';
+our $VERSION = '0.11';
 
 has 'pg';
+
+sub get_new_cust_id($self, $companies_pkey, $users_pkey) {
+    return Customers::Helpers::Customer->new(
+        pg => $self->pg
+    )->get_new_cust_id(
+        $companies_pkey, $users_pkey
+    );
+}
+
+sub load_workflow_id($self, $customers_fkey) {
+    return Customers::Helpers::Workflow->new(
+        pg => $self->pg
+    )->load_workflow_id(
+        $customers_fkey
+    );
+}
+
+async sub load_workflow_id_p($self, $customers_fkey) {
+    return Customers::Helpers::Workflow->new(
+        pg => $self->pg
+    )->load_workflow_id_p(
+        $customers_fkey
+    );
+}
 
 async sub load_delivery_address_from_company_list($self, $companies_pkey, $users_pkey) {
     return Customers::Helpers::Address->new(
@@ -61,6 +86,15 @@ async sub upsert_address_p($self, $companies_pkey, $users_pkey, $customer ) {
     return Customers::Helpers::Address->new(
         pg => $self->pg
     )->upsert_p(
+        $companies_pkey, $users_pkey, $customer
+    );
+}
+
+async sub upsert_address($self, $companies_pkey, $users_pkey, $customer ) {
+
+    return Customers::Helpers::Address->new(
+        pg => $self->pg
+    )->upsert(
         $companies_pkey, $users_pkey, $customer
     );
 }

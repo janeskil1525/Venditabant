@@ -8,6 +8,53 @@ use Data::Dumper;
 
 has 'pg';
 
+async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
+
+    my $db = $self->pg->db;
+    my $tx = $db->begin();
+
+    my $err;
+    my $customer_addresses_pkey;
+    eval {
+        if(exists $customer->{customer_addresses_pkey} and $customer->{customer_addresses_pkey} > 0) {
+            $customer_addresses_pkey = Customers::Model::CustomerAddress->new(
+                db => $db
+            )->update(
+                $companies_pkey, $users_pkey, $customer
+            );
+        } else {
+            $customer_addresses_pkey = Customers::Model::CustomerAddress->new(
+                db => $db
+            )->insert(
+                $companies_pkey, $users_pkey, $customer
+            );
+            if($customer->{type} eq 'INVOICE'){
+                my $exists = Customers::Model::CustomerAddress->new(
+                    db => $db
+                )->address_type_exists(
+                    $companies_pkey, $users_pkey, $customer->{customers_fkey}, 'DELIVERY'
+                );
+                if($exists == 0) {
+                    $customer->{type} = 'DELIVERY';
+                    $customer_addresses_pkey = Customers::Model::CustomerAddress->new(
+                        db => $db
+                    )->insert(
+                        $companies_pkey, $users_pkey, $customer
+                    );
+                }
+            }
+        }
+        $tx->commit();
+    };
+    $err = $@ if $@;
+    say "error '$err'" if $err;
+
+
+    my $result->{data} = $customer_addresses_pkey;
+    $result->{status} = $err ? $err : 'success';
+    return $result;
+}
+
 async sub upsert_p ($self, $companies_pkey, $users_pkey, $customer ) {
 
     my $db = $self->pg->db;

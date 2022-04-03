@@ -3,8 +3,21 @@ use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;
 use Customers::Model::Customers;
+use Customers::Model::Counter;
 
 has 'pg';
+
+sub get_new_cust_id($self, $companies_pkey, $users_pkey) {
+    my $nextid = Customers::Model::Counter->new(
+        db => $self->pg->db
+    )->nextid(
+        $companies_pkey, $users_pkey, 'customers'
+    );
+    $nextid .= '00000000000';
+    my $custid = substr($nextid,0,10);
+
+    return $custid;
+}
 
 sub invoice_customer ($self, $customer_pkey) {
 
@@ -45,10 +58,6 @@ async sub load_list ($self, $companies_pkey, $users_pkey) {
     };
     $err = $@ if $@;
     say "error '$err'" if $err;
-    $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Customers::Customers', 'load_list', $err
-    ) if $err;
 
     return $hashes;
 }

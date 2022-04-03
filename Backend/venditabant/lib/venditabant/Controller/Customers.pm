@@ -3,6 +3,7 @@ use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 use Data::Dumper;
 use Mojo::JSON qw {decode_json};
+use Customers;
 
 sub save_customer ($self) {
 
@@ -14,10 +15,17 @@ sub save_customer ($self) {
     $data->{companies_fkey} = $companies_pkey;
     $data->{users_fkey} = $users_pkey;
     if(exists $data->{customer}->{customers_pkey} and $data->{customer}->{customers_pkey} > 0) {
-        say 'Update';
+        $data->{workflow_id} = Customers->new(
+            pg => $self->app->pg
+        )->load_workflow_id(
+            $data->{customer}->{customers_pkey}
+        );
         push @{$data->{actions}}, 'update_customer';
     } else {
-        say 'Create';
+        $data->{customer}->{customer} = Customers->new(
+            pg => $self->app->pg
+        )->get_new_cust_id($companies_pkey, $users_pkey)
+            unless $data->{customer}->{customer};
         push @{$data->{actions}}, 'create_customer';
     }
 

@@ -3,7 +3,7 @@ use Mojo::Base -base, -signatures, -async_await;
 
 has 'db';
 
-async sub insert_p ($self, $companies_pkey, $users_pkey, $data) {
+sub insert ($self, $companies_pkey, $users_pkey, $data) {
 
     my $stmt = qq {
         INSERT INTO customer_addresses (insby, modby, customers_fkey, type, name, address1, address2, address3,
@@ -39,7 +39,16 @@ async sub insert_p ($self, $companies_pkey, $users_pkey, $data) {
 
 }
 
-async sub update_p ($self, $companies_pkey, $users_pkey, $data) {
+async sub insert_p ($self, $companies_pkey, $users_pkey, $data) {
+
+    my $customer_addresses_pkey = $self->insert(
+        $companies_pkey, $users_pkey, $data
+    );
+    return $customer_addresses_pkey;
+
+}
+
+sub update ($self, $companies_pkey, $users_pkey, $data) {
 
     my $stmt = qq {
         UPDATE customer_addresses SET
@@ -69,6 +78,14 @@ async sub update_p ($self, $companies_pkey, $users_pkey, $data) {
         )
     );
     return $data->{customer_addresses_pkey};
+}
+
+async sub update_p ($self, $companies_pkey, $users_pkey, $data) {
+
+    my $customer_addresses_pkey = $self->update(
+        $companies_pkey, $users_pkey, $data
+    );
+    return $customer_addresses_pkey;
 }
 
 async sub load_invoice_address_p($self, $customers_pkey) {
@@ -138,7 +155,7 @@ async sub load_delivery_address_list_p($self, $customers_pkey) {
     return $hash;
 }
 
-async sub address_type_exists($self, $companies_pkey, $users_pkey, $customers_fkey, $type) {
+sub address_type_exists($self, $companies_pkey, $users_pkey, $customers_fkey, $type) {
 
     say "customers_fkey " . $customers_fkey;
     my $stmt = qq{
@@ -150,8 +167,20 @@ async sub address_type_exists($self, $companies_pkey, $users_pkey, $customers_fk
         $stmt, ($customers_fkey, $type)
     )->hash->{exists};
 
+    return $exists;
+}
 
+async sub address_type_exists_p($self, $companies_pkey, $users_pkey, $customers_fkey, $type) {
 
+    say "customers_fkey " . $customers_fkey;
+    my $stmt = qq{
+        SELECT COUNT(*) as exists FROM customer_addresses WHERE customers_fkey = ? AND type = ?
+    };
+
+    my $exists;
+    $exists = $self->db->query(
+        $stmt, ($customers_fkey, $type)
+    )->hash->{exists};
 
     return $exists;
 }

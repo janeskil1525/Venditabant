@@ -1,11 +1,15 @@
-package venditabant::Model::Discount::Productgroups;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package Customers::Model::Productgroups;
+use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;
 
 has 'db';
 
-async sub upsert($self, $companies_pkey, $users_pkey, $data) {
+async sub upsert_p($self, $companies_pkey, $users_pkey, $data) {
+    return $self->upsert($companies_pkey, $users_pkey, $data);
+}
+
+sub upsert($self, $companies_pkey, $users_pkey, $data) {
 
     my $stmt = qq {
         INSERT INTO productgroup_customer_discount (insby, modby, customers_fkey, productgroups_fkey, discount)
@@ -34,7 +38,11 @@ async sub upsert($self, $companies_pkey, $users_pkey, $data) {
     return $stockitem_customer_discount_pkey;
 }
 
-async sub load_list($self, $companies_pkey, $users_pkey, $customers_fkey){
+async sub load_list_p ($self, $companies_pkey, $users_pkey, $customers_fkey) {
+    return $self->load_list($companies_pkey, $users_pkey, $customers_fkey);
+}
+
+sub load_list ($self, $companies_pkey, $users_pkey, $customers_fkey) {
 
     my $stmt = qq{
         SELECT productgroup_customer_discount_pkey, productgroups_fkey, customers_fkey,
@@ -56,7 +64,11 @@ async sub load_list($self, $companies_pkey, $users_pkey, $customers_fkey){
     return $hash;
 }
 
-async sub load_discount($self, $companies_pkey, $users_pkey, $customers_fkey, $productgroups_fkey) {
+async sub load_discount_p($self, $companies_pkey, $users_pkey, $customers_fkey, $productgroups_fkey) {
+    return $self->load_discount($companies_pkey, $users_pkey, $customers_fkey, $productgroups_fkey);
+}
+
+sub load_discount($self, $companies_pkey, $users_pkey, $customers_fkey, $productgroups_fkey) {
 
     my $result = $self->db->select(
         'productgroup_customer_discount',

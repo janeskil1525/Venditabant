@@ -12,7 +12,7 @@ sub save_stockitem_discount($self) {
     );
 
     my $json_hash = decode_json ($self->req->body);
-    $self->discounts->save_stockitem_discount($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
+    $self->customers->save_stockitem_discount_p($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
 
@@ -27,7 +27,7 @@ sub load_list_stockitem_discount($self) {
     );
 
     my $customers_fkey = $self->param('customers_fkey');
-    $self->discounts->load_list_stockitem_discount (
+    $self->customers->load_list_stockitem_discount_p (
         $companies_pkey, $users_pkey, $customers_fkey
     )->then(sub ($result) {
 
@@ -46,7 +46,7 @@ sub save_productgroups_discount($self) {
     );
 
     my $json_hash = decode_json ($self->req->body);
-    $self->discounts->save_productgroups_discount($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
+    $self->customers->save_productgroups_discount_p($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
 
@@ -61,7 +61,7 @@ sub load_list_productgroups_discount($self) {
     );
 
     my $customers_fkey = $self->param('customers_fkey');
-    $self->discounts->load_list_productgroups_discount (
+    $self->customers->load_list_productgroups_discount_p (
         $companies_pkey, $users_pkey, $customers_fkey
     )->then(sub ($result) {
 
@@ -80,7 +80,7 @@ sub save_general_discount($self) {
     );
 
     my $json_hash = decode_json ($self->req->body);
-    $self->discounts->save_general_discount($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
+    $self->customers->save_general_discount_p($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
 
@@ -96,7 +96,7 @@ sub load_list_general_discount($self) {
 
     my $customers_fkey = $self->param('customers_fkey');
 
-    $self->discounts->load_list_general_discount (
+    $self->customers->load_list_general_discount_p (
         $companies_pkey, $users_pkey, $customers_fkey
     )->then(sub ($result) {
 
@@ -115,7 +115,7 @@ sub delete_general_discount($self) {
 
     my $customer_discount_pkey = $self->param('customer_discount_pkey');
 
-    $self->discounts->delete_general_discount (
+    $self->customers->delete_general_discount_p (
         $companies_pkey, $users_pkey, $customer_discount_pkey
     )->then(sub ($result) {
 

@@ -1,11 +1,15 @@
 lib/Customers.pm
 lib/Customers/Helpers/Address.pm
 lib/Customers/Helpers/Customer.pm
+lib/Customers/Helpers/Discounts.pm
 lib/Customers/Helpers/Workflow.pm
+lib/Customers/Model/Counter.pm
 lib/Customers/Model/CustomerAddress.pm
 lib/Customers/Model/Customers.pm
+lib/Customers/Model/General.pm
+lib/Customers/Model/Productgroups.pm
+lib/Customers/Model/Stockitem.pm
 lib/Customers/Model/Workflow.pm
-lib/Customers/Model/Counter.pm
 lib/Customers/Workflow/Action/Activate.pm
 lib/Customers/Workflow/Action/Block.pm
 lib/Customers/Workflow/Action/Create.pm

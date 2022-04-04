@@ -4,7 +4,7 @@ use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -a
 use venditabant::Model::Salesorder::Head;
 use venditabant::Model::Salesorder::Item;
 use venditabant::Model::Counter;
-use venditabant::Helpers::Customers::Address;
+use Customers;
 use venditabant::Model::Stockitems;
 
 use Data::Dumper;

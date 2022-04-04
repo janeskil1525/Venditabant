@@ -4,10 +4,124 @@ use Mojo::Base -base, -signatures, -async_await;
 use Customers::Helpers::Customer;
 use Customers::Helpers::Address;
 use Customers::Helpers::Workflow;
+use Customers::Helpers::Discounts;
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 has 'pg';
+
+
+async sub delete_general_discount_p($self, $companies_pkey, $users_pkey, $customer_discount_pkey) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->delete_general_discount_p (
+        $companies_pkey, $users_pkey, $customer_discount_pkey
+    );
+}
+
+sub delete_general_discount($self, $companies_pkey, $users_pkey, $customer_discount_pkey) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->delete_general_discount (
+        $companies_pkey, $users_pkey, $customer_discount_pkey
+    );
+}
+
+async sub load_list_general_discount_p ($self, $companies_pkey, $users_pkey, $customers_fkey) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->load_list_general_discount_p (
+        $companies_pkey, $users_pkey, $customers_fkey
+    );
+}
+
+sub load_list_general_discount ($self, $companies_pkey, $users_pkey, $customers_fkey) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->load_list_general_discount (
+        $companies_pkey, $users_pkey, $customers_fkey
+    );
+}
+
+async sub save_general_discount_p ($self, $companies_pkey, $users_pkey, $data) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->save_general_discount_p (
+        $companies_pkey, $users_pkey, $data
+    );
+}
+
+sub save_general_discount ($self, $companies_pkey, $users_pkey, $data) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->save_general_discount(
+        $companies_pkey, $users_pkey, $data
+    );
+}
+
+async sub load_list_productgroups_discount_p($self, $companies_pkey, $users_pkey, $customers_fkey) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->load_list_productgroups_discount_p(
+        $companies_pkey, $users_pkey, $customers_fkey
+    );
+}
+
+sub load_list_productgroups_discount($self, $companies_pkey, $users_pkey, $customers_fkey) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->load_list_productgroups_discount(
+        $companies_pkey, $users_pkey, $customers_fkey
+    );
+}
+
+async sub save_productgroups_discount_p($self, $companies_pkey, $users_pkey, $data) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->save_productgroups_discount_p(
+        $companies_pkey, $users_pkey, $data
+    );
+}
+
+sub save_productgroups_discount($self, $companies_pkey, $users_pkey, $data) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->save_productgroups_discount(
+        $companies_pkey, $users_pkey, $data
+    );
+}
+
+async sub load_list_stockitem_discount_p($self, $companies_pkey, $users_pkey, $customers_fkey) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->load_list_stockitem_discount_p(
+        $companies_pkey, $users_pkey, $customers_fkey
+    );
+}
+
+sub load_list_stockitem_discount($self, $companies_pkey, $users_pkey, $customers_fkey) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->load_list_stockitem_discount(
+        $companies_pkey, $users_pkey, $customers_fkey
+    );
+}
+
+async sub save_stockitem_discount_p($self, $companies_pkey, $users_pkey, $data) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->save_stockitem_discount_p(
+        $companies_pkey, $users_pkey, $data
+    );
+}
+
+sub save_stockitem_discount($self, $companies_pkey, $users_pkey, $data) {
+    return Customers::Helpers::Discounts->new(
+        pg => $self->pg
+    )->save_stockitem_discount(
+        $companies_pkey, $users_pkey, $data
+    );
+}
 
 sub get_new_cust_id($self, $companies_pkey, $users_pkey) {
     return Customers::Helpers::Customer->new(

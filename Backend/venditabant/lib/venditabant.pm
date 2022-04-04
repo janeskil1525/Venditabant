@@ -7,7 +7,6 @@ use venditabant::Helpers::Login;
 use venditabant::Helpers::Stockitems;
 use System::Helpers::Jwt;
 use venditabant::Helpers::Pricelist::Pricelists;
-use Customers::Helpers::Customer;
 use venditabant::Helpers::Users;
 use venditabant::Helpers::Salesorder::Salesorders;
 use venditabant::Helpers::Companies::Release::Release;
@@ -23,7 +22,6 @@ use venditabant::Helpers::Checkpoints::Autotodos;
 use venditabant::Helpers::Invoice::Invoices;
 use System::Helpers::Settings;
 use venditabant::Helpers::Currency::Currencies;
-use venditabant::Helpers::Discount::Discounts;
 use venditabant::Helpers::Stockitems::Mobilelist;
 use venditabant::Helpers::Minion;
 use Workflows;
@@ -116,10 +114,6 @@ sub startup ($self) {
     $self->helper(
       currencies => sub {
         state  $currencies = venditabant::Helpers::Currency::Currencies->new(pg => shift->pg)
-      });
-    $self->helper(
-      discounts => sub {
-        state  $discounts = venditabant::Helpers::Discount::Discounts->new(pg => shift->pg)
       });
     $self->helper(
       mobilelist => sub {

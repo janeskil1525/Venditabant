@@ -1,11 +1,15 @@
-package venditabant::Model::Discount::Stockitem;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package Customers::Model::Stockitem;
+use Mojo::Base -base, -signatures, -async_await;
 
 use Data::Dumper;
 
 has 'db';
 
-async sub upsert($self, $companies_pkey, $users_pkey, $data) {
+async sub upsert_p($self, $companies_pkey, $users_pkey, $data) {
+    return $self->upsert($companies_pkey, $users_pkey, $data);
+}
+
+sub upsert($self, $companies_pkey, $users_pkey, $data) {
 
     my $stmt = qq {
         INSERT INTO stockitem_customer_discount (insby, modby, customers_fkey, stockitems_fkey, discount)
@@ -34,7 +38,11 @@ async sub upsert($self, $companies_pkey, $users_pkey, $data) {
     return $stockitem_customer_discount_pkey;
 }
 
-async sub load_list($self, $companies_pkey, $users_pkey, $customers_fkey){
+async sub load_list_p($self, $companies_pkey, $users_pkey, $customers_fkey){
+    return $self->load_list($companies_pkey, $users_pkey, $customers_fkey);
+}
+
+sub load_list($self, $companies_pkey, $users_pkey, $customers_fkey){
 
     my $stmt = qq{
         SELECT stockitems_fkey, discount, stockitem, description
@@ -54,15 +62,22 @@ async sub load_list($self, $companies_pkey, $users_pkey, $customers_fkey){
     return $hash;
 }
 
-async sub load_discount($self, $companies_pkey, $users_pkey, $customers_fkey, $stockitems_fkey) {
+async sub load_discount_p($self, $companies_pkey, $users_pkey, $customers_fkey, $stockitems_fkey) {
+
+    my $result = $self->load_discount($companies_pkey, $users_pkey, $customers_fkey, $stockitems_fkey);
+
+    return $result;
+}
+
+sub load_discount($self, $companies_pkey, $users_pkey, $customers_fkey, $stockitems_fkey) {
 
     my $result = $self->db->select(
         'stockitem_customer_discount',
         ['discount'],
-            {
-                customers_fkey => $customers_fkey,
-                stockitems_fkey => $stockitems_fkey
-            }
+        {
+            customers_fkey => $customers_fkey,
+            stockitems_fkey => $stockitems_fkey
+        }
     );
 
     my $hash;

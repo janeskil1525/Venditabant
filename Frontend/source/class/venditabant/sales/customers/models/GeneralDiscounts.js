@@ -29,9 +29,10 @@ qx.Class.define("venditabant.sales.customers.models.GeneralDiscounts",
                     }
                 }, this);
             },
-            deleteGeneralDiscount:function(customer_discount_pkey, cb, ctx) {
+            deleteGeneralDiscount:function(customer_discount_pkey, customers_fkey, cb, ctx) {
                 let get = new venditabant.communication.Get;
-                get.load(this._address, "/api/v1/discounts/general/delete/", customer_discount_pkey,function(response){
+                let argument = customer_discount_pkey + "/" + customers_fkey
+                get.load(this._address, "/api/v1/discounts/general/delete/", argument,function(response){
                     cb.call ( ctx,(response));
                 },this);
             }

@@ -85,7 +85,9 @@ qx.Class.define ( "venditabant.sales.customers.views.GeneralDiscounts",
                 delete_general_discount:function() {
                     let that = this;
                     let put = new venditabant.sales.customers.models.GeneralDiscounts();
-                    put.deleteGeneralDiscount(this._selected_discount.customer_discount_pkey,function(response) {
+                    put.deleteGeneralDiscount(
+                        this._selected_discount.customer_discount_pkey,
+                        this._customers_fkey,function(response) {
                         if(response.result !== 'success'){
                             alert(this.tr('Something went wrong deleteing the general discount'));
                         } else {

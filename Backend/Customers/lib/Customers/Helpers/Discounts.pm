@@ -9,7 +9,7 @@ use Data::Dumper;
 
 has 'pg';
 
-sub save_stockitem_discount($self, $companies_pkey, $users_pkey, $data) {
+sub save_stockitem_discount ($self, $companies_pkey, $users_pkey, $data) {
 
     my $err;
     my $result;

@@ -13,10 +13,13 @@ lib/Customers/Model/Workflow.pm
 lib/Customers/Workflow/Action/Activate.pm
 lib/Customers/Workflow/Action/Block.pm
 lib/Customers/Workflow/Action/Create.pm
+lib/Customers/Workflow/Action/DeleteDiscountGenereral.pm
 lib/Customers/Workflow/Action/Deliveryaddress.pm
 lib/Customers/Workflow/Action/Inactivate.pm
 lib/Customers/Workflow/Action/Invoiceaddress.pm
+lib/Customers/Workflow/Action/SaveDiscountGenereral.pm
+lib/Customers/Workflow/Action/SaveDiscountProductgroup.pm
+lib/Customers/Workflow/Action/SaveDiscountStockitem.pm
 lib/Customers/Workflow/Action/Update.pm
 Makefile.PL
 MANIFEST			This list of files
-

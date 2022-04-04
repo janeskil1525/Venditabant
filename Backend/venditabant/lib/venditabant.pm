@@ -72,7 +72,7 @@ sub startup ($self) {
     });
     $self->helper(
       parameters => sub {
-        state  $parameters= venditabant::Helpers::Parameter::Parameters->new(pg => shift->pg)
+        state  $parameters = venditabant::Helpers::Parameter::Parameters->new(pg => shift->pg)
       });
 
     $self->helper(
@@ -264,7 +264,7 @@ sub startup ($self) {
     $auth->put('/discounts/productgroups/save/')->to('discounts#save_productgroups_discount');
     $auth->get('/discounts/general/load_list/:customers_fkey')->to('discounts#load_list_general_discount');
     $auth->put('/discounts/general/save/')->to('discounts#save_general_discount');
-    $auth->get('/discounts/general/delete/:customer_discount_pkey')->to('discounts#delete_general_discount');
+    $auth->get('/discounts/general/delete/:customer_discount_pkey/:customers_fkey')->to('discounts#delete_general_discount');
 
     $auth->get('/workflows/export/')->to('workflows#export');
     $auth->get('/workflows/load_list/')->to('workflows#load_list');

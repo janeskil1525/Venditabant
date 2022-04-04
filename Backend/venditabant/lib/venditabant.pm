@@ -201,7 +201,16 @@ sub startup ($self) {
     $auth->get('/customers/invoice/address/load/:customers_fkey')->to('customeraddresses#load_invoice_address');
 
     $auth->put('/customers/delivery/address/save/')->to('customeraddresses#save_address');
-    $auth->get('/customers/delivery/address/load/:customer_addresses_pkey')->to('customeraddresses#load_delivery_address');
+    $auth->get(
+        '/customers/delivery/address/load/:customer_addresses_pkey'
+    )->to(
+        'customeraddresses#load_delivery_address'
+    );
+    $auth->get(
+        '/customers/delivery/address/loadfromname/:customers_fkey/:name'
+    )->to(
+        'customeraddresses#load_delivery_address_fromname'
+    );
     $auth->get('/customers/delivery/address/load_list/:customers_fkey')->to('customeraddresses#load_delivery_address_list');
     $auth->get('/customers/delivery/address/load_list_customer/:customer')->to('customeraddresses#load_delivery_address_from_customer_list');
     $auth->get('/customers/delivery/address/load_list_company/')->to('customeraddresses#load_delivery_address_from_company_list');

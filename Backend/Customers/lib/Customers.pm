@@ -5,7 +5,7 @@ use Customers::Helpers::Customer;
 use Customers::Helpers::Address;
 use Customers::Helpers::Workflow;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 has 'pg';
 
@@ -57,6 +57,14 @@ async sub load_delivery_address_list_p($self, $companies_pkey, $users_pkey, $cus
     );
 }
 
+async sub load_delivery_address_fromname_p($self, $companies_pkey, $users_pkey, $customers_pkey, $name) {
+    return Customers::Helpers::Address->new(
+        pg => $self->pg
+    )->load_delivery_address_fromname_p(
+        $companies_pkey, $users_pkey, $customers_pkey, $name
+    );
+}
+
 async sub load_delivery_address_p($self, $companies_pkey, $users_pkey, $customer_addresses_pkey) {
     return Customers::Helpers::Address->new(
         pg => $self->pg
@@ -90,7 +98,7 @@ async sub upsert_address_p($self, $companies_pkey, $users_pkey, $customer ) {
     );
 }
 
-async sub upsert_address($self, $companies_pkey, $users_pkey, $customer ) {
+sub upsert_address($self, $companies_pkey, $users_pkey, $customer ) {
 
     return Customers::Helpers::Address->new(
         pg => $self->pg

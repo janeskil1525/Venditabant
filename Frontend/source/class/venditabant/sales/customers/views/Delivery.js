@@ -124,11 +124,17 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 }
                 let put = new venditabant.sales.customers.models.DeliveryAddress();
                 put.saveDeliveryAddress(data,function(success) {
-                    if(success.status !== 'success'){
+                    if(success !== 'success'){
                         alert(this.tr('Something went wrong saving the invoice address'));
                     } else {
                         that._deliveryaddress.setCustomersFkey(this.getCustomersFkey()) ;
-                        that.setCustomerAddressFkey(success.data);
+                        let get = new venditabant.sales.customers.models.DeliveryAddress();
+                        get.loadDeliveryAddressFromName(function(response) {
+                            if(response.data !== null) {
+                                that.setCustomerAddressFkey(response.data.customer_addresses_pkey);
+                                that.loadDeliveryData();
+                            }
+                        },this, that.getCustomersFkey(), name);
                     }
                 }, this)
             },

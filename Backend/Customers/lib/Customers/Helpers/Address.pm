@@ -49,7 +49,6 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $customer ) {
     $err = $@ if $@;
     say "error '$err'" if $err;
 
-
     my $result->{data} = $customer_addresses_pkey;
     $result->{status} = $err ? $err : 'success';
     return $result;
@@ -100,6 +99,16 @@ async sub upsert_p ($self, $companies_pkey, $users_pkey, $customer ) {
 
     my $result->{data} = $customer_addresses_pkey;
     $result->{status} = $err ? $err : 'success';
+    return $result;
+}
+
+async sub load_delivery_address_fromname_p ($self, $companies_pkey, $users_pkey, $customers_pkey, $name) {
+    my $result = Customers::Model::CustomerAddress->new(
+        db => $self->pg->db
+    )->load_delivery_address_fromname_p (
+        $customers_pkey, $name
+    );
+
     return $result;
 }
 

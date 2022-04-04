@@ -19,14 +19,21 @@ sub execute ($self, $wf) {
     my $pg = $self->get_pg('CustomerPersister');
     my $context = $wf->context;
 
-    print  Dumper($context) . '\n';
-
     my $result = Customers->new(
         pg => $pg
     )->upsert_address(
         $context->param('companies_fkey'),
         $context->param('users_fkey'),
         $context->param('address')
+    );
+
+    my $name = $context->param('address')->{name};
+    $wf->add_history(
+        Workflow::History->new({
+            action      => "Invoice address",
+            description => "Invoice adddress for $name updated",
+            user        => $context->param('history')->{userid},
+        })
     );
 
     return $result;

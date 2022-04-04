@@ -22,7 +22,7 @@ qx.Class.define("venditabant.sales.customers.models.InvoiceAddress",
                 let com = new venditabant.communication.Post();
                 com.send(this._address, "/api/v1/customers/invoice/address/save/", data, function (success) {
                     let win = null;
-                    if (success.status === "success") {
+                    if (success === "success") {
                         cb.call(ctx,(success));
                     } else {
                         alert(this.tr('Could not save customer address, please try again'));

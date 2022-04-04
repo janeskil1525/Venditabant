@@ -17,6 +17,24 @@ sub execute ($self, $wf) {
     my $pg = $self->get_pg('CustomerPersister');
     my $context = $wf->context;
 
+    my $result = Customers->new(
+        pg => $pg
+    )->upsert_address(
+        $context->param('companies_fkey'),
+        $context->param('users_fkey'),
+        $context->param('address')
+    );
+
+    my $name = $context->param('address')->{name};
+    $wf->add_history(
+        Workflow::History->new({
+            action      => "Delivery address",
+            description => "Delivery adddress for $name updated",
+            user        => $context->param('history')->{userid},
+        })
+    );
+
+    return $result;
 
 
 }

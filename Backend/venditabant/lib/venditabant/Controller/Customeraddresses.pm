@@ -29,7 +29,6 @@ sub save_address ($self) {
     } else {
         push @{$data->{actions}}, 'update_deliveryaddress';
     }
-    say Dumper($data);
     eval {
         $self->workflow->execute(
             'customer_simple', $data
@@ -102,6 +101,25 @@ sub load_invoice_address ($self) {
     my $customers_fkey = $self->param('customers_fkey');
     $self->customers->load_invoice_address_p(
         $companies_pkey, $users_pkey, $customers_fkey
+    )->then(sub ($result) {
+        $self->render(json => {'result' => 'success', data => $result});
+    })->catch( sub ($err) {
+
+        $self->render(json => {'result' => 'failed', data => $err});
+    })->wait;
+}
+
+sub load_delivery_address_fromname ($self) {
+    $self->render_later;
+    my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+
+    my $customers_fkey = $self->param('customers_fkey');
+    my $name = $self->param('name');
+
+    $self->customers->load_delivery_address_fromname_p(
+        $companies_pkey, $users_pkey, $customers_fkey, $name
     )->then(sub ($result) {
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {

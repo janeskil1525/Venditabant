@@ -119,10 +119,10 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
                 }
                 let put = new venditabant.sales.customers.models.InvoiceAddress();
                 put.saveInvoiceAddress(data,function(success) {
-                    if(success.status !== 'success'){
+                    if(success !== 'success'){
                         alert(this.tr('Something went wrong saving the invoice address'));
                     } else {
-                        that.setCustomerAddressFkey(success.data);
+                        that.loadInvoiceData();
                     }
                 }, this)
             },

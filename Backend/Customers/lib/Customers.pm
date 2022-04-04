@@ -6,7 +6,7 @@ use Customers::Helpers::Address;
 use Customers::Helpers::Workflow;
 use Customers::Helpers::Discounts;
 
-our $VERSION = '0.14';
+our $VERSION = '1.00';
 
 has 'pg';
 

@@ -2,18 +2,15 @@ package Stockitems::Helpers::Stockitems;
 use Mojo::Base -base, -signatures, -async_await;
 
 use Stockitems::Model::Stockitems;
-use venditabant::Model::Pricelists;
-use venditabant::Model::PricelistItems;
-use venditabant::Helpers::Pricelist::Pricelists;
-use venditabant::Model::Supplier::Stockitems;
-use venditabant::Model::Supplier::Suppliers;
-use venditabant::Model::Currency::Currencies;
+use Pricelists;
+use Suppliers;
+use Currencies;
 
 use Data::Dumper;
 
 has 'pg';
 
-async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
+async sub upsert_p ($self, $companies_pkey, $users_pkey, $stockitem) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -22,56 +19,52 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
     my $pricelist_item;
 
     eval {
-        $pricelist_item = venditabant::Model::PricelistItems->new(db => $db);
+        $pricelist_item = Pricelists->new(db => $db);
     };
     say "Error 1 " . $@ if $@;
 
     eval {
-        my $stockitems_pkey = venditabant::Model::Stockitems->new(
+        my $stockitems_pkey = Stockitems::Model::Stockitems->new(
             db => $db
         )->upsert(
             $companies_pkey, $users_pkey, $stockitem
         );
 
-        my $item = await venditabant::Helpers::Pricelist::Pricelists->new(
+        my $item = await Pricelists->new(
             pg => $self->pg
-        )->prepare_upsert_from_stockitem(
+        )->prepare_upsert_from_stockitem_p(
             $companies_pkey, $stockitems_pkey, $stockitem->{price}
         );
 
-        $pricelist_item->insert_item(
+        await $pricelist_item->insert_item_p(
             $companies_pkey, $item
         );
 
-        my $supplier = await venditabant::Model::Supplier::Suppliers->new(
+        my $supplier = await Suppliers->new(
             db => $db
-        )->load_supplier(
+        )->load_supplier_p(
             $companies_pkey, $users_pkey, 'DEFAULT'
         );
 
         $stockitem->{suppliers_fkey} = $supplier->{suppliers_pkey};
         $stockitem->{stockitems_pkey} = $stockitems_pkey;
         if($stockitem->{currencies_fkey} == 0) {
-             my $currency = await venditabant::Model::Currency::Currencies->new(
+             my $currency = await Currencies->new(
                 db => $db
-            )->load_currency_pkey(
+            )->load_currency_pkey_p(
                 'SEK'
             );
             $stockitem->{currencies_fkey} = $currency->{currencies_pkey};
         }
-        venditabant::Model::Supplier::Stockitems->new(
+        Suppliers->new(
             db => $db
-        )->upsert(
+        )->upsert_supplieritem(
             $companies_pkey, $users_pkey, $stockitem
         );
 
         $tx->commit();
     };
-    $err = $@ if $@;
-    $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Stockitems', 'upsert', $@
-    ) if $err;
+    say  $@ if $@;
 
     return 'success' unless $err;
     return $err;
@@ -118,10 +111,6 @@ async sub load_list_p ($self, $companies_pkey) {
         $hash = $result->hashes if $result and $result->rows > 0;
     };
     $err = $@ if $@;
-    $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Stockitems;', 'load_list_p', $@
-    ) if $err;
 
     return $hash;
 }

@@ -11,7 +11,7 @@ sub save_stockitem ($self) {
         $self->req->headers->header('X-Token-Check')
     );
     my $json_hash = decode_json ($self->req->body);
-    $self->stockitems->upsert($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
+    $self->stockitems->upsert_p($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => $result});
     })->catch( sub ($err) {
 

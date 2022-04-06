@@ -1,9 +1,9 @@
-package venditabant::Model::Currency::Currencies;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package Currencies::Model::Currencies;
+use Mojo::Base -base, -signatures, -async_await;
 
 has 'db';
 
-async sub upsert($self, $currency) {
+async sub upsert_p($self, $currency) {
 
     my $stmt = qq{
         INSERT INTO currencies (shortdescription, longdescription, description, seriesid)
@@ -20,7 +20,7 @@ async sub upsert($self, $currency) {
     ));
 }
 
-async sub load_currency_list($self, $companies_pkey, $users_pkey) {
+async sub load_currency_list_p($self, $companies_pkey, $users_pkey) {
 
     my $result = $self->db->select('currencies',
         ["currencies_pkey", "shortdescription", "longdescription", "description", "seriesid"],
@@ -37,7 +37,7 @@ async sub load_currency_list($self, $companies_pkey, $users_pkey) {
     return $hash;
 }
 
-async sub load_currency_pkey($self, $shortdescription) {
+async sub load_currency_pkey_p($self, $shortdescription) {
 
     my $result = $self->db->select(
         'currencies',

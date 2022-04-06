@@ -1,5 +1,5 @@
-package venditabant::Model::Pricelists;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package Pricelists::Model::Pricelists;
+use Mojo::Base -base, -signatures, -async_await;
 
 has 'db';
 

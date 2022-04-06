@@ -11,7 +11,7 @@ sub load_list_heads ($self) {
         $self->req->headers->header('X-Token-Check')
     );
 
-    $self->pricelists->load_list_heads($companies_pkey)->then(sub ($result) {
+    $self->pricelists->load_list_heads_p($companies_pkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
@@ -27,7 +27,7 @@ sub upsert_head ($self) {
         $self->req->headers->header('X-Token-Check')
     );
     my $json_hash = decode_json ($self->req->body);
-    $self->pricelists->upsert_head($companies_pkey, $json_hash)->then(sub ($result) {
+    $self->pricelists->upsert_head_p($companies_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => $result});
     })->catch( sub ($err) {
 
@@ -42,7 +42,7 @@ sub insert_item ($self) {
         $self->req->headers->header('X-Token-Check')
     );
     my $json_hash = decode_json ($self->req->body);
-    $self->pricelists->insert_item($companies_pkey, $json_hash)->then(sub ($result) {
+    $self->pricelists->insert_item_p($companies_pkey, $json_hash)->then(sub ($result) {
         $self->render(json => {'result' => $result});
     })->catch( sub ($err) {
 
@@ -59,7 +59,7 @@ sub load_list_items ($self) {
     );
 
     my $pricelists_fkey = $self->param('pricelists_fkey');
-    $self->pricelists->load_list_items($companies_pkey, $pricelists_fkey)->then(sub ($result) {
+    $self->pricelists->load_list_items_p($companies_pkey, $pricelists_fkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {

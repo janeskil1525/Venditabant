@@ -1,0 +1,7 @@
+lib/Currencies.pm
+lib/Currencies/Helpers/Currencies.pm
+lib/Currencies/Helpers/Exchangerates.pm
+lib/Currencies/Model/Currencies.pm
+lib/Currencies/Model/Exchangerates.pm
+Makefile.PL
+MANIFEST			This list of files

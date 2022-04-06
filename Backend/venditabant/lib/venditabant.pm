@@ -4,15 +4,15 @@ use Mojo::Base 'Mojolicious', -signatures, -async_await;;
 use Mojo::Pg;
 
 use venditabant::Helpers::Login;
-use venditabant::Helpers::Stockitems;
 use System::Helpers::Jwt;
-use venditabant::Helpers::Pricelist::Pricelists;
+use Pricelists;
+use Customers;
+use Stockitems;
 use venditabant::Helpers::Users;
 use venditabant::Helpers::Salesorder::Salesorders;
 use venditabant::Helpers::Companies::Release::Release;
 use venditabant::Helpers::Sentinel::Sentinelsender;
 use venditabant::Helpers::Parameter::Parameters;
-use Customers;
 use venditabant::Helpers::Companies::Company;
 use venditabant::Helpers::Sentinel::Sentinel;
 use venditabant::Helpers::Parameter::Languages;
@@ -21,7 +21,7 @@ use venditabant::Helpers::Warehouses::Warehouse;
 use venditabant::Helpers::Checkpoints::Autotodos;
 use venditabant::Helpers::Invoice::Invoices;
 use System::Helpers::Settings;
-use venditabant::Helpers::Currency::Currencies;
+use Currencies;
 use venditabant::Helpers::Stockitems::Mobilelist;
 use venditabant::Helpers::Minion;
 use Workflows;
@@ -58,9 +58,9 @@ sub startup ($self) {
         state $users = venditabant::Helpers::Users->new(pg => $self->pg);
     });
     $self->helper(login => sub {state $login = venditabant::Helpers::Login->new(pg => shift->pg)});
-    $self->helper(stockitems => sub {state $stockitems = venditabant::Helpers::Stockitems->new(pg => shift->pg)});
+    $self->helper(stockitems => sub {state $stockitems = Stockitems->new(pg => shift->pg)});
     $self->helper(jwt => sub {state $jwt = System::Helpers::Jwt->new()});
-    $self->helper(pricelists => sub {state $pricelists = venditabant::Helpers::Pricelist::Pricelists->new(pg => shift->pg)});
+    $self->helper(pricelists => sub {state $pricelists = Pricelists->new(pg => shift->pg)});
     $self->helper(
       salesorders => sub {
         state $salesorders = venditabant::Helpers::Salesorder::Salesorders->new(pg => shift->pg)
@@ -113,7 +113,7 @@ sub startup ($self) {
       });
     $self->helper(
       currencies => sub {
-        state  $currencies = venditabant::Helpers::Currency::Currencies->new(pg => shift->pg)
+        state  $currencies = Currencies->new(pg => shift->pg)
       });
     $self->helper(
       mobilelist => sub {

@@ -1,4 +1,4 @@
-package Workflow::Action::Update;
+package Stockitems::Workflow::Action::Update;
 use strict;
 use warnings FATAL => 'all';
 

@@ -1,9 +1,9 @@
-package venditabant::Model::Currency::Exchangerates;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package Currencies::Model::Exchangerates;
+use Mojo::Base -base, -signatures, -async_await;
 
 has 'db';
 
-async sub upsert($self, $exchangerate) {
+async sub upsert_p($self, $exchangerate) {
 
     my $stmt = qq {
         INSERT INTO currencies_exchangerates

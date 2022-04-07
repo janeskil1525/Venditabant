@@ -2578,4 +2578,17 @@ ALTER TABLE customers
 
 UPDATE customers SET active = 'true';
 
+INSERT INTO workflows (workflow)
+    VALUES ('stockitem_simple');
+
+CREATE TABLE workflow_stockitem
+(
+    workflow_id  bigint not null,
+    stockitems_fkey  bigint not null,
+    users_fkey  bigint not null,
+    companies_fkey  bigint not null,
+    closed boolean not null default 'false',
+    primary key ( workflow_id )
+);
+
 -- 49 down

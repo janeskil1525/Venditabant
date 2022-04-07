@@ -2,6 +2,7 @@ package Stockitems::Helpers::Stockitems;
 use Mojo::Base -base, -signatures, -async_await;
 
 use Stockitems::Model::Stockitems;
+use Stockitems::Model::Counter;
 use Pricelists;
 use Suppliers;
 use Currencies;
@@ -9,6 +10,77 @@ use Currencies;
 use Data::Dumper;
 
 has 'pg';
+
+sub get_new_stockitem_id($self, $companies_pkey, $users_pkey) {
+    my $stockitemid= Stockitems::Model::Counter->new(
+        db => $self->pg->db
+    )->nextid(
+        $companies_pkey, $users_pkey, 'stockitems'
+    );
+    $stockitemid .= '00000000000';
+    my $stockitem = substr($stockitemid,0,10);
+
+    return $stockitem;
+}
+
+sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
+    my $db = $self->pg->db;
+    my $tx = $db->begin();
+
+    my $err;
+    my $pricelist_item;
+
+    eval {
+        $pricelist_item = Pricelists->new(db => $db);
+    };
+    say "Error 1 " . $@ if $@;
+
+    my $stockitems_pkey = 0;
+    eval {
+        $stockitems_pkey = Stockitems::Model::Stockitems->new(
+            db => $db
+        )->upsert(
+            $companies_pkey, $users_pkey, $stockitem
+        );
+
+        my $item = Pricelists->new(
+            pg => $self->pg
+        )->prepare_upsert_from_stockitem(
+            $companies_pkey, $stockitems_pkey, $stockitem->{price}
+        );
+
+        $pricelist_item->insert_item(
+            $companies_pkey, $item
+        );
+
+        my $supplier = Suppliers->new(
+            db => $db
+        )->load_supplier(
+            $companies_pkey, $users_pkey, 'DEFAULT'
+        );
+
+        $stockitem->{suppliers_fkey} = $supplier->{suppliers_pkey};
+        $stockitem->{stockitems_pkey} = $stockitems_pkey;
+        if($stockitem->{currencies_fkey} == 0) {
+            my $currency = Currencies->new(
+                db => $db
+            )->load_currency_pkey(
+                'SEK'
+            );
+            $stockitem->{currencies_fkey} = $currency->{currencies_pkey};
+        }
+        Suppliers->new(
+            db => $db
+        )->upsert_supplieritem(
+            $companies_pkey, $users_pkey, $stockitem
+        );
+
+        $tx->commit();
+    };
+    say  $@ if $@;
+
+    return $stockitems_pkey;
+}
 
 async sub upsert_p ($self, $companies_pkey, $users_pkey, $stockitem) {
 

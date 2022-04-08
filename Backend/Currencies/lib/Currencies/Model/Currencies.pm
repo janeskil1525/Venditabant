@@ -39,12 +39,17 @@ async sub load_currency_list_p($self, $companies_pkey, $users_pkey) {
 
 async sub load_currency_pkey_p($self, $shortdescription) {
 
+    return $self->load_currency_pkey($shortdescription);
+}
+
+sub load_currency_pkey($self, $shortdescription) {
+
     my $result = $self->db->select(
         'currencies',
-            ['currencies_pkey'],
-            {
-                shortdescription => $shortdescription
-            }
+        ['currencies_pkey'],
+        {
+            shortdescription => $shortdescription
+        }
     );
 
     my $hash;

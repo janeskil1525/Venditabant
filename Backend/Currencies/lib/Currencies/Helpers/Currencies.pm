@@ -7,6 +7,16 @@ use Data::Dumper;
 
 has 'pg';
 
+async sub load_currency_pkey($self, $shortdescription) {
+    my $hashes = Currencies::Model::Currencies->new(
+        db => $self->pg->db
+    )->load_currency_pkey(
+        $shortdescription
+    );
+
+    return $hashes;
+}
+
 async sub load_currency_pkey_p($self, $shortdescription) {
     my $hashes = await Currencies::Model::Currencies->new(
         db => $self->pg->db

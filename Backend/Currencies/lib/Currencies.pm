@@ -4,7 +4,7 @@ use Mojo::Base -base, -signatures, -async_await;
 use Currencies::Helpers::Currencies;
 use Currencies::Helpers::Exchangerates;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 has 'pg';
 
@@ -36,6 +36,14 @@ async sub load_currency_pkey_p($self, $shortdescription) {
     return Currencies::Helpers::Currencies->new(
         pg => $self->pg
     )->load_currency_pkey_p(
+        $shortdescription
+    );
+}
+
+sub load_currency_pkey($self, $shortdescription) {
+    return Currencies::Helpers::Currencies->new(
+        pg => $self->pg
+    )->load_currency_pkey(
         $shortdescription
     );
 }

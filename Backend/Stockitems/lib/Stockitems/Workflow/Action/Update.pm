@@ -32,8 +32,8 @@ sub execute ($self, $wf) {
 
     $wf->add_history(
         Workflow::History->new({
-            action      => "Stockitem created",
-            description => "Stockitem $stockitem was created",
+            action      => "Stockitem updated",
+            description => "Stockitem $stockitem was updated",
             user        => $context->param('history')->{userid},
         })
     );

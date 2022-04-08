@@ -7,6 +7,7 @@ use Stockitems::Workflow::Action::Create;
 
 sub execute {
 
+    my $test = Stockitems::Workflow::Action::Create->new();
     return 1;
 }
 

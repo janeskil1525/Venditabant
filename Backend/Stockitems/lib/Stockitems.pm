@@ -4,7 +4,7 @@ use Mojo::Base -base, -signatures, -async_await;
 use Stockitems::Helpers::Stockitems;
 use Stockitems::Helpers::Workflow;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 has 'pg';
 

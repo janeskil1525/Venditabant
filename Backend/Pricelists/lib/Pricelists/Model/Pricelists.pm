@@ -4,7 +4,22 @@ use Mojo::Base -base, -signatures, -async_await;
 has 'db';
 
 
-async sub get_pricelist_pkey($self, $companies_pkey, $pricelist) {
+sub get_pricelist_pkey($self, $companies_pkey, $pricelist) {
+
+    my $result = $self->db->select('pricelists',
+        undef,
+        {
+            companies_fkey => $companies_pkey,
+            pricelist      => $pricelist
+        }
+    );
+
+    my $hash;
+    $hash = $result->hash->{pricelists_pkey} if $result and $result->rows;
+    return $hash;
+}
+
+async sub get_pricelist_pkey_p($self, $companies_pkey, $pricelist) {
 
     my $result = await $self->db->select_p('pricelists',
         undef,

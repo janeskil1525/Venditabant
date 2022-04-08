@@ -4,7 +4,7 @@ use Mojo::Base -base, -signatures, -async_await;
 use Pricelists::Helpers::Pricelists;
 use Data::Dumper;
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';
 
 has 'pg';
 
@@ -48,6 +48,14 @@ async sub insert_item_p ($self, $companies_pkey, $pricelist_item) {
     );
 }
 
+sub insert_item ($self, $companies_pkey, $pricelist_item) {
+    return Pricelists::Helpers::Pricelists->new(
+        pg => $self->pg
+    )->insert_item (
+        $companies_pkey, $pricelist_item
+    );
+}
+
 async sub prepare_upsert_from_stockitem_p ($self, $companies_pkey, $stockitems_pkey, $price) {
     return Pricelists::Helpers::Pricelists->new(
         pg => $self->pg
@@ -56,5 +64,11 @@ async sub prepare_upsert_from_stockitem_p ($self, $companies_pkey, $stockitems_p
     );
 }
 
-
+sub prepare_upsert_from_stockitem ($self, $companies_pkey, $stockitems_pkey, $price) {
+    return Pricelists::Helpers::Pricelists->new(
+        pg => $self->pg
+    )->prepare_upsert_from_stockitem (
+        $companies_pkey, $stockitems_pkey, $price
+    );
+}
 1;

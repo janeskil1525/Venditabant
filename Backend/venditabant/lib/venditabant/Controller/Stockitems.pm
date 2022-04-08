@@ -31,8 +31,6 @@ sub save_stockitem ($self) {
         push @{$data->{actions}}, 'create_stockitem';
     }
 
-    say Dumper($data);
-
     eval {
         $self->workflow->execute(
             'stockitem_simple', $data

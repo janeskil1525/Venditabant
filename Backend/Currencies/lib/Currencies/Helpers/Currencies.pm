@@ -49,7 +49,7 @@ async sub load_list_p ($self, $companies_pkey, $users_pkey) {
 
     my $hashes = await Currencies::Model::Currencies->new(
         db => $self->pg->db
-    )->load_currency_list($companies_pkey, $users_pkey);
+    )->load_currency_list_p($companies_pkey, $users_pkey);
 
     return $hashes;
 }

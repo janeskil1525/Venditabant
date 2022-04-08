@@ -12,7 +12,7 @@ sub load_list ($self) {
         $self->req->headers->header('X-Token-Check')
     );
 
-    $self->currencies->load_list($companies_pkey, $users_pkey)->then(sub ($result) {
+    $self->currencies->load_list_p($companies_pkey, $users_pkey)->then(sub ($result) {
 
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {

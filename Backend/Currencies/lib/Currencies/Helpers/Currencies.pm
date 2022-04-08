@@ -7,7 +7,7 @@ use Data::Dumper;
 
 has 'pg';
 
-async sub load_currency_pkey($self, $shortdescription) {
+sub load_currency_pkey($self, $shortdescription) {
     my $hashes = Currencies::Model::Currencies->new(
         db => $self->pg->db
     )->load_currency_pkey(

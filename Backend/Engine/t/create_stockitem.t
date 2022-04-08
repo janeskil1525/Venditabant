@@ -11,17 +11,17 @@ sub execute {
         "dbi:Pg:dbname=Venditabant;host=192.168.1.108;port=5432;user=postgres;password=PV58nova64"
     );
 
-    my $data->{stockitem}->{description} = 'WERWER_XXXXXXXXXX';
+    my $data->{stockitem}->{description} = 'WERWER_XXXXX2222XXXXX';
     $data->{stockitem}->{units_fkey} = 3485;
     $data->{stockitem}->{todate} = '2027-4-7';
     $data->{stockitem}->{active} = 1;
     $data->{stockitem}->{stocked} = 0;
     $data->{stockitem}->{fromdate} = '2022-4-7 15:43:43';
-    $data->{stockitem}->{currencies_fkey} = 19;
+    $data->{stockitem}->{currencies_fkey} = '';
     $data->{stockitem}->{productgroup_fkey} = 1315;
     $data->{stockitem}->{vat_fkey} = 129;
     $data->{stockitem}->{accounts_fkey} = 3480;
-    $data->{stockitem}->{stockitem} = 'ERWERWREWER_XXXXXXXXXX';
+    $data->{stockitem}->{stockitem} = 'ERWERWREWER_XXXXX222XXXXX';
     $data->{stockitem}->{purchaseprice} = '12';
     $data->{stockitem}->{price} = '12';
     $data->{stockitem}->{customer} = 'wwwwwww';

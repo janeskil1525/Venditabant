@@ -60,7 +60,7 @@ sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
 
         $stockitem->{suppliers_fkey} = $supplier->{suppliers_pkey};
         $stockitem->{stockitems_pkey} = $stockitems_pkey;
-        if($stockitem->{currencies_fkey} == 0) {
+        if(!$stockitem->{currencies_fkey} or $stockitem->{currencies_fkey} == 0) {
             my $currency = Currencies->new(
                 pg => $self->pg
             )->load_currency_pkey(

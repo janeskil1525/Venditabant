@@ -54,21 +54,28 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let lbl = this._createLbl(this.tr( "Customer" ), 70);
                 page1.add ( lbl, { top: 10, left: 10 } );
 
-                let customer = this._createTxt("Customer", 150, true, this.tr("Customer is required"));
+                let customer = this._createTxt("Customer", 150, true,
+                    this.tr("Customer is required"),
+                    this.tr('Unique id for the customer set automatically if left empty')
+                );
                 page1.add ( customer, { top: 10, left: 90 } );
                 this._customer = customer;
 
                 lbl = this._createLbl(this.tr( "Name" ), 70);
                 page1.add ( lbl, { top: 10, left: 250 } );
 
-                let name = this._createTxt("Name", 250, false);
+                let name = this._createTxt("Name", 250, false,'',
+                    this.tr('Customers formal name')
+                );
                 page1.add ( name, { top: 10, left: 350 } );
                 this._name = name
 
                 lbl = this._createLbl(this.tr( "Org. nr" ), 70);
                 page1.add ( lbl, { top: 45, left: 250 } );
 
-                let orgnbr = this._createTxt("Org. nr", 250, false);
+                let orgnbr = this._createTxt("Org. nr", 250, false, '',
+                    this.tr('Customers organisational or VAT id')
+                );
                 page1.add ( orgnbr, { top: 45, left: 350 } );
                 this._registrationnumber = orgnbr
                 lbl = this._createLbl(this.tr( "Pricelist" ), 70);
@@ -77,6 +84,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let pricelists = new venditabant.sales.pricelists.views.PricelistsSelectBox().set({
                     width:150,
                     emptyrow:false,
+                    tooltip:this.tr( "Select pricelist for customer" ),
                 });
                 this._pricelists = pricelists;
                 page1.add ( pricelists.getView(), { top: 45, left: 90 } );
@@ -84,14 +92,19 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 lbl = this._createLbl(this.tr( "Phone" ), 70);
                 page1.add ( lbl, { top: 80, left: 10 } );
 
-                let phone = this._createTxt("Phone", 150, true, this.tr("Customer is required"));
+                let phone = this._createTxt("Phone", 150, true,
+                    this.tr("Customer phon number is required"),
+                    this.tr('The customers official phonnumber')
+                );
                 page1.add ( phone, { top: 80, left: 90 } );
                 this._phone = phone;
 
                 lbl = this._createLbl(this.tr( "Homepage" ), 70);
                 page1.add ( lbl, { top: 80, left: 250 } );
 
-                let homepage = this._createTxt(this.tr("Homepage"), 250, false);
+                let homepage = this._createTxt(this.tr("Homepage"), 250, false,'',
+                    this.tr('The customers official homepage, if exists')
+                );
                 page1.add ( homepage, { top: 80, left: 350 } );
                 this._homepage = homepage
 
@@ -101,6 +114,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 let languages = new venditabant.support.views.LanguageSelectBox().set({
                     width:150,
                     emptyrow:false,
+                    tooltip:this.tr( "Select customer language" ),
                 });
                 let languagesview = languages.getView()
                 this._languages = languages;
@@ -108,14 +122,14 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
 
                 let active = this._createChkBox(this.tr ( "Active" ), "#FFAAAA70", 135, function ( ) {
                     //this.clearScreen();
-                }, this );
+                }, this, this.tr('The customers is active or not, shown here as information only') );
                 active.setEnabled(false);
                 this._active = active;
                 page1.add ( active, { bottom: 65, left: 10 } );
 
                 let blocked = this._createChkBox(this.tr ( "Blocked" ), "#FFAAAA70", 135, function ( ) {
                     //this.clearScreen();
-                }, this );
+                }, this, this.tr('The customers is blocked or not, shown here as information only') );
                 blocked.setEnabled(false);
                 this._blocked = blocked;
                 page1.add ( blocked, { bottom: 65, left: 90 } );
@@ -123,20 +137,22 @@ qx.Class.define ( "venditabant.sales.customers.views.Definition",
                 lbl = this._createLbl(this.tr( "Comment" ), 120);
                 page1.add ( lbl, { top: 115, left: 250 } );
 
-                let comment = this._createTextArea(this.tr("Comment"), 250, 60);
+                let comment = this._createTextArea(this.tr("Comment"), 250, false,'',
+                    this.tr('Internal comment regarding the customer')
+                );
                 this._comment = comment;
 
                 page1.add ( comment, { top: 115, left: 350 } );
 
-                let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
+                let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveCustomer ( );
-                }, this );
-                page1.add ( btnSignup, { bottom: 10, left: 10 } );
+                }, this, this.tr('Save the customer'));
+                page1.add ( btnSave, { bottom: 10, left: 10 } );
 
-                let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
+                let btnNew = this._createBtn ( this.tr ( "New" ), "#FFAAAA70", 135, function ( ) {
                     this.clearScreen();
-                }, this );
-                page1.add ( btnCancel, { bottom: 10, right: 10 } );
+                }, this, this.tr('Enter a new customer') );
+                page1.add ( btnNew, { bottom: 10, right: 10 } );
 
                 return page1;
             },

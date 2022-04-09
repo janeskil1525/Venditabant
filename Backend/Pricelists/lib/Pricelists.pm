@@ -16,15 +16,15 @@ async sub load_list_heads_p ($self, $companies_pkey) {
     );
 }
 
-sub upsert_head ($self, $companies_pkey, $pricelist) {
+sub upsert_head ($self, $companies_pkey, $users_fkey, $pricelist) {
     return Pricelists::Helpers::Pricelists->new(
         pg => $self->pg
     )->upsert_head(
-        $companies_pkey, $pricelist
+        $companies_pkey, $users_fkey, $pricelist
     );
 }
 
-async sub upsert_head_p ($self, $companies_pkey, $pricelist) {
+async sub upsert_head_p ($self, $companies_pkey, $users_fkey, $pricelist) {
     return Pricelists::Helpers::Pricelists->new(
         pg => $self->pg
     )->upsert_head(

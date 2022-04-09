@@ -2591,4 +2591,16 @@ CREATE TABLE workflow_stockitem
     primary key ( workflow_id )
 );
 
+CREATE TABLE workflow_pricelist
+(
+    workflow_id  bigint not null,
+    pricelists_fkey  bigint not null,
+    users_fkey  bigint not null,
+    companies_fkey  bigint not null,
+        primary key ( workflow_id )
+);
+
+INSERT INTO workflows (workflow)
+    VALUES ('pricelist_simple');
+
 -- 49 down

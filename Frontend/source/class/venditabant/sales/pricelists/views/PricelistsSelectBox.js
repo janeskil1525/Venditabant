@@ -13,12 +13,16 @@ qx.Class.define("venditabant.sales.pricelists.views.PricelistsSelectBox",
                     width: {nullable: true, check: "Number"},
                     emptyrow: {nullable: true, check: "Boolean"},
                     callback: {nullable:true},
+                    tooltip: {nullable:true, check:"String"},
             },
         members: {
                 _selectbox:null,
                 getView: function () {
                         let selectbox = new qx.ui.form.SelectBox();
                         selectbox.setWidth(this.getWidth());
+                        if (this.getTooltip()) {
+                                selectbox.setToolTipText(this.getTooltip());
+                        }
                         selectbox.addListener("changeSelection", function (e) {
                                 this._model = e.getData()[0];
                                 if(this.getCallback() !== null) {

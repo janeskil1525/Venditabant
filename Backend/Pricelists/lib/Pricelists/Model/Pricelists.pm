@@ -48,7 +48,7 @@ async sub load_list_heads_p ($self, $companies_pkey) {
     return $hash;
 }
 
-sub upsert ($self, $companies_pkey, $pricelists) {
+sub upsert ($self, $companies_pkey, $users_fkey, $pricelists) {
 
     my $pricelist_stmt = qq{
         INSERT INTO pricelists (pricelist, companies_fkey) VALUES (?,?)

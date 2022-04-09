@@ -21,26 +21,18 @@ async sub load_list_heads_p ($self, $companies_pkey) {
     return $result;
 }
 
-sub upsert_head ($self, $companies_pkey, $pricelist) {
+sub upsert_head ($self, $companies_pkey, $users_fkey, $pricelist) {
 
-    my $db = $self->pg->db;
-    my $tx = $db->begin();
+    my $pricelists_pkey = Pricelists::Model::Pricelists->new(
+        db => $self->pg->db
+    )->upsert (
+        $companies_pkey, $users_fkey, $pricelist
+    );
 
-    my $err;
-    eval {
-        my $pricelists_pkey = Pricelists::Model::Pricelists->new(
-            db => $db
-        )->upsert(
-            $companies_pkey, $pricelist
-        );
-        $tx->commit();
-    };
-    $err = $@ if $@;
-
-    return $err ? $err : 'success';
+    return $pricelists_pkey;
 }
 
-async sub upsert_head_p ($self, $companies_pkey, $pricelist) {
+async sub upsert_head_p ($self, $companies_pkey, $users_fkey, $pricelist) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -50,7 +42,7 @@ async sub upsert_head_p ($self, $companies_pkey, $pricelist) {
         my $pricelists_pkey = Pricelists::Model::Pricelists->new(
             db => $db
         )->upsert(
-            $companies_pkey, $pricelist
+            $companies_pkey, $users_fkey, $pricelist
         );
         $tx->commit();
     };

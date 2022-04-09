@@ -11,6 +11,7 @@ qx.Class.define("venditabant.support.views.CurrenciesSelectBox",
         properties: {
             width: {nullable: true, check: "Number"},
             emptyrow: {nullable: true, check: "Boolean"},
+            tooltip:{nullable: true, check: "String"},
         },
         members: {
             _selectbox:null,
@@ -18,6 +19,9 @@ qx.Class.define("venditabant.support.views.CurrenciesSelectBox",
             getView: function () {
                 let selectbox = new qx.ui.form.SelectBox();
                 selectbox.setWidth(this.getWidth());
+                if(this.getTooltip()) {
+                    selectbox.setToolTipText(this.getTooltip());
+                }
                 selectbox.addListener("changeSelection", function (e) {
                     this._model = e.getData()[0];
                 }, this);

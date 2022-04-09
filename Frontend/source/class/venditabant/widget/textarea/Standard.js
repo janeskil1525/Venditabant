@@ -18,7 +18,7 @@ qx.Class.define("venditabant.widget.textarea.Standard",
                     txt.setHeight( height );
                 }
                 if(typeof tooltipTxt !== 'undefined' && tooltipTxt !== null && tooltipTxt !== '') {
-                    txt.setToolTip(tooltipTxt);
+                    txt.setToolTipText(tooltipTxt);
                 }
                 return txt;
             },

@@ -34,6 +34,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
                 let stockitem = this._createTxt(
                     this.tr( "Stockitem" ),150,true,this.tr("Stockitem is required")
+                    ,this.tr('Unique id for stockitem ')
                 );
 
                 page1.add ( stockitem, { top: 10, left: 90 } );
@@ -44,7 +45,8 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( lbl, { top: 10, left: 250 } );
 
                 let descriptn = this._createTxt(
-                    this.tr( "Description" ),250,true,this.tr("Description is required")
+                    this.tr( "Description" ),250,true,this.tr("Description is required"),
+                    this.tr("Descriptive description of stockitem")
                 );
                 page1.add ( descriptn, { top: 10, left: 350 } );
                 this._description = descriptn;
@@ -57,6 +59,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                     width:180,
                     parameter:'PRODUCTGROUPS',
                     emptyrow:true,
+                    tooltip:this.tr('Select product group')
                 });
                 let productgroupssview = productgroups.getView()
                 this._productgroups = productgroups;
@@ -67,7 +70,8 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( lbl, { top: 50, left: 10 } );
 
                 let price = this._createTxt(
-                    this.tr( "Price" ),80,false
+                    this.tr( "Price" ),80,false, '',
+                    this.tr('Sales price for default pricelist')
                 );
                 price.setFilter(/[0-9\.\,]/);
 
@@ -78,7 +82,8 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 page1.add ( lbl, { top: 50, left: 250 } );
 
                 let purchprice = this._createTxt(
-                    this.tr( "Purchase price" ),80,false
+                    this.tr( "Purchase price" ),80,false,'',
+                    this.tr('Enter purchase pris in selected currency')
                 );
                 purchprice.setFilter(/[0-9\.\,]/);
 
@@ -88,6 +93,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                 let currencies = new venditabant.support.views.CurrenciesSelectBox().set({
                     width:70,
                     emptyrow:true,
+                    tooltip:this.tr('Select purchase currency')
                 });
 
                 let currencysview = currencies.getView()
@@ -100,23 +106,26 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                     width:180,
                     parameter:'VAT',
                     emptyrow:true,
+                    tooltip:this.tr('Select VAT type')
                 });
                 
                 let vatsview = vat.getView()
                 this._vat = vat;
                 page1.add ( vatsview, { top: 50, left: 700 } );
 
-                lbl = this._createLbl(this.tr( "Active" ),70);
+                lbl = this._createLbl(this.tr( "Active" ),70, this.tr('This stockitem is active and can be sold'));
                 page1.add ( lbl, { top: 90, left: 10 } );
 
                 let active = new qx.ui.form.CheckBox("");
+                active.setToolTipText(this.tr('This stockitem is active and can be sold'))
                 page1.add ( active, { top: 90, left: 90 } );
                 this._active = active;
 
-                lbl = this._createLbl(this.tr( "Stocked" ),70);
+                lbl = this._createLbl(this.tr( "Stocked" ),70, this.tr('This stockitem is stocked'));
                 page1.add ( lbl, { top: 90, left: 250 } );
 
                 let stocked = new qx.ui.form.CheckBox("");
+                stocked.setToolTipText(this.tr('This stockitem is stocked'))
                 page1.add ( stocked, { top: 90, left: 350 } );
                 this._stocked = stocked;
 
@@ -127,6 +136,7 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                     width:180,
                     parameter:'ACCOUNTS',
                     emptyrow:true,
+                    tooltip:this.tr('Select sales account for the accounting'),
                 });
                 let accountsview = accounts.getView()
                 page1.add ( accountsview, { top: 90, left: 700 } );
@@ -138,23 +148,24 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
                     width:180,
                     parameter:'SALESUNITS',
                     emptyrow:true,
+                    tooltip:this.tr('Select salesunit for this product')
                 });
                 let unitsview = units.getView()
                 page1.add ( unitsview, { top: 130, left: 700 } );
                 this._unitsview = unitsview;
                 this._units = units;
 
-                let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
+                let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     if(this._validator.validate()) {
                         this.saveStockitem();
                     }
-                }, this );
-                page1.add ( btnSignup, { bottom: 10, left: 10 } );
+                }, this, this.tr('Save stockitem') );
+                page1.add ( btnSave, { bottom: 10, left: 10 } );
 
-                let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
+                let btnNew = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
                     this.clearScreen ( );
-                }, this );
-                page1.add ( btnCancel, { bottom: 10, right: 10 } )
+                }, this, this.tr('Create new stockitem') );
+                page1.add ( btnNew, { bottom: 10, right: 10 } )
                 tabView.add(page1);
                 this._createTable();
 

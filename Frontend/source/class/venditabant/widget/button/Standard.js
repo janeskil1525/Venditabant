@@ -8,9 +8,12 @@ qx.Class.define("venditabant.widget.button.Standard",
 
         },
         members: {
-            createChkBox : function(txt, clr, width, cb, ctx) {
+            createChkBox : function(txt, clr, width, cb, ctx, tooltipTxt) {
                 let box = new qx.ui.form.CheckBox (  txt  );
                 box.set ( { width: width, cursor: 'pointer' } );
+                if(typeof tooltipTxt !== 'undefined' && tooltipTxt !== null) {
+                    box.setToolTipText(tooltipTxt);
+                }
                 box.addListenerOnce ( "appear", function ( )  {
                     this.setBGColor ( box, "#AAAAAA00", "#AAAAAA00" );
                 },this );
@@ -25,9 +28,12 @@ qx.Class.define("venditabant.widget.button.Standard",
                 }, ctx );
                 return box;
             },
-            createBtn : function (txt, clr, width, cb, ctx) {
+            createBtn : function (txt, clr, width, cb, ctx, tooltipTxt) {
                 let btn = new qx.ui.form.Button (  txt  );
                 btn.set ( { width: width, cursor: 'pointer' } );
+                if(typeof tooltipTxt !== 'undefined' && tooltipTxt !== null) {
+                    btn.setToolTipText(tooltipTxt);
+                }
                 btn.addListenerOnce ( "appear", function ( )  {
                     this.setBGColor ( btn, "#AAAAAA00", "#AAAAAA00" );
                 },this );

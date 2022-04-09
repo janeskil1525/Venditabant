@@ -24,21 +24,21 @@
         var btn = new venditabant.widget.button.Standard().createChkBox(txt, clr, width, cb, ctx);
         return btn;
       },
-      _createBtn: function _createBtn(txt, clr, width, cb, ctx) {
-        var btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx);
+      _createBtn: function _createBtn(txt, clr, width, cb, ctx, toolTips) {
+        var btn = new venditabant.widget.button.Standard().createBtn(txt, clr, width, cb, ctx, toolTips);
         return btn;
       },
-      _createTxt: function _createTxt(placeholder, width, required, requiredTxt) {
-        var txt = new venditabant.widget.textfield.Standard().createTxt(placeholder, width, required, requiredTxt);
+      _createTxt: function _createTxt(placeholder, width, required, requiredTxt, toolTips) {
+        var txt = new venditabant.widget.textfield.Standard().createTxt(placeholder, width, required, requiredTxt, toolTips);
         return txt;
       },
-      _createLbl: function _createLbl(label, width, required, requiredTxt) {
-        var lbl = new venditabant.widget.label.Standard().createLbl(label, width, required, requiredTxt);
+      _createLbl: function _createLbl(label, width, required, requiredTxt, toolTips) {
+        var lbl = new venditabant.widget.label.Standard().createLbl(label, width, required, requiredTxt, toolTips);
         return lbl;
       },
-      _createTextArea: function _createTextArea(placeholder, width, required, requiredTxt) {
+      _createTextArea: function _createTextArea(placeholder, width, required, requiredTxt, toolTips) {
         var txt = new venditabant.widget.textarea.Standard();
-        var txtarea = txt.createTxt(placeholder, width, required, requiredTxt);
+        var txtarea = txt.createTxt(placeholder, width, required, requiredTxt, toolTips);
         return txtarea;
       }
     }
@@ -46,4 +46,4 @@
   venditabant.application.base.views.Base.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Base.js.map?dt=1648826825465
+//# sourceMappingURL=Base.js.map?dt=1649434836298

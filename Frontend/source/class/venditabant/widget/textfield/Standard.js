@@ -19,7 +19,7 @@ qx.Class.define("venditabant.widget.textfield.Standard",
                     }
                 }
                 if(typeof tooltipTxt !== 'undefined' && tooltipTxt !== null) {
-                    txt.setToolTip(tooltipTxt);
+                    txt.setToolTipText(tooltipTxt);
                 }
                 return txt;
             },

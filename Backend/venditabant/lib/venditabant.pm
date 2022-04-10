@@ -18,7 +18,7 @@ use venditabant::Helpers::Sentinel::Sentinel;
 use venditabant::Helpers::Parameter::Languages;
 # use venditabant::Helpers::Mailer::Templates::Mailtemplates;
 use venditabant::Helpers::Warehouses::Warehouse;
-use venditabant::Helpers::Checkpoints::Autotodos;
+use CheckPoints::Helpers::Autotodos;
 use venditabant::Helpers::Invoice::Invoices;
 use System::Helpers::Settings;
 use Currencies;
@@ -101,7 +101,7 @@ sub startup ($self) {
 
     $self->helper(
       autotodos => sub {
-        state  $autotodos = venditabant::Helpers::Checkpoints::Autotodos->new(pg => shift->pg)
+        state  $autotodos = CheckPoints::Helpers::Autotodos->new(pg => shift->pg)
       });
     $self->helper(
      invoices => sub {

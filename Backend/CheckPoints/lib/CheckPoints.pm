@@ -4,6 +4,8 @@ use Mojo::Base -base, -signatures, -async_await;
 use venditabant::Model::Company;
 use CheckPoints::Helpers::Check;
 
+our $VERSION = '0.01';
+
 has 'pg';
 
 async sub check_all ($self) {

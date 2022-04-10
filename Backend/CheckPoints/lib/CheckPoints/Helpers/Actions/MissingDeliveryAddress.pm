@@ -1,4 +1,4 @@
-package venditabant::Helpers::Checkpoints::Actions::MissingDeliveryAddress;
+package CheckPoints::Helpers::Actions::MissingDeliveryAddress;
 use Mojo::Base 'venditabant::Helpers::Checkpoints::Actions::SubstituteText', -signatures, -async_await;
 
 use Text::Template;

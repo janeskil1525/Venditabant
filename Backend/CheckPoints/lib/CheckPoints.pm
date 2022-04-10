@@ -1,8 +1,8 @@
-package venditabant::Helpers::ProcessCheckpoints;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package CheckPoints;
+use Mojo::Base -base, -signatures, -async_await;
 
 use venditabant::Model::Company;
-use venditabant::Helpers::Checkpoints::Check;
+use CheckPoints::Helpers::Check;
 
 has 'pg';
 
@@ -15,7 +15,7 @@ async sub check_all ($self) {
             db => $self->pg->db
         )->load_list_p();
 
-        my $checker = venditabant::Helpers::Checkpoints::Check->new(
+        my $checker = CheckPoints::Helpers::Check->new(
             pg => $self->pg
         );
         foreach my $company (@{$companies}) {
@@ -25,11 +25,7 @@ async sub check_all ($self) {
         }
     };
     $err = $@ if $@;
-    $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::ProcessChecpoints;', 'check_all', $err
-    ) if $err;
-
 
 }
+
 1;

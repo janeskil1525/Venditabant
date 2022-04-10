@@ -1,4 +1,4 @@
-package venditabant::Helpers::Checkpoints::Check::SqlList;
+package CheckPoints::Helpers::Check::SqlList;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
 has 'db';

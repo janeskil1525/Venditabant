@@ -1,7 +1,7 @@
-package venditabant::Helpers::Checkpoints::Autotodos;
+package CheckPoints::Helpers::Autotodos;
 use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Model::AutoTodo;
+use CheckPoints::Model::AutoTodo;
 use Data::Dumper;
 
 has 'pg';

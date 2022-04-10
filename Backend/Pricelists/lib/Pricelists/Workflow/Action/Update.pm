@@ -18,15 +18,19 @@ sub execute ($self, $wf) {
     my $pg = $self->get_pg('PricelistPersister');
     my $context = $wf->context;
 
+    my $pricelist = $context->param('pricelist')->{'pricelist'};
+    my $stockitem = $context->param('pricelist')->{'stockitem'};
+    my $price = $context->param('pricelist')->{'price'};
+    my $from = $context->param('pricelist')->{'fromdate'};
 
     my $pricelists_pkey = Pricelists->new(pg => $pg)->insert_item(
-        $context->param('companies_fkey'), $context->param('users_fkey'), $context->param('pricelist_item')
+        $context->param('companies_fkey'), $context->param('users_fkey'), $context->param('pricelist')
     );
 
     $wf->add_history(
         Workflow::History->new({
-            action      => "Pricelist created",
-            description => "Pricelist $pricelist was created",
+            action      => "Pricelist $pricelist updated",
+            description => "Pricelist $pricelist was updated stockitem $stockitem has the price $price from $from",
             user        => $context->param('history')->{userid},
         })
     );

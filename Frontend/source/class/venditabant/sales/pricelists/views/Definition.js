@@ -27,18 +27,19 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 page1.setLayout(new qx.ui.layout.Canvas());
 
                 let pricelists = new venditabant.sales.pricelists.views.PricelistsSelectBox().set({
-                    width:150,
+                    width:180,
                     emptyrow:false,
                     callback:this,
+                    tooltip:this.tr( "Select pricelist" ),
                 });
                 this._pricelists = pricelists;
                 page1.add ( pricelists.getView(), { top: 30, left: 10 } );
 
                 let btnAddPricelist = this._createBtn ( this.tr ( "Add" ), "rgba(239,170,255,0.44)", 70, function ( ) {
                     this.addPricelist ( );
-                }, this );
+                }, this, this.tr( "Create a new pricelist" ) );
 
-                page1.add ( btnAddPricelist, { top: 30, left: 170 } );
+                page1.add ( btnAddPricelist, { top: 30, left: 200 } );
 
                 let lbl = new qx.ui.basic.Label ( this.tr( "Stockitem" )  );
                 lbl.setRich ( true );
@@ -48,6 +49,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 let stockitems = new venditabant.stock.stockitems.views.StockitemsSelectBox().set({
                     width:180,
                     emptyrow:true,
+                    tooltip:this.tr( "Select stockitem" ),
                 });
                 let stockitemsview = stockitems.getView()
                 this._stockitems = stockitems;
@@ -59,11 +61,13 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 page1.add ( lbl, { top: 80, left: 350 } );
 
                 var price = new qx.ui.form.TextField ( );
+                price.setToolTipText(this.tr( "Set customer gross price" ));
                 price.setPlaceholder (  ( "Price" ) );
                 price.setWidth( 150 );
 
                 page1.add ( price, { top: 80, left: 450 } );
                 this._price = price;
+                this._price.setValue('0.00');
 
                 var format = new qx.util.format.DateFormat("yyyy-MM-dd");
 
@@ -73,6 +77,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 page1.add ( lbl, { top: 120, left: 10 } );
 
                 var from = new qx.ui.form.DateField ( );
+                from.setToolTipText(this.tr( "Set from what date this price will be valid" ));
                 from.setDateFormat(format);
                 from.setValue (new Date());
                 from.setWidth( 150 );
@@ -86,6 +91,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 page1.add ( lbl, { top: 120, left: 250 } );
 
                 var to = new qx.ui.form.DateField ( );
+                to.setToolTipText(this.tr( "Set the too date this price will be valid" ));
                 to.setDateFormat(format);
                 to.setValue (new Date(new Date().setFullYear(new Date().getFullYear() + 3)));
                 to.setWidth( 150 );
@@ -93,22 +99,27 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 page1.add ( to, { top: 120, left: 350 } );
                 this._to = to;
 
-                let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
+                let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.savePricelistItem();
                     this.loadPricelistItems();
-                }, this );
-                page1.add ( btnSignup, { bottom: 10, left: 10 } );
+                }, this, this.tr( "Save price record" ) );
+                page1.add ( btnSave, { bottom: 10, left: 10 } );
 
-                let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
-                    this.cancel ( );
-                }, this );
-                page1.add ( btnCancel, { bottom: 10, right: 10 } );
+                let btnNew = this._createBtn ( this.tr ( "New" ), "#FFAAAA70", 135, function ( ) {
+                    this.newItem ( );
+                }, this, this.tr( "Create a new price record for the selected pricelist" ) );
+                page1.add ( btnNew, { bottom: 10, right: 10 } );
                 tabView.add(page1);
 
                 this._createTable();
                 view.add(this._table,{top:"52%", left:5, right:5,height:"45%"});
 
                 return view;
+            },
+            newItem:function() {
+                this._to.setValue (new Date(new Date().setFullYear(new Date().getFullYear() + 3)));
+                this._from.setValue (new Date());
+                this._price.setValue('0.00');
             },
             loadPricelistItems:function() {
                 let pricelistitems = new venditabant.sales.pricelists.models.PricelistItems();
@@ -164,6 +175,9 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                     }
                 }, this);
             },
+            setSelectedPricelistHead:function(pricelist) {
+                this._selectedPricelistHead = pricelist;
+            },
             addPricelistHead:function(pricelist) {
                 let tempItem = new qx.ui.form.ListItem(pricelist);
                 this._pricelists.add(tempItem);
@@ -179,6 +193,8 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                 let price  = this._price.getValue();
                 let from = this._from.getValue();
                 let to = this._to.getValue();
+                let pricelist = this._pricelists.getPricelist();
+                let stockitem = this._stockitems.getStockitem();
 
                 let data = {
                     pricelists_fkey: pricelists_fkey,
@@ -186,6 +202,8 @@ qx.Class.define ( "venditabant.sales.pricelists.views.Definition",
                     price: price,
                     fromdate:from,
                     todate:to,
+                    pricelist:pricelist,
+                    stockitem:stockitem,
                 }
                 let model = new venditabant.sales.pricelists.models.PricelistItems();
                 model.savePricelistItem(data, function(success) {

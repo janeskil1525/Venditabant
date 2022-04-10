@@ -26,6 +26,7 @@ qx.Class.define("venditabant.sales.pricelists.views.PricelistsSelectBox",
                         selectbox.addListener("changeSelection", function (e) {
                                 this._model = e.getData()[0];
                                 if(this.getCallback() !== null) {
+
                                         this.getCallback().loadPricelistItems();
                                 }
                         }, this);
@@ -38,6 +39,13 @@ qx.Class.define("venditabant.sales.pricelists.views.PricelistsSelectBox",
                 },
                 getModel: function () {
                         return this._model;
+                },
+                getPricelist:function() {
+                        if(this._model.getModel() === null) {
+                                return '';
+                        } else {
+                                return this._model.getModel().pricelist ? this._model.getModel().pricelist : '';
+                        }
                 },
                 getKey:function() {
                         if(this._model.getModel() === null) {

@@ -30,7 +30,7 @@ sub load_workflow_id($self, $pricelists_fkey) {
     my $hash;
     $hash = $result->hash if $result and $result->rows;
 
+    say "workflow_id == " . $hash->{workflow_id};
     return $hash->{workflow_id};
 }
-
 1;

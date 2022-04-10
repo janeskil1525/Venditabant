@@ -28,7 +28,7 @@ async sub load_list_items_p ($self, $companies_pkey, $pricelists_fkey) {
     return $hash;
 }
 
-sub insert_item ($self, $companies_pkey, $pricelists_item) {
+sub insert_item ($self, $companies_pkey, $users_pkey, $pricelists_item) {
 
     my $pricelist_stmt = qq{
         INSERT INTO pricelist_items (pricelists_fkey, stockitems_fkey, price, fromdate, todate)

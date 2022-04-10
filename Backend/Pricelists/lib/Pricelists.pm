@@ -1,12 +1,22 @@
 package Pricelists;
 use Mojo::Base -base, -signatures, -async_await;
 
-use Pricelists::Helpers::Pricelists;
 use Data::Dumper;
 
-our $VERSION = '0.03';
+use Pricelists::Helpers::Pricelists;
+
+our $VERSION = '1.00';
 
 has 'pg';
+
+sub load_workflow_id($self, $pricelists_pkey) {
+
+    return Pricelists::Helpers::Pricelists->new(
+        pg => $self->pg
+    )->load_workflow_id(
+        $pricelists_pkey
+    );
+}
 
 async sub load_list_heads_p ($self, $companies_pkey) {
     return Pricelists::Helpers::Pricelists->new(
@@ -48,11 +58,11 @@ async sub insert_item_p ($self, $companies_pkey, $pricelist_item) {
     );
 }
 
-sub insert_item ($self, $companies_pkey, $pricelist_item) {
+sub insert_item ($self, $companies_pkey, $users_pkey, $pricelist_item) {
     return Pricelists::Helpers::Pricelists->new(
         pg => $self->pg
     )->insert_item (
-        $companies_pkey, $pricelist_item
+        $companies_pkey, $users_pkey, $pricelist_item
     );
 }
 

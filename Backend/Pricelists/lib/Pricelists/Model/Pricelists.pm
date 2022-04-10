@@ -1,6 +1,8 @@
 package Pricelists::Model::Pricelists;
 use Mojo::Base -base, -signatures, -async_await;
 
+use Data::Dumper;
+
 has 'db';
 
 
@@ -52,7 +54,8 @@ sub upsert ($self, $companies_pkey, $users_fkey, $pricelists) {
 
     my $pricelist_stmt = qq{
         INSERT INTO pricelists (pricelist, companies_fkey) VALUES (?,?)
-            ON CONFLICT (pricelist, companies_fkey) DO NOTHING
+            ON CONFLICT (pricelist, companies_fkey)
+        DO UPDATE SET moddatetime = now()
         RETURNING pricelists_pkey
     };
 

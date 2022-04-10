@@ -3,11 +3,21 @@ use Mojo::Base -base, -signatures, -async_await;
 
 use Pricelists::Model::Pricelists;
 use Pricelists::Model::PricelistItems;
+use Pricelists::Model::Workflow;
 
 use DateTime;
 use Data::Dumper;
 
 has 'pg';
+
+sub load_workflow_id($self, $pricelists_pkey) {
+
+    return Pricelists::Model::Workflow->new(
+        db => $self->pg->db
+    )->load_workflow_id(
+        $pricelists_pkey
+    );
+}
 
 async sub load_list_heads_p ($self, $companies_pkey) {
 
@@ -62,7 +72,7 @@ async sub load_list_items_p ($self, $companies_pkey, $pricelists_fkey) {
     return $result;
 }
 
-sub insert_item ($self, $companies_pkey, $pricelist_item) {
+sub insert_item ($self, $companies_pkey, $users_pkey, $pricelist_item) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -73,7 +83,7 @@ sub insert_item ($self, $companies_pkey, $pricelist_item) {
         $pricelists_pkey = Pricelists::Model::PricelistItems->new(
             db => $db
         )->insert_item(
-            $companies_pkey, $pricelist_item
+            $companies_pkey, $users_pkey, $pricelist_item
         );
         $tx->commit();
     };
@@ -82,7 +92,7 @@ sub insert_item ($self, $companies_pkey, $pricelist_item) {
     return $pricelists_pkey;
 }
 
-async sub insert_item_p ($self, $companies_pkey, $pricelist_item) {
+async sub insert_item_p ($self, $companies_pkey, $users_pkey, $pricelist_item) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -92,7 +102,7 @@ async sub insert_item_p ($self, $companies_pkey, $pricelist_item) {
         my $pricelists_pkey = Pricelists::Model::PricelistItems->new(
             db => $db
         )->insert_item(
-            $companies_pkey, $pricelist_item
+            $companies_pkey, $users_pkey, $pricelist_item
         );
         $tx->commit();
     };

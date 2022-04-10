@@ -634,7 +634,7 @@ msgstr ""
 msgid "Something went wrong deleteing the general discount"
 msgstr ""
 
-#: venditabant/sales/customers/models/StockitemsDiscount.js
+#: venditabant/sales/customers/models/GeneralDiscounts.js
 msgid "Could not save discount, please try again"
 msgstr ""
 
@@ -704,4 +704,176 @@ msgstr ""
 
 #: venditabant/users/login/SignupWindow.js
 msgid "GoBack"
+msgstr ""
+
+#: venditabant/users/login/SignupWindow.js
+msgid "Sign Up you and your company"
+msgstr ""
+
+#: venditabant/support/views/Workflows.js
+msgid "Export"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Unique id for the customer set automatically if left empty"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Customers formal name"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Customers organisational or VAT id"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Select pricelist for customer"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Customer phon number is required"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "The customers official phonnumber"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "The customers official homepage, if exists"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Select customer language"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "The customers is active or not, shown here as information only"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Blocked"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "The customers is blocked or not, shown here as information only"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Internal comment regarding the customer"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Save the customer"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "Enter a new customer"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "active"
+msgstr ""
+
+#: venditabant/sales/customers/views/Definition.js
+msgid "blocked"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/Definition.js
+msgid "Select pricelist"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/Definition.js
+msgid "Create a new pricelist"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/Definition.js
+msgid "Select stockitem"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/Definition.js
+msgid "Set customer gross price"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/Definition.js
+msgid "Set from what date this price will be valid"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/Definition.js
+msgid "Set the too date this price will be valid"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/Definition.js
+msgid "Save price record"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/Definition.js
+msgid "Create a new price record for the selected pricelist"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Unique id for stockitem "
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Descriptive description of stockitem"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Select product group"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Sales price for default pricelist"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Enter purchase pris in selected currency"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Select purchase currency"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Select VAT type"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "This stockitem is active and can be sold"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "This stockitem is stocked"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Select sales account for the accounting"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Select salesunit for this product"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Save stockitem"
+msgstr ""
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Create new stockitem"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/NewHead.js
+msgid "Set name of new pricelist"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/NewHead.js
+msgid "Set description for new pricelist"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/NewHead.js
+msgid "Save new pricelist"
+msgstr ""
+
+#: venditabant/sales/pricelists/views/NewHead.js
+msgid "Close this window"
 msgstr ""

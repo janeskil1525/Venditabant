@@ -26,6 +26,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.NewHead",
             },
             _buildWindow: function () {
                 var win = new qx.ui.window.Window("Pricelists", "icon/16/apps/internet-feed-reader.png");
+                this._win = win;
                 win.setLayout(new qx.ui.layout.Canvas());
                 win.setStatus("Application is ready");
                 win.setWidth(630);
@@ -51,6 +52,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.NewHead",
                 win.add(lbl, {top: 30, left: 10});
 
                 var pricelist = new qx.ui.form.TextField();
+                pricelist.setToolTipText(this.tr( "Set name of new pricelist" ));
                 pricelist.setPlaceholder(("Price list"));
                 pricelist.setWidth(150);
 
@@ -63,21 +65,22 @@ qx.Class.define ( "venditabant.sales.pricelists.views.NewHead",
                 win.add(lbl, {top: 30, left: 250});
 
                 var descriptn = new qx.ui.form.TextField();
+                descriptn.setToolTipText(this.tr( "Set description for new pricelist" ));
                 descriptn.setPlaceholder(("Description"));
                 descriptn.setWidth(250);
 
                 win.add(descriptn, {top: 30, left: 348});
                 this._description = descriptn;
 
-                let btnSignup = this._createBtn(this.tr("Save"), "rgba(239,170,255,0.44)", 135, function () {
+                let btnSave = this._createBtn(this.tr("Save"), "rgba(239,170,255,0.44)", 135, function () {
                     this.addPricelist();
-                }, this);
-                win.add(btnSignup, {bottom: 10, left: 10});
+                }, this, this.tr( "Save new pricelist" ));
+                win.add(btnSave, {bottom: 10, left: 10});
 
-                let btnCancel = this._createBtn(this.tr("Close"), "#FFAAAA70", 135, function () {
+                let btnClose = this._createBtn(this.tr("Close"), "#FFAAAA70", 135, function () {
                     this.doClose();
-                }, this);
-                win.add(btnCancel, {bottom: 10, right: 10});
+                }, this, this.tr( "Close this window" ));
+                win.add(btnClose, {bottom: 10, right: 10});
             },
             addPricelist: function () {
                 let pricelist = this._pricelist.getValue();
@@ -95,6 +98,7 @@ qx.Class.define ( "venditabant.sales.pricelists.views.NewHead",
                 return btn;
             },
             doClose:function(){
+                this._win.destroy();
                 this.destroy();
             }
         }

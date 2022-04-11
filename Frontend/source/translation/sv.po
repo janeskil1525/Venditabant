@@ -704,176 +704,175 @@ msgstr "Avbryt"
 
 #: venditabant/support/views/MailTemplates.js
 msgid "Sub 2"
-msgstr ""
+msgstr "Sub 2"
 
 #: venditabant/users/login/SignupWindow.js
 msgid "Sign Up you and your company"
-msgstr ""
+msgstr "Registrera dig och ditt företag"
 
 #: venditabant/support/views/Workflows.js
 msgid "Export"
-msgstr ""
+msgstr "Exportera"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Unique id for the customer set automatically if left empty"
-msgstr ""
+msgstr "Unikt id för kunden som sätts automatiskt om det lämnas tomt. Bäst här är att använda det namn som används för kunden i dagligt tal"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Customers formal name"
-msgstr ""
+msgstr "Formellt kundnamn"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Customers organisational or VAT id"
-msgstr ""
+msgstr "Organisationsnummer eller VAT nummer"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Select pricelist for customer"
-msgstr ""
+msgstr "Välj prislista för kunden om annan än default listan ska användas"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Customer phon number is required"
-msgstr ""
+msgstr "Kundens formella telefonnummer är obligatoriskt"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "The customers official phonnumber"
-msgstr ""
+msgstr "Ange kundens officiella telefonnummer"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "The customers official homepage, if exists"
-msgstr ""
+msgstr "Kundens hemsida om sådan finns"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Select customer language"
-msgstr ""
+msgstr "Välj vilket språk som ska användas i mail och andra typer av kommunikation"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "The customers is active or not, shown here as information only"
-msgstr ""
+msgstr "Visar om kunden är aktiv eller ej"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Blocked"
-msgstr ""
+msgstr "Blokerad"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "The customers is blocked or not, shown here as information only"
-msgstr ""
+msgstr "Visar om kunden är blockerad eller ej"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Internal comment regarding the customer"
-msgstr ""
+msgstr "Intern kommentar angående kund
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Save the customer"
-msgstr ""
+msgstr "Spara kunden"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Enter a new customer"
-msgstr ""
+msgstr "Skapa en ny kund"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "active"
-msgstr ""
+msgstr "Aktiv"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "blocked"
-msgstr ""
+msgstr "Blokerad"
 
 #: venditabant/sales/pricelists/views/Definition.js
 msgid "Select pricelist"
-msgstr ""
+msgstr "Välj prislista"
 
 #: venditabant/sales/pricelists/views/Definition.js
 msgid "Create a new pricelist"
-msgstr ""
+msgstr "Skapa en ny prislista"
 
 #: venditabant/sales/pricelists/views/Definition.js
 msgid "Select stockitem"
-msgstr ""
+msgstr "Välj artikel"
 
 #: venditabant/sales/pricelists/views/Definition.js
 msgid "Set customer gross price"
-msgstr ""
+msgstr "Ange kundens bruttopris"
 
 #: venditabant/sales/pricelists/views/Definition.js
 msgid "Set from what date this price will be valid"
-msgstr ""
+msgstr "Ange prisets från datum"
 
 #: venditabant/sales/pricelists/views/Definition.js
 msgid "Set the too date this price will be valid"
-msgstr ""
+msgstr "Ange till datum"
 
 #: venditabant/sales/pricelists/views/Definition.js
 msgid "Save price record"
-msgstr ""
+msgstr "Spara pris"
 
 #: venditabant/sales/pricelists/views/Definition.js
 msgid "Create a new price record for the selected pricelist"
-msgstr ""
+msgstr "Skapa ett nytt pris för vald prislista"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Unique id for stockitem "
-msgstr ""
+msgstr "Unikt artikel id"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Descriptive description of stockitem"
-msgstr ""
+msgstr "Artikelbeskrivning"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Select product group"
-msgstr ""
+msgstr "Välj produktgrupp"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Sales price for default pricelist"
-msgstr ""
+msgstr "Brutto pris i default prislistan"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Enter purchase pris in selected currency"
-msgstr ""
+msgstr "Inköpspris i vald valuta"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Select purchase currency"
-msgstr ""
-
+msgstr "Välj inköps valuta
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Select VAT type"
-msgstr ""
+msgstr "Välj momstyp"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "This stockitem is active and can be sold"
-msgstr ""
+msgstr "Den här artikeln är aktiv och kan säljas eller inaktiv och används inte längre"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "This stockitem is stocked"
-msgstr ""
+msgstr "Detta är en lager artikel"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Select sales account for the accounting"
-msgstr ""
+msgstr "Välj försäljnings konto"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Select salesunit for this product"
-msgstr ""
+msgstr "Välj sälj enhet"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Save stockitem"
-msgstr ""
+msgstr "Spara artikel"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Create new stockitem"
-msgstr ""
+msgstr "Skapa en ny artikel"
 
 #: venditabant/sales/pricelists/views/NewHead.js
 msgid "Set name of new pricelist"
-msgstr ""
+msgstr "Ange ett unikt namn för den nya pris listan"
 
 #: venditabant/sales/pricelists/views/NewHead.js
 msgid "Set description for new pricelist"
-msgstr ""
+msgstr "Ange en beskrivning för prislista"
 
 #: venditabant/sales/pricelists/views/NewHead.js
 msgid "Save new pricelist"
-msgstr ""
+msgstr "Spara prislista"
 
 #: venditabant/sales/pricelists/views/NewHead.js
 msgid "Close this window"
-msgstr ""
+msgstr "Stäng det här fönstret"

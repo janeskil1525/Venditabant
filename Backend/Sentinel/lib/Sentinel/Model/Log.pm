@@ -1,5 +1,5 @@
-package venditabant::Model::Sentinel::Sentinel;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package Sentinel::Model::Log;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;
 
@@ -7,13 +7,12 @@ has 'db';
 
 sub load_list ($self) {
     my $result = $self->db->select(
-        'sentinel', '*',
-            {
-            closed => 'false'
+        'sentinel_log', '*',
+        {
         },
-            {
-                limit => 100, order_by => {-desc => 'sentinel_pkey'}
-            }
+        {
+            limit => 100, order_by => {-desc => 'sentinel_log_pkey'}
+        }
     );
 
     my $hash;
@@ -25,14 +24,13 @@ sub load_list ($self) {
 sub insert ($self, $data) {
 
     $self->db->insert (
-        'sentinel',
+        'sentinel_log',
         {
-            organisation => $data->{organisation},
             source       => $data->{source},
             method       => $data->{method},
             message      => $data->{message},
-            recipients   => $data->{recipients}
         }
     );
 }
+
 1;

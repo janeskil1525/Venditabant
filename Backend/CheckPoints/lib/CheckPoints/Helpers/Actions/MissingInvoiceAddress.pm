@@ -1,5 +1,5 @@
-package venditabant::Helpers::Checkpoints::Actions::MissingInvoiceAddress;
-use Mojo::Base 'venditabant::Helpers::Checkpoints::Actions::SubstituteText', -signatures, -async_await;
+package CheckPoints::Helpers::Actions::MissingInvoiceAddress;
+use Mojo::Base 'CheckPoints::Helpers::Actions::SubstituteText', -signatures, -async_await;
 
 use Text::Template;
 
@@ -22,8 +22,7 @@ async sub create_text($self, $companies_pkey, $result, $check) {
     };
     $err = $@ if $@;
     $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Checkpoints::Actions::MissingInvoiceAddress', 'create_text', $@
+        $self->pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
     ) if $err;
 
     return $text;

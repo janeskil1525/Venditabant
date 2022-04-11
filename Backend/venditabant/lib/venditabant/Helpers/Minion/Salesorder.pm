@@ -1,5 +1,5 @@
 package venditabant::Helpers::Minion::Salesorder;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Helpers::Invoice::From::Salesorder;
 
@@ -28,7 +28,7 @@ sub _create_invoice_from_salesorder($job, $salesorder) {
         my $mess = "Company " . $salesorder->{companies_pkey} .
             " User " . $salesorder->{users_pkey} . " Salesorder " .
             $salesorder->{salesorders_pkey} . ' ' . $err;
-        venditabant::Helpers::Sentinel::Sentinelsender->new()->capture_message(
+        Sentinel::Helpers::Sentinelsender->new()->capture_message(
             $job->app->pg, 'venditabant',
             'venditabant::Helpers::Minion::Salesorder', '_convert', $mess
         ) if $err;

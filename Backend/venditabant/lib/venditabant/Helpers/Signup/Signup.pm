@@ -1,5 +1,5 @@
 package venditabant::Helpers::Signup::Signup;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Helpers::Companies::Release::Release;
 

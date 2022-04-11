@@ -1,19 +1,18 @@
 package CheckPoints;
-use Mojo::Base -base, -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Model::Company;
+use CheckPoints::Model::Company;
 use CheckPoints::Helpers::Check;
 
-our $VERSION = '0.01';
+our $VERSION = '0.04';
 
 has 'pg';
 
 async sub check_all ($self) {
 
-
     my $err;
     eval {
-        my $companies = await venditabant::Model::Company->new(
+        my $companies = await CheckPoints::Model::Company->new(
             db => $self->pg->db
         )->load_list_p();
 
@@ -27,7 +26,9 @@ async sub check_all ($self) {
         }
     };
     $err = $@ if $@;
-
+    $self->capture_message (
+        $self->pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
+    ) if $err;
 }
 
 1;

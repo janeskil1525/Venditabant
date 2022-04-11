@@ -1,0 +1,14 @@
+lib/CheckPoints.pm
+lib/CheckPoints/Helpers/Actions/MissingDeliveryAddress.pm
+lib/CheckPoints/Helpers/Actions/MissingInvoiceAddress.pm
+lib/CheckPoints/Helpers/Actions/SubstituteText.pm
+lib/CheckPoints/Helpers/Autotodos.pm
+lib/CheckPoints/Helpers/Check.pm
+lib/CheckPoints/Helpers/Check/SqlFalse.pm
+lib/CheckPoints/Helpers/Check/SqlList.pm
+lib/CheckPoints/Model/AutoTodo.pm
+lib/CheckPoints/Model/Checks.pm
+lib/CheckPoints/Model/Company.pm
+Makefile.PL
+MANIFEST			This list of files
+script/check.pl

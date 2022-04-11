@@ -1,5 +1,5 @@
 package CheckPoints::Model::AutoTodo;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 has 'db';
 
@@ -21,7 +21,7 @@ async sub load_list_p ($self, $companies_fkey) {
 
 async sub upsert_simple($self, $companies_fkey, $check) {
     my $auto_todo_pkey;
-    eval {
+
         my $stmt = qq{
         INSERT INTO auto_todo (companies_fkey, check_type, check_name, user_action, key_id)
             VALUES (?,?,?,(select translation from translations JOIN companies
@@ -33,8 +33,8 @@ async sub upsert_simple($self, $companies_fkey, $check) {
         RETURNING auto_todo_pkey;
     };
 
-        $auto_todo_pkey = $self->db->query(
-            $stmt, (
+    $auto_todo_pkey = $self->db->query(
+        $stmt, (
             $companies_fkey,
             $check->{check_type},
             $check->{check_name},
@@ -42,9 +42,7 @@ async sub upsert_simple($self, $companies_fkey, $check) {
             $check->{check_type},
             $check->{check_name},
         )
-        )->hash->{auto_todo_pkey};
-    };
-    say $@ if $@;
+    )->hash->{auto_todo_pkey};
 
     return $auto_todo_pkey;
 }

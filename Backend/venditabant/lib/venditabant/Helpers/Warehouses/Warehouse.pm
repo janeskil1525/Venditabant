@@ -1,5 +1,5 @@
 package venditabant::Helpers::Warehouses::Warehouse;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;
 use venditabant::Model::Warehouses;
@@ -24,7 +24,7 @@ async sub upsert ($self, $companies_pkey, $users_pkey, $warehouse ) {
     $err = $@ if $@;
     $self->capture_message (
         $self->pg, '',
-        'venditabant::Helpers::Sentinel::Sentinelsender', 'upsert', $err
+        'Sentinel::Helpers::Sentinelsender', 'upsert', $err
     ) if $err;
 
     return $err ? $err : 'success';

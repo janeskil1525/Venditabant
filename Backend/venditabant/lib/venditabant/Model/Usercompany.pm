@@ -1,5 +1,5 @@
 package venditabant::Model::Usercompany;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -base, -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -base, -signatures, -async_await;
 
 has 'pg';
 has 'db';

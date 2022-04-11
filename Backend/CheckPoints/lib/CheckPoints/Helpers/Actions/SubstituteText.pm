@@ -1,5 +1,5 @@
-package venditabant::Helpers::Checkpoints::Actions::SubstituteText;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+package CheckPoints::Helpers::Actions::SubstituteText;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Helpers::Companies::Company;
 use venditabant::Model::Lan::Translations;
@@ -34,8 +34,7 @@ async sub substitute($self, $companies_fkey, $check_type, $check_name, $substitu
     };
     $err = $@ if $@;
     $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Checkpoints::Actions::SubstituteText', 'substitute', $@
+        $self->pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
     ) if $err;
 
     return $result;

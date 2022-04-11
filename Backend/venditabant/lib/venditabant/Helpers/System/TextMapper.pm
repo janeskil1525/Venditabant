@@ -1,5 +1,5 @@
 package venditabant::Helpers::System::TextMapper;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 async sub mapping($self, $mappings, $data, $text) {
 

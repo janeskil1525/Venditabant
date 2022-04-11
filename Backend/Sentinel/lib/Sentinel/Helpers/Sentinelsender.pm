@@ -1,8 +1,8 @@
-package venditabant::Helpers::Sentinel::Sentinelsender;
+package Sentinel::Helpers::Sentinelsender;
 use Mojo::Base -base, -strict, -signatures, -async_await;
 
-use venditabant::Model::Sentinel::Sentinel;
-use venditabant::Model::Sentinel::Log;;
+use Sentinel::Model::Sentinel;
+use Sentinel::Model::Log;;
 
 use Scalar::Util qw{blessed};
 use Data::Dumper;
@@ -44,8 +44,9 @@ use Try::Tiny;
 
 sub capture_message ($self, $pg, $organisation = 'venditabant', $source = '', $method = '', $message ='', $recipients = '') {
 
-    $organisation = 'venditabant';
+    $organisation = 'venditabant' unless $organisation;
     $recipients = 'janeskil1525@gmail.com';
+    $method = (split(/::/,$method))[-1];
 
     my $mess;
     if(blessed($message) eq 'Mojo::Exception') {
@@ -57,7 +58,7 @@ sub capture_message ($self, $pg, $organisation = 'venditabant', $source = '', $m
     my $data = $self->get_format(
         $organisation, $source, $method, $mess, $recipients
     );
-    venditabant::Model::Sentinel::Sentinel->new(db => $pg->db)->insert($data);
+    Sentinel::Model::Sentinel->new(db => $pg->db)->insert($data);
 }
 
 sub get_format ($self, $organisation, $source, $method, $message, $recipients) {
@@ -82,7 +83,7 @@ sub get_format ($self, $organisation, $source, $method, $message, $recipients) {
 sub capture_log($self, $pg, $source, $method, $message) {
 
     my $data = $self->get_log_format($source, $method, $message);
-    venditabant::Model::Sentinel::Log->new(db => $pg->db)->insert($data);
+    Sentinel::Model::Log->new(db => $pg->db)->insert($data);
 }
 
 sub get_log_format ($self, $source, $method, $message ) {

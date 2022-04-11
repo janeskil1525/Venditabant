@@ -17,6 +17,7 @@ use Mojo::Pg;
 use namespace::clean -except => [qw/_options_data _options_config/];
 # use lib '/home/jan/Project/Venditabant/Backend/venditabant/lib/venditabant/Helper/ProcessChecpoints';
 use CheckPoints;
+use Sentinel::Helpers::Sentinelsender;
 
 option 'configpath' => (
     is 			=> 'ro',
@@ -60,6 +61,9 @@ sub check {
 
     }catch{
         say $_;
+        Sentinel::Helpers::Sentinelsender->new()->capture_message(
+            $pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $_
+        );
         my $log = Log::Log4perl->get_logger();
         $log->error('ProcessChecpoints ' . $_)
     };

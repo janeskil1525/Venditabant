@@ -1,5 +1,5 @@
 package venditabant::Helpers::Scheduler;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::Scheduler::Schedules;
 use venditabant::Helpers::Schedules::Processor;

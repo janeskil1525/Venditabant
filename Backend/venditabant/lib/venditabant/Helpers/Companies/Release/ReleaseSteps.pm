@@ -1,5 +1,5 @@
 package venditabant::Helpers::Companies::Release::ReleaseSteps;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use venditabant::Model::CompanyVersion;
 use venditabant::Helpers::Factory::Loader;;

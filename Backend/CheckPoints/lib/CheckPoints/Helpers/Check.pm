@@ -1,5 +1,5 @@
 package CheckPoints::Helpers::Check;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use CheckPoints::Model::Checks;
 use CheckPoints::Model::AutoTodo;
@@ -12,7 +12,6 @@ use Data::Dumper;
 
 has 'pg';
 
-
 async sub check ($self, $companies_pkey) {
     my $err;
     my $checks;
@@ -23,8 +22,7 @@ async sub check ($self, $companies_pkey) {
     };
     $err = $@ if $@;
     $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Checkpoints::Check', 'check and load_list_p', $err
+        $self->pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
     ) if $err;
 
     my $db = $self->pg->db;
@@ -84,7 +82,9 @@ async sub check ($self, $companies_pkey) {
         $tx->commit();
     };
     $err = $@ if $@;
-
+    $self->capture_message (
+        $self->pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
+    ) if $err;
 }
 
 async sub upsert_user_action ($self, $db, $companies_pkey, $check_type, $check_name, $user_action, $key_id) {

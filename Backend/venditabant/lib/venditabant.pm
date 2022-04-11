@@ -8,13 +8,14 @@ use System::Helpers::Jwt;
 use Pricelists;
 use Customers;
 use Stockitems;
+use CheckPoints::Helpers::Autotodos;
 use venditabant::Helpers::Users;
 use venditabant::Helpers::Salesorder::Salesorders;
 use venditabant::Helpers::Companies::Release::Release;
-use venditabant::Helpers::Sentinel::Sentinelsender;
+use Sentinel::Helpers::Sentinelsender;
 use venditabant::Helpers::Parameter::Parameters;
 use venditabant::Helpers::Companies::Company;
-use venditabant::Helpers::Sentinel::Sentinel;
+use Sentinel::Helpers::Sentinel;
 use venditabant::Helpers::Parameter::Languages;
 # use venditabant::Helpers::Mailer::Templates::Mailtemplates;
 use venditabant::Helpers::Warehouses::Warehouse;
@@ -149,7 +150,7 @@ sub startup ($self) {
       db => $self->pg->db,
       pg => $self->pg,
     )->release()->catch(sub ($err) {
-    venditabant::Helpers::Sentinel::Sentinelsender->new(
+        Sentinel::Helpers::Sentinelsender->new(
         )->capture_message(
             $self->pg,'','venditabant 11', 'startup', $err
         );

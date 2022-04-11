@@ -1,5 +1,5 @@
 package venditabant::Helpers::Companies::Release::ReleaseStep_5;
-use Mojo::Base 'venditabant::Helpers::Sentinel::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;
 

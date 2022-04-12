@@ -760,7 +760,7 @@ msgstr "Visar om kunden är blockerad eller ej"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Internal comment regarding the customer"
-msgstr "Intern kommentar angående kund
+msgstr ""
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Save the customer"
@@ -831,9 +831,6 @@ msgid "Enter purchase pris in selected currency"
 msgstr "Inköpspris i vald valuta"
 
 #: venditabant/stock/stockitems/views/Definition.js
-msgid "Select purchase currency"
-msgstr "Välj inköps valuta
-#: venditabant/stock/stockitems/views/Definition.js
 msgid "Select VAT type"
 msgstr "Välj momstyp"
 
@@ -876,3 +873,7 @@ msgstr "Spara prislista"
 #: venditabant/sales/pricelists/views/NewHead.js
 msgid "Close this window"
 msgstr "Stäng det här fönstret"
+
+#: venditabant/stock/stockitems/views/Definition.js
+msgid "Select purchase currency"
+msgstr ""

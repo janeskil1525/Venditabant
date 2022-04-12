@@ -16,7 +16,7 @@ use Log::Log4perl qw(:easy);
 use Mojo::Pg;
 use namespace::clean -except => [qw/_options_data _options_config/];
 # use lib '/home/jan/Project/Venditabant/Backend/venditabant/lib/venditabant/Helper/ProcessChecpoints';
-use venditabant::Helpers::Scheduler;
+use Scheduler;
 
 option 'configpath' => (
     is 			=> 'ro',
@@ -55,7 +55,7 @@ sub scheduler {
     #say $pg->db->query('select version() as version')->hash->{version};
 
     try {
-        venditabant::Helpers::Scheduler->new(
+        Scheduler->new(
             pg     => $pg,
         )->check_all()->catch(sub($err) {
             my $log = Log::Log4perl->get_logger();

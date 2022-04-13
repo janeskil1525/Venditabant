@@ -73,14 +73,14 @@ async sub _save_exchangerates($self, $exchangerates) {
         $exchangerate->{unit} = $rate->{unit}->{content};
         $exchangerate->{value} = $rate->{resultrows}->{value}->{content};
 
-        await $cur->upsert($exchangerate);
+        await $cur->upsert_p($exchangerate);
     }
 }
 
 async sub _exchangerate_request($self) {
     my $currencies = await Currencies::Model::Currencies->new(
         db => $self->db
-    )->load_currency_list();
+    )->load_currency_list_p(0,0);
 
     my $seriesid;
     foreach my $currency (@{$currencies}) {
@@ -141,7 +141,7 @@ async sub _save_currencies($self, $hashes) {
             $cur->{description} = $hash->{description}->{content};
             $cur->{seriesid} = $hash->{seriesid}->{content};
 
-            await $currency->upsert($cur);
+            await $currency->upsert_p($cur);
         }
     }
     my $cur->{shortdescription} = 'SEK';
@@ -149,7 +149,7 @@ async sub _save_currencies($self, $hashes) {
     $cur->{description} = 'Svenska kronor';
     $cur->{seriesid} = 'SEK';
 
-    await $currency->upsert($cur);
+    await $currency->upsert_p($cur);
 }
 
 async sub _currency_request($self) {

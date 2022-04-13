@@ -6,7 +6,10 @@ has 'db';
 async sub load_list_p($self) {
 
     my $stmt = qq {
-        SELECT schedules_pkey, schedule FROM schedules ORDER BY schedule
+        SELECT schedules_pkey, schedule
+            FROM schedules
+        WHERE nextexecution < now()
+            ORDER BY schedule
     };
 
     my $result = $self->db->query(

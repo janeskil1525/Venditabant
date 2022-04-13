@@ -8,5 +8,8 @@ WriteMakefile(
   VERSION_FROM => 'lib/Scheduler.pm',
   AUTHOR       => 'janskil1525@gmail.com',
   PREREQ_PM    => {'Mojolicious' => '9.22'},
-  test         => {TESTS => 't/*.t'}
+  test         => {TESTS => 't/*.t'},
+    EXE_FILES    => [ qw{
+        script/scheduler.pl
+    }],
 );

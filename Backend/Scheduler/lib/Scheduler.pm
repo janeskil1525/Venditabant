@@ -4,7 +4,7 @@ use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 use Scheduler::Model::Schedules;
 use Scheduler::Helpers::Processor;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 has 'pg';
 

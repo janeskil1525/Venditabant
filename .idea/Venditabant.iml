@@ -26,6 +26,7 @@
       <path value="file://$MODULE_DIR$/Backend/CheckPoints/lib" type="perl-library" />
       <path value="file://$MODULE_DIR$/Backend/Sentinel/lib" type="perl-library" />
       <path value="file://$MODULE_DIR$/Backend/Scheduler/lib" type="perl-library" />
+      <path value="file://$MODULE_DIR$/Backend/Release/lib" type="perl-library" />
     </perl5>
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />

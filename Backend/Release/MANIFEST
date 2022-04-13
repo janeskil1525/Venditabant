@@ -1,0 +1,15 @@
+lib/Release.pm
+lib/Release/Helpers/Loader.pm
+lib/Release/Helpers/Release.pm
+lib/Release/Helpers/Release/ReleaseStep_0.pm
+lib/Release/Helpers/Release/ReleaseStep_1.pm
+lib/Release/Helpers/Release/ReleaseStep_2.pm
+lib/Release/Helpers/Release/ReleaseStep_3.pm
+lib/Release/Helpers/Release/ReleaseStep_4.pm
+lib/Release/Helpers/Release/ReleaseStep_5.pm
+lib/Release/Helpers/Release/ReleaseSteps.pm
+lib/Release/Model/Company.pm
+lib/Release/Model/CompanyVersion.pm
+Makefile.PL
+MANIFEST			This list of files
+

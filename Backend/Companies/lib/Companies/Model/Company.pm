@@ -1,4 +1,4 @@
-package venditabant::Model::Company;
+package Companies::Model::Company;
 use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 has 'db';

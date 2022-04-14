@@ -1,7 +1,7 @@
 package venditabant::Helpers::Signup::Signup;
 use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Helpers::Companies::Release::Release;
+use Release::Helpers::Release;
 
 use Digest::SHA qw{sha512_base64};
 
@@ -35,7 +35,7 @@ async sub signup ($self, $data) {
         my $companies_pkey = $db->query($company_stmt,($data->{company_name}, $data->{company_orgnr}))->hash->{companies_pkey};
         my $users_pkey = $db->query($users_stmt,($data->{email}, $data->{user_name},$data->{password},1))->hash->{users_pkey};
         $db->query($users_companies_stmt,($companies_pkey, $users_pkey));
-        await venditabant::Helpers::Companies::Release::Release->new(
+        await Release::Helpers::Release->new(
             db => $db
         )->release_single_company($companies_pkey);
 

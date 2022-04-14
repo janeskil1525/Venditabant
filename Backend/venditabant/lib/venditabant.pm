@@ -9,12 +9,12 @@ use Pricelists;
 use Customers;
 use Stockitems;
 use Release;
+use Companies;
 use CheckPoints::Helpers::Autotodos;
 use venditabant::Helpers::Users;
 use venditabant::Helpers::Salesorder::Salesorders;
 use Sentinel::Helpers::Sentinelsender;
 use venditabant::Helpers::Parameter::Parameters;
-use venditabant::Helpers::Companies::Company;
 use Sentinel::Helpers::Sentinel;
 use venditabant::Helpers::Parameter::Languages;
 # use venditabant::Helpers::Mailer::Templates::Mailtemplates;
@@ -78,7 +78,7 @@ sub startup ($self) {
 
     $self->helper(
       companies => sub {
-        state  $companies = venditabant::Helpers::Companies::Company->new(pg => shift->pg)
+        state  $companies = Companies->new(pg => shift->pg)
       });
 
     $self->helper(

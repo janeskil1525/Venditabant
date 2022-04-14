@@ -4,7 +4,7 @@ use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 use venditabant::Model::Invoice::InvoiceHead;
 use venditabant::Model::Invoice::InvoiceItem;
 use Customers;
-use venditabant::Model::Company;
+use Companies::Model::Company;
 
 use Data::Dumper;
 

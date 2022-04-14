@@ -1,13 +1,14 @@
-package venditabant::Helpers::Companies::Company;
+package Companies::Helpers::Company;
 use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use Data::Dumper;
+use Companies::Model::Company;
 
 has 'pg';
 
 async sub load_p($self, $companies_pkey, $users_pkey) {
 
-    my $result = venditabant::Model::Company->new(
+    my $result = Companies::Model::Company->new(
         db => $self->pg->db
     )->load_p(
         $companies_pkey, $users_pkey
@@ -23,7 +24,7 @@ async sub save_company ($self, $companies_pkey, $users_pkey, $company ) {
 
     my $err;
     eval {
-        my $customers_pkey = venditabant::Model::Company->new(
+        my $customers_pkey = Companies::Model::Company->new(
             db => $db
         )->upsert(
             $companies_pkey, $users_pkey, $company
@@ -41,7 +42,7 @@ async sub save_company ($self, $companies_pkey, $users_pkey, $company ) {
 
 async sub load_list ($self) {
 
-    my $languages = await venditabant::Model::Company->new(
+    my $languages = await Companies::Model::Company->new(
         db => $self->pg->db
     )->load_list_p();
 
@@ -51,7 +52,7 @@ async sub load_list ($self) {
 
 async sub get_language_fkey_p($self, $companies_pkey, $users_pkey) {
 
-    my $result = await venditabant::Model::Company->new(
+    my $result = await Companies::Model::Company->new(
         db => $self->pg->db
     )->load_p(
         $companies_pkey, $users_pkey

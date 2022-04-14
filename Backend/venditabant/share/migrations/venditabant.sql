@@ -2579,7 +2579,8 @@ ALTER TABLE customers
 UPDATE customers SET active = 'true';
 
 INSERT INTO workflows (workflow)
-    VALUES ('stockitem_simple');
+    VALUES ('stockitem_simple')
+ON CONFLICT (workflow) DO NOTHING;
 
 CREATE TABLE workflow_stockitem
 (
@@ -2601,6 +2602,19 @@ CREATE TABLE workflow_pricelist
 );
 
 INSERT INTO workflows (workflow)
-    VALUES ('pricelist_simple');
+    VALUES ('pricelist_simple')
+        ON CONFLICT (workflow) DO NOTHING;
 
+INSERT INTO workflows (workflow)
+    VALUES ('companies')
+        ON CONFLICT (workflow) DO NOTHING;
+
+
+CREATE TABLE workflow_companies
+(
+    workflow_id  bigint not null,
+    companies_fkey  bigint not null,
+    users_fkey  bigint not null,
+    primary key ( workflow_id )
+);
 -- 49 down

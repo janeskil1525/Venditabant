@@ -11,7 +11,7 @@ async sub upsert_p($self, $exchangerate) {
         VALUES ((SELECT currencies_pkey FROM currencies WHERE shortdescription = 'SEK'),
             (SELECT currencies_pkey FROM currencies WHERE seriesid = ?),?,?,?,?,?)
         ON CONFLICT (currencies_fkey, ratedate)
-        DO UPDATE SET moddatetime = now(), value = ?
+        DO UPDATE SET moddatetime = now(), value = ?, ratedate = ?
     };
 
     $self->db->query($stmt,
@@ -22,6 +22,7 @@ async sub upsert_p($self, $exchangerate) {
         $exchangerate->{seriesname},
         $exchangerate->{unit},
         $exchangerate->{value},
+        $exchangerate->{ratedate},
     );
 }
 1;

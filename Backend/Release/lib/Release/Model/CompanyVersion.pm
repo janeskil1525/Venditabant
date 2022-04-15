@@ -1,11 +1,11 @@
 package Release::Model::CompanyVersion;
-use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures;
 
 use Data::Dumper;
 
 has 'db';
 
-async sub get_version($self, $companies_pkey) {
+sub get_version($self, $companies_pkey) {
 
     my $company_version_stmt = qq {
         SELECT MAX(version) as version
@@ -24,7 +24,7 @@ async sub get_version($self, $companies_pkey) {
     return $hash->{version} ? $hash->{version} : 0;
 }
 
-async sub set_version ($self, $companies_fkey, $version) {
+sub set_version ($self, $companies_fkey, $version) {
 
     my $stmt = qq {
         INSERT INTO company_version (companies_fkey, version)

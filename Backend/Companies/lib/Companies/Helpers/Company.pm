@@ -17,7 +17,7 @@ async sub load_p($self, $companies_pkey, $users_pkey) {
     return $result;
 }
 
-async sub save_company ($self, $companies_pkey, $users_pkey, $company ) {
+sub save_company ($self, $companies_pkey, $users_pkey, $company ) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -33,8 +33,7 @@ async sub save_company ($self, $companies_pkey, $users_pkey, $company ) {
     };
     $err = $@ if $@;
     $self->capture_message (
-        $self->pg, '',
-        'venditabant::Helpers::Companies::Company', 'save_company', $err
+        $self->pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
     ) if $err;
 
     return $err ? $err : 'success';
@@ -45,7 +44,6 @@ async sub load_list ($self) {
     my $languages = await Companies::Model::Company->new(
         db => $self->pg->db
     )->load_list_p();
-
 
     return $languages;
 }

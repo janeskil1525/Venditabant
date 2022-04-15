@@ -1,11 +1,11 @@
 package Release::Helpers::Release::ReleaseStep_4;
-use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures;
 
 use Data::Dumper;
 
 has 'db';
 
-async sub step ($self, $companies_pkey) {
+sub step ($self, $companies_pkey) {
 
     my $stmt = qq {
         INSERT INTO companies (companies_pkey, languages_fkey)

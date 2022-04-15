@@ -1,10 +1,10 @@
 package Release::Model::Company;
-use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures;
 
 has 'db';
 
 
-async sub load_list_p ($self) {
+sub load_list ($self) {
 
     my $result = $self->db->select(
         'companies', undef
@@ -15,7 +15,7 @@ async sub load_list_p ($self) {
     return $hash
 }
 
-async sub load_p ($self, $companies_pkey, $users_pkey) {
+sub load ($self, $companies_pkey, $users_pkey) {
 
     my $result = $self->db->select(
         'companies', undef,

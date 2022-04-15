@@ -13,17 +13,19 @@ use Workflow::Exception qw( workflow_error );
 use Digest::SHA qw{sha512_base64};
 
 use Sentinel::Helpers::Sentinelsender;
+use Release::Helpers::Release;
+use Companies::Model::Workflow;
 
 sub execute ($self, $wf) {
 
-    my $pg = $self->get_pg('CompanyPersister');
+    my $pg = $self->get_pg('CompaniesPersister');
     my $context = $wf->context;
 
-    my $db = $pg->pg->db;
+    my $db = $pg->db;
     my $tx = $db->begin;
-    my $data = $context->param('company');;
+    my $data = $context->param('company');
 
-    my $company = $context->param('company')->{company};
+    my $company = $context->param('company')->{company_name};
 
     $wf->add_history(
         Workflow::History->new({
@@ -70,17 +72,10 @@ sub execute ($self, $wf) {
         );
 
         Release::Helpers::Release->new(
-            db => $pg->pg->db
+            db => $db
         )->release_single_company(
             $companies_pkey
-        )->then(sub {
-
-        })->catch(sub($err){
-            say $err;
-            Sentinel::Helpers::Sentinelsender->new()->capture_message (
-                $pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
-            ) ;
-        })->wait;
+        );
 
         Companies::Model::Workflow->new(
             db => $db

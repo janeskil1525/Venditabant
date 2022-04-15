@@ -1,5 +1,5 @@
 package Release::Helpers::Loader;
-use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures;
 
 has 'db';
 

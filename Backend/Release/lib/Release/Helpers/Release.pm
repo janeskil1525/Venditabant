@@ -1,5 +1,5 @@
 package Release::Helpers::Release;
-use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
+use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures;
 
 use Release::Helpers::Release::ReleaseSteps;
 use Release::Model::Company;
@@ -7,38 +7,39 @@ use Release::Model::Company;
 use Data::Dumper;
 
 has 'pg';
+has 'db';
 
 my $current_version = 6;
 
-async sub release_single_company ($self, $companies_pkey =  0) {
+sub release_single_company ($self, $companies_pkey =  0) {
 
     # $self->db($self->pg->db) unless $self->db;
 
     my $releaser = Release::Helpers::Release::ReleaseSteps->new(
-        db => $self->pg->db
+        db => $self->db
     );
 
     if ($companies_pkey > 0) {
-        await $releaser->release($companies_pkey, $current_version);
+        $releaser->release($companies_pkey, $current_version);
     }
 }
 
-async sub release ($self) {
+sub release ($self) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
 
     my $err;
     eval {
-        my $companies = await Release::Model::Company->new(
+        my $companies = Release::Model::Company->new(
             db => $db
-        )->load_list_p();
+        )->load_list();
 
         my $releaser = Release::Helpers::Release::ReleaseSteps->new(
             db => $db
         );
         foreach my $company (@{$companies}) {
-            await $releaser->release(
+            $releaser->release(
                 $company->{companies_pkey}, $current_version
             );
         }

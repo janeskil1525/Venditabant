@@ -2,8 +2,9 @@ package Companies;
 use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use Companies::Helpers::Company;
+use Companies::Helpers::Workflow;
 
-our $VERSION = '0.02';
+our $VERSION = '0.04';
 
 has 'pg';
 
@@ -33,5 +34,13 @@ async sub get_language_fkey_p($self, $companies_pkey, $users_pkey) {
     return Companies::Helpers::Company->new(
         pg => $self->pg
     )->get_language_fkey_p($companies_pkey, $users_pkey);
+}
+
+sub load_workflow_id($self, $companies_pkey) {
+    return Companies::Helpers::Workflow->new(
+        pg => $self->pg
+    )->load_workflow_id(
+        $companies_pkey
+    );
 }
 1;

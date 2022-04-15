@@ -21,10 +21,11 @@ sub execute {
     $data->{companies_fkey} = 24;
     $data->{users_fkey} = 24;
 
-    push @{$data->{actions}}, 'create_customer';
+    push @{$data->{actions}}, 'signup';
 
     my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';
     $config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';
+
 
     Engine->new(
         pg => $pg,

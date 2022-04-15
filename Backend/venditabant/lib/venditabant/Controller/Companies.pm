@@ -4,19 +4,35 @@ use Mojo::Base 'Mojolicious::Controller', -signatures;
 use Data::Dumper;
 use Mojo::JSON qw {decode_json};
 
+use Companies;
+
 sub save_company ($self) {
 
     $self->render_later;
     my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
         $self->req->headers->header('X-Token-Check')
     );
-    my $json_hash = decode_json ($self->req->body);
-    $self->companies->save_company($companies_pkey, $users_pkey, $json_hash)->then(sub ($result) {
-        $self->render(json => {'result' => $result});
-    })->catch( sub ($err) {
+    my $data->{company} = decode_json ($self->req->body);
+    $data->{users_fkey} = $users_pkey;
+    $data->{companies_fkey} = $companies_pkey;
 
-        $self->render(json => {'result' => $err});
-    })->wait;
+    $data->{workflow_id} = Companies->new(
+        pg => $self->app->pg
+    )->load_workflow_id(
+        $companies_pkey
+    );
+    push @{$data->{actions}}, 'update_company';
+
+    say Dumper($data);
+
+    eval {
+        $self->workflow->execute(
+            'companies', $data
+        );
+        $self->render(json => { result => 'success'});
+    };
+
+    $self->render(json => { result => 'failure', error => $@}) if $@;
 
 }
 

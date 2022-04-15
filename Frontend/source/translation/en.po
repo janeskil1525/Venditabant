@@ -358,7 +358,7 @@ msgstr ""
 msgid "Currency is required"
 msgstr ""
 
-#: venditabant/sales/orders/views/Salesorder.js
+#: venditabant/sales/invoices/views/Invoice.js
 msgid "Customer"
 msgstr ""
 
@@ -382,7 +382,7 @@ msgstr ""
 msgid "From"
 msgstr ""
 
-#: venditabant/sales/orders/views/Salesorder.js
+#: venditabant/sales/invoices/views/Invoice.js
 msgid "Something went bad during saving of pricelist item"
 msgstr ""
 
@@ -390,7 +390,7 @@ msgstr ""
 msgid "Stockitem is required"
 msgstr ""
 
-#: venditabant/sales/orders/views/Salesorder.js
+#: venditabant/sales/invoices/views/Invoice.js
 msgid "Price"
 msgstr ""
 
@@ -490,19 +490,19 @@ msgstr ""
 msgid "Invoice date"
 msgstr ""
 
-#: venditabant/sales/orders/views/Salesorder.js
+#: venditabant/sales/invoices/views/Invoice.js
 msgid "Quantity"
 msgstr ""
 
-#: venditabant/sales/orders/views/Salesorder.js
+#: venditabant/sales/invoices/views/Invoice.js
 msgid "Quantity is required"
 msgstr ""
 
-#: venditabant/sales/orders/views/Salesorder.js
+#: venditabant/sales/invoices/views/Invoice.js
 msgid "Price is required"
 msgstr ""
 
-#: venditabant/sales/orders/views/Salesorder.js
+#: venditabant/sales/invoices/views/Invoice.js
 msgid "Done"
 msgstr ""
 
@@ -876,4 +876,72 @@ msgstr ""
 
 #: venditabant/sales/pricelists/views/NewHead.js
 msgid "Close this window"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Company is required"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Company name"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Company language"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Company official name for invoices and other customer communication"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Organisational Number ATTENTION this is important it's correct since it will be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Phone number that should be used on documents for customers"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Official homepage to be used on documents for customers"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "VAT Number ATTENTION this is important it's correct since it will be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Official address to be used in documents"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Giro to be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "More address if nessesary"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Reference to be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Official emai address be used on invoices and other documents"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Zipcode to be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "City to be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Comment to be shown on the invouces"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Save company"
 msgstr ""

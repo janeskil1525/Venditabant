@@ -110,7 +110,7 @@ msgstr "Lösenord måste anges"
 msgid "Retype Password"
 msgstr "Lösenord igen"
 
-#: venditabant/sales/customers/views/Delivery.js
+#: venditabant/sales/orders/views/Salesorder.js
 msgid "Cancel"
 msgstr "Ny"
 
@@ -398,7 +398,7 @@ msgstr "IO Pris"
 msgid "Purchase price"
 msgstr "Inköps pris"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/sales/customers/views/Definition.js
 msgid "Active"
 msgstr "Aktiv"
 
@@ -598,7 +598,7 @@ msgstr "Workflows"
 msgid "Workflow"
 msgstr "Workflow"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/sales/customers/views/Definition.js
 msgid "ID"
 msgstr "Id"
 
@@ -876,4 +876,72 @@ msgstr "Stäng det här fönstret"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Select purchase currency"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Company is required"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Company name"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Company language"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Company official name for invoices and other customer communication"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Organisational Number ATTENTION this is important it's correct since it will be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Phone number that should be used on documents for customers"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Official homepage to be used on documents for customers"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "VAT Number ATTENTION this is important it's correct since it will be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Official address to be used in documents"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Giro to be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "More address if nessesary"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Reference to be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Official emai address be used on invoices and other documents"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Zipcode to be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "City to be used on invoices"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Comment to be shown on the invouces"
+msgstr ""
+
+#: venditabant/company/views/Definition.js
+msgid "Save company"
 msgstr ""

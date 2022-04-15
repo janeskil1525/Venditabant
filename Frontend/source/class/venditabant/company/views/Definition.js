@@ -36,138 +36,174 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 var validator = new qx.ui.form.validation.Manager();
                 this._validator = validator;
 
-                let lbl = this._createLbl(this.tr( "Company" ), 70);
+                let lbl = this._createLbl(this.tr( "Company" ), 120);
                 page1.add ( lbl, { top: 10, left: 10 } );
 
-                let company = this._createTxt("Company", 150, true, this.tr("Customer is required"));
-                page1.add ( company, { top: 10, left: 90 } );
+                let company = this._createTxt("Company", 150, true,
+                    this.tr("Company is required"),
+                    this.tr('Company name')
+                );
+                page1.add ( company, { top: 10, left: 150 } );
                 this._company = company;
                 this._validator.add(this._company);
 
                 let languages = new venditabant.support.views.LanguageSelectBox().set({
                     width:150,
                     emptyrow:false,
+                    tooltip:this.tr('Company language')
                 });
                 let languagesview = languages.getView()
                 this._languages = languages;
-                page1.add ( languagesview, { top: 45, left: 90 } );
+                page1.add ( languagesview, { top: 45, left: 150 } );
 
                 lbl = this._createLbl(this.tr( "Name" ), 70);
-                page1.add ( lbl, { top: 10, left: 250 } );
+                page1.add ( lbl, { top: 10, left: 310 } );
 
-                let name = this._createTxt("Name", 250, true, this.tr("Name is requires"));
-                page1.add ( name, { top: 10, left: 400 } );
+                let name = this._createTxt("Name", 250, true,
+                    this.tr("Name is requires"),
+                    this.tr('Company official name for invoices and other customer communication')
+                    );
+                page1.add ( name, { top: 10, left: 460 } );
                 this._name = name
                 this._validator.add(this._name);
 
                 lbl = this._createLbl(this.tr( "Org. nr" ), 70);
-                page1.add ( lbl, { top: 45, left: 250 } );
+                page1.add ( lbl, { top: 45, left: 310 } );
 
-                let orgnbr = this._createTxt("Org. nr", 250, true, this.tr("Org. nr is required"));
-                page1.add ( orgnbr, { top: 45, left: 400 } );
+                let orgnbr = this._createTxt("Org. nr", 250, true,
+                    this.tr("Org. nr is required"),
+                    this.tr("Organisational Number ATTENTION this is important it's correct since it will be used on invoices")
+                );
+                page1.add ( orgnbr, { top: 45, left: 460 } );
                 this._registrationnumber = orgnbr
                 this._validator.add(this._registrationnumber);
 
-                lbl = this._createLbl(this.tr( "Phone" ), 70);
+                lbl = this._createLbl(this.tr( "Phone" ), 120);
                 page1.add ( lbl, { top: 80, left: 10 } );
 
-                let phone = this._createTxt("Phone", 150, true, this.tr("Phone is required"));
-                page1.add ( phone, { top: 80, left: 90 } );
+                let phone = this._createTxt("Phone", 150, true,
+                    this.tr("Phone is required"),
+                    this.tr("Phone number that should be used on documents for customers")
+                );
+                page1.add ( phone, { top: 80, left: 150 } );
                 this._phone = phone;
                 this._validator.add(this._phone);
 
-                lbl = this._createLbl(this.tr( "Homepage" ), 70);
-                page1.add ( lbl, { top: 80, left: 250 } );
+                lbl = this._createLbl(this.tr( "Homepage" ), 120);
+                page1.add ( lbl, { top: 80, left: 310 } );
 
-                let homepage = this._createTxt("Homepage", 250, true, this.tr("Homepage is required"));
-                page1.add ( homepage, { top: 80, left: 400 } );
+                let homepage = this._createTxt("Homepage", 150, true,
+                    this.tr("Homepage is required"),
+                    this.tr("Official homepage to be used on documents for customers")
+                );
+                page1.add ( homepage, { top: 80, left: 460 } );
                 this._homepage = homepage
                 this._validator.add(this._homepage);
 
-                lbl = this._createLbl(this.tr( "VAT No" ), 70);
+                lbl = this._createLbl(this.tr( "VAT No" ), 120);
                 page1.add ( lbl, { top: 115, left: 10 } );
 
-                let vatno = this._createTxt("VAT No", 150, true, this.tr("VAT No is required"));
-                page1.add ( vatno, { top: 115, left: 90 } );
+                let vatno = this._createTxt("VAT No", 150, true,
+                    this.tr("VAT No is required"),
+                    this.tr("VAT Number ATTENTION this is important it's correct since it will be used on invoices")
+                );
+                page1.add ( vatno, { top: 115, left: 150 } );
                 this._vatno = vatno;
                 this._validator.add(this._vatno);
 
                 lbl = this._createLbl(this.tr( "Address" ), 70);
-                page1.add ( lbl, { top: 115, left: 250 } );
+                page1.add ( lbl, { top: 115, left: 310 } );
 
-                let address1 = this._createTxt("Address", 250, true, this.tr("Address is required"));
-                page1.add ( address1, { top: 115, left: 400 } );
+                let address1 = this._createTxt("Address", 250, true,
+                    this.tr("Address is required"),
+                    this.tr("Official address to be used in documents")
+                );
+                page1.add ( address1, { top: 115, left: 460 } );
                 this._address1 = address1
                 this._validator.add(this._address1);
 
                 lbl = this._createLbl(this.tr( "Giro" ), 70);
                 page1.add ( lbl, { top: 145, left: 10 } );
 
-                let giro = this._createTxt("Giro", 150, true, this.tr("Giro is required"));
-                page1.add ( giro, { top: 145, left: 90 } );
+                let giro = this._createTxt("Giro", 150, true,
+                    this.tr("Giro is required"),
+                    this.tr("Giro to be used on invoices")
+                );
+                page1.add ( giro, { top: 145, left: 150 } );
                 this._giro = giro;
                 this._validator.add(this._giro);
 
-                let address2 = this._createTxt("Address", 250, false);
-                page1.add ( address2, { top: 145, left: 400 } );
+                let address2 = this._createTxt("Address", 250, false,'',this.tr("More address if nessesary"));
+                page1.add ( address2, { top: 145, left: 460 } );
                 this._address2 = address2
 
-                lbl = this._createLbl(this.tr( "Invoice ref." ), 70);
+                lbl = this._createLbl(this.tr( "Invoice ref." ), 150);
                 page1.add ( lbl, { top: 175, left: 10 } );
 
-                let invoiceref = this._createTxt("Invoice ref.", 150, true, this.tr("Invoiceref is required"));
-                page1.add ( invoiceref, { top: 175, left: 90 } );
+                let invoiceref = this._createTxt("Invoice ref.", 150, true,
+                    this.tr("Invoiceref is required"),
+                    this.tr("Reference to be used on invoices")
+                );
+                page1.add ( invoiceref, { top: 175, left: 150 } );
                 this._invoiceref = invoiceref;
                 this._validator.add(this._invoiceref);
 
-                let address3 = this._createTxt("Address", 250, false);
-                page1.add ( address3, { top: 175, left: 400 } );
+                let address3 = this._createTxt("Address", 250, false,'',
+                    this.tr("More address if nessesary")
+                );
+                page1.add ( address3, { top: 175, left: 460 } );
                 this._address3 = address3
 
                 lbl = this._createLbl(this.tr( "Email" ), 70);
                 page1.add ( lbl, { top: 210, left: 10 } );
 
-                let email = this._createTxt("Email", 150, true, this.tr("Email is required"));
-                page1.add ( email, { top: 210, left: 90 } );
+                let email = this._createTxt("Email", 150, true,
+                    this.tr("Email is required"),
+                    this.tr("Official emai address be used on invoices and other documents")
+                );
+                page1.add ( email, { top: 210, left: 150 } );
                 this._email = email;
                 this._validator.add(this._email);
 
                 lbl = this._createLbl(this.tr( "Zipcode / City" ), 150);
-                page1.add ( lbl, { top: 210, left: 250 } );
+                page1.add ( lbl, { top: 210, left: 310 } );
 
-                let zipcode = this._createTxt("Zipcode", 90, true, this.tr("Zipcode is required"));
-                page1.add ( zipcode, { top: 210, left: 400 } );
+                let zipcode = this._createTxt("Zipcode", 90, true,
+                    this.tr("Zipcode is required"),
+                    this.tr("Zipcode to be used on invoices")
+                );
+                page1.add ( zipcode, { top: 210, left: 460 } );
                 this._zipcode = zipcode
                 this._validator.add(this._zipcode);
 
-                let city = this._createTxt("City", 150, true, this.tr("City is required"));
-                page1.add ( city, { top: 210, left: 500 } );
+                let city = this._createTxt("City", 150, true,
+                    this.tr("City is required"),
+                    this.tr("City to be used on invoices")
+                );
+                page1.add ( city, { top: 210, left: 560 } );
                 this._city = city
                 this._validator.add(this._city);
 
-                lbl = this._createLbl(this.tr( "Invoice comment" ), 90);
+                lbl = this._createLbl(this.tr( "Invoice comment" ), 120);
                 page1.add ( lbl, { top: 240, left: 10 } );
 
-                let invoicecomment = this._createTextArea("Invoice comment", 560, 70, '');
-                page1.add ( invoicecomment, { top: 240, left: 90 } );
+                let invoicecomment = this._createTextArea("Invoice comment", 560, 70, '',
+                    this.tr("Comment to be shown on the invouces")
+                );
+                page1.add ( invoicecomment, { top: 240, left: 150 } );
                 this._invoicecomment = invoicecomment;
 
-                let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
+                let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 560, function ( ) {
                     if(validator.validate()) {
                         this.saveCompany ( );
                     } else {
                         let messages = validator.getInvalidMessages();
                     }
 
-                }, this );
-                page1.add ( btnSignup, { bottom: 10, left: 10 } );
-                this._btnSignup = btnSignup;
+                }, this, this.tr("Save company") );
+                page1.add ( btnSave, { bottom: 10, left: 150 } );
+                this._btnSignup = btnSave;
                 // this._validator.bind("valid", this._btnSignup, "enabled");
-
-                let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
-                    this.clearScreen();
-                }, this );
-                page1.add ( btnCancel, { bottom: 10, right: 10 } );
 
                 this.loadCompany();
 

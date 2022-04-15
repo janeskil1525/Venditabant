@@ -27,7 +27,10 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 let lbl = this._createLbl(this.tr( "User" ),70)
                 page1.add ( lbl, { top: 10, left: 10 } );
 
-                let userid = this._createTxt(this.tr( "User" ),150,true,this.tr("User is required") );
+                let userid = this._createTxt(this.tr( "User" ),150,true,
+                    this.tr("User is required"),
+                    this.tr("User has to be a valid email address")
+                );
                 page1.add ( userid, { top: 10, left: 90 } );
                 this._userid = userid;
                 this._validator.add(this._userid, qx.util.Validate.email());
@@ -35,7 +38,10 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 lbl = this._createLbl(this.tr( "Name" ),70);
                 page1.add ( lbl, { top: 10, left: 250 } );
 
-                let username = this._createTxt(this.tr( "Name" ),250,true,this.tr("Name is required") );
+                let username = this._createTxt(this.tr( "Name" ),250,true,
+                    this.tr("Name is required"),
+                    this.tr("The users name")
+                );
                 page1.add ( username, { top: 10, left: 350 } );
                 this._username = username;
                 this._validator.add(this._username);
@@ -45,6 +51,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
 
                 var password1 = new qx.ui.form.PasswordField ( );
                 password1.setPlaceholder ( this.tr ( "Password 1" ) );
+                password1.setToolTipText(this.tr("A strong password"))
                 password1.setWidth ( 250 );
                 page1.add ( password1, { top: 50, left: 90 } );
                 this._password1 = password1;
@@ -52,27 +59,31 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
 
                 var password2 = new qx.ui.form.PasswordField ( );
                 password2.setPlaceholder ( this.tr ( "Password 2" ) );
+                password2.setToolTipText(this.tr("A strong password"))
                 password2.setWidth ( 250 );
                 page1.add ( password2, { top: 50, left: 350 } );
                 this._password2 = password2;
                 this._validator.add(this._password2);
 
                 lbl = this._createLbl(this.tr( "Active" ),70);
+                lbl.setToolTipText(this.tr("User is active and can login"))
                 page1.add ( lbl, { top: 90, left: 10 } );
 
                 let active = new qx.ui.form.CheckBox("");
+                active.setToolTipText(this.tr("User is active and can login"))
                 page1.add ( active, { top: 90, left: 90 } );
                 this._active = active;
 
                 let languages = new venditabant.support.views.LanguageSelectBox().set({
                     width:150,
                     emptyrow:false,
+                    tooltip:this.tr("The language to use for this user"),
                 });
                 let languagesview = languages.getView()
                 this._languages = languages;
                 page1.add ( languagesview, { top: 90, left: 350 } );
 
-                let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
+                let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     if(this._validator.validate()) {
                         if ( this._password2.getValue() !== this._password1.getValue() )  {
                             alert ( this.tr ( "Passwords do not match." ) );
@@ -81,13 +92,13 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                             this.loadUsers();
                         }
                     }
-                }, this );
-                page1.add ( btnSignup, { bottom: 10, left: 10 } );
+                }, this, this.tr("Save user") );
+                page1.add ( btnSave, { bottom: 10, left: 10 } );
 
-                let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
+                let btnNew = this._createBtn ( this.tr ( "New" ), "#FFAAAA70", 135, function ( ) {
                     this.clearFields ( );
-                }, this );
-                page1.add ( btnCancel, { bottom: 10, right: 10 } );
+                }, this, this.tr("New user") );
+                page1.add ( btnNew, { bottom: 10, right: 10 } );
 
                 tabView.add(page1);
 

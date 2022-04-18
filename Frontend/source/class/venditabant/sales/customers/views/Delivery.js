@@ -24,19 +24,27 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 lbl = this._createLbl(this.tr( "Name" ), 70);
                 page2.add ( lbl, { top: 45, left: 10 } );
 
-                let name = this._createTxt("Name", 250, false, '');
+                let name = this._createTxt("Name", 250, false, '',
+                    this.tr("Name for delivery address")
+                );
                 page2.add ( name, { top: 45, left: 120 } );
                 this._name = name;
 
-                let address1 = this._createTxt("Address", 250, false, '');
+                let address1 = this._createTxt("Address", 250, false, '',
+                    this.tr("Delivery address")
+                );
                 page2.add ( address1, { top: 80, left: 120 } );
                 this._address1 = address1;
 
-                let address2 = this._createTxt("Address", 250, false, '');
+                let address2 = this._createTxt("Address", 250, false, '',
+                    this.tr("Delivery address")
+                );
                 page2.add ( address2, { top: 115, left: 120 } );
                 this._address2 = address2;
 
-                let address3 = this._createTxt("Address", 250, false, '');
+                let address3 = this._createTxt("Address", 250, false, '',
+                    this.tr("Delivery address")
+                );
                 page2.add ( address3, { top: 150, left: 120 } );
                 this._address3 = address3
 
@@ -44,6 +52,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 page2.add ( lbl, { top: 45, left: 380 } );
 
                 let comment = this._createTextArea(this.tr("Comment"), 420, 60);
+                comment.setToolTipText(this.tr("Remark for delivery address"))
                 this._comment = comment;
 
                 page2.add ( comment, { top: 45, left: 510 } );
@@ -51,25 +60,33 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 lbl = this._createLbl(this.tr( "Zipcode / City" ), 100);
                 page2.add ( lbl, { top: 115, left: 380 } );
 
-                let zipcode = this._createTxt("Zipcode", 100, false, '');
+                let zipcode = this._createTxt("Zipcode", 100, false, '',
+                    this.tr("Zipcode part of delivery address")
+                );
                 page2.add ( zipcode, { top: 115, left: 510 } );
                 this._zipcode = zipcode
 
-                let city = this._createTxt("City", 145, false, '');
+                let city = this._createTxt("City", 145, false, '',
+                    this.tr("City part of delivery address")
+                );
                 page2.add ( city, { top: 115, left: 615 } );
                 this._city = city
 
                 lbl = this._createLbl(this.tr( "Country" ), 70);
                 page2.add ( lbl, { top: 150, left: 380 } );
 
-                let country = this._createTxt("Country", 250, false, '');
+                let country = this._createTxt("Country", 250, false, '',
+                    this.tr("Country")
+                );
                 page2.add ( country, { top: 150, left: 510 } );
                 this._country = country;
 
                 lbl = this._createLbl(this.tr( "Mail addressses" ), 120);
                 page2.add ( lbl, { top: 10, left: 380 } );
 
-                let deliverymails = this._createTxt(this.tr("Comma separated mail adresses"), 420, false, '');
+                let deliverymails = this._createTxt(this.tr("Comma separated mail adresses"), 420, false, '',
+                    this.tr("Comma separated mail adresses that should recieve delivery related information")
+                );
                 page2.add ( deliverymails, { top: 10, left: 510 } );
                 this._deliverymails = deliverymails;
 
@@ -77,21 +94,22 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                     width:250,
                     emptyrow:true,
                     delivery:this,
+                    tooltip:this.tr("Select delivery address to edit")
                 });
                 let deliveryaddressview = deliveryaddress.getView()
                 this._deliveryaddress = deliveryaddress;
                 page2.add ( deliveryaddressview, { top: 10, left: 120 } );
 
 
-                let btnSignup = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
+                let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveDeliveryData ( );
-                }, this );
-                page2.add ( btnSignup, { bottom: 10, left: 10 } );
+                }, this, this.tr("Save delivery address") );
+                page2.add ( btnSave, { bottom: 10, left: 10 } );
 
-                let btnCancel = this._createBtn ( this.tr ( "Cancel" ), "#FFAAAA70", 135, function ( ) {
+                let btnNew = this._createBtn ( this.tr ( "New" ), "#FFAAAA70", 135, function ( ) {
                     this.clearScreen ( );
-                }, this );
-                page2.add ( btnCancel, { bottom: 10, right: 10 } );
+                }, this, this.tr("New delivery address") );
+                page2.add ( btnNew, { bottom: 10, right: 10 } );
 
                 return page2;
             },
@@ -121,6 +139,7 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                     type:'DELIVERY',
                     customer_addresses_pkey: this.getCustomerAddressFkey(),
                     comment:comment,
+                    reference:'',
                 }
                 let put = new venditabant.sales.customers.models.DeliveryAddress();
                 put.saveDeliveryAddress(data,function(success) {

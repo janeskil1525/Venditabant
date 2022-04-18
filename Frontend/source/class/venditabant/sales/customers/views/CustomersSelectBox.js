@@ -12,11 +12,15 @@ qx.Class.define("venditabant.sales.customers.views.CustomersSelectBox",
         properties: {
             width: {nullable: true, check: "Number"},
             emptyrow: {nullable: true, check: "Boolean"},
+            tooltip: {nullable:true, check:"String"},
         },
         members: {
             _selectbox:null,
             getView: function () {
                 let selectbox = new qx.ui.form.SelectBox();
+                if (this.getTooltip()) {
+                    selectbox.setToolTipText(this.getTooltip());
+                }
                 selectbox.setWidth(this.getWidth());
                 selectbox.addListener("changeSelection", function (e) {
                     this._model = e.getData()[0];

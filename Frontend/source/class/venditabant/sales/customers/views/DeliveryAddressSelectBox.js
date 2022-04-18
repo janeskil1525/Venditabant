@@ -13,11 +13,15 @@ qx.Class.define("venditabant.sales.customers.views.DeliveryAddressSelectBox",
             width: {nullable: true, check: "Number"},
             emptyrow: {nullable: true, check: "Boolean"},
             delivery:{nullable: true},
+            tooltip: {nullable:true, check:"String"},
         },
         members: {
             _selectbox:null,
             getView: function () {
                 let selectbox = new qx.ui.form.SelectBox();
+                if (this.getTooltip()) {
+                    selectbox.setToolTipText(this.getTooltip());
+                }
                 selectbox.setWidth(this.getWidth());
                 selectbox.addListener("changeSelection", function (e) {
                     if(typeof e.getData()[0] !== 'undefined') {

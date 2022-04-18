@@ -511,7 +511,7 @@
   });
   qx.ui.form.List.$$dbClassInfo = $$dbClassInfo;
 })();
-//# sourceMappingURL=package-37.js.map?dt=1650036911273
+//# sourceMappingURL=package-37.js.map?dt=1650285014269
 qx.$$packageData['37'] = {
   "locales": {},
   "resources": {},

@@ -114,6 +114,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
             // Public functions ...
             __table : null,
             clearFields: function (params) {
+                this._users_pkey = 0;
                 this._userid.setValue('');
                 this._username.setValue('');
                 this._active.setValue(false);
@@ -122,6 +123,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
             },
             saveUser:function() {
                 let that = this;
+                let users_pkey = this._users_pkey;
                 let userid = this._userid.getValue();
                 let username  = this._username.getValue();
                 let active  = this._active.getValue();
@@ -144,6 +146,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 }
 
                 let data = {
+                    users_pkey: users_pkey,
                     userid: userid,
                     username: username,
                     active:active,
@@ -155,6 +158,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 model.saveUser(data,function ( success ) {
                     if (success) {
                         that.loadUsers();
+                        that.clearFields();
                     } else {
                         alert(this.tr('Something went wrong saving the user'));
                     }
@@ -189,7 +193,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                     selectionModel.iterateSelection(function(index) {
                         selectedRows.push(table.getTableModel().getRowData(index));
                     });
-
+                    that._users_pkey = selectedRows[0][0];
                     that._userid.setValue(selectedRows[0][1]);
                     that._username.setValue(selectedRows[0][2]);
                     let active = selectedRows[0][4] ? true : false;

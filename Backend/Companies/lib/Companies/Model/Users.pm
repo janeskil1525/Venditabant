@@ -11,7 +11,7 @@ sub upsert ($self, $data) {
     my $users_stmt = qq{
         INSERT INTO users (userid, username, passwd, active, languages_fkey) VALUES (?,?,?,?, ?)
             ON CONFLICT (userid)
-            DO UPDATE SET username = ?, passwd = ?, active = ?, languages_fkey = ?
+            DO UPDATE SET moddatetime = now(), username = ?, passwd = ?, active = ?, languages_fkey = ?
         RETURNING users_pkey
     };
 
@@ -38,7 +38,7 @@ sub upsert_user_companies ($self, $companies_pkey, $users_pkey) {
     my $users_stmt = qq {
         INSERT INTO users_companies (companies_fkey, users_fkey) VALUES (?,?)
             ON CONFLICT (companies_fkey, users_fkey)
-            DO NOTHING
+            DO UPDATE SET moddatetime = now()
         RETURNING users_companies_pkey;
     };
 

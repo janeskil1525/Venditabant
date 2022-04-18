@@ -31,7 +31,7 @@ sub execute ($self, $wf) {
     )->upsert_user(
         $companies_fkey, $data
     );
-
+    workflow_error($result) unless $result eq 'success';;
     $wf->add_history(
         Workflow::History->new({
             action      => "User was updated",
@@ -41,6 +41,5 @@ sub execute ($self, $wf) {
     );
 
     return $result;
-
 }
 1;

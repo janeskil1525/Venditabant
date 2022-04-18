@@ -65,17 +65,18 @@ sub save_user ($self) {
     $data->{users_fkey} = $users_pkey;
     $data->{companies_fkey} = $companies_pkey;
 
+    $data->{workflow_id} = Companies->new(
+        pg => $self->app->pg
+    )->load_workflow_id(
+        $companies_pkey
+    );
+
     if(exists $data->{user}->{users_pkey} and $data->{user}->{users_pkey} > 0) {
-        $data->{workflow_id} = Companies->new(
-            pg => $self->app->pg
-        )->load_workflow_id(
-            $companies_pkey
-        );
         push @{$data->{actions}}, 'update_user';
     } else {
         push @{$data->{actions}}, 'create_user';
     }
-
+say Dumper($data);
     eval {
         $self->workflow->execute(
             'companies', $data

@@ -36,8 +36,7 @@ qx.Class.define("venditabant.Application",
       }
       let root = this.getRoot ( );
       let decorator = new qx.ui.decoration.Decorator ( );
-      let adress = new venditabant.application.Const()
-      decorator.setBackgroundImage ( this._address + ":30001/kaffebonor-fotona.jpg" );
+      decorator.setBackgroundImage ( this._address + "/kaffebonor-fotona.jpg" );
       decorator.setBackgroundRepeat( "scale" );
 
       this.getRoot ( ).setDecorator( decorator );

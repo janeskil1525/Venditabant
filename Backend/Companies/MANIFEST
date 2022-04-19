@@ -1,7 +1,9 @@
 lib/Companies.pm
 lib/Companies/Helpers/Company.pm
+lib/Companies/Helpers/Users.pm
 lib/Companies/Helpers/Workflow.pm
 lib/Companies/Model/Company.pm
+lib/Companies/Model/Users.pm
 lib/Companies/Model/Workflow.pm
 lib/Companies/Workflow/Action/CreateUser.pm
 lib/Companies/Workflow/Action/SignUp.pm

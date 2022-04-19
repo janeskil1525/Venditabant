@@ -26,11 +26,18 @@
         }
       },
       getVersion: function getVersion() {
-        return "0.0.5";
+        return "0.1.0";
+      },
+      venditabant_port: function venditabant_port() {
+        if (this._mode === 'test') {
+          return '30001';
+        } else {
+          return '3000';
+        }
       }
     }
   });
   venditabant.application.Const.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Const.js.map?dt=1648661183951
+//# sourceMappingURL=Const.js.map?dt=1650292784687

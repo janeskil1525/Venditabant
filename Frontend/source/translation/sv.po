@@ -286,7 +286,7 @@ msgstr "Procent måste anges"
 msgid "Delete"
 msgstr "Ta bort"
 
-#: venditabant/sales/orders/views/SalesordersList.js
+#: venditabant/sales/customers/views/Delivery.js
 msgid "New"
 msgstr "Ny"
 
@@ -398,7 +398,7 @@ msgstr "IO Pris"
 msgid "Purchase price"
 msgstr "Inköps pris"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/users/management/views/Definition.js
 msgid "Active"
 msgstr "Aktiv"
 
@@ -598,7 +598,7 @@ msgstr "Workflows"
 msgid "Workflow"
 msgstr "Workflow"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/stock/stockitems/views/Definition.js
 msgid "ID"
 msgstr "Id"
 
@@ -660,7 +660,7 @@ msgstr "Kunder"
 
 #: venditabant/application/ApplicationWindow.js
 msgid "Commission"
-msgstr "Kunder"
+msgstr "Provisioner"
 
 #: venditabant/application/ApplicationWindow.js
 msgid "Salesorders"
@@ -760,7 +760,7 @@ msgstr "Visar om kunden är blockerad eller ej"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Internal comment regarding the customer"
-msgstr ""
+msgstr "Intern kommentar ang kund"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Save the customer"
@@ -876,72 +876,176 @@ msgstr "Stäng det här fönstret"
 
 #: venditabant/stock/stockitems/views/Definition.js
 msgid "Select purchase currency"
-msgstr ""
+msgstr "Välj inköps valute"
 
 #: venditabant/company/views/Definition.js
 msgid "Company is required"
-msgstr ""
+msgstr "Företag är obligatoriskt"
 
 #: venditabant/company/views/Definition.js
 msgid "Company name"
-msgstr ""
+msgstr "Företags namn"
 
 #: venditabant/company/views/Definition.js
 msgid "Company language"
-msgstr ""
+msgstr "Företags språk"
 
 #: venditabant/company/views/Definition.js
 msgid "Company official name for invoices and other customer communication"
-msgstr ""
+msgstr "Officielt namn på företag att använda i kommunikation med kunder"
 
 #: venditabant/company/views/Definition.js
 msgid "Organisational Number ATTENTION this is important it's correct since it will be used on invoices"
-msgstr ""
+msgstr "Organisations nummer VIKTIGT denna data måste vara korrekt då den används på fakturor"
 
 #: venditabant/company/views/Definition.js
 msgid "Phone number that should be used on documents for customers"
-msgstr ""
+msgstr "Telefonnummer att använda i kund kommunikation"
 
 #: venditabant/company/views/Definition.js
 msgid "Official homepage to be used on documents for customers"
-msgstr ""
+msgstr "Officiell hemsida aanvända i kommunikation med kunder"
 
 #: venditabant/company/views/Definition.js
 msgid "VAT Number ATTENTION this is important it's correct since it will be used on invoices"
-msgstr ""
+msgstr "Moms reg nr, om denna information saknas använd organisationsnummer"
 
 #: venditabant/company/views/Definition.js
 msgid "Official address to be used in documents"
-msgstr ""
+msgstr "Officiell address att använda i kommunikation med kunder"
 
 #: venditabant/company/views/Definition.js
 msgid "Giro to be used on invoices"
-msgstr ""
+msgstr "Post / Bank giro att använda på fakturoeo"
 
 #: venditabant/company/views/Definition.js
 msgid "More address if nessesary"
-msgstr ""
+msgstr "Mre address information om nödvändigt"
 
 #: venditabant/company/views/Definition.js
 msgid "Reference to be used on invoices"
-msgstr ""
+msgstr "Vår faktura referens"
 
 #: venditabant/company/views/Definition.js
 msgid "Official emai address be used on invoices and other documents"
-msgstr ""
+msgstr "Officiell e-mail address att använda på fakturor och andra dokument"
 
 #: venditabant/company/views/Definition.js
 msgid "Zipcode to be used on invoices"
-msgstr ""
+msgstr "Postnummer för fakturor"
 
 #: venditabant/company/views/Definition.js
 msgid "City to be used on invoices"
-msgstr ""
+msgstr "Post ort för fakturor"
 
 #: venditabant/company/views/Definition.js
 msgid "Comment to be shown on the invouces"
-msgstr ""
+msgstr "Faktura kommentar"
 
 #: venditabant/company/views/Definition.js
 msgid "Save company"
-msgstr ""
+msgstr "Spara företags information"
+
+#: venditabant/users/management/views/Definition.js
+msgid "User has to be a valid email address"
+msgstr "Användare måste vara en fungerande unik email address"
+
+#: venditabant/users/management/views/Definition.js
+msgid "The users name"
+msgstr "Användarens namn"
+
+#: venditabant/users/management/views/Definition.js
+msgid "A strong password"
+msgstr "Ett starkt lösenord"
+
+#: venditabant/users/management/views/Definition.js
+msgid "User is active and can login"
+msgstr "Användaren är aktiv och kan använda systemet"
+
+#: venditabant/users/management/views/Definition.js
+msgid "The language to use for this user"
+msgstr "Användarens språk"
+
+#: venditabant/users/management/views/Definition.js
+msgid "Save user"
+msgstr "Spara användare"
+
+#: venditabant/users/management/views/Definition.js
+msgid "New user"
+msgstr "Ny användare"
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Street and number if applicable"
+msgstr "Gata och nummer om det finns"
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Zipcode"
+msgstr "Postkod"
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "City"
+msgstr "Postort"
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Comma separated mail adresses that should recieve invoices"
+msgstr "Komma separerad lista med e-mail adresser som ska ta emot fakturor hos kunden"
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Time to invoices should be paid"
+msgstr "Dagar netto innan fakturan ska vara betald"
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Invoice reference"
+msgstr "Faktura referens"
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Comment for invoice customer for example PO number"
+msgstr "Extra faktura kommentar om nödvändigt t.e.x om kunden kräver ett inköpsordernummer"
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Save invoice address"
+msgstr "Spara faktura address"
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Clear"
+msgstr "Rensa"
+
+#: venditabant/sales/customers/views/Invoice.js
+msgid "Clear screen"
+msgstr "Rensa alla fält"
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Name for delivery address"
+msgstr "Namn på leverans address, används i leverans appen"
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Delivery address"
+msgstr "Leveransaddress"
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Remark for delivery address"
+msgstr "Anmärkning för leverans address t.e.x port koder etc"
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Zipcode part of delivery address"
+msgstr "Postnummer"
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "City part of delivery address"
+msgstr "Postort"
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Comma separated mail adresses that should recieve delivery related information"
+msgstr "Komma separerad lista med mottagare för följesedlar"
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Select delivery address to edit"
+msgstr "Välj leverans address att bearbeta"
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Save delivery address"
+msgstr "Spara leveransaddress"
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "New delivery address"
+msgstr "Ny leveransaddress"

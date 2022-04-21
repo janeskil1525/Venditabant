@@ -1,8 +1,8 @@
 package CheckPoints::Helpers::Actions::SubstituteText;
 use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
-use venditabant::Helpers::Companies::Company;
-use venditabant::Model::Lan::Translations;
+use Companies::Helpers::Company;
+use Translations::Model::Translation;
 
 use Text::Template;
 use Data::Dumper;
@@ -14,13 +14,13 @@ async sub substitute($self, $companies_fkey, $check_type, $check_name, $substitu
     my $result;
     my $err;
     eval {
-        my $languages_fkey = await venditabant::Helpers::Companies::Company->new(
+        my $languages_fkey = await Companies::Helpers::Company->new(
             pg => $self->pg
         )->get_language_fkey_p(
             $companies_fkey, 0
         );
 
-        my $translation = await venditabant::Model::Lan::Translations->new(
+        my $translation = await Translations::Model::Translation->new(
             db => $self->pg->db
         )->load_translation(
             $languages_fkey, $check_type, $check_name

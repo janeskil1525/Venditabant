@@ -55,4 +55,4 @@
   venditabant.cockpit.views.Cockpit.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Cockpit.js.map?dt=1635078860316
+//# sourceMappingURL=Cockpit.js.map?dt=1650468325379

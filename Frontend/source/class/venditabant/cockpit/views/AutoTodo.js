@@ -33,6 +33,8 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                 return page1;
             },
             loadAutoTodoList:function () {
+                let image = ["icon/16/actions/dialog-ok.png"];
+
                 let autotodos = new venditabant.cockpit.models.AutoTodos();
                 autotodos.loadList(function(response) {
                     if(response.data !== null) {
@@ -47,6 +49,7 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                                 response.data[i].check_type,
                                 response.data[i].check_name,
                                 response.data[i].key_id,
+                                image[0],
                             ]);
                         }
                         this._table.getTableModel().setData(tableData);
@@ -63,7 +66,7 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Created", "Last Check", "User action", "Check type", "Check name", "key_id" ]);
+                tableModel.setColumns([ "ID", "Created", "Last Check", "User action", "Check type", "Check name", "key_id", "Action" ]);
                 tableModel.setData(rowData);
 
                 // table
@@ -102,7 +105,12 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                 // tcm.setColumnVisible(8,false);
 
                 tcm.setColumnWidth(2,160)
-                tcm.setColumnWidth(3,850)
+                tcm.setColumnWidth(3,700)
+                tcm.setColumnWidth(7,60)
+
+                let renderer = new qx.ui.table.cellrenderer.Image();
+                tcm.setDataCellRenderer(7, renderer);
+
                 this._table = table;
 
                 return ;

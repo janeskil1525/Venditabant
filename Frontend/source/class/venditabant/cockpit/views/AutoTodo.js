@@ -66,7 +66,18 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
 
                 // table model
                 var tableModel = new qx.ui.table.model.Simple();
-                tableModel.setColumns([ "ID", "Created", "Last Check", "User action", "Check type", "Check name", "key_id", "Action" ]);
+                tableModel.setColumns(
+                    [
+                        this.tr("ID"),
+                        this.tr("Created"),
+                        this.tr("Last Check"),
+                        this.tr("User action"),
+                        this.tr("Check type"),
+                        this.tr("Check name"),
+                        this.tr("key_id"),
+                        this.tr("Action")
+                    ]
+                );
                 tableModel.setData(rowData);
 
                 // table
@@ -117,9 +128,19 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
             },
             sqlList:function() {
                 if(this._selectedRow[5] === 'CUSTOMER_DELIVERYADDRESS') {
-                    alert("CUSTOMER_DELIVERYADDRESS")
+                    let root  = qx.core.Init.getApplication ( ).getRoot();
+                    let view = new venditabant.sales.customers.views.Delivery();
+                    view.setCustomersFkeyExt(this._selectedRow[6]);
+                    view.setAutotodo(true);
+
+                    root._basewin.addView(root, view);
+                    // alert("CUSTOMER_DELIVERYADDRESS")
                 } else if(this._selectedRow[5] === 'CUSTOMER_INVOICEADDRESS') {
-                    alert("CUSTOMER_INVOICEADDRESS")
+                    let root  = qx.core.Init.getApplication ( ).getRoot();
+                    let view = new venditabant.sales.customers.views.Invoice();
+                    view.setCustomersFkeyExt(this._selectedRow[6]);
+                    root._basewin.addView(root, view);
+                    // alert("CUSTOMER_INVOICEADDRESS")
                 }
             },
             sqlFalse:function() {

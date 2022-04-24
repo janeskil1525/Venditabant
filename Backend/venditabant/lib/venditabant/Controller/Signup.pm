@@ -11,20 +11,20 @@ sub signup_company ($self) {
 
     $self->render_later();
 
-    my $json_hash = decode_json ($self->req->body);
-    my $signup = venditabant::Helpers::Signup::Signup->new(
-        pg => $self->pg
-    );
+    my $data->{company} = decode_json ($self->req->body);
+    push @{$data->{actions}}, 'signup';
 
-    $signup->signup($json_hash)->then(sub ($result){
-        $self->render(json => {'result' => $result});
-    })->catch(sub ($err) {
-        Sentinel::Helpers::Sentinelsender->new(
-        )->capture_message(
-            $self->pg,'','venditabant::Controller::Signup','signup_company',$err
+    say Dumper($data);
+
+    eval {
+        $self->workflow->execute(
+            'companies', $data
         );
-        $self->render(json => {'result' => $err});
-    })->wait;
+        $self->render(json => { result => 'success'});
+    };
+
+    $self->render(json => { result => 'failure', error => $@}) if $@;
+
 }
 
 1;

@@ -7,7 +7,8 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
         destruct: function () {
         },
         properties: {
-            support: {nullable: true, check: "Boolean"}
+            support: {nullable: true, check: "Boolean"},
+            autotodo:{nullable:true, check:"Boolean"},
         },
         members: {
             // Public functions ...
@@ -99,13 +100,26 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
                     this.saveInvoiceData ( );
                 }, this,this.tr("Save invoice address") );
                 page2.add ( btnSignup, { bottom: 10, left: 10 } );
-
-                let btnCancel = this._createBtn ( this.tr ( "Clear" ), "#FFAAAA70", 135, function ( ) {
-                    this.clearScreen ( );
-                }, this, this.tr("Clear screen") );
-                page2.add ( btnCancel, { bottom: 10, right: 10 } );
+                if(!this.isAutotodo()) {
+                    let btnNew = this._createBtn ( this.tr ( "Clear" ), "#FFAAAA70", 135, function ( ) {
+                        this.clearScreen ( );
+                    }, this, this.tr("Clear screen") );
+                    page2.add ( btnNew, { bottom: 10, right: 10 } );
+                } else {
+                    let btnNew = this._createBtn ( this.tr ( "Back" ), "#FFAAAA70", 135, function ( ) {
+                        this.backToCockpit ( );
+                    }, this, this.tr("Back to the Cockpit") );
+                    page2.add ( btnNew, { bottom: 10, right: 10 } );
+                }
 
                 return page2;
+            },
+            backToCockpit:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.cockpit.views.AutoTodo();
+
+                root._basewin.addView(root, view);
+                //this.destroy();
             },
             saveInvoiceData:function() {
                 let that = this;
@@ -181,6 +195,9 @@ qx.Class.define ( "venditabant.sales.customers.views.Invoice",
             setCustomersFkey:function(customers_fkey) {
                 this._customers_fkey = customers_fkey;
                 this.loadInvoiceData();
+            },
+            setCustomersFkeyExt:function(customers_fkey) {
+                this._customers_fkey = customers_fkey;
             },
             getCustomersFkey:function() {
                 return this._customers_fkey;

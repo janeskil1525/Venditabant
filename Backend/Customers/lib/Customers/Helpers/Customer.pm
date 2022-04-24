@@ -69,7 +69,7 @@ async sub upsert_p ($self, $companies_pkey, $users_pkey, $customers ) {
 
     my $err;
     eval {
-        my $customers_pkey = venditabant::Model::Customer::Customers->new(
+        my $customers_pkey = Customers::Model::Customers->new(
             db => $db
         )->upsert(
             $companies_pkey, $users_pkey, $customers

@@ -7,7 +7,8 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
         destruct: function () {
         },
         properties: {
-            support: {nullable: true, check: "Boolean"}
+            support: {nullable: true, check: "Boolean"},
+            autotodo:{nullable:true, check:"Boolean"},
         },
         members: {
             // Public functions ...
@@ -90,28 +91,43 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 page2.add ( deliverymails, { top: 10, left: 510 } );
                 this._deliverymails = deliverymails;
 
-                let deliveryaddress = new venditabant.sales.customers.views.DeliveryAddressSelectBox().set({
-                    width:250,
-                    emptyrow:true,
-                    delivery:this,
-                    tooltip:this.tr("Select delivery address to edit")
-                });
-                let deliveryaddressview = deliveryaddress.getView()
-                this._deliveryaddress = deliveryaddress;
-                page2.add ( deliveryaddressview, { top: 10, left: 120 } );
-
+                if(!this.isAutotodo()) {
+                    let deliveryaddress = new venditabant.sales.customers.views.DeliveryAddressSelectBox().set({
+                        width:250,
+                        emptyrow:true,
+                        delivery:this,
+                        tooltip:this.tr("Select delivery address to edit")
+                    });
+                    let deliveryaddressview = deliveryaddress.getView()
+                    this._deliveryaddress = deliveryaddress;
+                    page2.add ( deliveryaddressview, { top: 10, left: 120 } );
+                }
 
                 let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     this.saveDeliveryData ( );
                 }, this, this.tr("Save delivery address") );
                 page2.add ( btnSave, { bottom: 10, left: 10 } );
 
-                let btnNew = this._createBtn ( this.tr ( "New" ), "#FFAAAA70", 135, function ( ) {
-                    this.clearScreen ( );
-                }, this, this.tr("New delivery address") );
-                page2.add ( btnNew, { bottom: 10, right: 10 } );
+                if(!this.isAutotodo()) {
+                    let btnNew = this._createBtn ( this.tr ( "New" ), "#FFAAAA70", 135, function ( ) {
+                        this.clearScreen ( );
+                    }, this, this.tr("New delivery address") );
+                    page2.add ( btnNew, { bottom: 10, right: 10 } );
+                } else {
+                    let btnNew = this._createBtn ( this.tr ( "Back" ), "#FFAAAA70", 135, function ( ) {
+                        this.backToCockpit ( );
+                    }, this, this.tr("Back to the Cockpit") );
+                    page2.add ( btnNew, { bottom: 10, right: 10 } );
+                }
 
                 return page2;
+            },
+            backToCockpit:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.cockpit.views.AutoTodo();
+
+                root._basewin.addView(root, view);
+                //this.destroy();
             },
             saveDeliveryData:function() {
                 let that = this;
@@ -190,6 +206,9 @@ qx.Class.define ( "venditabant.sales.customers.views.Delivery",
                 this._deliverymails.setValue('');
                 this.setCustomerAddressFkey(0);
                 this._comment.setValue('')
+            },
+            setCustomersFkeyExt:function(customers_fkey) {
+                this._customers_fkey = customers_fkey;
             },
             setCustomersFkey:function(customers_fkey) {
                 this.clearScreen();

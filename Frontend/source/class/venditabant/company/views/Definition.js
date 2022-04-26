@@ -40,7 +40,7 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 let lbl = this._createLbl(this.tr( "Company" ), 120);
                 page1.add ( lbl, { top: 10, left: 10 } );
 
-                let company = this._createTxt("Company", 150, true,
+                let company = this._createTxt("Company", 240, true,
                     this.tr("Company is required"),
                     this.tr('Company name')
                 );
@@ -58,31 +58,31 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 page1.add ( languagesview, { top: 45, left: 150 } );
 
                 lbl = this._createLbl(this.tr( "Name" ), 70);
-                page1.add ( lbl, { top: 10, left: 310 } );
+                page1.add ( lbl, { top: 10, left: 400 } );
 
                 let name = this._createTxt("Name", 250, true,
                     this.tr("Name is requires"),
                     this.tr('Company official name for invoices and other customer communication')
                     );
-                page1.add ( name, { top: 10, left: 460 } );
+                page1.add ( name, { top: 10, left: 550 } );
                 this._name = name
                 this._validator.add(this._name);
 
                 lbl = this._createLbl(this.tr( "Org. nr" ), 70);
-                page1.add ( lbl, { top: 45, left: 310 } );
+                page1.add ( lbl, { top: 45, left: 400 } );
 
                 let orgnbr = this._createTxt("Org. nr", 250, true,
                     this.tr("Org. nr is required"),
                     this.tr("Organisational Number ATTENTION this is important it's correct since it will be used on invoices")
                 );
-                page1.add ( orgnbr, { top: 45, left: 460 } );
+                page1.add ( orgnbr, { top: 45, left: 550 } );
                 this._registrationnumber = orgnbr
                 this._validator.add(this._registrationnumber);
 
                 lbl = this._createLbl(this.tr( "Phone" ), 120);
                 page1.add ( lbl, { top: 80, left: 10 } );
 
-                let phone = this._createTxt("Phone", 150, true,
+                let phone = this._createTxt("Phone", 240, true,
                     this.tr("Phone is required"),
                     this.tr("Phone number that should be used on documents for customers")
                 );
@@ -91,20 +91,20 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 this._validator.add(this._phone);
 
                 lbl = this._createLbl(this.tr( "Homepage" ), 120);
-                page1.add ( lbl, { top: 80, left: 310 } );
+                page1.add ( lbl, { top: 80, left: 400 } );
 
                 let homepage = this._createTxt("Homepage", 150, true,
                     this.tr("Homepage is required"),
                     this.tr("Official homepage to be used on documents for customers")
                 );
-                page1.add ( homepage, { top: 80, left: 460 } );
+                page1.add ( homepage, { top: 80, left: 550 } );
                 this._homepage = homepage
                 this._validator.add(this._homepage);
 
                 lbl = this._createLbl(this.tr( "VAT No" ), 120);
                 page1.add ( lbl, { top: 115, left: 10 } );
 
-                let vatno = this._createTxt("VAT No", 150, true,
+                let vatno = this._createTxt("VAT No", 240, true,
                     this.tr("VAT No is required"),
                     this.tr("VAT Number ATTENTION this is important it's correct since it will be used on invoices")
                 );
@@ -113,20 +113,20 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 this._validator.add(this._vatno);
 
                 lbl = this._createLbl(this.tr( "Address" ), 70);
-                page1.add ( lbl, { top: 115, left: 310 } );
+                page1.add ( lbl, { top: 115, left: 400 } );
 
                 let address1 = this._createTxt("Address", 250, true,
                     this.tr("Address is required"),
                     this.tr("Official address to be used in documents")
                 );
-                page1.add ( address1, { top: 115, left: 460 } );
+                page1.add ( address1, { top: 115, left: 550 } );
                 this._address1 = address1
                 this._validator.add(this._address1);
 
                 lbl = this._createLbl(this.tr( "Giro" ), 70);
                 page1.add ( lbl, { top: 145, left: 10 } );
 
-                let giro = this._createTxt("Giro", 150, true,
+                let giro = this._createTxt("Giro", 240, true,
                     this.tr("Giro is required"),
                     this.tr("Giro to be used on invoices")
                 );
@@ -135,13 +135,13 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 this._validator.add(this._giro);
 
                 let address2 = this._createTxt("Address", 250, false,'',this.tr("More address if nessesary"));
-                page1.add ( address2, { top: 145, left: 460 } );
+                page1.add ( address2, { top: 145, left: 550 } );
                 this._address2 = address2
 
                 lbl = this._createLbl(this.tr( "Invoice ref." ), 150);
                 page1.add ( lbl, { top: 175, left: 10 } );
 
-                let invoiceref = this._createTxt("Invoice ref.", 150, true,
+                let invoiceref = this._createTxt("Invoice ref.", 240, true,
                     this.tr("Invoiceref is required"),
                     this.tr("Reference to be used on invoices")
                 );
@@ -152,13 +152,13 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 let address3 = this._createTxt("Address", 250, false,'',
                     this.tr("More address if nessesary")
                 );
-                page1.add ( address3, { top: 175, left: 460 } );
+                page1.add ( address3, { top: 175, left: 550 } );
                 this._address3 = address3
 
                 lbl = this._createLbl(this.tr( "Email" ), 70);
                 page1.add ( lbl, { top: 210, left: 10 } );
 
-                let email = this._createTxt("Email", 150, true,
+                let email = this._createTxt("Email", 240, true,
                     this.tr("Email is required"),
                     this.tr("Official emai address be used on invoices and other documents")
                 );
@@ -167,13 +167,13 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 this._validator.add(this._email);
 
                 lbl = this._createLbl(this.tr( "Zipcode / City" ), 150);
-                page1.add ( lbl, { top: 210, left: 310 } );
+                page1.add ( lbl, { top: 210, left: 400 } );
 
                 let zipcode = this._createTxt("Zipcode", 90, true,
                     this.tr("Zipcode is required"),
                     this.tr("Zipcode to be used on invoices")
                 );
-                page1.add ( zipcode, { top: 210, left: 460 } );
+                page1.add ( zipcode, { top: 210, left: 550 } );
                 this._zipcode = zipcode
                 this._validator.add(this._zipcode);
 
@@ -181,22 +181,21 @@ qx.Class.define ( "venditabant.company.views.Definition",
                     this.tr("City is required"),
                     this.tr("City to be used on invoices")
                 );
-                page1.add ( city, { top: 210, left: 560 } );
+                page1.add ( city, { top: 210, left: 650 } );
                 this._city = city
                 this._validator.add(this._city);
 
                 lbl = this._createLbl(this.tr( "Invoice comment" ), 120);
                 page1.add ( lbl, { top: 240, left: 10 } );
 
-                let invoicecomment = this._createTextArea("Invoice comment", 560, 70, '',
+                let invoicecomment = this._createTextArea("Invoice comment", 650, 70, '',
                     this.tr("Comment to be shown on the invouces")
                 );
                 page1.add ( invoicecomment, { top: 240, left: 150 } );
                 this._invoicecomment = invoicecomment;
 
-
                 if(this.isAutotodo()) {
-                    let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 450, function ( ) {
+                    let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 540, function ( ) {
                         if(validator.validate()) {
                             this.saveCompany ( );
                         } else {
@@ -211,10 +210,10 @@ qx.Class.define ( "venditabant.company.views.Definition",
                         this.backToCockpit ( );
                     }, this, this.tr("Back to the Cockpit") );
 
-                    page1.add ( btnBack, { bottom: 10, left: 610 } );
+                    page1.add ( btnBack, { bottom: 10, left: 700 } );
                     this._btnSignup = btnSave;
                 } else {
-                    let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 560, function ( ) {
+                    let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 650, function ( ) {
                         if(validator.validate()) {
                             this.saveCompany ( );
                         } else {
@@ -225,20 +224,14 @@ qx.Class.define ( "venditabant.company.views.Definition",
                     page1.add ( btnSave, { bottom: 10, left: 150 } );
                     this._btnSignup = btnSave;
                 }
-
-
                 // this._validator.bind("valid", this._btnSignup, "enabled");
-
                 this.loadCompany();
 
                 return page1;
             },
             backToCockpit:function() {
-                let root  = qx.core.Init.getApplication ( ).getRoot();
-                let view = new venditabant.cockpit.views.AutoTodo();
-
-                root._basewin.addView(root, view);
-                //this.destroy();
+                let view = new venditabant.cockpit.helpers.AutoTodos();
+                view.runCheckPoints();
             },
             saveCompany:function() {
                 let that = this;

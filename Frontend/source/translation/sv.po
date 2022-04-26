@@ -70,9 +70,9 @@ msgstr "Email"
 msgid "Submit"
 msgstr "Spara"
 
-#: venditabant/users/login/ForgotWindow.js
+#: venditabant/sales/customers/views/Delivery.js
 msgid "Back"
-msgstr "Tiilbaka"
+msgstr "Tillbaka"
 
 #: venditabant/users/management/views/Definition.js
 msgid "Passwords do not match."
@@ -184,7 +184,7 @@ msgstr "Meddelande"
 
 #: venditabant/company/views/Definition.js
 msgid "Name is requires"
-msgstr "Företags måste anges"
+msgstr "Företags namn måste anges"
 
 #: venditabant/sales/customers/views/Definition.js
 msgid "Org. nr"
@@ -398,7 +398,7 @@ msgstr "IO Pris"
 msgid "Purchase price"
 msgstr "Inköps pris"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/stock/stockitems/views/Definition.js
 msgid "Active"
 msgstr "Aktiv"
 
@@ -598,7 +598,7 @@ msgstr "Workflows"
 msgid "Workflow"
 msgstr "Workflow"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/cockpit/views/AutoTodo.js
 msgid "ID"
 msgstr "Id"
 
@@ -1049,3 +1049,35 @@ msgstr "Spara leveransaddress"
 #: venditabant/sales/customers/views/Delivery.js
 msgid "New delivery address"
 msgstr "Ny leveransaddress"
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Back to the Cockpit"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Created"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Last Check"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "User action"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Check type"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Check name"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "key_id"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Action"
+msgstr ""

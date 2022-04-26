@@ -32,6 +32,7 @@ qx.Class.define("venditabant.communication.Get",
                     let rsp = req.getResponse ( );
                     cb.call ( ctx, (rsp));
                 }, this );
+
                 rpc.send ( );
 
             }

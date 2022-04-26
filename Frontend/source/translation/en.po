@@ -70,7 +70,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: venditabant/users/login/ForgotWindow.js
+#: venditabant/sales/customers/views/Delivery.js
 msgid "Back"
 msgstr ""
 
@@ -130,7 +130,7 @@ msgstr ""
 msgid "Description is required"
 msgstr ""
 
-#: venditabant/sales/customers/views/StockitemDiscounts.js
+#: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Save"
 msgstr ""
 
@@ -402,7 +402,7 @@ msgstr ""
 msgid "Purchase price"
 msgstr ""
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/users/management/views/Definition.js
 msgid "Active"
 msgstr ""
 
@@ -506,7 +506,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: venditabant/sales/invoices/views/InvoiceList.js
+#: venditabant/sales/orders/views/SalesordersList.js
 msgid "Open"
 msgstr ""
 
@@ -538,7 +538,7 @@ msgstr ""
 msgid "Comma separated mail adresses"
 msgstr ""
 
-#: venditabant/sales/customers/views/StockitemDiscounts.js
+#: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Something went wrong saving the invoice address"
 msgstr ""
 
@@ -550,15 +550,15 @@ msgstr ""
 msgid "Product group"
 msgstr ""
 
-#: venditabant/sales/customers/views/StockitemDiscounts.js
+#: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Discount"
 msgstr ""
 
-#: venditabant/sales/customers/views/StockitemDiscounts.js
+#: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Dicount is required"
 msgstr ""
 
-#: venditabant/sales/customers/views/StockitemDiscounts.js
+#: venditabant/sales/customers/views/GeneralDiscounts.js
 msgid "Either amount or percentage ended with %"
 msgstr ""
 
@@ -590,7 +590,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: venditabant/sales/customers/models/InvoiceAddress.js
+#: venditabant/sales/customers/models/DeliveryAddress.js
 msgid "Could not save customer address, please try again"
 msgstr ""
 
@@ -602,7 +602,7 @@ msgstr ""
 msgid "Workflow"
 msgstr ""
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/cockpit/views/AutoTodo.js
 msgid "ID"
 msgstr ""
 
@@ -1048,4 +1048,36 @@ msgstr ""
 
 #: venditabant/sales/customers/views/Delivery.js
 msgid "New delivery address"
+msgstr ""
+
+#: venditabant/sales/customers/views/Delivery.js
+msgid "Back to the Cockpit"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Created"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Last Check"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "User action"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Check type"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Check name"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "key_id"
+msgstr ""
+
+#: venditabant/cockpit/views/AutoTodo.js
+msgid "Action"
 msgstr ""

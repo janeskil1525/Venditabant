@@ -8,7 +8,8 @@ qx.Class.define ( "venditabant.company.views.Definition",
         destruct: function () {
         },
         properties : {
-            support : { nullable : true, check: "Boolean" }
+            support : { nullable : true, check: "Boolean" },
+            autotodo:{nullable:true, check:"Boolean"},
         },
         members: {
             // Public functions ...
@@ -193,21 +194,51 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 page1.add ( invoicecomment, { top: 240, left: 150 } );
                 this._invoicecomment = invoicecomment;
 
-                let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 560, function ( ) {
-                    if(validator.validate()) {
-                        this.saveCompany ( );
-                    } else {
-                        let messages = validator.getInvalidMessages();
-                    }
 
-                }, this, this.tr("Save company") );
-                page1.add ( btnSave, { bottom: 10, left: 150 } );
-                this._btnSignup = btnSave;
+                if(this.isAutotodo()) {
+                    let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 450, function ( ) {
+                        if(validator.validate()) {
+                            this.saveCompany ( );
+                        } else {
+                            let messages = validator.getInvalidMessages();
+                        }
+
+                    }, this, this.tr("Save company") );
+
+                    page1.add ( btnSave, { bottom: 10, left: 150 } );
+
+                    let btnBack = this._createBtn ( this.tr ( "Back" ), "#FFAAAA70", 100, function ( ) {
+                        this.backToCockpit ( );
+                    }, this, this.tr("Back to the Cockpit") );
+
+                    page1.add ( btnBack, { bottom: 10, left: 610 } );
+                    this._btnSignup = btnSave;
+                } else {
+                    let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 560, function ( ) {
+                        if(validator.validate()) {
+                            this.saveCompany ( );
+                        } else {
+                            let messages = validator.getInvalidMessages();
+                        }
+
+                    }, this, this.tr("Save company") );
+                    page1.add ( btnSave, { bottom: 10, left: 150 } );
+                    this._btnSignup = btnSave;
+                }
+
+
                 // this._validator.bind("valid", this._btnSignup, "enabled");
 
                 this.loadCompany();
 
                 return page1;
+            },
+            backToCockpit:function() {
+                let root  = qx.core.Init.getApplication ( ).getRoot();
+                let view = new venditabant.cockpit.views.AutoTodo();
+
+                root._basewin.addView(root, view);
+                //this.destroy();
             },
             saveCompany:function() {
                 let that = this;

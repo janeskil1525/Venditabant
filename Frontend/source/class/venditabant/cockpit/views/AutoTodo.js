@@ -41,6 +41,7 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                         let tableData = [];
                         for(let i = 0; i < response.data.length; i++) {
                             let open = response.data[i].open ? true : false;
+                            let icon = this.selectIcon(response.data[i].check_name)
                             tableData.push([
                                 response.data[i].auto_todo_pkey,
                                 response.data[i].insdatetime,
@@ -49,7 +50,7 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                                 response.data[i].check_type,
                                 response.data[i].check_name,
                                 response.data[i].key_id,
-                                image[0],
+                                image[icon],
                             ]);
                         }
                         this._table.getTableModel().setData(tableData);
@@ -58,6 +59,20 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                     //alert("Set table data here");
                 }, this);
                 //return ;//list;
+            },
+            selectIcon:function(action) {
+                let result = 0;
+                if(
+                    action === 'COMPANY_CHECK_VATNO' ||
+                    action === 'COMPANY_CHECK_EMAIL' ||
+                    action === 'COMPANY_CHECK_GIRO' ||
+                    action === 'COMPANY_CHECK_INVOICEREF' ||
+                    action === 'CUSTOMER_DELIVERYADDRESS' ||
+                    action === 'CUSTOMER_INVOICEADDRESS'
+                ) {
+                    result =  0;
+                }
+                return result;
             },
             _createTable : function() {
                 // Create the initial data
@@ -139,6 +154,7 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                     let root  = qx.core.Init.getApplication ( ).getRoot();
                     let view = new venditabant.sales.customers.views.Invoice();
                     view.setCustomersFkeyExt(this._selectedRow[6]);
+                    view.setAutotodo(true);
                     root._basewin.addView(root, view);
                     // alert("CUSTOMER_INVOICEADDRESS")
                 }
@@ -151,6 +167,7 @@ qx.Class.define ( "venditabant.cockpit.views.AutoTodo",
                 ) {
                     let root  = qx.core.Init.getApplication ( ).getRoot();
                     let view = new venditabant.company.views.Definition();
+                    view.setAutotodo(true);
                     root._basewin.addView(root, view);
                 }
             }

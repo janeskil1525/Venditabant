@@ -4,7 +4,7 @@ use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 use CheckPoints::Model::Company;
 use CheckPoints::Helpers::Check;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 has 'pg';
 
@@ -29,6 +29,21 @@ async sub check_all ($self) {
     $self->capture_message (
         $self->pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
     ) if $err;
+}
+
+async sub check ($self, $companies_fkey) {
+
+    my $err;
+    eval {
+        CheckPoints::Helpers::Check->new(
+            pg => $self->pg
+        )->check($companies_fkey);
+    };
+    $err = $@ if $@;
+    $self->capture_message (
+        $self->pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
+    ) if $err;
+
 }
 
 1;

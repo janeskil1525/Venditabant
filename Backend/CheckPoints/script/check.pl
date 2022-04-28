@@ -28,6 +28,13 @@ option 'configpath' => (
     default 	=> '/home/jan/Project/Laga-Intern/Admin/conf/'
 );
 
+option 'companies_fkey' => (
+    is 			=> 'ro',
+    reader 		=> 'get_companies_fkey',
+    doc 		=> 'companies_fkey for running for only one company',
+    default 	=> '0'
+);
+
 sub check {
     my $self = shift;
 
@@ -50,14 +57,25 @@ sub check {
     );
 
     #say $pg->db->query('select version() as version')->hash->{version};
-
+    my $companies_fkey = $self->get_companies_fkey();
     try {
-        CheckPoints->new(
-            pg     => $pg,
-        )->check_all()->catch(sub($err) {
-            my $log = Log::Log4perl->get_logger();
-            $log->error('ProcessChecpoints ' . $err)
-        });
+        if ($companies_fkey > 0) {
+            CheckPoints->new(
+                pg     => $pg,
+            )->check(
+                $companies_fkey
+            )->catch(sub($err) {
+                my $log = Log::Log4perl->get_logger();
+                $log->error('ProcessChecpoints ' . $err);
+            });
+        } else {
+            CheckPoints->new(
+                pg     => $pg,
+            )->check_all()->catch(sub($err) {
+                my $log = Log::Log4perl->get_logger();
+                $log->error('ProcessChecpoints ' . $err);
+            });
+        }
 
     }catch{
         say $_;
@@ -69,6 +87,8 @@ sub check {
     };
 
     $self->_log_script_done();
+
+    return $companies_fkey;
 }
 
 sub get_config{

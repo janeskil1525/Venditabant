@@ -34,4 +34,16 @@ sub load_list ($self) {
     })->wait;
 }
 
+sub run_checkpoints ($self) {
+    my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
+        $self->req->headers->header('X-Token-Check')
+    );
+
+    my $script = $self->app->config->{checkpoints}->{script};
+    my $conf_path = $self->app->config->{checkpoints}->{config};
+
+     my $result = `$script --configpath --configpath $conf_path --companies_fkey $companies_pkey` ;
+
+    $self->render(json => {'result' => $result});
+}
 1;

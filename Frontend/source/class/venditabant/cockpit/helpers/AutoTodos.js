@@ -13,12 +13,12 @@ qx.Class.define("venditabant.cockpit.helpers.AutoTodos",
         },
         members: {
             runCheckPoints:function() {
-
-                let root  = qx.core.Init.getApplication ( ).getRoot();
-                let view = new venditabant.cockpit.views.AutoTodo();
-
-                root._basewin.addView(root, view);
-                //this.destroy();
+                let checkpoint = new venditabant.cockpit.models.AutoTodos();
+                checkpoint.run_checkpoints(function(){
+                    let root  = qx.core.Init.getApplication ( ).getRoot();
+                    let view = new venditabant.cockpit.views.AutoTodo();
+                    root._basewin.addView(root, view);
+                }, this);
             }
         }
     });

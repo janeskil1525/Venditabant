@@ -83,7 +83,7 @@ async sub check ($self, $companies_pkey) {
     };
     $err = $@ if $@;
     $self->capture_message (
-        $self->pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
+        $self->pg, (caller(0))[1], (caller(0))[0], "CheckPoints::Helpers::Check:::check", $err
     ) if $err;
 }
 

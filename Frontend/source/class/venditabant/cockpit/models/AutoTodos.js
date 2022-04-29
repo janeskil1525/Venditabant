@@ -20,14 +20,25 @@ qx.Class.define("venditabant.cockpit.models.AutoTodos",
             },
             saveCustomer:function(data, cb, ctx) {
                 let com = new venditabant.communication.Post();
-                com.send(this._address, "/api/v1/customers/save/", data, function (success) {
+                com.send(this._address, "/api/v1/autotodos/save/", data, function (success) {
                     let win = null;
                     if (success) {
                         cb.call(ctx,(data));
                     } else {
-                        alert(this.tr('Could not save customer, please try again'));
+                        alert(this.tr('Could not save autotodo, please try again'));
                     }
                 }, this);
             },
+            run_checkpoints:function(cb, ctx) {
+                let com = new venditabant.communication.Get();
+                com.load(this._address, "/api/v1/autotodos/run_checkpoints/",'',function (success) {
+                    let win = null;
+                    if (success) {
+                        cb.call(ctx);
+                    } else {
+                        alert(this.tr('Could not run checkpoints, please try again'));
+                    }
+                }, this);
+            }
         }
     });

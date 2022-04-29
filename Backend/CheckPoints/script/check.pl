@@ -32,7 +32,8 @@ option 'companies_fkey' => (
     is 			=> 'ro',
     reader 		=> 'get_companies_fkey',
     doc 		=> 'companies_fkey for running for only one company',
-    default 	=> '0'
+    default 	=> 0,
+    format 		=> 'i',
 );
 
 sub check {

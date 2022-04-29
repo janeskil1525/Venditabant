@@ -4,7 +4,7 @@ use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 use CheckPoints::Model::Company;
 use CheckPoints::Helpers::Check;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 has 'pg';
 

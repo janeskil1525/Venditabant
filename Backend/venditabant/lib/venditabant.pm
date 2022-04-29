@@ -245,6 +245,7 @@ sub startup ($self) {
 
     $auth->get('/autotodos/load_list/')->to('autotodos#load_list');
     $auth->put('/autotodos/save/')->to('autotodos#save_warehouse');
+    $auth->get('/autotodos/run_checkpoints/')->to('autotodos#run_checkpoints');
 
     $auth->put('/invoices/save/')->to('invoices#save_salesorder');
     $auth->put('/invoices/close/')->to('invoices#close_salesorder');

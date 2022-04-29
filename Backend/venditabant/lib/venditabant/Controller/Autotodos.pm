@@ -41,9 +41,11 @@ sub run_checkpoints ($self) {
 
     my $script = $self->app->config->{checkpoints}->{script};
     my $conf_path = $self->app->config->{checkpoints}->{config};
+    my $perl = $self->app->config->{checkpoints}->{perl};
 
-     my $result = `$script --configpath --configpath $conf_path --companies_fkey $companies_pkey` ;
+     my $result = `$perl $script --configpath $conf_path --companies_fkey $companies_pkey` ;
 
-    $self->render(json => {'result' => $result});
+
+    $self->render(json => {'result' => $companies_pkey});
 }
 1;

@@ -9,11 +9,10 @@ use Data::Dumper;
 has 'pg';
 has 'db';
 
-my $current_version = 6;
+my $current_version = 8;
 
 sub release_single_company ($self, $companies_pkey =  0) {
 
-    # $self->db($self->pg->db) unless $self->db;
 
     my $releaser = Release::Helpers::Release::ReleaseSteps->new(
         db => $self->db

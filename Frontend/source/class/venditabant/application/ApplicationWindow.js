@@ -190,9 +190,9 @@ qx.Class.define ( "venditabant.application.ApplicationWindow",
                 let menu = new qx.ui.menu.Menu();
 
                 let usersButton = new qx.ui.menu.Button(this.tr("Users"));
+                let customerButton = new qx.ui.menu.Button(this.tr("Customers"));
                 let stockitemButton = new qx.ui.menu.Button(this.tr("Stockitems"));
                 let pricelistButton = new qx.ui.menu.Button(this.tr("Pricelists"));
-                let customerButton = new qx.ui.menu.Button(this.tr("Customers"));
                 let warehouseButton = new qx.ui.menu.Button(this.tr("Warehouse"));
                 let commissionButton = new qx.ui.menu.Button(this.tr("Commission"));
 

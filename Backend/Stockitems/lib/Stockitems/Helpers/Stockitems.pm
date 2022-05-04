@@ -49,7 +49,7 @@ sub upsert ($self, $companies_pkey, $users_pkey, $stockitem) {
         Pricelists::Model::PricelistItems->new(
             db => $db
         )->insert_item(
-            $companies_pkey, $item
+            $companies_pkey, $users_pkey, $item
         );
 
         my $supplier = Suppliers->new(

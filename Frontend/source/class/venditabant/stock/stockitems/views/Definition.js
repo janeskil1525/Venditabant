@@ -177,9 +177,9 @@ qx.Class.define ( "venditabant.stock.stockitems.views.Definition",
 
             saveStockitem:function() {
                 let stockitem = this._stockitem.getValue();
-                let description  = this._description.getValue();
-                let price  = this._price.getValue();
-                let purchaseprice  = this._purchaseprice.getValue();
+                let description  = this._description.getValue() ? this._description.getValue() : ' ';
+                let price  = this._price.getValue() ? this._price.getValue() : 0;
+                let purchaseprice  = this._purchaseprice.getValue() ? this._purchaseprice.getValue() : 0;
                 let active  = this._active.getValue();
                 let stocked  = this._stocked.getValue();
 

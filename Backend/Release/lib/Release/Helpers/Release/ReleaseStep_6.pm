@@ -26,7 +26,7 @@ sub step ($self, $companies_pkey) {
             DO UPDATE SET moddatetime = now();
     };
     $self->db->query(
-        $stmt,($parameters_pkey, $parameters_pkey,$parameters_pkey,$parameters_pkey)
+        $stmt,($parameters_pkey)
     );
 }
 

@@ -9,7 +9,6 @@ sub login_user ($self) {
 	$self->render_later;
 
 	my $data = from_json($self->req->body);
-
 	$self->login->login_user($data->{username}, $data->{password})->then(sub ($result) {
 		if($result) {
 			$self->render(json => {'result' => "success", data => $result});

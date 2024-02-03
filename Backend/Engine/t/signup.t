@@ -8,7 +8,7 @@ use Engine;
 sub execute {
 
     my $pg = Mojo::Pg->new->dsn(
-        "dbi:Pg:dbname=Venditabant;host=192.168.1.108;port=5432;user=postgres;password=PV58nova64"
+        "dbi:Pg:dbname=Venditabant;host=database;port=15432;user=postgres;password=PV58nova64"
     );
 
     my $data->{company}->{email} = 'kalle_pelle@olle.com';
@@ -31,7 +31,7 @@ sub execute {
         pg => $pg,
         config => $config
     )->execute(
-        'companies',$data
+        'Companies',$data
     )->catch(sub{
         my $err = shift;
         print $err . '\n';

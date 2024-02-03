@@ -84,4 +84,4 @@
   venditabant.sales.orders.views.Definition.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Definition.js.map?dt=1635235624300
+//# sourceMappingURL=Definition.js.map?dt=1706805923417

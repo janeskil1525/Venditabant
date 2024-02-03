@@ -14,6 +14,7 @@ async sub login_user ($self, $userid, $password) {
 
     $password = sha512_base64 $password;
 
+    say "Password: " . Dumper($password);
     my $login = venditabant::Model::Login->new(
         pg => $self->pg
     )->login(

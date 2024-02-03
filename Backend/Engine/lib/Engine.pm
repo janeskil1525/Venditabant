@@ -5,8 +5,10 @@ use Log::Log4perl qw(:easy);
 use Workflow::Factory qw(FACTORY);
 use Workflow::State;
 use Data::Dumper;
+use Syntax::Operator::Matches qw( matches mismatches );
+use Types::Standard qw( Str Int Enum ArrayRef Object );
 
-our $VERSION = '0.10';
+our $VERSION = '0.13';
 
 use Engine::Load::Workflow;
 use Engine::Load::DataPrecheck;
@@ -36,7 +38,7 @@ async sub execute  {
 
         foreach my $action (@{$data->{actions}}) {
             my @avail = $wf->get_current_actions();
-            if ($action ~~ @avail) {
+            if ($action matches @avail) {
                 if((!$wf->context->param('context_set')) or ($wf->context->param('context_set') == 0)) {
                     $wf->context(Workflow::Context->new(
                         %{ $data }
@@ -92,7 +94,7 @@ async sub auto_transits ($self) {
                 );
                 my @avail = $wf->get_current_actions();
 
-                if ($activity ~~ @avail) {
+                if ($activity matches @avail) {
                     $data = await Engine::Load::Mappings->new(
                         pg => $self->pg
                     )->mappings(

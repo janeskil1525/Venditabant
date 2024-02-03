@@ -26,7 +26,7 @@
         }
       },
       getVersion: function getVersion() {
-        return "0.1.2";
+        return "0.1.3";
       },
       venditabant_port: function venditabant_port() {
         if (this._mode === 'test') {
@@ -40,4 +40,4 @@
   venditabant.application.Const.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Const.js.map?dt=1650468541982
+//# sourceMappingURL=Const.js.map?dt=1706805901748

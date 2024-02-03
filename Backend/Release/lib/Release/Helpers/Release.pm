@@ -21,6 +21,8 @@ sub release_single_company ($self, $companies_pkey =  0) {
     if ($companies_pkey > 0) {
         $releaser->release($companies_pkey, $current_version);
     }
+
+    return 1;
 }
 
 sub release ($self) {

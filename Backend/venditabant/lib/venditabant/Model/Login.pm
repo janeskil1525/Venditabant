@@ -8,7 +8,7 @@ has 'pg';
 sub login ($self, $userid, $password) {
 
     my $login_stmt = qq{
-        SELECT users_pkey, userid, username, is_admin, companies_pkey, company,
+        SELECT users_pkey, userid, username, is_admin, companies_pkey, name,
             passwd as password, support
             FROM users, companies, users_companies
            WHERE companies_pkey = companies_fkey AND users_pkey = users_fkey
@@ -20,7 +20,7 @@ sub login ($self, $userid, $password) {
 
     my $hash;
     $hash = $result->hash if $result->rows;
-
+    say "Login " . Dumper($hash);
     return $hash;
 }
 

@@ -18,7 +18,7 @@ qx.Class.define("venditabant.application.Const",
                 }
             },
             getVersion:function() {
-                return "0.1.2"
+                return "0.1.3"
             },
             venditabant_port:function() {
                 if (this._mode === 'test') {

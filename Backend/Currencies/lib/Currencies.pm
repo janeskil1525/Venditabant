@@ -12,7 +12,7 @@ async sub upsert_exchangerate_p($self, $exchangerate) {
     return Currencies::Helpers::Exchangerates->new(
         pg => $self->pg
     )->upsert_p(
-        $exchangerateLet
+        $exchangerate
     );
 }
 

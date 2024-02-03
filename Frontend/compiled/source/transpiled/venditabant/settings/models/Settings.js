@@ -58,4 +58,4 @@
   venditabant.settings.models.Settings.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Settings.js.map?dt=1633786746377
+//# sourceMappingURL=Settings.js.map?dt=1706805990156

@@ -31,13 +31,14 @@ sub execute ($self, $wf) {
         $context->param('companies_fkey'), $context->param('users_fkey'), $data
     );
 
-    workflow_error unless $result eq 'success';
+    print "Before exceptttion" . Dumper($result) . "\n";
+    workflow_error($result) unless $result eq 'success';
 
-    my $company = $context->param('company')->{company};
+    my $name = $context->param('company')->{name};
     $wf->add_history(
         Workflow::History->new({
             action      => "Company updated",
-            description => "Company $company was updated",
+            description => "Company $name was updated",
             user        => $context->param('history')->{userid},
         })
     );

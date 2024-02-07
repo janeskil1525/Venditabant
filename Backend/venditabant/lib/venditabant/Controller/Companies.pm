@@ -27,7 +27,7 @@ sub save_company ($self) {
 
     eval {
         $self->workflow->execute(
-            'companies', $data
+            'Companies', $data
         );
         $self->render(json => { result => 'success'});
     };
@@ -57,13 +57,11 @@ sub load ($self) {
     $self->render_later;
     my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
         $self->req->headers->header('X-Token-Check')
+
     );
-
     $self->companies->load_p($companies_pkey, $users_pkey)->then(sub ($result) {
-
         $self->render(json => {'result' => 'success', data => $result});
     })->catch( sub ($err) {
-
         $self->render(json => {'result' => 'failed', data => $err});
     })->wait;
 }

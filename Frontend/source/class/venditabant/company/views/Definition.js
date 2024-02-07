@@ -37,17 +37,6 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 var validator = new qx.ui.form.validation.Manager();
                 this._validator = validator;
 
-                let lbl = this._createLbl(this.tr( "Company" ), 120);
-                page1.add ( lbl, { top: 10, left: 10 } );
-
-                let company = this._createTxt("Company", 240, true,
-                    this.tr("Company is required"),
-                    this.tr('Company name')
-                );
-                page1.add ( company, { top: 10, left: 150 } );
-                this._company = company;
-                this._validator.add(this._company);
-
                 let languages = new venditabant.support.views.LanguageSelectBox().set({
                     width:150,
                     emptyrow:false,
@@ -58,13 +47,13 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 page1.add ( languagesview, { top: 45, left: 150 } );
 
                 lbl = this._createLbl(this.tr( "Name" ), 70);
-                page1.add ( lbl, { top: 10, left: 400 } );
+                page1.add ( lbl, { top: 10, left: 10 } );
 
                 let name = this._createTxt("Name", 250, true,
                     this.tr("Name is requires"),
                     this.tr('Company official name for invoices and other customer communication')
                     );
-                page1.add ( name, { top: 10, left: 550 } );
+                page1.add ( name, { top: 10, left: 150 } );
                 this._name = name
                 this._validator.add(this._name);
 
@@ -235,7 +224,6 @@ qx.Class.define ( "venditabant.company.views.Definition",
             },
             saveCompany:function() {
                 let that = this;
-                let company = this._company.getValue();
                 let name  = this._name.getValue();
                 let registrationnumber = this._registrationnumber.getValue();
                 let homepage = this._homepage.getValue();
@@ -253,7 +241,6 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 let invoiceref = this._invoiceref.getValue() ? this._invoiceref.getValue() : ' ';
 
                 let data = {
-                    company: company,
                     name: name,
                     registrationnumber: registrationnumber,
                     homepage: homepage,
@@ -283,7 +270,6 @@ qx.Class.define ( "venditabant.company.views.Definition",
                 let that = this;
                 let company = new venditabant.company.models.Company();
                 company.loadCompany(function(response) {
-                    that._company.setValue(response.data.company);
                     that._name.setValue(response.data.name);
                     that._registrationnumber.setValue(response.data.registrationnumber);
                     that._homepage.setValue(response.data.homepage);

@@ -36,7 +36,7 @@ sub execute ($self, $wf) {
     );
 
     my $company_stmt = qq {
-        INSERT INTO companies (company, registrationnumber, languages_fkey)
+        INSERT INTO companies (name, registrationnumber, languages_fkey)
         VALUES (?, ?,(SELECT languages_pkey FROM languages WHERE lan = 'swe'))
         RETURNING companies_pkey;
     };

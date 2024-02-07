@@ -18,13 +18,13 @@ sub execute {
     $data->{company}->{company_address} = 'kalle_pelle@olle.com';
     $data->{company}->{password} = 'kalle_pelle@olle.com';
 
-    $data->{companies_fkey} = 24;
-    $data->{users_fkey} = 24;
+    $data->{companies_fkey} = 0;
+    $data->{users_fkey} = 0;
 
     push @{$data->{actions}}, 'signup';
 
     my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';
-    $config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';
+    #$config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';
 
 
     Engine->new(

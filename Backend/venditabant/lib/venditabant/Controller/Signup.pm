@@ -20,10 +20,17 @@ sub signup_company ($self) {
         $self->workflow->execute(
             'Companies', $data
         );
+        say "Success";
         $self->render(json => { result => 'success'});
     };
 
-    $self->render(json => { result => 'failure', error => $@}) if $@;
+
+    if ($@) {
+        say $@;
+        $self->render(json => { result => 'failure', error => $@});
+
+    }
+
 
 }
 

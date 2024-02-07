@@ -54,5 +54,5 @@ sub get_pg($self) {
         #"dbi:Pg:dbname=Venditabant;host=192.168.1.108;port=5432;user=postgres;password=PV58nova64"
     );
     return $pg;
-}
+};
 1;

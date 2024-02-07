@@ -8,18 +8,12 @@ create table if not exists companies
     insdatetime timestamp without time zone NOT NULL DEFAULT NOW(),
     modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System',
     moddatetime timestamp without time zone NOT NULL DEFAULT NOW(),
-    company varchar(100) not null default '',
     name varchar(100) not null default '',
     registrationnumber VARCHAR(50) not null default '',
     homepage VARCHAR(100) not null default '',
     phone VARCHAR(50) not null default '',
     CONSTRAINT companies_pkey PRIMARY KEY (companies_pkey)
 );
-
-CREATE UNIQUE INDEX idx_companies_company
-    ON public.companies USING btree
-        (company COLLATE pg_catalog."default");
-
 
 create table if not exists stockitems
 (
@@ -2618,3 +2612,5 @@ CREATE TABLE workflow_companies
     primary key ( workflow_id )
 );
 -- 49 down
+
+

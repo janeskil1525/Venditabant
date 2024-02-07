@@ -79,7 +79,7 @@ sub save_user ($self) {
 say Dumper($data);
     eval {
         $self->workflow->execute(
-            'companies', $data
+            'Companies', $data
         );
         $self->render(json => { result => 'success'});
     };

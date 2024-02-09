@@ -10,7 +10,7 @@ async sub upsert_p ($self, $companies_pkey, $user) {
     return $self->upsert($companies_pkey, $user);
 }
 
-sub upsert ($self, $companies_pkey, $user) {
+sub insert ($self, $companies_pkey, $user) {
 
     my $db = $self->pg->db;
     my $tx = $db->begin();
@@ -18,12 +18,12 @@ sub upsert ($self, $companies_pkey, $user) {
     my $err;
     eval {
         my $user_obj = Companies::Model::Users->new(db => $db);
-        my $stockitems_pkey = $user_obj->upsert(
+        my $users_pkey = $user_obj->insert(
             $user
         );
 
         my $users_companies_pkey = $user_obj->upsert_user_companies(
-            $companies_pkey, $stockitems_pkey
+            $companies_pkey, $users_pkey
         );
 
         $tx->commit();

@@ -2,11 +2,11 @@
 msgid "Log in"
 msgstr "Logga in"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Email"
 msgstr "Email"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "Password"
 msgstr "Lösenord"
 
@@ -38,7 +38,7 @@ msgstr "Hem"
 msgid "Cockpit"
 msgstr "Cockpit"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Company"
 msgstr "Företag"
 
@@ -74,7 +74,7 @@ msgstr "Spara"
 msgid "Back"
 msgstr "Tillbaka"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "Passwords do not match."
 msgstr "Lösenorden är olika, korrigera och försök igen"
 
@@ -114,19 +114,19 @@ msgstr "Lösenord igen"
 msgid "Cancel"
 msgstr "Ny"
 
-#: venditabant/stock/warehouse/views/Definition.js
+#: venditabant/stock/warehouse/views/HistoryList.js
 msgid "Warehouse"
 msgstr "Lager"
 
-#: venditabant/stock/warehouse/views/Definition.js
+#: venditabant/stock/warehouse/views/HistoryList.js
 msgid "Warehouse is required"
 msgstr "Lager måste anges"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Description"
 msgstr "Beskrivning"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Description is required"
 msgstr "Beskrivning måste anges"
 
@@ -134,7 +134,7 @@ msgstr "Beskrivning måste anges"
 msgid "Save"
 msgstr "Spara"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Something went wront with the save, please try again"
 msgstr "Något gick fel när artikeln sparades, kontrollera och försök igen"
 
@@ -170,7 +170,7 @@ msgstr "Något gick fel när kunden skulle sparas, kontrollera och försök igen
 msgid "Source"
 msgstr "Källa"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Customer is required"
 msgstr "Kund är obligatorisk"
 
@@ -182,39 +182,39 @@ msgstr "Metod"
 msgid "Message"
 msgstr "Meddelande"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Name is requires"
 msgstr "Företags namn måste anges"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Org. nr"
 msgstr "Org. nr."
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Org. nr is required"
 msgstr "Organisationsnummer måste anges"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Phone"
 msgstr "Telefon"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Phone is required"
 msgstr "Telefon måste anges"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Homepage"
 msgstr "Hemsida"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Homepage is required"
 msgstr "Hemsida kan inte vara tomt"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "VAT No"
 msgstr "VAT Nr"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "VAT No is required"
 msgstr "VAT Nummer måste anges"
 
@@ -222,27 +222,27 @@ msgstr "VAT Nummer måste anges"
 msgid "Address"
 msgstr "Address"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Address is required"
 msgstr "Address måste anges"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Giro"
 msgstr "Giro"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Giro is required"
 msgstr "Giro måste anges"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Invoice ref."
 msgstr "Faktura referens"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Invoiceref is required"
 msgstr "Faktura referens krävs"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Email is required"
 msgstr "Faktura referens måste anges"
 
@@ -250,35 +250,35 @@ msgstr "Faktura referens måste anges"
 msgid "Zipcode / City"
 msgstr "Postnummer / Ort"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Zipcode is required"
 msgstr "Postnummer måste anges"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "City is required"
 msgstr "Post ort måste anges"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Invoice comment"
 msgstr "Faktura kommentar"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Sales"
 msgstr "Försäljning"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "VAT"
 msgstr "Moms"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Percentage"
 msgstr "Procent"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "0-9 %"
 msgstr "0-9%"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Percentage is required"
 msgstr "Procent måste anges"
 
@@ -290,67 +290,67 @@ msgstr "Ta bort"
 msgid "New"
 msgstr "Ny"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Invoice days"
 msgstr "Dagar netto"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Days"
 msgstr "Dagar"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Ds"
 msgstr "Ds"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Days are required"
 msgstr "Dagar netto måste anges"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Sales units"
 msgstr "Försäljnings enhet"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Unit"
 msgstr "Enhet"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Unit is required"
 msgstr "Enhet måste anges"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Product groups"
 msgstr "Produktgrupp"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Group"
 msgstr "Grupp"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Group is required"
 msgstr "Grupp är obligatorisk"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Accounts"
 msgstr "Konton"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Account"
 msgstr "Konto"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Account is required"
 msgstr "Konto krävs"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Currencies"
 msgstr "Valutor"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Currency"
 msgstr "Valuta"
 
-#: venditabant/settings/views/Definition.js
+#: venditabant/settings/views/HistoryList.js
 msgid "Currency is required"
 msgstr "Valuta måste anges"
 
@@ -358,7 +358,7 @@ msgstr "Valuta måste anges"
 msgid "Customer"
 msgstr "Kund"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Pricelist"
 msgstr "Prislista"
 
@@ -366,15 +366,15 @@ msgstr "Prislista"
 msgid "Comment"
 msgstr "Kommentar"
 
-#: venditabant/sales/pricelists/views/Definition.js
+#: venditabant/sales/pricelists/views/HistoryList.js
 msgid "Add"
 msgstr "Lägg till"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Stockitem"
 msgstr "Artikel"
 
-#: venditabant/sales/pricelists/views/Definition.js
+#: venditabant/sales/pricelists/views/HistoryList.js
 msgid "From"
 msgstr "Från"
 
@@ -382,7 +382,7 @@ msgstr "Från"
 msgid "Something went bad during saving of pricelist item"
 msgstr "Något gick fel när prisliste raden skulle sparas"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Stockitem is required"
 msgstr "Artikel är obligatorisk"
 
@@ -390,51 +390,51 @@ msgstr "Artikel är obligatorisk"
 msgid "Price"
 msgstr "Pris"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "PO price"
 msgstr "IO Pris"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Purchase price"
 msgstr "Inköps pris"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Active"
 msgstr "Aktiv"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Stocked"
 msgstr "Lagrad"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "User"
 msgstr "Användare"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "User is required"
 msgstr "Användare krävs"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "Name is required"
 msgstr "Namn kan ej vara tomt"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "Password 1"
 msgstr "Lösenord 1"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "Password 2"
 msgstr "Lösenord 2"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "Password can't be empty"
 msgstr "Lösenord kan inte vara tomt"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "Password is to short"
 msgstr "Lösenord är för kort"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "Something went wrong saving the user"
 msgstr "Något gick fel när användaren skulle sparas"
 
@@ -602,19 +602,19 @@ msgstr "Workflow"
 msgid "ID"
 msgstr "Id"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Purchase Price"
 msgstr "Inköpspris"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "currencies_fkey"
 msgstr "currencies_fkey"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "suppliers_pkey"
 msgstr "suppliers_pkey"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "PO Currency"
 msgstr "Inköpsvaluta"
 
@@ -686,15 +686,15 @@ msgstr "Inställningar"
 msgid "Discounts"
 msgstr "Rabatter"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Org. nr."
 msgstr "Organisations nr."
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "languages_fkey"
 msgstr "languages_fkey"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Language"
 msgstr "Språk"
 
@@ -714,147 +714,147 @@ msgstr "Registrera dig och ditt företag"
 msgid "Export"
 msgstr "Exportera"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Unique id for the customer set automatically if left empty"
 msgstr "Unikt id för kunden som sätts automatiskt om det lämnas tomt. Bäst här är att använda det namn som används för kunden i dagligt tal"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Customers formal name"
 msgstr "Formellt kundnamn"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Customers organisational or VAT id"
 msgstr "Organisationsnummer eller VAT nummer"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Select pricelist for customer"
 msgstr "Välj prislista för kunden om annan än default listan ska användas"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Customer phon number is required"
 msgstr "Kundens formella telefonnummer är obligatoriskt"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "The customers official phonnumber"
 msgstr "Ange kundens officiella telefonnummer"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "The customers official homepage, if exists"
 msgstr "Kundens hemsida om sådan finns"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Select customer language"
 msgstr "Välj vilket språk som ska användas i mail och andra typer av kommunikation"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "The customers is active or not, shown here as information only"
 msgstr "Visar om kunden är aktiv eller ej"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Blocked"
 msgstr "Blokerad"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "The customers is blocked or not, shown here as information only"
 msgstr "Visar om kunden är blockerad eller ej"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Internal comment regarding the customer"
 msgstr "Intern kommentar ang kund"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Save the customer"
 msgstr "Spara kunden"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "Enter a new customer"
 msgstr "Skapa en ny kund"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "active"
 msgstr "Aktiv"
 
-#: venditabant/sales/customers/views/Definition.js
+#: venditabant/sales/customers/views/HistoryList.js
 msgid "blocked"
 msgstr "Blokerad"
 
-#: venditabant/sales/pricelists/views/Definition.js
+#: venditabant/sales/pricelists/views/HistoryList.js
 msgid "Select pricelist"
 msgstr "Välj prislista"
 
-#: venditabant/sales/pricelists/views/Definition.js
+#: venditabant/sales/pricelists/views/HistoryList.js
 msgid "Create a new pricelist"
 msgstr "Skapa en ny prislista"
 
-#: venditabant/sales/pricelists/views/Definition.js
+#: venditabant/sales/pricelists/views/HistoryList.js
 msgid "Select stockitem"
 msgstr "Välj artikel"
 
-#: venditabant/sales/pricelists/views/Definition.js
+#: venditabant/sales/pricelists/views/HistoryList.js
 msgid "Set customer gross price"
 msgstr "Ange kundens bruttopris"
 
-#: venditabant/sales/pricelists/views/Definition.js
+#: venditabant/sales/pricelists/views/HistoryList.js
 msgid "Set from what date this price will be valid"
 msgstr "Ange prisets från datum"
 
-#: venditabant/sales/pricelists/views/Definition.js
+#: venditabant/sales/pricelists/views/HistoryList.js
 msgid "Set the too date this price will be valid"
 msgstr "Ange till datum"
 
-#: venditabant/sales/pricelists/views/Definition.js
+#: venditabant/sales/pricelists/views/HistoryList.js
 msgid "Save price record"
 msgstr "Spara pris"
 
-#: venditabant/sales/pricelists/views/Definition.js
+#: venditabant/sales/pricelists/views/HistoryList.js
 msgid "Create a new price record for the selected pricelist"
 msgstr "Skapa ett nytt pris för vald prislista"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Unique id for stockitem "
 msgstr "Unikt artikel id"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Descriptive description of stockitem"
 msgstr "Artikelbeskrivning"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Select product group"
 msgstr "Välj produktgrupp"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Sales price for default pricelist"
 msgstr "Brutto pris i default prislistan"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Enter purchase pris in selected currency"
 msgstr "Inköpspris i vald valuta"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Select VAT type"
 msgstr "Välj momstyp"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "This stockitem is active and can be sold"
 msgstr "Den här artikeln är aktiv och kan säljas eller inaktiv och används inte längre"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "This stockitem is stocked"
 msgstr "Detta är en lager artikel"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Select sales account for the accounting"
 msgstr "Välj försäljnings konto"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Select salesunit for this product"
 msgstr "Välj sälj enhet"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Save stockitem"
 msgstr "Spara artikel"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Create new stockitem"
 msgstr "Skapa en ny artikel"
 
@@ -874,103 +874,103 @@ msgstr "Spara prislista"
 msgid "Close this window"
 msgstr "Stäng det här fönstret"
 
-#: venditabant/stock/stockitems/views/Definition.js
+#: venditabant/stock/stockitems/views/HistoryList.js
 msgid "Select purchase currency"
 msgstr "Välj inköps valute"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Company is required"
 msgstr "Företag är obligatoriskt"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Company name"
 msgstr "Företags namn"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Company language"
 msgstr "Företags språk"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Company official name for invoices and other customer communication"
 msgstr "Officielt namn på företag att använda i kommunikation med kunder"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Organisational Number ATTENTION this is important it's correct since it will be used on invoices"
 msgstr "Organisations nummer VIKTIGT denna data måste vara korrekt då den används på fakturor"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Phone number that should be used on documents for customers"
 msgstr "Telefonnummer att använda i kund kommunikation"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Official homepage to be used on documents for customers"
 msgstr "Officiell hemsida aanvända i kommunikation med kunder"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "VAT Number ATTENTION this is important it's correct since it will be used on invoices"
 msgstr "Moms reg nr, om denna information saknas använd organisationsnummer"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Official address to be used in documents"
 msgstr "Officiell address att använda i kommunikation med kunder"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Giro to be used on invoices"
 msgstr "Post / Bank giro att använda på fakturoeo"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "More address if nessesary"
 msgstr "Mre address information om nödvändigt"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Reference to be used on invoices"
 msgstr "Vår faktura referens"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Official emai address be used on invoices and other documents"
 msgstr "Officiell e-mail address att använda på fakturor och andra dokument"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Zipcode to be used on invoices"
 msgstr "Postnummer för fakturor"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "City to be used on invoices"
 msgstr "Post ort för fakturor"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Comment to be shown on the invouces"
 msgstr "Faktura kommentar"
 
-#: venditabant/company/views/Definition.js
+#: venditabant/company/views/HistoryList.js
 msgid "Save company"
 msgstr "Spara företags information"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "User has to be a valid email address"
 msgstr "Användare måste vara en fungerande unik email address"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "The users name"
 msgstr "Användarens namn"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "A strong password"
 msgstr "Ett starkt lösenord"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "User is active and can login"
 msgstr "Användaren är aktiv och kan använda systemet"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "The language to use for this user"
 msgstr "Användarens språk"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "Save user"
 msgstr "Spara användare"
 
-#: venditabant/users/management/views/Definition.js
+#: venditabant/users/management/views/HistoryList.js
 msgid "New user"
 msgstr "Ny användare"
 

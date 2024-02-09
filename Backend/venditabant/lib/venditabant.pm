@@ -25,6 +25,7 @@ use System::Helpers::Settings;
 use Currencies;
 use venditabant::Helpers::Stockitems::Mobilelist;
 use venditabant::Helpers::Minion;
+use venditabant::Helpers::History::History;
 use Workflows;
 
 use Data::Dumper;
@@ -130,6 +131,11 @@ sub startup ($self) {
       workflows => sub {
         state  $workflows = Workflows->new(pg => shift->pg)
       });
+
+    $self->helper(
+        history => sub {
+            state  $history = venditabant::Helpers::History::History->new(pg => shift->pg)
+        });
 
     # Configure the application
     $self->secrets($config->{secrets});
@@ -271,6 +277,8 @@ sub startup ($self) {
     $auth->get('/workflows/load_list/')->to('workflows#load_list');
     $auth->put('/workflows/save/')->to('workflows#save_workflow');
     $auth->get('/workflows/load/:workflows_fkey/:workflow_type')->to('workflows#load_workflow');
+
+    $auth->get('/workflows/history/load_list/:hist_type/:hist_key')->to('history#load_list');
 }
 
 1;

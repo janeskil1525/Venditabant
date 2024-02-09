@@ -281,6 +281,7 @@
     "venditabant.cockpit.views.AutoTodo",
     "venditabant.sales.customers.views.StockitemDiscounts",
     "venditabant.sales.customers.views.ProductGroupDiscounts",
-    "venditabant.sales.customers.views.GeneralDiscounts"
+    "venditabant.sales.customers.views.GeneralDiscounts",
+    "venditabant.History.views.HistoryList"
   ]
 }

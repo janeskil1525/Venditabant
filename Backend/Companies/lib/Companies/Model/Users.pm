@@ -5,7 +5,7 @@ use Digest::SHA qw{sha512_base64};
 
 has 'db';
 
-sub upsert ($self, $data) {
+sub insert ($self, $data) {
 
     $data->{password} = sha512_base64($data->{password});
     my $users_stmt = qq{

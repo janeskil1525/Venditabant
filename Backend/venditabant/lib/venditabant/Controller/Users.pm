@@ -76,7 +76,7 @@ sub save_user ($self) {
     } else {
         push @{$data->{actions}}, 'create_user';
     }
-say Dumper($data);
+
     eval {
         $self->workflow->execute(
             'Companies', $data

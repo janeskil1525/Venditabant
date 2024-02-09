@@ -18,8 +18,16 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 let tabView = new qx.ui.tabview.TabView();
                 view.add(tabView, {top: 0, left: 5, right: 5, height: "50%"});
 
-                var page1 = new qx.ui.tabview.Page("Definition");
+                let page1 = new qx.ui.tabview.Page("Definition");
                 page1.setLayout(new qx.ui.layout.Canvas());
+
+                let page2 = new qx.ui.tabview.Page("History");
+                page2.setLayout(new qx.ui.layout.Canvas());
+
+                let history = new venditabant.History.views.HistoryList();
+                let historyTable = history.getTable();
+                page2.add(historyTable,{ top: 2, left: 10 });
+                this.history = history;
 
                 let validator = new qx.ui.form.validation.Manager();
                 this._validator = validator;
@@ -101,7 +109,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 page1.add ( btnNew, { bottom: 10, right: 10 } );
 
                 tabView.add(page1);
-
+                tabView.add(page2);
                 /*var page2 = new qx.ui.tabview.Page("Page 2");
                 tabView.add(page2);
 
@@ -200,7 +208,8 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                     that._active.setValue(active);
                     that._password1.setValue('');
                     that._password2.setValue('');
-                    that._languages.setKey(selectedRows[0][4])
+                    that._languages.setKey(selectedRows[0][4]);
+                    that.history.loadHistory('users',that._users_pkey);
                 });
                 var tcm = table.getTableColumnModel();
 
@@ -236,6 +245,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                         ]);
                     }
                     this._table.getTableModel().setData(tableData);
+
                 }, this);
             }
         }

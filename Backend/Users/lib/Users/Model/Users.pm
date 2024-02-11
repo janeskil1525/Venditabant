@@ -1,4 +1,4 @@
-package Companies::Model::Users;
+package Users::Model::Users;
 use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
 use Digest::SHA qw{sha512_base64};
@@ -85,9 +85,9 @@ sub load_list_support ($self) {
 async sub load_user_from_pkey($self, $users_pkey) {
     my $result = $self->db->select(
         'users', ['*'],
-            {
-                users_pkey => $users_pkey
-            }
+        {
+            users_pkey => $users_pkey
+        }
     );
 
     my $hash;
@@ -95,4 +95,5 @@ async sub load_user_from_pkey($self, $users_pkey) {
 
     return $hash;
 }
+
 1;

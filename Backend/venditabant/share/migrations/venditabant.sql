@@ -2600,9 +2600,8 @@ INSERT INTO workflows (workflow)
         ON CONFLICT (workflow) DO NOTHING;
 
 INSERT INTO workflows (workflow)
-    VALUES ('companies')
+    VALUES ('Companies')
         ON CONFLICT (workflow) DO NOTHING;
-
 
 CREATE TABLE workflow_companies
 (
@@ -2612,5 +2611,22 @@ CREATE TABLE workflow_companies
     primary key ( workflow_id )
 );
 -- 49 down
+-- 50 up
+
+INSERT INTO workflows (workflow)
+VALUES ('Users')
+ON CONFLICT (workflow) DO NOTHING;
+
+CREATE TABLE workflow_users
+(
+    workflow_id  bigint not null,
+    users_fkey  bigint not null,
+    primary key ( workflow_id )
+);
+
+ALTER TABLE workflow_companies
+    DROP COLUMN users_fkey;
+
+--- 50 down
 
 

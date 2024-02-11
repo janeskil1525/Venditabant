@@ -94,19 +94,14 @@ sub XSUB;
 sub XSUBANY;
 sub const_sv;
 }
-package B::Debug {
-sub cstring;
-sub main_root;
-sub main_start;
-sub sv_undef;
-sub walkoptree;
-}
 package B::Deparse {
 sub main_cv;
 sub main_root;
 sub main_start;
 sub opnumber;
 sub perlstring;
+sub pp_infix_matches_0x7fbc507c33c0;
+sub pp_infix_mismatches_0x7fbc507c3370;
 sub svref_2object;
 }
 package B::FM {
@@ -145,6 +140,12 @@ sub KEYS;
 sub MAX;
 sub NAME;
 sub RITER;
+}
+package B::INVLIST {
+sub array_len;
+sub get_invlist_array;
+sub is_offset;
+sub prev_index;
 }
 package B::IO {
 sub BOTTOM_GV;
@@ -203,7 +204,6 @@ sub NVX;
 package B::OP {
 sub desc;
 sub flags;
-sub flagspv;
 sub folded;
 sub moresib;
 sub name;
@@ -213,7 +213,6 @@ sub opt;
 sub parent;
 sub ppaddr;
 sub private;
-sub privatepv;
 sub savefree;
 sub sibling;
 sub size;
@@ -229,7 +228,6 @@ sub ARRAYelt;
 sub MAX;
 sub NAMES;
 sub REFCNT;
-sub flagspv;
 sub id;
 sub outid;
 }
@@ -237,6 +235,8 @@ package B::PADNAME {
 sub COP_SEQ_RANGE_HIGH;
 sub COP_SEQ_RANGE_LOW;
 sub FLAGS;
+sub GEN;
+sub IsUndef;
 sub LEN;
 sub OURSTASH;
 sub PARENT_FAKELEX_FLAGS;
@@ -247,14 +247,12 @@ sub PVX;
 sub REFCNT;
 sub SvSTASH;
 sub TYPE;
-sub flagspv;
 }
 package B::PADNAMELIST {
 sub ARRAY;
 sub ARRAYelt;
 sub MAX;
 sub REFCNT;
-sub flagspv;
 }
 package B::PADOP {
 sub gv;
@@ -306,12 +304,14 @@ sub HASH;
 }
 package B::SV {
 sub FLAGS;
+sub IsBOOL;
 sub MAGICAL;
 sub POK;
 sub REFCNT;
 sub ROK;
 sub SvTYPE;
-sub flagspv;
+sub TRUE;
+sub TRUE_nomg;
 sub object_2svref;
 }
 package B::SVOP {
@@ -325,164 +325,10 @@ package B::UNOP_AUX {
 sub aux_list;
 sub string;
 }
-package BSD::Resource {
-sub _find_prio($$) ;
-sub _find_rlimit($$) ;
-sub _g;
-sub _get_prios;
-sub _get_rlimits;
-sub _getpriority;
-sub _getrlimit;
-sub _getrusage;
-sub _setpriority;
-sub _setrlimit;
-sub constant;
-sub get_prios() ;
-sub get_rlimits() ;
-sub getpriority(;$$) ;
-sub getrlimit($) ;
-sub getrusage(;$) ;
-sub hard;
-sub idrss;
-sub inblock;
-sub isrss;
-sub ixrss;
-sub majflt;
-sub maxrss;
-sub minflt;
-sub msgrcv;
-sub msgsnd;
-sub nivcsw;
-sub nsignals;
-sub nswap;
-sub nvcsw;
-sub oublock;
-sub setpriority(;$$$) ;
-sub setrlimit($$$) ;
-sub soft;
-sub stime;
-sub times;
-sub utime;
-}
 package Carp {
 sub _maybe_isa;
 sub downgrade;
 sub is_utf8;
-}
-package Class::Load {
-sub is_class_loaded;
-}
-package Class::Load::XS {
-sub is_class_loaded;
-}
-package Class::MOP {
-sub blessed($) ;
-sub check_package_cache_flag($) ;
-sub get_code_info($) ;
-sub isweak($) ;
-sub weaken($) ;
-}
-package Class::MOP::Attribute {
-sub associated_class;
-sub associated_methods;
-sub blessed($) ;
-sub weaken($) ;
-}
-package Class::MOP::Class {
-sub all(&@) ;
-sub blessed($) ;
-sub constructor_class;
-sub constructor_name;
-sub destructor_class;
-sub immutable_trait;
-sub instance_metaclass;
-sub subname;
-}
-package Class::MOP::Instance {
-sub associated_metaclass;
-sub blessed($) ;
-sub isweak($) ;
-sub slot_hash;
-sub slots;
-sub weaken($) ;
-}
-package Class::MOP::Method {
-sub blessed($) ;
-sub body;
-sub is_stub;
-sub name;
-sub package_name;
-sub reftype($) ;
-sub weaken($) ;
-}
-package Class::MOP::Method::Accessor {
-sub blessed($) ;
-sub weaken($) ;
-}
-package Class::MOP::Method::Constructor {
-sub blessed($) ;
-sub weaken($) ;
-}
-package Class::MOP::Method::Generated {
-sub definition_context;
-sub is_inline;
-}
-package Class::MOP::Method::Inlined {
-sub _expected_method_class;
-sub refaddr($) ;
-}
-package Class::MOP::Method::Meta {
-sub blessed($) ;
-sub weaken($) ;
-}
-package Class::MOP::Method::Wrapped {
-sub blessed($) ;
-sub subname;
-}
-package Class::MOP::Mixin {
-sub blessed($) ;
-}
-package Class::MOP::Mixin::AttributeCore {
-sub accessor;
-sub blessed($) ;
-sub builder;
-sub clearer;
-sub definition_context;
-sub init_arg;
-sub initializer;
-sub insertion_order;
-sub name;
-sub predicate;
-sub reader;
-sub writer;
-}
-package Class::MOP::Mixin::HasAttributes {
-sub _attribute_map;
-sub attribute_metaclass;
-sub blessed($) ;
-}
-package Class::MOP::Mixin::HasMethods {
-sub _method_map;
-sub blessed($) ;
-sub method_metaclass;
-sub reftype($) ;
-sub subname;
-sub wrapped_method_metaclass;
-}
-package Class::MOP::Mixin::HasOverloads {
-sub blessed($) ;
-}
-package Class::MOP::Object {
-sub blessed($) ;
-}
-package Class::MOP::Overload {
-sub blessed($) ;
-sub weaken($) ;
-}
-package Class::MOP::Package {
-sub blessed($) ;
-sub name;
-sub weaken($) ;
 }
 package Class::XSAccessor {
 sub __entersub_optimized__() ;
@@ -570,8 +416,13 @@ sub adler32_combine;
 sub constant;
 sub crc32;
 sub crc32_combine;
+sub is_zlib_native;
+sub is_zlibng;
+sub is_zlibng_compat;
+sub is_zlibng_native;
 sub zlibCompileFlags;
 sub zlib_version;
+sub zlibng_version;
 }
 package Compress::Raw::Zlib::deflateStream {
 sub DESTROY;
@@ -653,6 +504,7 @@ sub convert_blessed;
 sub decode;
 sub decode_json($;$$) ;
 sub decode_prefix;
+sub dupkeys_as_arrayref;
 sub encode;
 sub encode_json($;$) ;
 sub escape_slash;
@@ -671,6 +523,7 @@ sub get_ascii;
 sub get_binary;
 sub get_canonical;
 sub get_convert_blessed;
+sub get_dupkeys_as_arrayref;
 sub get_escape_slash;
 sub get_indent;
 sub get_indent_length;
@@ -811,10 +664,12 @@ sub PG_ANY() ;
 sub PG_ANYARRAY() ;
 sub PG_ANYCOMPATIBLE() ;
 sub PG_ANYCOMPATIBLEARRAY() ;
+sub PG_ANYCOMPATIBLEMULTIRANGE() ;
 sub PG_ANYCOMPATIBLENONARRAY() ;
 sub PG_ANYCOMPATIBLERANGE() ;
 sub PG_ANYELEMENT() ;
 sub PG_ANYENUM() ;
+sub PG_ANYMULTIRANGE() ;
 sub PG_ANYNONARRAY() ;
 sub PG_ANYRANGE() ;
 sub PG_ASYNC() ;
@@ -840,6 +695,8 @@ sub PG_CSTRING() ;
 sub PG_CSTRINGARRAY() ;
 sub PG_DATE() ;
 sub PG_DATEARRAY() ;
+sub PG_DATEMULTIRANGE() ;
+sub PG_DATEMULTIRANGEARRAY() ;
 sub PG_DATERANGE() ;
 sub PG_DATERANGEARRAY() ;
 sub PG_EVENT_TRIGGER() ;
@@ -859,10 +716,14 @@ sub PG_INT2VECTOR() ;
 sub PG_INT2VECTORARRAY() ;
 sub PG_INT4() ;
 sub PG_INT4ARRAY() ;
+sub PG_INT4MULTIRANGE() ;
+sub PG_INT4MULTIRANGEARRAY() ;
 sub PG_INT4RANGE() ;
 sub PG_INT4RANGEARRAY() ;
 sub PG_INT8() ;
 sub PG_INT8ARRAY() ;
+sub PG_INT8MULTIRANGE() ;
+sub PG_INT8MULTIRANGEARRAY() ;
 sub PG_INT8RANGE() ;
 sub PG_INT8RANGEARRAY() ;
 sub PG_INTERNAL() ;
@@ -889,6 +750,8 @@ sub PG_NAME() ;
 sub PG_NAMEARRAY() ;
 sub PG_NUMERIC() ;
 sub PG_NUMERICARRAY() ;
+sub PG_NUMMULTIRANGE() ;
+sub PG_NUMMULTIRANGEARRAY() ;
 sub PG_NUMRANGE() ;
 sub PG_NUMRANGEARRAY() ;
 sub PG_OID() ;
@@ -901,6 +764,8 @@ sub PG_PATH() ;
 sub PG_PATHARRAY() ;
 sub PG_PG_ATTRIBUTE() ;
 sub PG_PG_ATTRIBUTEARRAY() ;
+sub PG_PG_BRIN_BLOOM_SUMMARY() ;
+sub PG_PG_BRIN_MINMAX_MULTI_SUMMARY() ;
 sub PG_PG_CLASS() ;
 sub PG_PG_CLASSARRAY() ;
 sub PG_PG_DDL_COMMAND() ;
@@ -960,11 +825,15 @@ sub PG_TIMESTAMPTZARRAY() ;
 sub PG_TIMETZ() ;
 sub PG_TIMETZARRAY() ;
 sub PG_TRIGGER() ;
+sub PG_TSMULTIRANGE() ;
+sub PG_TSMULTIRANGEARRAY() ;
 sub PG_TSM_HANDLER() ;
 sub PG_TSQUERY() ;
 sub PG_TSQUERYARRAY() ;
 sub PG_TSRANGE() ;
 sub PG_TSRANGEARRAY() ;
+sub PG_TSTZMULTIRANGE() ;
+sub PG_TSTZMULTIRANGEARRAY() ;
 sub PG_TSTZRANGE() ;
 sub PG_TSTZRANGEARRAY() ;
 sub PG_TSVECTOR() ;
@@ -1169,6 +1038,7 @@ sub IGNORE() ;
 sub INSERT() ;
 sub OK() ;
 sub OPEN_CREATE() ;
+sub OPEN_EXRESCODE() ;
 sub OPEN_FULLMUTEX() ;
 sub OPEN_MEMORY() ;
 sub OPEN_NOFOLLOW() ;
@@ -1177,6 +1047,7 @@ sub OPEN_PRIVATECACHE() ;
 sub OPEN_READONLY() ;
 sub OPEN_READWRITE() ;
 sub OPEN_SHAREDCACHE() ;
+sub OPEN_SUPER_JOURNAL() ;
 sub OPEN_URI() ;
 sub PRAGMA() ;
 sub READ() ;
@@ -1196,6 +1067,8 @@ sub _const__flags_for_file_open_operations_3006018() ;
 sub _const__flags_for_file_open_operations_3007007() ;
 sub _const__flags_for_file_open_operations_3007013() ;
 sub _const__flags_for_file_open_operations_3031000() ;
+sub _const__flags_for_file_open_operations_3033000() ;
+sub _const__flags_for_file_open_operations_3037000() ;
 sub compile_options;
 sub sqlite_status;
 sub strglob;
@@ -1224,6 +1097,7 @@ sub SQLITE_CANTOPEN_SYMLINK() ;
 sub SQLITE_CONSTRAINT() ;
 sub SQLITE_CONSTRAINT_CHECK() ;
 sub SQLITE_CONSTRAINT_COMMITHOOK() ;
+sub SQLITE_CONSTRAINT_DATATYPE() ;
 sub SQLITE_CONSTRAINT_FOREIGNKEY() ;
 sub SQLITE_CONSTRAINT_FUNCTION() ;
 sub SQLITE_CONSTRAINT_NOTNULL() ;
@@ -1263,6 +1137,8 @@ sub SQLITE_DBCONFIG_MAINDBNAME() ;
 sub SQLITE_DBCONFIG_MAX() ;
 sub SQLITE_DBCONFIG_NO_CKPT_ON_CLOSE() ;
 sub SQLITE_DBCONFIG_RESET_DATABASE() ;
+sub SQLITE_DBCONFIG_REVERSE_SCANORDER() ;
+sub SQLITE_DBCONFIG_STMT_SCANSTATUS() ;
 sub SQLITE_DBCONFIG_TRIGGER_EQP() ;
 sub SQLITE_DBCONFIG_TRUSTED_SCHEMA() ;
 sub SQLITE_DBCONFIG_WRITABLE_SCHEMA() ;
@@ -1305,6 +1181,7 @@ sub SQLITE_IOERR_CHECKRESERVEDLOCK() ;
 sub SQLITE_IOERR_CLOSE() ;
 sub SQLITE_IOERR_COMMIT_ATOMIC() ;
 sub SQLITE_IOERR_CONVPATH() ;
+sub SQLITE_IOERR_CORRUPTFS() ;
 sub SQLITE_IOERR_DATA() ;
 sub SQLITE_IOERR_DELETE() ;
 sub SQLITE_IOERR_DELETE_NOENT() ;
@@ -1351,12 +1228,14 @@ sub SQLITE_NOMEM() ;
 sub SQLITE_NOTADB() ;
 sub SQLITE_NOTFOUND() ;
 sub SQLITE_NOTICE() ;
+sub SQLITE_NOTICE_RBU() ;
 sub SQLITE_NOTICE_RECOVER_ROLLBACK() ;
 sub SQLITE_NOTICE_RECOVER_WAL() ;
 sub SQLITE_NULL() ;
 sub SQLITE_OK() ;
 sub SQLITE_OK_SYMLINK() ;
 sub SQLITE_OPEN_CREATE() ;
+sub SQLITE_OPEN_EXRESCODE() ;
 sub SQLITE_OPEN_FULLMUTEX() ;
 sub SQLITE_OPEN_MEMORY() ;
 sub SQLITE_OPEN_NOFOLLOW() ;
@@ -1365,6 +1244,7 @@ sub SQLITE_OPEN_PRIVATECACHE() ;
 sub SQLITE_OPEN_READONLY() ;
 sub SQLITE_OPEN_READWRITE() ;
 sub SQLITE_OPEN_SHAREDCACHE() ;
+sub SQLITE_OPEN_SUPER_JOURNAL() ;
 sub SQLITE_OPEN_URI() ;
 sub SQLITE_PERM() ;
 sub SQLITE_PRAGMA() ;
@@ -1385,12 +1265,17 @@ sub SQLITE_SAVEPOINT() ;
 sub SQLITE_SCHEMA() ;
 sub SQLITE_SELECT() ;
 sub SQLITE_SUBTYPE() ;
+sub SQLITE_TEXT() ;
 sub SQLITE_TOOBIG() ;
 sub SQLITE_TRANSACTION() ;
+sub SQLITE_TXN_NONE() ;
+sub SQLITE_TXN_READ() ;
+sub SQLITE_TXN_WRITE() ;
 sub SQLITE_UPDATE() ;
 sub SQLITE_VERSION_NUMBER() ;
 sub SQLITE_WARNING() ;
 sub SQLITE_WARNING_AUTOINDEX() ;
+sub _const_allowed_return_values_from_sqlite3_txn_state_3034000() ;
 sub _const_authorizer_action_codes() ;
 sub _const_authorizer_action_codes_3006008() ;
 sub _const_authorizer_action_codes_3008003() ;
@@ -1410,6 +1295,7 @@ sub _const_database_connection_configuration_options_3028000() ;
 sub _const_database_connection_configuration_options_3029000() ;
 sub _const_database_connection_configuration_options_3030000() ;
 sub _const_database_connection_configuration_options_3031000() ;
+sub _const_database_connection_configuration_options_3042000() ;
 sub _const_extended_result_codes_3006002() ;
 sub _const_extended_result_codes_3006005() ;
 sub _const_extended_result_codes_3006007() ;
@@ -1434,12 +1320,17 @@ sub _const_extended_result_codes_3024000() ;
 sub _const_extended_result_codes_3025000() ;
 sub _const_extended_result_codes_3031000() ;
 sub _const_extended_result_codes_3032000() ;
+sub _const_extended_result_codes_3034000() ;
+sub _const_extended_result_codes_3037000() ;
+sub _const_extended_result_codes_3041000() ;
 sub _const_flags_for_file_open_operations() ;
 sub _const_flags_for_file_open_operations_3006002() ;
 sub _const_flags_for_file_open_operations_3006018() ;
 sub _const_flags_for_file_open_operations_3007007() ;
 sub _const_flags_for_file_open_operations_3007013() ;
 sub _const_flags_for_file_open_operations_3031000() ;
+sub _const_flags_for_file_open_operations_3033000() ;
+sub _const_flags_for_file_open_operations_3037000() ;
 sub _const_function_flags_3008003() ;
 sub _const_function_flags_3030000() ;
 sub _const_function_flags_3031000() ;
@@ -1531,6 +1422,7 @@ sub db_filename;
 sub db_status;
 sub disconnect;
 sub enable_load_extension;
+sub error_offset;
 sub get_autocommit;
 sub last_insert_id;
 sub last_insert_rowid;
@@ -1560,6 +1452,7 @@ sub sqlite_db_config;
 sub sqlite_db_filename;
 sub sqlite_db_status;
 sub sqlite_enable_load_extension;
+sub sqlite_error_offset;
 sub sqlite_get_autocommit;
 sub sqlite_last_insert_rowid;
 sub sqlite_limit;
@@ -1571,8 +1464,10 @@ sub sqlite_rollback_hook;
 sub sqlite_set_authorizer;
 sub sqlite_table_column_metadata;
 sub sqlite_trace;
+sub sqlite_txn_state;
 sub sqlite_update_hook;
 sub table_column_metadata;
+sub txn_state;
 sub update_hook;
 }
 package DBD::SQLite::dr {
@@ -1897,331 +1792,8 @@ package Devel::Caller {
 sub _context_cv;
 sub _context_op;
 }
-package Devel::Cover {
-sub abs_path;
-sub getcwd;
-sub main_cv;
-sub main_root;
-sub main_start;
-sub ppname;
-}
-package Devel::Cover::Util {
-sub abs_path;
-}
 package Devel::LexAlias {
 sub _lexalias;
-}
-package Devel::MAT {
-sub first(&@) ;
-sub pairs(@) ;
-}
-package Devel::MAT::Cmd::_base {
-sub max(@) ;
-sub perlstring;
-}
-package Devel::MAT::Context {
-sub weaken($) ;
-}
-package Devel::MAT::Dumper {
-sub ARG_MAX() ;
-sub CHILD_MAX() ;
-sub CLK_TCK() ;
-sub EOTHER() ;
-sub EPROCLIM() ;
-sub LDBL_EPSILON() ;
-sub LDBL_MAX() ;
-sub LDBL_MIN() ;
-sub LINK_MAX() ;
-sub NDEBUG;
-sub OPEN_MAX() ;
-sub STREAM_MAX() ;
-sub S_ISBLK;
-sub S_ISCHR;
-sub S_ISDIR;
-sub S_ISFIFO;
-sub S_ISREG;
-sub TZNAME_MAX() ;
-sub WEXITSTATUS;
-sub WIFEXITED;
-sub WIFSIGNALED;
-sub WIFSTOPPED;
-sub WSTOPSIG;
-sub WTERMSIG;
-sub _exit;
-sub abort;
-sub access;
-sub acos;
-sub asctime;
-sub asin;
-sub assert;
-sub atan;
-sub atexit;
-sub atof;
-sub atoi;
-sub atol;
-sub bsearch;
-sub calloc;
-sub ceil;
-sub cfgetispeed;
-sub cfgetospeed;
-sub cfsetispeed;
-sub cfsetospeed;
-sub clearerr;
-sub clock;
-sub cosh;
-sub creat;
-sub ctermid;
-sub ctime;
-sub cuserid;
-sub difftime;
-sub div;
-sub dump;
-sub dumpfh;
-sub dup2;
-sub dup;
-sub errno;
-sub execl;
-sub execle;
-sub execlp;
-sub execv;
-sub execve;
-sub execvp;
-sub fabs;
-sub fclose;
-sub fdopen;
-sub feof;
-sub ferror;
-sub fflush;
-sub fgetc;
-sub fgetpos;
-sub fgets;
-sub floor;
-sub fmod;
-sub fopen;
-sub fpathconf;
-sub fprintf;
-sub fputc;
-sub fputs;
-sub fread;
-sub free;
-sub freopen;
-sub frexp;
-sub fscanf;
-sub fseek;
-sub fsetpos;
-sub fstat;
-sub fsync;
-sub ftell;
-sub fwrite;
-sub getchar;
-sub getcwd;
-sub getegid;
-sub getenv;
-sub geteuid;
-sub getgid;
-sub getgroups;
-sub getpid;
-sub gets;
-sub getuid;
-sub isatty;
-sub labs;
-sub ldexp;
-sub ldiv;
-sub localeconv;
-sub log10;
-sub longjmp;
-sub lseek;
-sub malloc;
-sub mblen;
-sub mbstowcs;
-sub mbtowc;
-sub memchr;
-sub memcmp;
-sub memcpy;
-sub memmove;
-sub memset;
-sub mkfifo;
-sub mktime;
-sub modf;
-sub offsetof;
-sub pathconf;
-sub pause;
-sub pow;
-sub putc;
-sub putchar;
-sub puts;
-sub qsort;
-sub raise;
-sub realloc;
-sub remove;
-sub rewind;
-sub scanf;
-sub setbuf;
-sub setgid;
-sub setjmp;
-sub setlocale;
-sub setpgid;
-sub setsid;
-sub setuid;
-sub setvbuf;
-sub sigaction;
-sub siglongjmp;
-sub signal;
-sub sigpending;
-sub sigprocmask;
-sub sigsetjmp;
-sub sigsuspend;
-sub sinh;
-sub sscanf;
-sub stderr;
-sub stdin;
-sub stdout;
-sub strcat;
-sub strchr;
-sub strcmp;
-sub strcoll;
-sub strcpy;
-sub strcspn;
-sub strerror;
-sub strftime;
-sub strlen;
-sub strncat;
-sub strncmp;
-sub strncpy;
-sub strpbrk;
-sub strrchr;
-sub strspn;
-sub strstr;
-sub strtod;
-sub strtok;
-sub strtol;
-sub strtoul;
-sub strxfrm;
-sub sysconf;
-sub tan;
-sub tanh;
-sub tcdrain;
-sub tcflow;
-sub tcflush;
-sub tcgetattr;
-sub tcgetpgrp;
-sub tcsendbreak;
-sub tcsetattr;
-sub tcsetpgrp;
-sub tmpfile;
-sub tmpnam;
-sub ttyname;
-sub tzname;
-sub tzset;
-sub uname;
-sub ungetc;
-sub vfprintf;
-sub vprintf;
-sub vsprintf;
-sub wcstombs;
-sub wctomb;
-}
-package Devel::MAT::Dumpfile {
-sub pairmap(&@) ;
-}
-package Devel::MAT::SV {
-sub DESTROY;
-sub _set_core_fields;
-sub _set_glob_at;
-sub addr;
-sub blessed_at;
-sub df;
-sub glob_at;
-sub refcnt;
-sub size;
-sub weaken($) ;
-}
-package Devel::MAT::SV::ARRAY {
-sub DESTROY;
-sub _clear_elem;
-sub _set_array_fields;
-sub _set_backrefs;
-sub _set_padcv_at;
-sub elem_at;
-sub is_backrefs;
-sub is_unreal;
-sub n_elems;
-sub padcv_at;
-}
-package Devel::MAT::SV::CODE {
-sub DESTROY;
-sub _set_code_fields;
-sub _set_padnames_at;
-sub _set_protosub_at;
-sub constval_at;
-sub depth;
-sub file;
-sub hekname;
-sub is_clone;
-sub is_cloned;
-sub is_cvgv_rc;
-sub is_lexical;
-sub is_weakoutside;
-sub is_xsub;
-sub line;
-sub oproot;
-sub outside_at;
-sub padlist_at;
-sub padnames_at;
-sub protosub_at;
-sub stash_at;
-sub uniq(@) ;
-}
-package Devel::MAT::SV::GLOB {
-sub DESTROY;
-sub _set_glob_fields;
-sub array_at;
-sub code_at;
-sub egv_at;
-sub file;
-sub form_at;
-sub hash_at;
-sub io_at;
-sub line;
-sub name;
-sub scalar_at;
-sub stash_at;
-}
-package Devel::MAT::SV::HASH {
-sub DESTROY;
-sub _set_hash_fields;
-sub backrefs_at;
-sub keys;
-sub n_values;
-sub value_at;
-sub values_at;
-}
-package Devel::MAT::SV::REF {
-sub _set_ref_fields;
-sub is_weak;
-sub ourstash_at;
-sub rv_at;
-}
-package Devel::MAT::SV::SCALAR {
-sub DESTROY;
-sub _set_scalar_fields;
-sub iv;
-sub nv;
-sub ourstash_at;
-sub pv;
-sub pv_is_utf8;
-sub pvlen;
-sub uv;
-}
-package Devel::MAT::Tool {
-sub any(&@) ;
-}
-package Devel::MAT::Tool::time {
-sub gettimeofday() ;
-}
-package Devel::OverloadInfo {
-sub blessed($) ;
-sub subname;
 }
 package Devel::Peek {
 sub CvGV;
@@ -2265,6 +1837,7 @@ sub algorithm($) ;
 sub b64digest($) ;
 sub clone($) ;
 sub digest($) ;
+sub getcwd;
 sub hashsize($) ;
 sub hexdigest($) ;
 sub hmac_sha1(;@) ;
@@ -2328,13 +1901,6 @@ sub dl_install_xsub;
 sub dl_load_file;
 sub dl_undef_symbols;
 sub dl_unload_file;
-}
-package Email::Address::XS {
-sub compose_address;
-sub format_email_groups;
-sub is_obj;
-sub parse_email_groups;
-sub split_address;
 }
 package Encode {
 sub _utf8_off($) ;
@@ -2434,31 +2000,6 @@ sub reftype($) ;
 package Exception::Class::Base {
 sub blessed($) ;
 }
-package FCGI {
-sub Accept($) ;
-sub Attach($) ;
-sub CloseSocket($) ;
-sub DESTROY;
-sub Detach($) ;
-sub Finish($) ;
-sub Flush($) ;
-sub GetEnvironment($) ;
-sub GetHandles($) ;
-sub IsFastCGI($) ;
-sub LastCall($) ;
-sub OpenSocket($$) ;
-sub RequestX(***$$$) ;
-sub StartFilterData($) ;
-}
-package FCGI::Stream {
-sub CLOSE;
-sub EOF;
-sub FILENO;
-sub GETC;
-sub PRINT;
-sub READ;
-sub WRITE;
-}
 package Fcntl {
 sub AUTOLOAD;
 sub FCREAT() ;
@@ -2531,29 +2072,9 @@ sub bsd_glob;
 sub bsd_glob_override;
 sub csh_glob;
 }
-package File::Map {
-sub _mmap_impl;
-sub _protection_value;
-sub advise;
-sub lock_map;
-sub pin;
-sub protect;
-sub remap;
-sub sync;
-sub unmap;
-sub unpin;
-}
-package File::Path {
-sub getcwd;
-}
 package File::ShareDir {
 sub _STRING($) ;
 sub firstres(&@) ;
-}
-package File::Spec::Functions {
-sub canonpath;
-sub catdir;
-sub catfile;
 }
 package File::Spec::Unix {
 sub _fn_canonpath;
@@ -2569,106 +2090,18 @@ sub filter_read(;$) ;
 sub real_import($$$) ;
 sub unimport(;$@) ;
 }
-package Future {
-sub blessed($) ;
-sub gettimeofday() ;
-sub reftype($) ;
-sub svref_2object;
-sub weaken($) ;
-}
 package Future::AsyncAwait {
 sub __cxstack_ix;
 }
-package GSSAPI {
-sub constant($$) ;
-sub gssapi_implementation_is_heimdal() ;
-sub indicate_mechs($) ;
-sub is_valid($) ;
+package Future::PP {
+sub blessed($) ;
+sub gettimeofday() ;
+sub reftype($) ;
+sub weaken($) ;
 }
-package GSSAPI::Binding {
-sub DESTROY($) ;
-sub get_acceptor_address($) ;
-sub get_acceptor_addrtype($) ;
-sub get_appl_data($) ;
-sub get_initiator_address($) ;
-sub get_initiator_addrtype($) ;
-sub new($) ;
-sub set_acceptor($$$) ;
-sub set_appl_data($$) ;
-sub set_initiator($$$) ;
-}
-package GSSAPI::Context {
-sub DESTROY($) ;
-sub accept($$$$$$$$$$) ;
-sub delete($$) ;
-sub export($$) ;
-sub get_mic($$$$) ;
-sub import($$$) ;
-sub init($$$$$$$$$$$$) ;
-sub inquire($$$$$$$$) ;
-sub new($) ;
-sub process_token($$) ;
-sub unwrap($$$$$) ;
-sub valid_time_left($$) ;
-sub verify_mic($$$$) ;
-sub wrap($$$$$$) ;
-sub wrap_size_limit($$$$$) ;
-}
-package GSSAPI::Cred {
-sub DESTROY($) ;
-sub acquire_cred($$$$$$$) ;
-sub add_cred($$$$$$$$$$) ;
-sub inquire_cred($$$$$) ;
-sub inquire_cred_by_mech($$$$$$) ;
-}
-package GSSAPI::Name {
-sub DESTROY($) ;
-sub canonicalize($$$) ;
-sub compare($$$) ;
-sub display($$;$) ;
-sub duplicate($$) ;
-sub export($$) ;
-sub import($$$;$) ;
-sub new($) ;
-}
-package GSSAPI::OID {
-sub DESTROY($) ;
-sub from_str($$$) ;
-sub gss_mech_krb5() ;
-sub gss_mech_krb5_old() ;
-sub gss_mech_krb5_v2() ;
-sub gss_mech_spnego() ;
-sub gss_nt_exported_name() ;
-sub gss_nt_hostbased_service() ;
-sub gss_nt_krb5_name() ;
-sub gss_nt_krb5_principal() ;
-sub gss_nt_machine_uid_name() ;
-sub gss_nt_service_name() ;
-sub gss_nt_service_name_v2() ;
-sub gss_nt_string_uid_name() ;
-sub gss_nt_user_name() ;
-sub inquire_names($$) ;
-sub new($) ;
-sub to_str($$) ;
-}
-package GSSAPI::OID::Set {
-sub DESTROY($) ;
-sub contains($$$) ;
-sub insert($$) ;
-sub new($) ;
-}
-package GSSAPI::Status {
-sub GSS_CALLING_ERROR($) ;
-sub GSS_CALLING_ERROR_FIELD($) ;
-sub GSS_ERROR($) ;
-sub GSS_ROUTINE_ERROR($) ;
-sub GSS_ROUTINE_ERROR_FIELD($) ;
-sub GSS_SUPPLEMENTARY_INFO($) ;
-sub GSS_SUPPLEMENTARY_INFO_FIELD($) ;
-sub display_status($$) ;
-sub major($) ;
-sub minor($) ;
-sub new($$$) ;
+package Future::_base {
+sub blessed($) ;
+sub svref_2object;
 }
 package HTML::Entities {
 sub UNICODE_SUPPORT() ;
@@ -2700,16 +2133,6 @@ sub utf8_mode;
 sub xml_mode;
 sub xml_pic;
 }
-package HTML::Tidy {
-sub _tidy_clean($$$) ;
-sub _tidy_messages($$$) ;
-sub _tidyp_version() ;
-}
-package Hash::FieldHash {
-sub fieldhash(\%;$$) ;
-sub from_hash;
-sub to_hash;
-}
 package Hash::StoredIterator {
 sub hash_get_iterator;
 sub hash_init_iterator;
@@ -2728,7 +2151,6 @@ sub hidden_ref_keys;
 sub hv_store(\%$$) ;
 sub legal_ref_keys;
 sub num_buckets(\%) ;
-sub reftype($) ;
 sub used_buckets(\%) ;
 }
 package Hash::Util::FieldHash {
@@ -2740,12 +2162,24 @@ sub _test_uvar_same;
 sub _test_uvar_set;
 sub id($) ;
 sub id_2obj($) ;
-sub reftype($) ;
 sub register($@) ;
 }
 package I18N::Langinfo {
 sub AUTOLOAD;
 sub langinfo(_) ;
+}
+package IO::Compress::Brotli {
+sub BrotliEncoderSetParameter($$) ;
+sub DESTROY($) ;
+sub _compress($;$) ;
+sub _mode($$) ;
+sub bro($;$$) ;
+sub compress($;$) ;
+sub create($) ;
+sub finish($;$) ;
+sub flush($;$) ;
+sub quality($$) ;
+sub window($$) ;
 }
 package IO::File {
 sub O_ALIAS() ;
@@ -2802,6 +2236,12 @@ sub pack_winsize;
 sub ttyname;
 sub unpack_winsize;
 }
+package IO::Uncompress::Brotli {
+sub DESTROY($) ;
+sub create($) ;
+sub decompress($$) ;
+sub unbro_given_size($$) ;
+}
 package IPC::Msg::stat {
 sub pack($) ;
 sub unpack($$) ;
@@ -2826,7 +2266,6 @@ package Internals {
 sub SvREADONLY(\[$%@];$) ;
 sub SvREFCNT(\[$%@];$) ;
 sub V;
-sub getcwd() ;
 sub hv_clear_placeholders(\%) ;
 }
 package JSON::XS {
@@ -2948,6 +2387,8 @@ sub reduce_1(&@) ;
 sub reduce_u(&@) ;
 sub samples($@) ;
 sub singleton(@) ;
+sub slide(&@) ;
+sub slideatatime($@) ;
 sub true(&@) ;
 sub uniq(@) ;
 sub upper_bound(&@) ;
@@ -2958,7 +2399,7 @@ sub zip_unflatten(\@\@;\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\
 package List::MoreUtils::XS {
 sub _XScompiled;
 sub _array_iterator(;$) ;
-sub _natatime_iterator() ;
+sub _slideatatime_iterator() ;
 sub after(&@) ;
 sub after_incl(&@) ;
 sub all(&@) ;
@@ -3013,6 +2454,8 @@ sub reduce_1(&@) ;
 sub reduce_u(&@) ;
 sub samples($@) ;
 sub singleton(@) ;
+sub slide(&@) ;
+sub slideatatime($@) ;
 sub true(&@) ;
 sub uniq(@) ;
 sub upper_bound(&@) ;
@@ -3021,7 +2464,7 @@ sub zip6(\@\@;\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@\@) ;
 package List::MoreUtils::XS_ea {
 sub DESTROY;
 }
-package List::MoreUtils::XS_na {
+package List::MoreUtils::XS_sa {
 sub DESTROY;
 }
 package List::Util {
@@ -3095,113 +2538,6 @@ sub _ten;
 sub _two;
 sub _zero;
 }
-package Module::Pluggable::Object {
-sub catdir;
-sub catfile;
-}
-package Moose {
-sub is_class_loaded;
-}
-package Moose::Exporter {
-sub _export_is_flagged;
-sub _flag_as_reexport;
-sub is_class_loaded;
-sub reftype($) ;
-sub subname;
-sub uniq(@) ;
-}
-package Moose::Meta::Attribute {
-sub any(&@) ;
-sub blessed($) ;
-}
-package Moose::Meta::Class {
-sub any(&@) ;
-sub blessed($) ;
-}
-package Moose::Meta::Class::Immutable::Trait {
-sub blessed($) ;
-}
-package Moose::Meta::Method::Constructor {
-sub weaken($) ;
-}
-package Moose::Meta::Method::Delegation {
-sub blessed($) ;
-sub weaken($) ;
-}
-package Moose::Meta::Method::Destructor {
-sub blessed($) ;
-sub weaken($) ;
-}
-package Moose::Meta::Object::Trait {
-sub blessed($) ;
-}
-package Moose::Meta::Role {
-sub blessed($) ;
-}
-package Moose::Meta::Role::Application {
-sub all(&@) ;
-}
-package Moose::Meta::Role::Application::RoleSummation {
-sub all(&@) ;
-sub blessed($) ;
-}
-package Moose::Meta::Role::Application::ToClass {
-sub first(&@) ;
-sub weaken($) ;
-}
-package Moose::Meta::Role::Application::ToInstance {
-sub _reset_amagic;
-sub all(&@) ;
-sub blessed($) ;
-}
-package Moose::Meta::Role::Attribute {
-sub all(&@) ;
-sub blessed($) ;
-sub weaken($) ;
-}
-package Moose::Meta::Role::Composite {
-sub blessed($) ;
-}
-package Moose::Meta::TypeCoercion::Union {
-sub blessed($) ;
-}
-package Moose::Meta::TypeConstraint {
-sub refaddr($) ;
-sub subname;
-}
-package Moose::Meta::TypeConstraint::DuckType {
-sub all(&@) ;
-sub blessed($) ;
-}
-package Moose::Meta::TypeConstraint::Parameterized {
-sub blessed($) ;
-}
-package Moose::Meta::TypeConstraint::Registry {
-sub blessed($) ;
-}
-package Moose::Meta::TypeConstraint::Union {
-sub all(&@) ;
-sub first(&@) ;
-}
-package Moose::Util {
-sub all(&@) ;
-sub any(&@) ;
-sub blessed($) ;
-sub first(&@) ;
-}
-package Moose::Util::MetaRole {
-sub all(&@) ;
-sub blessed($) ;
-sub first(&@) ;
-}
-package Moose::Util::TypeConstraints {
-sub blessed($) ;
-}
-package Moose::Util::TypeConstraints::Builtins {
-sub _RegexpRef;
-sub blessed($) ;
-sub is_class_loaded;
-}
 package Net::SSLeay {
 sub AF_802() ;
 sub AF_AAL() ;
@@ -3249,9 +2585,16 @@ sub BIO_ssl_copy_session_id($$) ;
 sub BIO_ssl_shutdown($) ;
 sub BIO_wpending($) ;
 sub BIO_write($$) ;
-sub CIPHER_description($$$) ;
-sub CIPHER_get_bits($;$) ;
+sub BN_clear($) ;
+sub BN_clear_free($) ;
+sub BN_dup($) ;
+sub BN_free($) ;
+sub CIPHER_description($;$$) ;
+sub CIPHER_find($$) ;
+sub CIPHER_get_bits($;@) ;
+sub CIPHER_get_handshake_digest($) ;
 sub CIPHER_get_name($) ;
+sub CIPHER_get_version($) ;
 sub CLONE(;@) ;
 sub COMP_add_compression_method($$) ;
 sub CTX_add_client_CA($$) ;
@@ -3268,6 +2611,7 @@ sub CTX_get_cert_store($) ;
 sub CTX_get_client_CA_list($) ;
 sub CTX_get_ex_data($$) ;
 sub CTX_get_ex_new_index($;$$$$) ;
+sub CTX_get_keylog_callback($) ;
 sub CTX_get_max_proto_version($) ;
 sub CTX_get_min_proto_version($) ;
 sub CTX_get_mode($) ;
@@ -3312,20 +2656,26 @@ sub CTX_set_cert_verify_callback($$;$) ;
 sub CTX_set_cipher_list($$) ;
 sub CTX_set_ciphersuites($$) ;
 sub CTX_set_client_CA_list($$) ;
+sub CTX_set_client_hello_cb($$;$) ;
 sub CTX_set_default_passwd_cb($;$) ;
 sub CTX_set_default_passwd_cb_userdata($;$) ;
 sub CTX_set_default_verify_paths($) ;
 sub CTX_set_ex_data($$$) ;
 sub CTX_set_info_callback($$;$) ;
+sub CTX_set_keylog_callback($$) ;
 sub CTX_set_max_proto_version($$) ;
 sub CTX_set_min_proto_version($$) ;
 sub CTX_set_mode($$) ;
+sub CTX_set_msg_callback($$;$) ;
 sub CTX_set_next_proto_select_cb($$;$) ;
 sub CTX_set_next_protos_advertised_cb($$;$) ;
 sub CTX_set_num_tickets($$) ;
 sub CTX_set_options($$) ;
 sub CTX_set_post_handshake_auth($$) ;
 sub CTX_set_psk_client_callback($;$) ;
+sub CTX_set_psk_find_session_callback($;$) ;
+sub CTX_set_psk_server_callback($;$) ;
+sub CTX_set_psk_use_session_callback($;$) ;
 sub CTX_set_purpose($$) ;
 sub CTX_set_quiet_shutdown($$) ;
 sub CTX_set_read_ahead($$) ;
@@ -3354,6 +2704,7 @@ sub CTX_use_RSAPrivateKey_file($$$) ;
 sub CTX_use_certificate($$) ;
 sub CTX_use_certificate_chain_file($$) ;
 sub CTX_use_certificate_file($$$) ;
+sub CTX_use_psk_identity_hint($$) ;
 sub CTX_v23_new() ;
 sub DH_free($) ;
 sub EC_KEY_free($) ;
@@ -3389,6 +2740,7 @@ sub EVP_PKEY_copy_parameters($$) ;
 sub EVP_PKEY_free($) ;
 sub EVP_PKEY_id($) ;
 sub EVP_PKEY_new() ;
+sub EVP_PKEY_security_bits($) ;
 sub EVP_PKEY_size($) ;
 sub EVP_add_digest($) ;
 sub EVP_get_cipherbyname($) ;
@@ -3429,8 +2781,15 @@ sub OCSP_response_results($;@) ;
 sub OCSP_response_status($) ;
 sub OCSP_response_status_str($) ;
 sub OCSP_response_verify($$;$$) ;
+sub OPENSSL_INIT_free($) ;
+sub OPENSSL_INIT_new() ;
+sub OPENSSL_INIT_set_config_appname($$) ;
+sub OPENSSL_INIT_set_config_filename($$) ;
 sub OPENSSL_add_all_algorithms_conf() ;
 sub OPENSSL_add_all_algorithms_noconf() ;
+sub OPENSSL_cleanup() ;
+sub OPENSSL_init_crypto($;$) ;
+sub OPENSSL_init_ssl($;$) ;
 sub OpenSSL_add_all_algorithms() ;
 sub OpenSSL_add_all_digests() ;
 sub OpenSSL_add_ssl_algorithms() ;
@@ -3480,6 +2839,7 @@ sub P_ASN1_TIME_set_isotime($$) ;
 sub P_ASN1_UTCTIME_put2string($) ;
 sub P_EVP_MD_list_all() ;
 sub P_PKCS12_load_file($;$$) ;
+sub P_X509_CRL_add_extensions($$;@) ;
 sub P_X509_CRL_add_revoked_serial_hex($$$;$$) ;
 sub P_X509_CRL_get_serial($) ;
 sub P_X509_CRL_set_serial($$) ;
@@ -3512,10 +2872,12 @@ sub RAND_write_file($) ;
 sub RIPEMD160($) ;
 sub RSA_free($) ;
 sub RSA_generate_key($$;$$) ;
+sub RSA_get_key_parameters($) ;
 sub SCM_CONNECT() ;
 sub SCM_CREDS() ;
 sub SESSION_dup($) ;
 sub SESSION_free($) ;
+sub SESSION_get0_cipher($) ;
 sub SESSION_get_app_data($) ;
 sub SESSION_get_ex_data($$) ;
 sub SESSION_get_ex_new_index($;$$$$) ;
@@ -3526,8 +2888,11 @@ sub SESSION_is_resumable($) ;
 sub SESSION_new() ;
 sub SESSION_print($$) ;
 sub SESSION_print_fp($$) ;
+sub SESSION_set1_master_key($$) ;
 sub SESSION_set_app_data($$) ;
+sub SESSION_set_cipher($$) ;
 sub SESSION_set_ex_data($$$) ;
+sub SESSION_set_protocol_version($$) ;
 sub SESSION_set_time($$) ;
 sub SESSION_set_timeout($$) ;
 sub SESSION_up_ref($) ;
@@ -3568,6 +2933,8 @@ sub X509V3_EXT_d2i($) ;
 sub X509V3_EXT_print($;$$) ;
 sub X509_CRL_digest($$) ;
 sub X509_CRL_free($) ;
+sub X509_CRL_get0_lastUpdate($) ;
+sub X509_CRL_get0_nextUpdate($) ;
 sub X509_CRL_get_ext($$) ;
 sub X509_CRL_get_ext_by_NID($$;$) ;
 sub X509_CRL_get_ext_count($) ;
@@ -3576,6 +2943,8 @@ sub X509_CRL_get_lastUpdate($) ;
 sub X509_CRL_get_nextUpdate($) ;
 sub X509_CRL_get_version($) ;
 sub X509_CRL_new() ;
+sub X509_CRL_set1_lastUpdate($$) ;
+sub X509_CRL_set1_nextUpdate($$) ;
 sub X509_CRL_set_issuer_name($$) ;
 sub X509_CRL_set_lastUpdate($$) ;
 sub X509_CRL_set_nextUpdate($$) ;
@@ -3618,6 +2987,8 @@ sub X509_REQ_set_version($$) ;
 sub X509_REQ_sign($$$) ;
 sub X509_REQ_verify($$) ;
 sub X509_STORE_CTX_free($) ;
+sub X509_STORE_CTX_get0_cert($) ;
+sub X509_STORE_CTX_get1_chain($) ;
 sub X509_STORE_CTX_get_app_data($) ;
 sub X509_STORE_CTX_get_current_cert($) ;
 sub X509_STORE_CTX_get_error($) ;
@@ -3671,6 +3042,8 @@ sub X509_check_ip($$;$) ;
 sub X509_check_ip_asc($$;$) ;
 sub X509_digest($$) ;
 sub X509_free($) ;
+sub X509_get0_notAfter($) ;
+sub X509_get0_notBefore($) ;
 sub X509_get0_serialNumber($) ;
 sub X509_get_X509_PUBKEY($) ;
 sub X509_get_app_data($) ;
@@ -3688,6 +3061,8 @@ sub X509_get_serialNumber($) ;
 sub X509_get_subjectAltNames($) ;
 sub X509_get_subject_name($) ;
 sub X509_get_version($) ;
+sub X509_getm_notAfter($) ;
+sub X509_getm_notBefore($) ;
 sub X509_gmtime_adj($$) ;
 sub X509_issuer_and_serial_hash($) ;
 sub X509_issuer_name_hash($) ;
@@ -3731,6 +3106,14 @@ sub callback_ctrl($$$) ;
 sub check_private_key($) ;
 sub clear($) ;
 sub clear_num_renegotiations($) ;
+sub client_hello_get0_ciphers($) ;
+sub client_hello_get0_compression_methods($) ;
+sub client_hello_get0_ext($$) ;
+sub client_hello_get0_legacy_version($) ;
+sub client_hello_get0_random($) ;
+sub client_hello_get0_session_id($) ;
+sub client_hello_get1_extensions_present($) ;
+sub client_hello_isv2($) ;
 sub client_version($) ;
 sub connect($) ;
 sub constant($) ;
@@ -3763,6 +3146,7 @@ sub get_certificate($) ;
 sub get_cipher($) ;
 sub get_cipher_bits($;$) ;
 sub get_cipher_list($$) ;
+sub get_ciphers($) ;
 sub get_client_CA_list($) ;
 sub get_client_random($) ;
 sub get_current_cipher($) ;
@@ -3897,12 +3281,16 @@ sub set_info_callback($$;$) ;
 sub set_max_proto_version($$) ;
 sub set_min_proto_version($$) ;
 sub set_mode($$) ;
+sub set_msg_callback($$;$) ;
 sub set_num_tickets($$) ;
 sub set_options($$) ;
 sub set_post_handshake_auth($$) ;
 sub set_pref_cipher($$) ;
 sub set_proxy($$;**) ;
 sub set_psk_client_callback($;$) ;
+sub set_psk_find_session_callback($;$) ;
+sub set_psk_server_callback($;$) ;
+sub set_psk_use_session_callback($;$) ;
 sub set_purpose($$) ;
 sub set_quiet_shutdown($$) ;
 sub set_read_ahead($;$) ;
@@ -3936,9 +3324,16 @@ sub sk_X509_INFO_value($$) ;
 sub sk_X509_NAME_free($) ;
 sub sk_X509_NAME_num($) ;
 sub sk_X509_NAME_value($$) ;
+sub sk_X509_delete($$) ;
 sub sk_X509_free($) ;
+sub sk_X509_insert($$$) ;
 sub sk_X509_new_null() ;
+sub sk_X509_num($) ;
+sub sk_X509_pop($) ;
 sub sk_X509_push($$) ;
+sub sk_X509_shift($) ;
+sub sk_X509_unshift($$) ;
+sub sk_X509_value($$) ;
 sub sockaddr_family;
 sub ssl_read_CRLF($;$) ;
 sub ssl_read_all;
@@ -3970,6 +3365,7 @@ sub use_certificate($$) ;
 sub use_certificate_ASN1($$$) ;
 sub use_certificate_chain_file($$) ;
 sub use_certificate_file($$$) ;
+sub use_psk_identity_hint($$) ;
 sub verify_client_post_handshake($) ;
 sub version($) ;
 sub want($) ;
@@ -4006,19 +3402,21 @@ sub CHILD_MAX() ;
 sub CLK_TCK() ;
 sub EOTHER() ;
 sub EPROCLIM() ;
+sub FLT_ROUNDS() ;
 sub LDBL_EPSILON() ;
 sub LDBL_MAX() ;
 sub LDBL_MIN() ;
 sub LINK_MAX() ;
 sub L_tmpnam;
-sub NDEBUG;
 sub OPEN_MAX() ;
 sub STREAM_MAX() ;
 sub S_ISBLK;
 sub S_ISCHR;
 sub S_ISDIR;
 sub S_ISFIFO;
+sub S_ISLNK;
 sub S_ISREG;
+sub S_ISSOCK;
 sub TZNAME_MAX() ;
 sub WEXITSTATUS;
 sub WIFEXITED;
@@ -4048,10 +3446,6 @@ sub bsearch;
 sub calloc;
 sub cbrt;
 sub ceil;
-sub cfgetispeed;
-sub cfgetospeed;
-sub cfsetispeed;
-sub cfsetospeed;
 sub chdir;
 sub chmod;
 sub chown;
@@ -4089,7 +3483,7 @@ sub fclose;
 sub fcntl;
 sub fdim;
 sub fdopen;
-sub fegetround;
+sub fegetround() ;
 sub feof;
 sub ferror;
 sub fesetround;
@@ -4178,7 +3572,6 @@ sub lround;
 sub lseek;
 sub malloc;
 sub mblen;
-sub mbstowcs;
 sub mbtowc;
 sub memchr;
 sub memcmp;
@@ -4233,7 +3626,6 @@ sub setuid;
 sub setvbuf;
 sub sigaction;
 sub siglongjmp;
-sub signal;
 sub signbit;
 sub sigpending;
 sub sigprocmask;
@@ -4246,9 +3638,6 @@ sub sqrt;
 sub srand;
 sub sscanf;
 sub stat;
-sub stderr;
-sub stdin;
-sub stdout;
 sub strcat;
 sub strchr;
 sub strcmp;
@@ -4278,10 +3667,8 @@ sub tanh;
 sub tcdrain;
 sub tcflow;
 sub tcflush;
-sub tcgetattr;
 sub tcgetpgrp;
 sub tcsendbreak;
-sub tcsetattr;
 sub tcsetpgrp;
 sub tgamma;
 sub time;
@@ -4302,7 +3689,6 @@ sub vprintf;
 sub vsprintf;
 sub wait;
 sub waitpid;
-sub wcstombs;
 sub wctomb;
 sub write;
 sub y0;
@@ -4335,11 +3721,6 @@ sub setispeed;
 sub setlflag;
 sub setoflag;
 sub setospeed;
-}
-package Package::DeprecationManager {
-sub _HASH0($) ;
-sub any(&@) ;
-sub subname;
 }
 package Package::Stash {
 sub add_symbol;
@@ -4391,12 +3772,10 @@ sub _REGEX($) ;
 sub _SCALAR($) ;
 sub _SCALAR0($) ;
 sub _STRING($) ;
-sub looks_like_number($) ;
+sub _XScompiled;
 }
-package Params::Validate::XS {
-sub validate(\@$) ;
-sub validate_pos(\@@) ;
-sub validate_with;
+package Params::Util::PP {
+sub looks_like_number($) ;
 }
 package Params::ValidationCompiler::Compiler {
 sub blessed($) ;
@@ -4413,15 +3792,6 @@ sub get_layers(*;@) ;
 package PerlIO::Layer {
 sub NoWarnings;
 sub find;
-}
-package PerlIO::Layers {
-sub _get_kinds;
-sub get_buffer_sizes;
-sub max(@) ;
-sub reduce(&@) ;
-}
-package Pod::Find {
-sub abs_path;
 }
 package Ref::Util {
 sub _using_custom_ops;
@@ -4490,6 +3860,9 @@ sub constant;
 sub is_regexp;
 sub regexp_seen_evals;
 }
+package Role::Tiny {
+sub _linear_isa($;$) ;
+}
 package SDBM_File {
 sub DELETE;
 sub DESTROY;
@@ -4520,41 +3893,6 @@ sub reftype($) ;
 sub tainted($) ;
 sub unweaken($) ;
 sub weaken($) ;
-}
-package Sereal::Decoder {
-sub DESTROY;
-sub bytes_consumed;
-sub decode($$;$) ;
-sub decode_only_header($$;$) ;
-sub decode_only_header_with_offset($$$;$) ;
-sub decode_sereal;
-sub decode_sereal_with_header_data;
-sub decode_with_header($$;$$) ;
-sub decode_with_header_and_offset($$$;$$) ;
-sub decode_with_offset($$$;$) ;
-sub flags;
-sub looks_like_sereal;
-sub new;
-sub regexp_internals_type;
-sub scalar_looks_like_sereal($) ;
-sub sereal_decode_only_header_with_object($$;$) ;
-sub sereal_decode_only_header_with_offset_with_object($$$;$) ;
-sub sereal_decode_with_header_and_offset_with_object($$$;$$) ;
-sub sereal_decode_with_header_with_object($$;$$) ;
-sub sereal_decode_with_object($$;$) ;
-sub sereal_decode_with_offset_with_object($$$;$) ;
-}
-package Sereal::Encoder {
-sub DESTROY;
-sub encode($$;$) ;
-sub encode_sereal;
-sub encode_sereal_with_header_data;
-sub flags;
-sub new;
-sub sereal_encode_with_object($$;$) ;
-}
-package Sereal::Encoder::_ptabletest {
-sub test;
 }
 package Socket {
 sub AF_802() ;
@@ -4588,6 +3926,10 @@ sub IPTOS_MINCOST() ;
 sub IPTOS_RELIABILITY() ;
 sub IPTOS_THROUGHPUT() ;
 sub IPV6_ADDRFROM() ;
+sub LOCAL_CONNWAIT() ;
+sub LOCAL_CREDS() ;
+sub LOCAL_OCREDS() ;
+sub LOCAL_PEEREID() ;
 sub MSG_BCAST() ;
 sub MSG_BTAG() ;
 sub MSG_CTLFLAGS() ;
@@ -4732,16 +4074,13 @@ sub pstore($$) ;
 sub stack_depth() ;
 sub stack_depth_hash() ;
 }
-package Struct::Dumb {
-sub refaddr($) ;
-}
 package Sub::Identify {
 sub get_code_info($) ;
 sub get_code_location($) ;
 sub is_sub_constant($) ;
 }
-package Sub::Name {
-sub subname;
+package Sub::Infix::PartialApplication {
+sub blessed($) ;
 }
 package Sub::Util {
 sub set_prototype;
@@ -4868,32 +4207,9 @@ sub unpack_sockaddr_in6;
 sub unpack_sockaddr_in;
 sub unpack_sockaddr_un;
 }
-package Template {
-sub blessed($) ;
-}
-package Template::Document {
-sub is_utf8;
-}
-package Template::Filters {
-sub blessed($) ;
-}
-package Template::Service {
-sub blessed($) ;
-}
-package Template::Stash {
-sub blessed($) ;
-sub reftype($) ;
-}
-package Template::Stash::XS {
-sub get;
-sub set;
-}
-package Template::VMethods {
-sub blessed($) ;
-sub looks_like_number($) ;
-}
 package Test2::API {
 sub blessed($) ;
+sub time() ;
 sub weaken($) ;
 }
 package Test2::API::Context {
@@ -5008,6 +4324,9 @@ sub _derivCE_24;
 sub _derivCE_32;
 sub _derivCE_34;
 sub _derivCE_36;
+sub _derivCE_38;
+sub _derivCE_40;
+sub _derivCE_43;
 sub _derivCE_8;
 sub _derivCE_9;
 sub _exists_simple;
@@ -5114,442 +4433,6 @@ sub cast(\[$@%&*]$@) ;
 sub dispell(\[$@%&*]$) ;
 sub getdata(\[$@%&*]$) ;
 }
-package XML::Hash::XS {
-sub DESTROY;
-sub hash2xml;
-sub new;
-sub xml2hash;
-}
-package XML::LibXML {
-sub AUTOLOAD;
-sub DISABLE_THREAD_SUPPORT;
-sub HAVE_READER;
-sub HAVE_SCHEMAS;
-sub HAVE_STRUCT_ERRORS;
-sub HAVE_THREAD_SUPPORT;
-sub INIT_THREAD_SUPPORT;
-sub LIBXML_DOTTED_VERSION;
-sub LIBXML_RUNTIME_VERSION;
-sub LIBXML_VERSION;
-sub _CLONE;
-sub _default_catalog;
-sub _dump_registry;
-sub _end_push;
-sub _end_sax_push;
-sub _externalEntityLoader;
-sub _leaked_nodes;
-sub _parse_fh;
-sub _parse_file;
-sub _parse_html_fh;
-sub _parse_html_file;
-sub _parse_html_string;
-sub _parse_sax_fh;
-sub _parse_sax_file;
-sub _parse_sax_string;
-sub _parse_sax_xml_chunk;
-sub _parse_string;
-sub _parse_xml_chunk;
-sub _processXIncludes;
-sub _push;
-sub _start_push;
-sub decodeFromUTF8;
-sub encodeToUTF8;
-sub export_GDOME;
-sub import_GDOME;
-sub load_catalog;
-}
-package XML::LibXML::Attr {
-sub _setNamespace;
-sub getNextSibling;
-sub getOwnerElement;
-sub getParentNode;
-sub getPreviousSibling;
-sub getValue;
-sub isId;
-sub name;
-sub new;
-sub nextSibling;
-sub ownerElement;
-sub parentElement;
-sub previousSibling;
-sub serialize;
-sub serializeContent;
-sub setValue;
-sub toString;
-sub value;
-}
-package XML::LibXML::CDATASection {
-sub new;
-}
-package XML::LibXML::Comment {
-sub new;
-}
-package XML::LibXML::Common {
-sub decodeFromUTF8;
-sub encodeToUTF8;
-}
-package XML::LibXML::Devel {
-sub fix_owner;
-sub mem_used;
-sub node_from_perl;
-sub node_to_perl;
-sub refcnt;
-sub refcnt_dec;
-sub refcnt_inc;
-}
-package XML::LibXML::Document {
-sub URI;
-sub _setDocumentElement;
-sub _toString;
-sub adoptNode;
-sub cloneNode;
-sub compression;
-sub createAttribute;
-sub createAttributeNS;
-sub createCDATASection;
-sub createComment;
-sub createDTD;
-sub createDocument;
-sub createDocumentFragment;
-sub createElement;
-sub createElementNS;
-sub createEntityReference;
-sub createExternalSubset;
-sub createInternalSubset;
-sub createPI;
-sub createProcessingInstruction;
-sub createRawElement;
-sub createRawElementNS;
-sub createTextNode;
-sub documentElement;
-sub documentURI;
-sub encoding;
-sub externalSubset;
-sub getDocumentElement;
-sub getElementById;
-sub getElementsById;
-sub getEncoding;
-sub getVersion;
-sub importNode;
-sub indexElements;
-sub internalSubset;
-sub is_valid;
-sub new;
-sub removeExternalSubset;
-sub removeInternalSubset;
-sub serialize_html;
-sub setCompression;
-sub setEncoding;
-sub setExternalSubset;
-sub setInternalSubset;
-sub setStandalone;
-sub setURI;
-sub setVersion;
-sub standalone;
-sub toFH;
-sub toFile;
-sub toStringHTML;
-sub validate;
-sub version;
-sub xmlEncoding;
-sub xmlStandalone;
-sub xmlVersion;
-}
-package XML::LibXML::DocumentFragment {
-sub addNewChild;
-sub appendText;
-sub appendTextNode;
-sub new;
-}
-package XML::LibXML::Dtd {
-sub getPublicId;
-sub getSystemId;
-sub new;
-sub parse_string;
-sub parse_uri;
-sub publicId;
-sub systemId;
-}
-package XML::LibXML::Element {
-sub _getAttribute;
-sub _getAttributeNS;
-sub _getNamespaceDeclURI;
-sub _setAttribute;
-sub _setAttributeNS;
-sub _setNamespace;
-sub addNewChild;
-sub appendText;
-sub appendTextChild;
-sub appendTextNode;
-sub blessed($) ;
-sub getAttributeNode;
-sub getAttributeNodeNS;
-sub hasAttribute;
-sub hasAttributeNS;
-sub new;
-sub removeAttribute;
-sub removeAttributeNS;
-sub removeAttributeNode;
-sub setAttributeNode;
-sub setAttributeNodeNS;
-sub setNamespaceDeclPrefix;
-sub setNamespaceDeclURI;
-sub tagName;
-}
-package XML::LibXML::HashTable {
-sub DESTROY;
-sub new;
-}
-package XML::LibXML::InputCallback {
-sub lib_cleanup_callbacks;
-sub lib_init_callbacks;
-}
-package XML::LibXML::LibError {
-sub code;
-sub context_and_column;
-sub domain;
-sub file;
-sub int1;
-sub int2;
-sub level;
-sub line;
-sub message;
-sub num1;
-sub num2;
-sub str1;
-sub str2;
-sub str3;
-}
-package XML::LibXML::Namespace {
-sub DESTROY;
-sub _isEqual;
-sub declaredPrefix;
-sub declaredURI;
-sub getData;
-sub getLocalName;
-sub getType;
-sub getValue;
-sub href;
-sub localname;
-sub new;
-sub nodeType;
-sub nodeValue;
-sub unique_key;
-sub value2;
-sub value;
-}
-package XML::LibXML::Node {
-sub DESTROY;
-sub _attributes;
-sub _childNodes;
-sub _find;
-sub _findnodes;
-sub _getChildrenByTagNameNS;
-sub _toStringC14N;
-sub addChild;
-sub addSibling;
-sub appendChild;
-sub baseURI;
-sub cloneNode;
-sub firstChild;
-sub firstNonBlankChild;
-sub getAttributes;
-sub getChildnodes;
-sub getData;
-sub getFirstChild;
-sub getLastChild;
-sub getLocalName;
-sub getName;
-sub getNamespace;
-sub getNamespaceURI;
-sub getNamespaces;
-sub getNextSibling;
-sub getOwner;
-sub getOwnerDocument;
-sub getOwnerElement;
-sub getParentNode;
-sub getPrefix;
-sub getPreviousSibling;
-sub getType;
-sub getValue;
-sub hasAttributes;
-sub hasChildNodes;
-sub insertAfter;
-sub insertBefore;
-sub isEqual;
-sub isSameNode;
-sub lastChild;
-sub line_number;
-sub localNS;
-sub localName;
-sub localNamespace;
-sub localname;
-sub lookupNamespacePrefix;
-sub lookupNamespaceURI;
-sub namespaceURI;
-sub namespaces;
-sub nextNonBlankSibling;
-sub nextSibling;
-sub nodeName;
-sub nodePath;
-sub nodeType;
-sub nodeValue;
-sub normalize;
-sub ownerDocument;
-sub ownerNode;
-sub parentNode;
-sub prefix;
-sub previousNonBlankSibling;
-sub previousSibling;
-sub removeChild;
-sub removeChildNodes;
-sub replaceChild;
-sub replaceNode;
-sub serialize;
-sub setBaseURI;
-sub setName;
-sub setNodeName;
-sub setRawName;
-sub string_value;
-sub textContent;
-sub toString;
-sub to_literal;
-sub to_number;
-sub unbindNode;
-sub unique_key;
-sub unlink;
-sub unlinkNode;
-}
-package XML::LibXML::PI {
-sub _setData;
-}
-package XML::LibXML::ParserContext {
-sub DESTROY;
-}
-package XML::LibXML::Pattern {
-sub DESTROY;
-sub _compilePattern;
-sub matchesNode;
-}
-package XML::LibXML::Reader {
-sub _DESTROY;
-sub _close;
-sub _getParserProp;
-sub _newForDOM;
-sub _newForFd;
-sub _newForFile;
-sub _newForIO;
-sub _newForString;
-sub _nodePath;
-sub _preservePattern;
-sub _setParserProp;
-sub _setRelaxNG;
-sub _setRelaxNGFile;
-sub _setXSD;
-sub _setXSDFile;
-sub attributeCount;
-sub baseURI;
-sub byteConsumed;
-sub columnNumber;
-sub copyCurrentNode;
-sub depth;
-sub document;
-sub encoding;
-sub finish;
-sub getAttribute;
-sub getAttributeHash;
-sub getAttributeNo;
-sub getAttributeNs;
-sub hasAttributes;
-sub hasValue;
-sub isDefault;
-sub isEmptyElement;
-sub isNamespaceDecl;
-sub isValid;
-sub lineNumber;
-sub localName;
-sub lookupNamespace;
-sub matchesPattern;
-sub moveToAttribute;
-sub moveToAttributeNo;
-sub moveToAttributeNs;
-sub moveToElement;
-sub moveToFirstAttribute;
-sub moveToNextAttribute;
-sub name;
-sub namespaceURI;
-sub next;
-sub nextElement;
-sub nextPatternMatch;
-sub nextSibling;
-sub nextSiblingElement;
-sub nodeType;
-sub prefix;
-sub preserveNode;
-sub quoteChar;
-sub read;
-sub readAttributeValue;
-sub readInnerXml;
-sub readOuterXml;
-sub readState;
-sub skipSiblings;
-sub standalone;
-sub value;
-sub xmlLang;
-sub xmlVersion;
-}
-package XML::LibXML::RegExp {
-sub DESTROY;
-sub _compile;
-sub isDeterministic;
-sub matches;
-}
-package XML::LibXML::RelaxNG {
-sub DESTROY;
-sub parse_buffer;
-sub parse_document;
-sub parse_location;
-sub validate;
-}
-package XML::LibXML::Schema {
-sub DESTROY;
-sub parse_buffer;
-sub parse_location;
-sub validate;
-}
-package XML::LibXML::Text {
-sub appendData;
-sub data;
-sub deleteData;
-sub insertData;
-sub new;
-sub replaceData;
-sub setData;
-sub substringData;
-}
-package XML::LibXML::XPathContext {
-sub DESTROY;
-sub _find;
-sub _findnodes;
-sub _free_node_pool;
-sub getContextNode;
-sub getContextPosition;
-sub getContextSize;
-sub getVarLookupData;
-sub getVarLookupFunc;
-sub lookupNs;
-sub new;
-sub registerFunctionNS;
-sub registerNs;
-sub registerVarLookupFunc;
-sub setContextNode;
-sub setContextPosition;
-sub setContextSize;
-}
-package XML::LibXML::XPathExpression {
-sub DESTROY;
-sub new;
-}
 package XML::Parser::Expat {
 sub DefaultCurrent;
 sub Do_External_Parse;
@@ -5600,6 +4483,16 @@ package XString {
 sub cstring;
 sub perlstring;
 }
+package YAML::Syck {
+sub DumpJSON;
+sub DumpJSONFile;
+sub DumpJSONInto;
+sub DumpYAML;
+sub DumpYAMLFile;
+sub DumpYAMLInto;
+sub LoadJSON;
+sub LoadYAML;
+}
 package YAML::XS::LibYAML {
 sub Dump;
 sub Load;
@@ -5610,6 +4503,26 @@ sub _fetch_attrs($) ;
 sub _guess_stash($) ;
 sub _modify_attrs;
 sub reftype($) ;
+}
+package builtin {
+sub blessed($) ;
+sub ceil($) ;
+sub created_as_number($) ;
+sub created_as_string($) ;
+sub export_lexically;
+sub false() ;
+sub floor($) ;
+sub import;
+sub indexed;
+sub is_bool($) ;
+sub is_tainted($) ;
+sub is_weak($) ;
+sub refaddr($) ;
+sub reftype($) ;
+sub trim($) ;
+sub true() ;
+sub unweaken($) ;
+sub weaken($) ;
 }
 package bytes {
 sub chr(_) ;
@@ -5622,9 +4535,15 @@ sub substr($$;$$) ;
 package constant {
 sub _make_const(\[$@]) ;
 }
-package indirect {
-sub _global($) ;
-sub _tag($) ;
+package match::simple {
+sub any(&@) ;
+sub blessed($) ;
+sub match;
+}
+package match::simple::XS {
+sub constant;
+sub is_regexp;
+sub match;
 }
 package mro {
 sub _nextcan;
@@ -5640,6 +4559,7 @@ sub set_mro($$) ;
 package re {
 sub install;
 sub is_regexp($) ;
+sub optimization($) ;
 sub regexp_pattern($) ;
 sub regmust($) ;
 sub regname(;$$) ;
@@ -5647,9 +4567,7 @@ sub regnames(;$) ;
 sub regnames_count() ;
 }
 package threads {
-sub DESTROY;
 sub equal;
-sub join;
 }
 package threads::shared {
 sub blessed($) ;

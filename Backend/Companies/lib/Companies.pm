@@ -5,7 +5,7 @@ use Companies::Helpers::Users;
 use Companies::Helpers::Company;
 use Companies::Helpers::Workflow;
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 has 'pg';
 

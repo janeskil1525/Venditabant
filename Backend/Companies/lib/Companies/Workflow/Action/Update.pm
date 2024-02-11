@@ -1,4 +1,4 @@
-package Companies::Workflow::Action::UpdateCompany;
+package Companies::Workflow::Action::Update;
 use strict;
 use warnings FATAL => 'all';
 use base qw( Engine::Workflow::Action::Base );

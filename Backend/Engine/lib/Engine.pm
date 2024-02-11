@@ -18,6 +18,7 @@ use Engine::Model::Transit;
 
 has 'pg';
 has 'config';
+has 'context';
 
 async sub execute  {
     my ($self, $workflow, $data) = @_;
@@ -56,6 +57,7 @@ async sub execute  {
                 }
                 $wf->execute_action($action);
             }
+            $self->context($wf->context);
         }
     } else {
         say Dumper($data->{error});

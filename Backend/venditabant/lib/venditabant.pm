@@ -34,8 +34,8 @@ use Mojo::File;
 
 use Mojo::JSON qw {from_json};
 
-$ENV{VENDITABANT_HOME} = '/home/jan/Project/Venditabant/Backend/venditabant/'
-    unless $ENV{VENDITABANT_HOME};
+$ENV{VENDITABANT_HOME} = '/home/jan/IdeaProjects/Venditabant/Backend/venditabant/';
+    #unless $ENV{VENDITABANT_HOME};
 
 has dist_dir => sub {
   return Mojo::File->new(

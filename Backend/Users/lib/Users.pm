@@ -1,4 +1,4 @@
-package Users::Users;
+package Users;
 use strict;
 use warnings FATAL => 'all';
 

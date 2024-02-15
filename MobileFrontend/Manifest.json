@@ -25,7 +25,7 @@
   },
 
   "requires": {
-    "@qooxdoo/framework": "^6.0.2",
-    "@qooxdoo/compiler" : "^1.0.2"
+    "@qooxdoo/framework": "^7.6.3",
+    "@qooxdoo/compiler" : "^1.0.5"
   }
 }

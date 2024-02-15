@@ -15,11 +15,11 @@ use Users::Model::Workflow;
 
 sub execute ($self, $wf) {
 
-    my $pg = $self->get_pg('CompaniesPersister');
+    my $pg = $self->get_pg('UsersPersister');
     my $context = $wf->context;
 
     my $data = $context->param('user');
-    my $companies_pkey = $context->param('companies_pkey');
+    my $companies_pkey = $context->param('companies_fkey');
     my $saving_user_pkey = $context->param('users_pkey');
 
     my $user = $data->{userid};
@@ -28,18 +28,29 @@ sub execute ($self, $wf) {
     my $err;
 
     eval {
-        $wf->add_history(
-            Workflow::History->new({
-                action      => "New user",
-                description => "User $user will be created",
-                user        => $context->param('history')->{userid},
-            })
-        );
-
+        my $users_pkey = 0;
         my $user_obj = Users::Model::Users->new(db => $db);
-        my $users_pkey = $user_obj->insert(
-            $user, $saving_user_pkey
-        );
+        if ($saving_user_pkey > 0) {
+            $wf->add_history(
+                Workflow::History->new({
+                    action      => "New user",
+                    description => "User $user will be created",
+                    user        => $context->param('history')->{userid},
+                })
+            );
+            $users_pkey = $user_obj->insert(
+                $user, $saving_user_pkey
+            );
+        } else {
+            $users_pkey = $user_obj->signup($user);
+            $wf->add_history(
+                Workflow::History->new({
+                    action      => "New user",
+                    description => "User $user will be created",
+                    user        => 'Signup',
+                })
+            );
+        }
 
         my $users_companies_pkey = $user_obj->upsert_user_companies(
             $companies_pkey, $users_pkey
@@ -48,27 +59,35 @@ sub execute ($self, $wf) {
         Users::Model::Workflow->new(
             db => $db
         )->insert(
-            $wf->id, $users_pkey, $companies_fkey
+            $wf->id, $users_pkey
         );
 
         $tx->commit();
 
         my $result = $self->insert($wf, $pg, $companies_fkey, $data);
+        if ($saving_user_pkey > 0) {
+            $wf->add_history(
+                Workflow::History->new({
+                    action      => "New user created",
+                    description => "User $user was created",
+                    user        => $context->param('history')->{userid},
+                })
+            );
+        } else {
+            $wf->add_history(
+                Workflow::History->new({
+                    action      => "New user created",
+                    description => "User $user was created",
+                    user        => 'Signup',
+                })
+            );
+        }
 
-        $wf->add_history(
-            Workflow::History->new({
-                action      => "New user created",
-                description => "User $user was created",
-                user        => $context->param('history')->{userid},
-            })
-        );
     };
     $err = $@ if $@;
     $self->capture_message (
         $pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
     ) if $err;
-
-    workflow_error($err) if $err;
 
     return $err ? $err : 'success';
 }

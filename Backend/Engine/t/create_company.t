@@ -10,7 +10,7 @@ sub execute {
         "dbi:Pg:dbname=Venditabant;host=database;port=15432;user=postgres;password=PV58nova64"
     );
 
-    my $data->{company}->{company_name} = 'Test companyy';
+    my $data->{company}->{company_name} = 'Test companyy 4';
     $data->{company}->{company_orgnr} = '12345';
     $data->{company}->{company_address} = 'Kuligastan';
 
@@ -19,19 +19,24 @@ sub execute {
 
     push @{$data->{actions}}, 'create_company';
 
-    my $config->{engine}->{conf_path} = '/home/jan/Project/Venditabant/Backend/venditabant/conf/engine_log.conf';
+    my $config->{engine}->{conf_path} = '/home/jan/IdeaProjects/Venditabant/Backend/venditabant/conf/engine_log.conf';
     #$config->{engine}->{workflows_path} = '/home/jan/Project/Venditabant/Backend/Engine/conf/workflows/';
 
 
-    Engine->new(
+    my $engine =  Engine->new(
         pg => $pg,
         config => $config
-    )->execute(
+    );
+
+    $engine->execute(
         'Companies',$data
     )->catch(sub{
         my $err = shift;
         print $err . '\n';
     })->wait();
+
+    my $context = $engine->context();
+
     return 1;
 }
 

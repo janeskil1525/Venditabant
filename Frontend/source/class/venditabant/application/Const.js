@@ -12,7 +12,7 @@ qx.Class.define("venditabant.application.Const",
             _mode : 'test',
             venditabant_endpoint: function() {
                 if (this._mode === 'test') {
-                    return 'http://192.168.1.134';
+                    return 'http://192.168.1.116';
                 } else {
                     return 'https://www.venditabant.net';
                 }

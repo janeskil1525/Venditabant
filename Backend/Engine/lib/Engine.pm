@@ -57,7 +57,7 @@ async sub execute  {
                 }
                 $wf->execute_action($action);
             }
-            $self->context($wf->context);
+            $self->context($wf->context());
         }
     } else {
         say Dumper($data->{error});

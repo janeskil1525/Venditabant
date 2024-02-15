@@ -96,4 +96,23 @@ async sub load_user_from_pkey($self, $users_pkey) {
     return $hash;
 }
 
+sub signup ($self, $data) {
+
+    my $users_stmt = qq {
+        INSERT INTO users (userid, username, passwd, active, languages_fkey)
+        VALUES (?,?,?,?, (SELECT languages_pkey FROM languages WHERE lan = 'swe'))
+        RETURNING users_pkey;
+    };
+
+
+    $data->{password} = sha512_base64($data->{password});
+
+    my $users_pkey = $self->db->query(
+        $users_stmt,
+        ($data->{email}, $data->{user_name},$data->{password},1)
+    )->hash->{users_pkey};
+
+
+    return $users_pkey;
+}
 1;

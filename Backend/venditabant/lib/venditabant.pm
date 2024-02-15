@@ -34,8 +34,8 @@ use Mojo::File;
 
 use Mojo::JSON qw {from_json};
 
-$ENV{VENDITABANT_HOME} = '/home/jan/IdeaProjects/Venditabant/Backend/venditabant/';
-    #unless $ENV{VENDITABANT_HOME};
+$ENV{VENDITABANT_HOME} = '/home/jan/IdeaProjects/Venditabant/Backend/venditabant/'
+    unless $ENV{VENDITABANT_HOME};
 
 has dist_dir => sub {
   return Mojo::File->new(
@@ -143,7 +143,7 @@ sub startup ($self) {
 
     $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-    )->migrate(49);
+    )->migrate(50);
 
     $self->renderer->paths([
       $self->dist_dir->child('templates'),

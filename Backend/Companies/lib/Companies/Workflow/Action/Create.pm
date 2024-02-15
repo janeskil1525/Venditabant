@@ -61,9 +61,8 @@ sub execute ($self, $wf) {
         )->insert(
             $wf->id, $companies_pkey
         );
+        $wf->context->param('companies_fkey' => $companies_pkey);
         $tx->commit;
-
-        $context->param('companies_pkey') = $companies_pkey;
     };
     $err = $@ if $@;
     Sentinel::Helpers::Sentinelsender->new()->capture_message (

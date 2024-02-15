@@ -1,27 +1,12 @@
 package Companies;
 use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -signatures, -async_await;
 
-use Companies::Helpers::Users;
 use Companies::Helpers::Company;
 use Companies::Helpers::Workflow;
 
 our $VERSION = '0.08';
 
 has 'pg';
-
-async sub load_users_list_support ($self) {
-    return Companies::Helpers::Users->new(
-        pg => $self->pg
-    )->load_list_support();
-}
-
-async sub load_users_list_p ($self, $companies_pkey) {
-    return Companies::Helpers::Users->new(
-        pg => $self->pg
-    )->load_list(
-        $companies_pkey
-    );
-}
 
 async sub load_p($self, $companies_pkey, $users_pkey) {
     return Companies::Helpers::Company->new(

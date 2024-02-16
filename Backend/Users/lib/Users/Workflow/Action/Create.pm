@@ -63,8 +63,7 @@ sub execute ($self, $wf) {
         );
 
         $tx->commit();
-
-        my $result = $self->insert($wf, $pg, $companies_fkey, $data);
+        
         if ($saving_user_pkey > 0) {
             $wf->add_history(
                 Workflow::History->new({

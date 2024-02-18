@@ -15,7 +15,7 @@ sub execute {
     $data->{user}->{active} = 1;
     $data->{user}->{password} = 'wwwwwWWEEERRRww';
     $data->{user}->{username} = 'kalle olle """"""" !!!!!!!!!!!!';
-
+    $data->{user}->{companies_fkey} = 12;
     push @{$data->{actions}}, 'create_user';
 
     my $config->{engine}->{conf_path} = '/home/jan/IdeaProjects/Venditabant/Backend/venditabant/conf/engine_log.conf';

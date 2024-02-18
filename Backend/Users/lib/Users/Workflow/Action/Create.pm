@@ -12,6 +12,8 @@ use Workflow::Exception qw( workflow_error );
 
 use Sentinel::Helpers::Sentinelsender;
 use Users::Model::Workflow;
+use Users::Model::Users;
+use Sentinel::Helpers::Sentinelsender;
 
 sub execute ($self, $wf) {
 
@@ -21,6 +23,7 @@ sub execute ($self, $wf) {
     my $data = $context->param('user');
     my $companies_pkey = $context->param('companies_fkey');
     my $saving_user_pkey = $context->param('users_pkey');
+    $saving_user_pkey = 0 unless $saving_user_pkey;
 
     my $user = $data->{userid};
     my $db = $pg->db;
@@ -41,8 +44,11 @@ sub execute ($self, $wf) {
             $users_pkey = $user_obj->insert(
                 $user, $saving_user_pkey
             );
+            my $users_companies_pkey = $user_obj->upsert_user_companies(
+                $companies_pkey, $users_pkey
+            );
         } else {
-            $users_pkey = $user_obj->signup($user);
+            $users_pkey = $user_obj->signup($data);
             $wf->add_history(
                 Workflow::History->new({
                     action      => "New user",
@@ -50,11 +56,10 @@ sub execute ($self, $wf) {
                     user        => 'Signup',
                 })
             );
+            my $users_companies_pkey = $user_obj->upsert_user_companies(
+                $data->{companies_fkey}, $users_pkey
+            );
         }
-
-        my $users_companies_pkey = $user_obj->upsert_user_companies(
-            $companies_pkey, $users_pkey
-        );
 
         Users::Model::Workflow->new(
             db => $db
@@ -84,9 +89,11 @@ sub execute ($self, $wf) {
 
     };
     $err = $@ if $@;
-    $self->capture_message (
+    print  $err . "\n" if $err;
+    Sentinel::Helpers::Sentinelsender->new()->capture_message (
         $pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
     ) if $err;
+
 
     return $err ? $err : 'success';
 }

@@ -66,4 +66,14 @@ async sub load_p ($self, $companies_pkey, $users_pkey) {
     $hash = $result->hash if $result and $result->rows > 0;
     return $hash
 }
+
+async sub get_language_fkey_p($self, $companies_pkey, $users_pkey) {
+
+    my $result =  await $self->load_p(
+        $companies_pkey, $users_pkey
+    );
+
+    return $result->{languages_fkey};
+}
+
 1;

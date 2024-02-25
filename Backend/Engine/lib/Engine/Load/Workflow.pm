@@ -1,5 +1,5 @@
 package Engine::Load::Workflow;
-use Mojo::Base -base, -signatures, -async_await;
+use Mojo::Base -base, -signatures;
 
 use Engine::Config::Configuration;
 
@@ -8,11 +8,11 @@ use Workflow::Factory qw(FACTORY);
 
 has 'pg';
 has 'config';
+has 'log';
 
-async sub load ($self, $workflow, $data)  {
+sub load ($self, $workflow, $data)  {
 
-    my $log = Log::Log4perl->get_logger();
-    await $self->_init($workflow);
+    $self->_init($workflow);
 
     my $wf;
     my $context = Workflow::Context->new(
@@ -27,21 +27,15 @@ async sub load ($self, $workflow, $data)  {
         $wf = FACTORY->create_workflow( $workflow, $context );
     }
     if ( $wf ) {
-        $log->debug( "Workflow found; current state: '", $wf->state, "'" );
+        $self->log->debug( "Workflow found; current state: '", $wf->state, "'" );
     }
     return $wf;
 }
 
-async sub _init($self, $workflow) {
+sub _init($self, $workflow) {
 
-    Log::Log4perl->easy_init($ERROR);
-    eval {
-        Log::Log4perl::init($self->config->{engine}->{conf_path});
-    };
-    say  $@ if $@;
 
-    my $log = Log::Log4perl->get_logger();
-    $log->debug(
+    $self->log->debug(
         "Engine::Load::Workflow _init_factory Starting to configure workflow factory"
     );
 
@@ -62,7 +56,7 @@ async sub _init($self, $workflow) {
         # validator  => $self->config->{engine}->{workflows_path} . "validator.xml",
     );
 
-    $log->debug(
+    $self->log->debug(
         "Engine::Load::Workflow _init_factory Finished configuring workflow factory"
     );
 }

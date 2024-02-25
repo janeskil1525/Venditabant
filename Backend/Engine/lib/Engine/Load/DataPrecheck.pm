@@ -1,42 +1,41 @@
 package Engine::Load::DataPrecheck;
-use Mojo::Base -base, -signatures, -async_await;
+use Mojo::Base -base, -signatures;
 
 use venditabant::Helpers::Factory::Loader;
 use Engine::Config::Configuration;
 
 use Workflow::Exception qw( configuration_error );
-use Log::Log4perl qw(:easy);
 
 has 'pg';
+has 'log';
 
-async sub precheck ($self, $worlflow, $data) {
+sub precheck ($self, $worlflow, $data) {
 
     my $class;
     my $fieldclass;
     my $required_classes = '';
 
-    my $log = Log::Log4perl->get_logger();
-    $log->debug(
+    $self->log->debug(
         "Engine::Load::DataPrecheck precheck Starting precheck"
     );
 
-    my $config = await $self->_init_precheck($worlflow);
+    my $config = $self->_init_precheck($worlflow);
     my $groups = $config->{precheck}->{actions}->{groups};
     my $error = 0;
     foreach my $group (@{$groups}) {
         if ($self->check_condition($group->{condition}, $data->{actions})) {
             my $actions = $group->{action};
             foreach my $action (@{$actions}) {
-                $log->debug(
+                $self->log->debug(
                     "Engine::Load::DataPrecheck precheck will create $action->{class}"
                 );
                 if (exists $action->{field} and ref $action->{field} eq 'ARRAY') {
                     foreach my $field (@{$action->{field}}) {
-                        $fieldclass = await $self->_require($required_classes, $field->{class});
+                        $fieldclass = $self->_require($required_classes, $field->{class});
                         if (ref $fieldclass ne $field->{class}) {
                             $fieldclass = $field->{class}->new(pg => $self->pg);
                         }
-                        $log->debug(
+                        $self->log->debug(
                             "Engine::Load::DataPrecheck precheck will check field $field->{name}"
                         );
 
@@ -47,12 +46,12 @@ async sub precheck ($self, $worlflow, $data) {
                 if (!exists $data->{error}) {
                     my $err;
                     eval {
-                        $class = await $self->_require($required_classes, $action->{class});
+                        $class = $self->_require($required_classes, $action->{class});
                         if (ref $class ne $action->{class}) {
                             $class = $action->{class}->new(pg => $self->pg);
                         }
 
-                        $log->debug(
+                        $self->log->debug(
                             "Engine::Load::DataPrecheck precheck will perform action $action->{name}"
                         );
 
@@ -60,7 +59,7 @@ async sub precheck ($self, $worlflow, $data) {
                         $data = await $class->$method($data);
                     };
                     $err = $@ if $@;
-                    $log->error(
+                    $self->log->error(
                         "Engine::Load::DataPrecheck precheck  " . $err
                     ) if $err;
                 }
@@ -88,17 +87,17 @@ sub check_condition($self, $condition, $actions) {
     return $exists;
 }
 
-async sub _require($self, $required_classes, $class) {
+sub _require($self, $required_classes, $class) {
     if(index($required_classes, $class) == -1) {
         eval "require $class" or die $@;
         $required_classes .= $class . ' ';
     }
 }
 
-async sub _init_precheck($self, $workflow) {
+sub _init_precheck($self, $workflow) {
 
     my $log = Log::Log4perl->get_logger();
-    $log->debug(
+    $self->log->debug(
         "Engine::Load::DataPrecheck _init_factory Starting to configure workflow factory"
     );
 

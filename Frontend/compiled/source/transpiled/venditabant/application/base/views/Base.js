@@ -46,4 +46,4 @@
   venditabant.application.base.views.Base.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Base.js.map?dt=1706805959526
+//# sourceMappingURL=Base.js.map?dt=1707927155423

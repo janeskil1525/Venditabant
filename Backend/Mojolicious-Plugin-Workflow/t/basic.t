@@ -3,8 +3,16 @@ use Mojo::Base -strict;
 use Test::More;
 use Mojolicious::Lite;
 use Test::Mojo;
+use Mojo::Pg;
 
-plugin 'Workflow';
+
+
+my $pg = Mojo::Pg->new->dsn(
+    "dbi:Pg:dbname=Venditabant;host=database;port=15432;user=postgres;password=PV58nova64"
+);
+
+plugin 'Config' => { path => "Log/LogFile.log" };
+plugin 'Workflow' => {pg => $pg};
 
 get '/' => sub {
   my $c = shift;

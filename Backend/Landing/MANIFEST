@@ -1,0 +1,12 @@
+landing.conf
+lib/landing.pm
+lib/landing/Controller/Example.pm
+Makefile.PL
+MANIFEST
+script/landing
+share/migrations/landing.sql
+share/public/index.html
+share/schema/landing.json
+share/templates/example/welcome.html.ep
+share/templates/layouts/default.html.ep
+t/basic.t

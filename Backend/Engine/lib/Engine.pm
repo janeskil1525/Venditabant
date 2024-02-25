@@ -1,38 +1,41 @@
 package Engine;
 use Mojo::Base -base, -signatures, -async_await;
 
-use Log::Log4perl qw(:easy);
 use Workflow::Factory qw(FACTORY);
 use Workflow::State;
 use Data::Dumper;
 use Syntax::Operator::Matches qw( matches mismatches );
 use Types::Standard qw( Str Int Enum ArrayRef Object );
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 use Engine::Load::Workflow;
 use Engine::Load::DataPrecheck;
 use Engine::Load::Transit;
 use Engine::Load::Mappings;
 use Engine::Model::Transit;
+use Engine::Config::Configuration;
 
 has 'pg';
 has 'config';
 has 'context';
+has 'log';
 
 async sub execute  {
     my ($self, $workflow, $data) = @_;
 
-    $data = await Engine::Load::DataPrecheck->new(
-        pg => $self->pg
+    $data = Engine::Load::DataPrecheck->new(
+        pg => $self->pg,
+        log => $self->log,
     )->precheck(
         $workflow, $data
     );
 
     if(!exists $data->{error}) {
-        my $wf = await Engine::Load::Workflow->new(
+        my $wf = Engine::Load::Workflow->new(
             pg     => $self->pg,
             config => $self->config,
+            log    => $self->log,
         )->load (
             $workflow, $data
         );
@@ -83,15 +86,17 @@ async sub auto_transits ($self) {
 
                 $data->{actions} = $activity;
 
-                $data = await Engine::Load::DataPrecheck->new(
-                    pg => $self->pg
+                $data = Engine::Load::DataPrecheck->new(
+                    pg => $self->pg,
+                    log => $self->log,
                 )->precheck(
                     $item->{workflow}->{workflow}, $data
                 );
 
-                my $wf = await Engine::Load::Workflow->new(
+                my $wf = Engine::Load::Workflow->new(
                     pg     => $self->pg,
                     config => $self->config,
+                    log    => $self->log,
                 )->load (
                     $item->{workflow}->{workflow}, $data
                 );
@@ -114,4 +119,14 @@ async sub auto_transits ($self) {
         }
     }
 }
+
+sub get_actions($self) {
+
+    my $config = Engine::Config::Configuration->new(pg => $self->pg);
+
+    my $actions = $config->get_actions();
+
+    return $actions;
+}
+
 1;;

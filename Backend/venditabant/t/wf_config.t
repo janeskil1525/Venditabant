@@ -10,7 +10,7 @@ use venditabant::Helpers::Workflow::Config;
 sub load_config {
 
     my $pg = Mojo::Pg->new->dsn(
-        "dbi:Pg:dbname=Venditabant;host=192.168.1.108;port=5432;user=postgres;password=PV58nova64"
+        "dbi:Pg:dbname=Venditabant;host=192.168.1.116;port=15432;user=postgres;password=PV58nova64"
     );
 
     venditabant::Helpers::Workflow::Config->new(

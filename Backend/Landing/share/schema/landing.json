@@ -1,0 +1,100 @@
+{
+  "users": {
+    "x-id-field": "userid",
+    "x-list-columns": [
+      "userid",
+      "username"
+    ],
+    "title": "Users",
+    "description": "Landing admin users",
+    "properties": {
+      "users_pkey": {
+        "type": "integer",
+        "readOnly": true,
+        "x-order": 1,
+        "title": "Id"
+      },
+      "userid": {
+        "type": "string",
+        "x-order": 2,
+        "title": "User id"
+      },
+      "username": {
+        "type": "string",
+        "x-order": 3,
+        "title": "User namne"
+      },
+      "password": {
+        "format": "password",
+        "type": "string",
+        "x-order": 3,
+        "title": "Password"
+      }
+    }
+  },
+  "pages": {
+    "x-id-field": "pagepath",
+    "x-list-columns": [
+      "pagepath"
+    ],
+    "x-view-item-url": "/{pagepath}",
+    "title": "Pages",
+    "description": "Venditabant Pages",
+    "properties": {
+      "pages_pkey": {
+        "type": "integer",
+        "readOnly": true,
+        "x-order": 1,
+        "title": "Id"
+      },
+      "languages_fkey": {
+        "type": "integer",
+
+        "title": "Language",
+        "x-order": 2
+      },
+      "pagepath": {
+        "type": "string",
+        "x-order": 3,
+        "title": "Path"
+      },
+      "markdown": {
+        "type": "string",
+        "format": "markdown",
+        "x-html-field": "html",
+        "x-order": 5,
+        "title": "Page"
+      },
+      "html": {
+        "type": "string"
+      }
+    }
+  },
+  "languages": {
+    "title": "Language",
+    "description": "Languages",
+    "x-id-field": "languages_pkey",
+    "x-list-columns": [
+      "lan",
+      "lan_name"
+    ],
+    "properties": {
+      "languages_pkey": {
+        "type": "integer",
+        "title": "Language",
+        "x-order": 1,
+        "readOnly": true
+      },
+      "lan": {
+        "type": "string",
+        "title": "ISO",
+        "x-order": 2
+      },
+      "lan_name": {
+        "type": "string",
+        "title": "Description",
+        "x-order": 1
+      }
+    }
+  }
+}

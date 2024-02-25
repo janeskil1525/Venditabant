@@ -41,7 +41,7 @@ my %XML_OPTIONS = (
     },
     workflow => {
         ForceArray => [
-            'extra_data', 'state',
+            'extra_data', 'stat$conf->{workflow_type}e',
             'action',     'resulting_state',
             'condition',  'observer'
         ],
@@ -76,6 +76,37 @@ async sub _load_config($self, $workflow, $items) {
    };
 
     my $result = $self->pg->db->query($stmt,($workflow));
+
+    my $hash;
+    $hash = $result->hashes if $result and $result->rows > 0;
+
+    return $hash
+}
+
+sub get_actions($self) {
+
+    my $config = $self->_get_actions( );
+    my %temp;
+    my $hash = \%temp;
+
+    foreach my $conf (@{ $config }) {
+        my $options = $XML_OPTIONS{'action'} || {};
+        my $action = XMLin($conf->{workflow}, %{$options});
+        push @{$hash->{'actions'}}, $action;
+    }
+
+    return $hash;
+}
+
+sub _get_actions($self) {
+
+    my $stmt = qq{
+        SELECT workflow_items.workflow as workflow
+            FROM  workflow_items
+        WHERE workflow_type = 'action'
+   };
+
+    my $result = $self->pg->db->query($stmt);
 
     my $hash;
     $hash = $result->hashes if $result and $result->rows > 0;

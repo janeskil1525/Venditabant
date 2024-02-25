@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/yancy/bootstrap.css">
+    <title><%= title %></title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-sm sticky-top">
+
+        <a class="navbar-brand" href="/sv">Venditabant</a>
+        <a class="nav-item" href="/svfunctions">Funktioner</a>
+
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+
+        </ul>
+        <div class="collapse navbar-collapse" id="navbar">
+
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <form class="d-flex" role="register">
+            <a class="nav-item px-2" href="/front">Register</a>
+            <a class="nav-item px-2" href="/front">Login</a>
+
+        </form>
+    </nav>
+</header>
+
+<main class="container">
+    <span style="color:#808080">
+        <%= content %>
+    </span>
+</main>
+
+%= javascript '/yancy/jquery.js'
+        %= javascript '/yancy/popper.js'
+        %= javascript '/yancy/bootstrap.js'
+    </body>
+</html>

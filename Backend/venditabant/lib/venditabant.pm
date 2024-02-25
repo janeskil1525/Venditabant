@@ -143,7 +143,7 @@ sub startup ($self) {
 
     $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-    )->migrate(50);
+    )->migrate(51);
 
     $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -175,6 +175,12 @@ sub startup ($self) {
     });
 
     $r->get('/')->to('Example#welcome');
+   # $r->post('/api/companies/create_company/')->to(
+   #     controller => 'workflow',
+   #     action     => 'execute',
+   #     #workflow   => $wf_name,
+   #     #wf_action  => $action->{name},
+   # );
 
 
     $r->put('/api/login/')->to('login#login_user');

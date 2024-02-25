@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+%= link_to Login => 'yancy.auth.login_form'
+<%= link_to 'yancy.auth.login_form', begin %>Login<% end %>
+<p>Login here: <%= url_for 'yancy.auth.login_form' %></p>
+
+</body>
+</html>

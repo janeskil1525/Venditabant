@@ -2627,6 +2627,32 @@ CREATE TABLE workflow_users
 ALTER TABLE workflow_companies
     DROP COLUMN users_fkey;
 
---- 50 down
+-- 50 down
+-- 51 up
+CREATE TABLE workflow_types
+(
+    workflow_types_pkey     serial not null,
+    workflow_types          varchar(100) not null,
+    workflow_relation       varchar(100) not null,
+    workflow_relation_key   varchar(100) not null,
+    workflow_origin_key     varchar(100) not null,
+    primary key ( workflow_types_pkey )
+);
 
+INSERT INTO workflow_types (workflow_types, workflow_relation, workflow_relation_key, workflow_origin_key)
+    VALUES ('Users', 'workflow_users','users_fkey','users_pkey'),
+           ('Companies', 'workflow_companies','companies_fkey','companies_pkey'),
+           ('Salesorder', 'workflow_salesorders','salesorders_fkey','salesorders_pkey');
+
+
+ALTER TABLE workflows
+    ADD COLUMN workflow_types_fkey bigint not null default 0 ;
+
+INSERT INTO workflows (workflow_types_fkey)
+    SELECT workflow_types_pkey FROM workflow_types WHERE workflow_types = workflows.workflow;
+
+ALTER TABLE workflows ADD CONSTRAINT idx_workflows_workflow_types_fkey FOREIGN KEY (workflow_types_fkey)
+        REFERENCES workflow_types (workflow_types_pkey);
+
+-- 51 down
 

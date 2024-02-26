@@ -2648,8 +2648,9 @@ INSERT INTO workflow_types (workflow_types, workflow_relation, workflow_relation
 ALTER TABLE workflows
     ADD COLUMN workflow_types_fkey bigint not null default 0 ;
 
-INSERT INTO workflows (workflow_types_fkey)
-    SELECT workflow_types_pkey FROM workflow_types WHERE workflow_types = workflows.workflow;
+UPDATE workflows SET workflow_types_fkey = workflow_types_pkey
+    FROM workflow_types
+    WHERE workflow_types = workflow;
 
 ALTER TABLE workflows ADD CONSTRAINT idx_workflows_workflow_types_fkey FOREIGN KEY (workflow_types_fkey)
         REFERENCES workflow_types (workflow_types_pkey);

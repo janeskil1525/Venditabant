@@ -2261,9 +2261,9 @@ CREATE TABLE if not exists workflows
 
 INSERT INTO workflows (workflow)
 VALUES ('Salesorder'),
-       ('Salesorder item'),
+       ('Customers'),
        ('Invoice'),
-       ('Invoice item');
+       ('Stockitems');
 
 CREATE TYPE workflowtype AS ENUM ('action', 'condition', 'persister', 'validator', 'workflow');
 
@@ -2596,7 +2596,7 @@ CREATE TABLE workflow_pricelist
 );
 
 INSERT INTO workflows (workflow)
-    VALUES ('pricelist_simple')
+    VALUES ('Pricelist')
         ON CONFLICT (workflow) DO NOTHING;
 
 INSERT INTO workflows (workflow)
@@ -2642,8 +2642,15 @@ CREATE TABLE workflow_types
 INSERT INTO workflow_types (workflow_types, workflow_relation, workflow_relation_key, workflow_origin_key)
     VALUES ('Users', 'workflow_users','users_fkey','users_pkey'),
            ('Companies', 'workflow_companies','companies_fkey','companies_pkey'),
-           ('Salesorder', 'workflow_salesorders','salesorders_fkey','salesorders_pkey');
+           ('Salesorder', 'workflow_salesorders','salesorders_fkey','salesorders_pkey'),
+           ('Invoice', 'workflow_invoice','invoice_fkey','invoice_pkey'),
+           ('Customers', 'workflow_customer','customers_fkey','customers_pkey'),
+           ('Stockitems', 'workflow_stockitem','stockitems_fkey','stockitems_pkey'),
+           ('Pricelist', 'workflow_pricelist','pricelists_fkey','pricelists_pkey');
 
+DELETE FROM workflows WHERE workflow = 'invoice_mail';
+DELETE FROM workflows WHERE workflow = 'customer_simple';
+DELETE FROM workflows WHERE workflow = 'stockitem_simple';
 
 ALTER TABLE workflows
     ADD COLUMN workflow_types_fkey bigint not null default 0 ;
@@ -2656,4 +2663,14 @@ ALTER TABLE workflows ADD CONSTRAINT idx_workflows_workflow_types_fkey FOREIGN K
         REFERENCES workflow_types (workflow_types_pkey);
 
 -- 51 down
+-- 52 up
+ALTER TABLE workflow_companies
+    ADD COLUMN users_fkey bigint NOT NULL DEFAULT 0;
+
+ALTER TABLE workflow_users
+    ADD COLUMN companies_fkey bigint NOT NULL DEFAULT 0;
+
+ALTER TABLE workflow_users
+    ADD COLUMN creating_user_fkey bigint NOT NULL DEFAULT 0;
+-- 52 down
 

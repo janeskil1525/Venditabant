@@ -92,8 +92,10 @@ sub get_actions($self) {
     foreach my $conf (@{ $config }) {
         my $options = $XML_OPTIONS{'action'} || {};
         my $action = XMLin($conf->{workflow}, %{$options});
+        $action->{config} = $conf;
         push @{$hash->{'actions'}}, $action;
     }
+    $hash->{config} = $config;
 
     return $hash;
 }
@@ -101,8 +103,10 @@ sub get_actions($self) {
 sub _get_actions($self) {
 
     my $stmt = qq{
-        SELECT workflow_items.workflow as workflow
-            FROM  workflow_items
+        SELECT workflow_items.workflow as workflow, workflow_relation,
+                    workflow_relation_key, workflow_origin_key
+            FROM  workflow_items INNER JOIN workflows ON workflows_pkey = workflows_fkey
+                    INNER JOIN workflow_types ON workflow_types_fkey = workflow_types_pkey
         WHERE workflow_type = 'action'
    };
 

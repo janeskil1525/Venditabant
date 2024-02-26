@@ -76,20 +76,29 @@ sub load_workflow($self) {
 
 sub execute($self) {
 
-    #$self->render_later;
+    $self->render_later;
 
     my ($companies_pkey, $users_pkey) = $self->jwt->companies_users_pkey(
         $self->req->headers->header('X-Token-Check')
     );
-
-    my $workflow = $self->stash('workflow');
-    my $wf_action = $self->stash('wf_action');
 
     my $data->{data} = decode_json ($self->req->body);
     $data->{users_fkey} = $users_pkey;
     $data->{companies_fkey} = $companies_pkey;
     $data->{workflow_id} = 0;
 
-    #$self->engine->execute()->wait();
+    push @{$data->{actions}}, "$self->stash('wf_action')";
+    $data->{workflow}->{workflow} = $self->stash('workflow');
+    $data->{workflow}->{workflow_relation} = $self->stash('workflow_relation');
+    $data->{workflow}->{workflow_relation_key} = $self->stash('workflow_relation_key');
+    $data->{workflow}->{workflow_origin_key} = $self->stash('workflow_origin_key');
+
+    $self->engine->execute(
+        $data->{workflow}->{workflow}, $data
+    )->then(sub ($result) {
+        $self->render(json => {'result' => 'success', data => $result});
+    })->catch( sub ($err) {
+        $self->render(json => {'result' => 'failed', data => $err});
+    })->wait();
 }
 1;

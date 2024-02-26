@@ -54,7 +54,6 @@ sub startup ($self) {
     my $config = $self->plugin('Config');
     $self->helper(pg => sub {state $pg = Mojo::Pg->new->dsn(shift->config('pg'))});
     $self->plugin('Minion'  => { Pg => $self->pg });
-    $self->plugin('Workflow');
 
     $self->helper(users => sub {
         state $users = venditabant::Helpers::Users->new(pg => $self->pg);
@@ -143,7 +142,7 @@ sub startup ($self) {
 
     $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')
-    )->migrate(50);
+    )->migrate(52);
 
     $self->renderer->paths([
       $self->dist_dir->child('templates'),
@@ -174,18 +173,14 @@ sub startup ($self) {
         return undef;
     });
 
-    $r->get('/')->to('Example#welcome');
-   # $r->post('/api/companies/create_company/')->to(
-   #     controller => 'workflow',
-   #     action     => 'execute',
-   #     #workflow   => $wf_name,
-   #     #wf_action  => $action->{name},
-   # );
+    $self->plugin('Workflow', {route => $auth} );
 
+    $r->get('/')->to('Example#welcome');
 
     $r->put('/api/login/')->to('login#login_user');
     $r->put('/api/signup/')->to('signup#signup_company');
 
+    # $self->workflow->init($auth);
     $auth->put('/stockitem/save/')->to('stockitems#save_stockitem');
     $auth->get('/stockitem/load_list/')->to('stockitems#load_list');
 

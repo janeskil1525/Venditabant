@@ -1,5 +1,5 @@
 package Engine::Config::Configuration;
-use Mojo::Base -base, -signatures, -async_await;
+use Mojo::Base -base, -signatures;
 
 use Data::Dumper;
 use Workflow::Config;
@@ -49,9 +49,9 @@ my %XML_OPTIONS = (
     },
 );
 
-async sub load_config($self, $workflow, $items) {
+sub load_config($self, $workflow, $items) {
 
-    my $config = await $self->_load_config($workflow, $items);
+    my $config = $self->_load_config($workflow, $items);
     my %temp;
     my $hash = \%temp;
 
@@ -66,7 +66,7 @@ async sub load_config($self, $workflow, $items) {
     return $hash;
 }
 
-async sub _load_config($self, $workflow, $items) {
+sub _load_config($self, $workflow, $items) {
 
    my $stmt = qq{
         SELECT workflow_type, workflow_items.workflow as workflow

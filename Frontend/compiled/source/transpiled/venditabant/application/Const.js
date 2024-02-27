@@ -20,7 +20,7 @@
       _mode: 'test',
       venditabant_endpoint: function venditabant_endpoint() {
         if (this._mode === 'test') {
-          return 'http://192.168.1.134';
+          return 'http://192.168.1.116';
         } else {
           return 'https://www.venditabant.net';
         }
@@ -40,4 +40,4 @@
   venditabant.application.Const.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Const.js.map?dt=1706805901748
+//# sourceMappingURL=Const.js.map?dt=1707998942229

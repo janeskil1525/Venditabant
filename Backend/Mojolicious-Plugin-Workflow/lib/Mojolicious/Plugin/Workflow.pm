@@ -1,35 +1,24 @@
 package Mojolicious::Plugin::Workflow;
-use Mojo::Base 'Mojolicious::Plugin', -signatures, -async_await;
+use Mojo::Base 'Mojolicious::Plugin', -signatures;
 
 use Engine;
 
-our $VERSION = '0.05';
+our $VERSION = '0.07';
 
-has 'route';
+sub register($self, $app, $config) {
 
-sub register {
-  my ($self, $app, $config) = @_;
-
-
-  my $workflow = Engine->new(
+    my $engine = Engine->new(
       pg     => $app->pg,
       config => $app->config,
       log    => => $app->log,
-  );
-
-    $self->init($workflow, $config->{route});
-  $app->helper(workflow => sub {$workflow});
-}
-
-sub init($self, $engine, $routen) {
+    );
 
     my $actions = $engine->get_actions();
     foreach my $workflow (@{$actions->{'actions'}}) {
         my $wf_name = $workflow->{type};
         foreach my $action (@{$workflow->{action}}) {
-
             my $route = "/" . lc($wf_name) . "/" . lc($action->{name}) . "/";
-            $routen->post($route)->to(
+            $config->{route}->post($route)->to(
                 controller            => 'workflows',
                 action                => 'execute',
                 workflow              => $wf_name,
@@ -40,5 +29,7 @@ sub init($self, $engine, $routen) {
             );
         }
     }
+    $app->helper(workflow => sub {$engine});
 }
+
 1;

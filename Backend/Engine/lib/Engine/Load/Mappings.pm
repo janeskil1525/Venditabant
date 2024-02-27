@@ -12,7 +12,7 @@ async sub mappings($self, $workflow, $action, $data) {
 
     my $types = "('mappings')";
 
-    my $config = await Engine::Config::Configuration->new(
+    my $config = Engine::Config::Configuration->new(
         pg => $self->pg
     )->load_config(
         $workflow, $types

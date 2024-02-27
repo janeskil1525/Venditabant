@@ -32,6 +32,7 @@
     },
     members: {
       // Public functions ...
+
       getView: function getView() {
         var that = this;
         var view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
@@ -50,8 +51,8 @@
           left: 5,
           right: 5,
           height: "95%"
-        }); //this._tabView = tabView;
-
+        });
+        //this._tabView = tabView;
         return view;
       },
       setSalesorder: function setSalesorder(salesorders_fkey) {
@@ -63,14 +64,11 @@
           });
           salesorder.loadOrder();
           this._salesorder = salesorder;
-
           this._container.add(this._salesorder.getView());
         } else {
           this._salesorder.setSalesorders_fkey(salesorders_fkey);
         }
-
         this._salesorder.loadOrder();
-
         this.nextViev();
       },
       nextViev: function nextViev() {
@@ -84,4 +82,4 @@
   venditabant.sales.orders.views.Definition.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=HistoryList.js.map?dt=1706805923417
+//# sourceMappingURL=Definition.js.map?dt=1707927125665

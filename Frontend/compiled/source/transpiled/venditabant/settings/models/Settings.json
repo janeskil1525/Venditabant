@@ -12,11 +12,13 @@
     "location": {
       "start": {
         "line": 3,
-        "column": 0
+        "column": 0,
+        "index": 2
       },
       "end": {
         "line": 43,
-        "column": 7
+        "column": 7,
+        "index": 1514
       }
     }
   },
@@ -25,11 +27,13 @@
     "location": {
       "start": {
         "line": 7,
-        "column": 20
+        "column": 20,
+        "index": 159
       },
       "end": {
         "line": 9,
-        "column": 9
+        "column": 9,
+        "index": 182
       }
     },
     "jsdoc": {}
@@ -38,11 +42,13 @@
     "location": {
       "start": {
         "line": 10,
-        "column": 19
+        "column": 19,
+        "index": 203
       },
       "end": {
         "line": 12,
-        "column": 9
+        "column": 9,
+        "index": 226
       }
     },
     "jsdoc": {}
@@ -52,11 +58,13 @@
       "location": {
         "start": {
           "line": 14,
-          "column": 12
+          "column": 12,
+          "index": 259
         },
         "end": {
           "line": 14,
-          "column": 80
+          "column": 80,
+          "index": 327
         }
       },
       "type": "variable",
@@ -66,11 +74,13 @@
       "location": {
         "start": {
           "line": 15,
-          "column": 12
+          "column": 12,
+          "index": 341
         },
         "end": {
           "line": 21,
-          "column": 13
+          "column": 13,
+          "index": 627
         }
       },
       "type": "function",
@@ -80,11 +90,13 @@
       "location": {
         "start": {
           "line": 22,
-          "column": 12
+          "column": 12,
+          "index": 641
         },
         "end": {
           "line": 31,
-          "column": 13
+          "column": 13,
+          "index": 1059
         }
       },
       "type": "function",
@@ -94,11 +106,13 @@
       "location": {
         "start": {
           "line": 32,
-          "column": 12
+          "column": 12,
+          "index": 1073
         },
         "end": {
           "line": 41,
-          "column": 13
+          "column": 13,
+          "index": 1496
         }
       },
       "type": "function",
@@ -139,8 +153,8 @@
         "@return": [
           {
             "name": "@return",
-            "body": "{String | LocalizedString} The translated message or localized string",
-            "type": "String | LocalizedString",
+            "body": "{String|LocalizedString} The translated message or localized string",
+            "type": "String|LocalizedString",
             "description": " The translated message or localized string"
           }
         ]
@@ -195,8 +209,8 @@
         "@return": [
           {
             "name": "@return",
-            "body": "{String | LocalizedString} The translated message or localized string",
-            "type": "String | LocalizedString",
+            "body": "{String|LocalizedString} The translated message or localized string",
+            "type": "String|LocalizedString",
             "description": " The translated message or localized string"
           }
         ]
@@ -244,8 +258,8 @@
         "@return": [
           {
             "name": "@return",
-            "body": "{String | LocalizedString} The translated message or localized string",
-            "type": "String | LocalizedString",
+            "body": "{String|LocalizedString} The translated message or localized string",
+            "type": "String|LocalizedString",
             "description": " The translated message or localized string"
           }
         ]
@@ -307,8 +321,8 @@
         "@return": [
           {
             "name": "@return",
-            "body": "{String | LocalizedString} The translated message or localized string",
-            "type": "String | LocalizedString",
+            "body": "{String|LocalizedString} The translated message or localized string",
+            "type": "String|LocalizedString",
             "description": " The translated message or localized string"
           }
         ]
@@ -436,6 +450,7 @@
         "@return": [
           {
             "name": "@return",
+            "type": "[[ ObjectMethod Function ]]",
             "desc": "Returns the value for qxObjectId"
           }
         ]
@@ -460,6 +475,7 @@
         "@param": [
           {
             "name": "@param",
+            "type": "[[ ObjectMethod Function ]]",
             "paramName": "value",
             "desc": "Value for qxObjectId"
           }

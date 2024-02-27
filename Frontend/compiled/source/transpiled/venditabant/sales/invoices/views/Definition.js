@@ -32,14 +32,15 @@
     },
     members: {
       // Public functions ...
+
       setParams: function setParams(params) {},
       getView: function getView() {
         var view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
         view.setBackgroundColor("white");
+
         /*var box = new qx.ui.container.Composite();
         box.setLayout(new qx.ui.layout.HBox(10));
         win.add(box, {flex: 1});*/
-
         var container = new qx.ui.container.Stack();
         container.setDecorator("main");
         this._container = container;
@@ -48,7 +49,8 @@
           callback: this
         });
         this._invoicelist = invoicelist;
-        container.add(this._invoicelist.getView()); // Add a TabView
+        container.add(this._invoicelist.getView());
+        // Add a TabView
 
         view.add(container, {
           top: 5,
@@ -67,14 +69,11 @@
           });
           invoice.loadInvoice();
           this._invoice = invoice;
-
           this._container.add(this._invoice.getView());
         } else {
           this._invoice.setInvoiceFkey(invoice_fkey);
         }
-
         this._invoice.loadInvoice();
-
         this.nextViev();
       },
       nextViev: function nextViev() {
@@ -88,4 +87,4 @@
   venditabant.sales.invoices.views.Definition.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=HistoryList.js.map?dt=1706805923328
+//# sourceMappingURL=Definition.js.map?dt=1707927125570

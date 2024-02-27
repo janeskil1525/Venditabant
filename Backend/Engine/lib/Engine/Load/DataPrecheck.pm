@@ -96,14 +96,14 @@ sub _require($self, $required_classes, $class) {
 
 sub _init_precheck($self, $workflow) {
 
-    my $log = Log::Log4perl->get_logger();
+
     $self->log->debug(
         "Engine::Load::DataPrecheck _init_factory Starting to configure workflow factory"
     );
 
     my $types = "('precheck')";
 
-    my $config = await Engine::Config::Configuration->new(
+    my $config = Engine::Config::Configuration->new(
         pg => $self->pg
     )->load_config(
         $workflow, $types

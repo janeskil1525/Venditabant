@@ -12,11 +12,13 @@
     "location": {
       "start": {
         "line": 2,
-        "column": 0
+        "column": 0,
+        "index": 1
       },
       "end": {
         "line": 65,
-        "column": 7
+        "column": 7,
+        "index": 2351
       }
     }
   },
@@ -25,11 +27,13 @@
     "location": {
       "start": {
         "line": 6,
-        "column": 19
+        "column": 19,
+        "index": 190
       },
       "end": {
         "line": 7,
-        "column": 9
+        "column": 9,
+        "index": 213
       }
     },
     "jsdoc": {}
@@ -38,11 +42,13 @@
     "location": {
       "start": {
         "line": 8,
-        "column": 18
+        "column": 18,
+        "index": 233
       },
       "end": {
         "line": 9,
-        "column": 9
+        "column": 9,
+        "index": 256
       }
     },
     "jsdoc": {}
@@ -52,11 +58,13 @@
       "location": {
         "start": {
           "line": 11,
-          "column": 12
+          "column": 12,
+          "index": 293
         },
         "end": {
           "line": 11,
-          "column": 59
+          "column": 59,
+          "index": 340
         }
       },
       "name": "support",
@@ -103,11 +111,13 @@
       "location": {
         "start": {
           "line": 16,
-          "column": 12
+          "column": 12,
+          "index": 420
         },
         "end": {
           "line": 17,
-          "column": 13
+          "column": 13,
+          "index": 464
         }
       },
       "jsdoc": {},
@@ -118,11 +128,13 @@
       "location": {
         "start": {
           "line": 18,
-          "column": 12
+          "column": 12,
+          "index": 478
         },
         "end": {
           "line": 40,
-          "column": 13
+          "column": 13,
+          "index": 1408
         }
       },
       "type": "function",
@@ -132,11 +144,13 @@
       "location": {
         "start": {
           "line": 41,
-          "column": 12
+          "column": 12,
+          "index": 1422
         },
         "end": {
           "line": 56,
-          "column": 13
+          "column": 13,
+          "index": 2145
         }
       },
       "type": "function",
@@ -146,11 +160,13 @@
       "location": {
         "start": {
           "line": 57,
-          "column": 12
+          "column": 12,
+          "index": 2159
         },
         "end": {
           "line": 59,
-          "column": 13
+          "column": 13,
+          "index": 2235
         }
       },
       "type": "function",
@@ -160,11 +176,13 @@
       "location": {
         "start": {
           "line": 60,
-          "column": 12
+          "column": 12,
+          "index": 2249
         },
         "end": {
           "line": 62,
-          "column": 13
+          "column": 13,
+          "index": 2332
         }
       },
       "type": "function",
@@ -205,8 +223,8 @@
         "@return": [
           {
             "name": "@return",
-            "body": "{String | LocalizedString} The translated message or localized string",
-            "type": "String | LocalizedString",
+            "body": "{String|LocalizedString} The translated message or localized string",
+            "type": "String|LocalizedString",
             "description": " The translated message or localized string"
           }
         ]
@@ -261,8 +279,8 @@
         "@return": [
           {
             "name": "@return",
-            "body": "{String | LocalizedString} The translated message or localized string",
-            "type": "String | LocalizedString",
+            "body": "{String|LocalizedString} The translated message or localized string",
+            "type": "String|LocalizedString",
             "description": " The translated message or localized string"
           }
         ]
@@ -310,8 +328,8 @@
         "@return": [
           {
             "name": "@return",
-            "body": "{String | LocalizedString} The translated message or localized string",
-            "type": "String | LocalizedString",
+            "body": "{String|LocalizedString} The translated message or localized string",
+            "type": "String|LocalizedString",
             "description": " The translated message or localized string"
           }
         ]
@@ -373,8 +391,8 @@
         "@return": [
           {
             "name": "@return",
-            "body": "{String | LocalizedString} The translated message or localized string",
-            "type": "String | LocalizedString",
+            "body": "{String|LocalizedString} The translated message or localized string",
+            "type": "String|LocalizedString",
             "description": " The translated message or localized string"
           }
         ]
@@ -502,6 +520,7 @@
         "@return": [
           {
             "name": "@return",
+            "type": "[[ ObjectMethod Function ]]",
             "desc": "Returns the value for qxObjectId"
           }
         ]
@@ -526,6 +545,7 @@
         "@param": [
           {
             "name": "@param",
+            "type": "[[ ObjectMethod Function ]]",
             "paramName": "value",
             "desc": "Value for qxObjectId"
           }

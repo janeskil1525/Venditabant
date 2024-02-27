@@ -41,7 +41,7 @@ sub _init($self, $workflow) {
 
     my $types = "('action', 'condition', 'persister', 'validator', 'workflow')";
 
-    my $config = await Engine::Config::Configuration->new(
+    my $config = Engine::Config::Configuration->new(
         pg => $self->pg
     )->load_config(
         $workflow, $types

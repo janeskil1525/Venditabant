@@ -139,6 +139,7 @@ sub startup ($self) {
     # Configure the application
     $self->secrets($config->{secrets});
     $self->log->path($self->home() . $self->config('log'));
+    $self->log->level($self->config('loglevel'));
 
     $self->pg->migrations->name('venditabant')->from_file(
       $self->dist_dir->child('migrations/venditabant.sql')

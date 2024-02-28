@@ -20,7 +20,7 @@ sub execute ($self, $wf) {
     my $pg = $self->get_pg('UsersPersister');
     my $context = $wf->context;
 
-    my $data = $context->param('user');
+    my $data = $context->param('data');
     my $companies_pkey = $context->param('companies_fkey');
     my $saving_user_pkey = $context->param('users_pkey');
     $saving_user_pkey = 0 unless $saving_user_pkey;

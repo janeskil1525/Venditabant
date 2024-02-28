@@ -14,7 +14,7 @@ use Digest::SHA qw{sha512_base64};
 
 use Sentinel::Helpers::Sentinelsender;
 use Release::Helpers::Release;
-use Companies::Model::Workflow;
+use Engine::Model::Workflowrelation;
 
 sub execute ($self, $wf) {
 
@@ -23,31 +23,32 @@ sub execute ($self, $wf) {
 
     my $db = $pg->db;
     my $tx = $db->begin;
-    my $data = $context->param('company');
+    my $data = $context->param('data');
 
-    my $company = $context->param('company')->{company_name};
+    my $company = $data->{'data'}->{company_name};
+    my $err ='';
 
     $wf->add_history(
         Workflow::History->new({
             action      => "New company",
             description => "Company $company will be created",
-            user        => $data->{email},
+            user        => $data->{data}->{email},
         })
     );
 
+
     my $company_stmt = qq {
-        INSERT INTO companies (name, registrationnumber, languages_fkey)
+        INSERT INTO companies (name, address1, languages_fkey)
         VALUES (?, ?,(SELECT languages_pkey FROM languages WHERE lan = 'swe'))
         RETURNING companies_pkey;
     };
 
-    my $err = '';
     # company_address:company_address,
     eval {
 
         my $companies_pkey = $db->query(
             $company_stmt,
-            ($data->{company_name}, $data->{company_orgnr})
+            ($data->{data}->{company_name}, $data->{data}->{company_address})
         )->hash->{companies_pkey};
 
         Release::Helpers::Release->new(
@@ -56,11 +57,16 @@ sub execute ($self, $wf) {
             $companies_pkey
         );
 
-        Companies::Model::Workflow->new(
+        my $workflow = $context->param('workflow');
+        Engine::Model::Workflowrelation->new(
             db => $db
         )->insert(
-            $wf->id, $companies_pkey
+            $wf->id,
+            $companies_pkey,
+            0,
+            $workflow
         );
+
         $wf->context->param('companies_fkey' => $companies_pkey);
         $tx->commit;
     };
@@ -69,11 +75,13 @@ sub execute ($self, $wf) {
         $pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
     ) if $err;
 
+    workflow_error $err if $err;
+
     $wf->add_history(
         Workflow::History->new({
             action      => "New company created",
             description => "Company $company was created",
-            user        => $data->{email},
+            user        => $data->{data}->{email},
         })
     );
 
@@ -82,7 +90,6 @@ sub execute ($self, $wf) {
     } else {
         return 'success';
     }
-
 }
 
 

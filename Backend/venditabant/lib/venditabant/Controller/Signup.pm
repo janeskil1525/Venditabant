@@ -24,7 +24,9 @@ sub signup_company ($self) {
     $self->workflow->execute(
         $data->{workflow}->{workflow} , $data
     );
-    my $companies_fkey = $self->workflow->context('companies_fkey');
+    my $companies_fkey = $self->workflow->context->param('companies_fkey');
+
+    my $context = $self->workflow->context();
 
     my $users_fkey = 0;
     if ($companies_fkey > 0) {
@@ -36,7 +38,7 @@ sub signup_company ($self) {
         $data->{company}->{companies_fkey} = $companies_fkey;
         $data->{user} = $data->{company};
 
-        $#$data->{actions} = -1;
+        undef @{$data->{actions}};
         push @{$data->{actions}}, 'create_user';
         say Dumper($data);
         $self->workflow->execute(

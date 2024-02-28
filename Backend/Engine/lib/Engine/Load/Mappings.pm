@@ -1,5 +1,5 @@
 package Engine::Load::Mappings;
-use Mojo::Base -base, -signatures, -async_await;
+use Mojo::Base -base, -signatures;
 
 use Engine::Config::Configuration;
 
@@ -8,7 +8,7 @@ use Log::Log4perl qw(:easy);
 
 has 'pg';
 
-async sub mappings($self, $workflow, $action, $data) {
+sub mappings($self, $workflow, $action, $data) {
 
     my $types = "('mappings')";
 

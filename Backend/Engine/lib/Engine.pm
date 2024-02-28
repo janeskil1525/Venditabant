@@ -49,7 +49,7 @@ async sub execute  {
                         %{ $data }
                     ));
                 }
-                $data = await Engine::Load::Mappings->new(
+                $data = Engine::Load::Mappings->new(
                     pg => $self->pg
                 )->mappings(
                     $workflow, $action, $data

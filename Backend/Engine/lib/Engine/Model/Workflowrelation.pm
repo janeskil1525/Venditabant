@@ -13,48 +13,51 @@ sub load($self, $table, $key_name, $key_value) {
     return $hash;
 }
 
-sub insert($self, $companies_fkey, $users_fkey, $workflow, $workflow_id) {
+sub insert($self, $companies_fkey, $users_fkey, $workflow, $workflow_id, $key_value) {
 
     my $result = 0;
-    $result = $self->_insert( $companies_fkey, $users_fkey, $workflow, $workflow_id)
+    $result = $self->_insert( $companies_fkey, $users_fkey, $workflow, $workflow_id,$key_value)
         unless $workflow->{workflow_relation} eq 'workflow_company'
             or $workflow->{workflow_relation} eq 'workflow_users';
 
-    $self->_insert_company( $companies_fkey, $workflow, $workflow_id)
+    $self->_insert_company( $companies_fkey, $workflow, $workflow_id, $key_value)
         unless $workflow->{workflow_relation} eq 'workflow_users' or $result == 1;
 
-    $self->_insert_user( $companies_fkey, $users_fkey, $workflow, $workflow_id)
+    $self->_insert_user( $companies_fkey, $users_fkey, $workflow, $workflow_id,$key_value)
         unless $result == 1;
 }
 
-sub _insert_company($self, $companies_fkey, $users_fkey, $workflow, $workflow_id) {
+sub _insert_company($self, $companies_fkey, $workflow, $workflow_id, $key_value) {
     $self->insert($workflow->{workflow_relation},
         {
-            $key_name      => $key_value,
-            customers_fkey => $companies_fkey,
-            workflow_id    => $workflow_id,
-            users
+            companies_fkey     => $key_value,
+            workflow_id        => $workflow_id,
         }
     );
+
+    return 1;
 }
 
-sub _insert_user($self, $companies_fkey, $users_fkey, $workflow, $workflow_id) {
+sub _insert_user($self, $companies_fkey, $users_fkey, $workflow, $workflow_id, $key_value) {
     $self->insert($workflow->{workflow_relation},
         {
-            $key_name      => $key_value,
-            customers_fkey => $companies_fkey,
-            workflow_id    => $workflow_id,
+            users_fkey         => $key_value,
+            customers_fkey     => $companies_fkey,
+            workflow_id        => $workflow_id,
+            creating_user_fkey => $users_fkey,
         }
     );
+    return 1;
 }
-sub _insert($self, $companies_fkey, $users_fkey, $workflow, $workflow_id) {
+sub _insert($self, $companies_fkey, $users_fkey, $workflow, $workflow_id, $key_value) {
     $self->insert($workflow->{workflow_relation},
         {
-            $key_name      => $key_value,
-            customers_fkey => $companies_fkey,
-            users_fkey     => $users_fkey,
-            workflow_id    => $workflow_id,
+            $workflow->{workflow_relation_key} => $key_value,
+            customers_fkey                     => $companies_fkey,
+            users_fkey                         => $users_fkey,
+            workflow_id                        => $workflow_id,
         }
     );
+    return 1;
 }
 1;

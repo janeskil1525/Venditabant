@@ -61,13 +61,15 @@ sub execute ($self, $wf) {
         Engine::Model::Workflowrelation->new(
             db => $db
         )->insert(
-            $wf->id,
             $companies_pkey,
             0,
-            $workflow
+            $workflow,
+            $wf->id,
+            $companies_pkey
         );
 
         $wf->context->param('companies_fkey' => $companies_pkey);
+
         $tx->commit;
     };
     $err = $@ if $@;

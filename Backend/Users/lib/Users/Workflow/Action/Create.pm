@@ -8,39 +8,28 @@ use feature 'signatures';
 
 use Data::Dumper;
 use Workflow::History;
-use Workflow::Exception qw( workflow_error );
+
 
 use Sentinel::Helpers::Sentinelsender;
-use Users::Model::Workflow;
 use Users::Model::Users;
 use Sentinel::Helpers::Sentinelsender;
 
 sub execute ($self, $wf) {
 
-    my $pg = $self->get_pg('UsersPersister');
-    my $context = $wf->context;
+    $self->_init($wf,'UsersPersister');
 
-    my $data = $context->param('data');
-    my $companies_pkey = $context->param('companies_fkey');
-    my $saving_user_pkey = $context->param('users_pkey');
+    my $companies_pkey = $self->context->param('companies_fkey');
+    my $saving_user_pkey = $self->context->param('users_pkey');
     $saving_user_pkey = 0 unless $saving_user_pkey;
-
-    my $user = $data->{userid};
-    my $db = $pg->db;
-    my $tx = $db->begin();
+    my $user = $self->data->{userid};
     my $err;
 
     eval {
         my $users_pkey = 0;
-        my $user_obj = Users::Model::Users->new(db => $db);
+        my $user_obj = Users::Model::Users->new(db => $self->db);
         if ($saving_user_pkey > 0) {
-            $wf->add_history(
-                Workflow::History->new({
-                    action      => "New user",
-                    description => "User $user will be created",
-                    user        => $context->param('history')->{userid},
-                })
-            );
+            $self->add_history($wf,"New user","User $user will be created",$self->context->param('history')->{userid},);
+
             $users_pkey = $user_obj->insert(
                 $user, $saving_user_pkey
             );
@@ -49,51 +38,25 @@ sub execute ($self, $wf) {
             );
         } else {
             $users_pkey = $user_obj->signup($data);
-            $wf->add_history(
-                Workflow::History->new({
-                    action      => "New user",
-                    description => "User $user will be created",
-                    user        => 'Signup',
-                })
-            );
-            my $users_companies_pkey = $user_obj->upsert_user_companies(
+            $self->add_history($wf, "New user", "User $user will be created",'Signup');
+
+            $user_obj->upsert_user_companies(
                 $data->{companies_fkey}, $users_pkey
             );
         }
 
-        Users::Model::Workflow->new(
-            db => $db
-        )->insert(
-            $wf->id, $users_pkey
-        );
+        $self->set_workflow_relation($companies_fkey, $users_pkey, $workflow, $wf->id, $users_pkey);
 
-        $tx->commit();
+        $self->tx->commit();
         
         if ($saving_user_pkey > 0) {
-            $wf->add_history(
-                Workflow::History->new({
-                    action      => "New user created",
-                    description => "User $user was created",
-                    user        => $context->param('history')->{userid},
-                })
-            );
+            $self->add_history($wf, "New user created", "User $user was created",$self->context->param('history')->{userid});
         } else {
-            $wf->add_history(
-                Workflow::History->new({
-                    action      => "New user created",
-                    description => "User $user was created",
-                    user        => 'Signup',
-                })
-            );
+            $self->add_history($wf, "New user created", "User $user was created",$self->context->param('history')->{userid});
         }
-
     };
     $err = $@ if $@;
-    print  $err . "\n" if $err;
-    Sentinel::Helpers::Sentinelsender->new()->capture_message (
-        $pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
-    ) if $err;
-
+    $self->capture_message($@, (caller(0))[1], (caller(0))[0], (caller(0))[3]) if $@;;
 
     return $err ? $err : 'success';
 }

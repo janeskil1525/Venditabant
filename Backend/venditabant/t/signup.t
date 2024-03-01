@@ -27,7 +27,7 @@ $t->put_ok('/api/signup/' =>
                                              => json =>
     {
         'data'           => {
-            'email'           => 'kalle_pelle@olle.com',
+            'userid'           => 'kalle_pelle@olle.com',
             'name'            => 'kalle pelle',
             'password'        => 'password',
             'company_name'    => 'Knep',

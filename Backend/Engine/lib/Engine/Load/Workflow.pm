@@ -47,14 +47,19 @@ sub _init($self, $workflow) {
         $workflow, $types
     );
 
-    FACTORY->add_config (
-        %{$config}
-        #persister  => $self->config->{engine}->{workflows_path} . "persister.xml",
-        #workflow   => $self->config->{engine}->{workflows_path} . "workflow.xml",
-        #action     => $self->config->{engine}->{workflows_path} . "action.xml",
-        # condition  => $self->config->{engine}->{workflows_path} . "condition.xml",
-        # validator  => $self->config->{engine}->{workflows_path} . "validator.xml",
-    );
+    eval {
+        FACTORY->add_config (
+            %{$config}
+            #persister  => $self->config->{engine}->{workflows_path} . "persister.xml",
+            #workflow   => $self->config->{engine}->{workflows_path} . "workflow.xml",
+            #action     => $self->config->{engine}->{workflows_path} . "action.xml",
+            # condition  => $self->config->{engine}->{workflows_path} . "condition.xml",
+            # validator  => $self->config->{engine}->{workflows_path} . "validator.xml",
+        );
+    };
+    $self->log->debug(
+        $@
+    ) if $@;
 
     $self->log->debug(
         "Engine::Load::Workflow _init_factory Finished configuring workflow factory"

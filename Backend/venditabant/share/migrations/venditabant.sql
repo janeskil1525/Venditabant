@@ -2664,8 +2664,6 @@ ALTER TABLE workflows ADD CONSTRAINT idx_workflows_workflow_types_fkey FOREIGN K
 
 -- 51 down
 -- 52 up
-ALTER TABLE workflow_companies
-    ADD COLUMN users_fkey bigint NOT NULL DEFAULT 0;
 
 ALTER TABLE workflow_users
     ADD COLUMN companies_fkey bigint NOT NULL DEFAULT 0;

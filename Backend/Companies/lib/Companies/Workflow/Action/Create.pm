@@ -8,84 +8,44 @@ use feature 'signatures';
 
 use Data::Dumper;
 use Workflow::Factory qw( FACTORY );
-use Workflow::History;
+
 use Workflow::Exception qw( workflow_error );
 use Digest::SHA qw{sha512_base64};
 
 use Sentinel::Helpers::Sentinelsender;
 use Release::Helpers::Release;
-use Engine::Model::Workflowrelation;
 
 sub execute ($self, $wf) {
 
-    my $pg = $self->get_pg('CompaniesPersister');
-    my $context = $wf->context;
+    $self->_init($wf, 'CompaniesPersister');
 
-    my $db = $pg->db;
-    my $tx = $db->begin;
-    my $data = $context->param('data');
-
-    my $company = $data->{'data'}->{company_name};
+    my $company = $self->data->{'data'}->{company_name};
     my $err ='';
 
-    $wf->add_history(
-        Workflow::History->new({
-            action      => "New company",
-            description => "Company $company will be created",
-            user        => $data->{data}->{email},
-        })
-    );
-
-
-    my $company_stmt = qq {
-        INSERT INTO companies (name, address1, languages_fkey)
-        VALUES (?, ?,(SELECT languages_pkey FROM languages WHERE lan = 'swe'))
-        RETURNING companies_pkey;
-    };
-
-    # company_address:company_address,
     eval {
-
-        my $companies_pkey = $db->query(
+        $self->add_history($wf, "New company", "Company $company will be created", $self->data->{data}->{email});
+        my $company_stmt = $self->_companies_stmt();
+        my $companies_pkey = $self->db->query(
             $company_stmt,
-            ($data->{data}->{company_name}, $data->{data}->{company_address})
+            ($self->data->{data}->{company_name}, $self->data->{data}->{company_address})
         )->hash->{companies_pkey};
 
         Release::Helpers::Release->new(
-            db => $db
+            db => $self->db
         )->release_single_company(
             $companies_pkey
         );
 
-        my $workflow = $context->param('workflow');
-        Engine::Model::Workflowrelation->new(
-            db => $db
-        )->insert(
-            $companies_pkey,
-            0,
-            $workflow,
-            $wf->id,
-            $companies_pkey
-        );
+        $self->set_workflow_relation($companies_pkey, 0, $self->workflow, $wf->id, $companies_pkey);
 
         $wf->context->param('companies_fkey' => $companies_pkey);
 
-        $tx->commit;
+        $self->tx->commit;
     };
     $err = $@ if $@;
-    Sentinel::Helpers::Sentinelsender->new()->capture_message (
-        $pg, (caller(0))[1], (caller(0))[0], (caller(0))[3], $err
-    ) if $err;
+    $self->capture_message($@, (caller(0))[1], (caller(0))[0], (caller(0))[3]) if $@;;
 
-    workflow_error $err if $err;
-
-    $wf->add_history(
-        Workflow::History->new({
-            action      => "New company created",
-            description => "Company $company was created",
-            user        => $data->{data}->{email},
-        })
-    );
+    $self->add_history($wf, "New company created", "Company $company was created", $self->data->{data}->{email});
 
     if($err) {
         return $err;
@@ -94,5 +54,12 @@ sub execute ($self, $wf) {
     }
 }
 
+sub _companies_stmt($self) {
 
+    return qq {
+        INSERT INTO companies (name, address1, languages_fkey)
+        VALUES (?, ?,(SELECT languages_pkey FROM languages WHERE lan = 'swe'))
+        RETURNING companies_pkey;
+    };
+}
 1;

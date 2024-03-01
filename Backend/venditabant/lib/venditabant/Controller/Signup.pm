@@ -29,7 +29,6 @@ sub signup_company ($self) {
     my $users_fkey = 0;
     if ($companies_fkey > 0) {
         $data->{workflow}->{workflow} = 'Users';
-        $data->{workflow}->{wf_action} = 'create_user';
         $data->{workflow}->{workflow_relation} = 'workflow_users';
         $data->{workflow}->{workflow_relation_key} = 'users_fkey';
         $data->{workflow}->{workflow_origin_key} = 'users_pkey';

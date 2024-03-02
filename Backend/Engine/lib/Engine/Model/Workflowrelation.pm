@@ -48,7 +48,7 @@ sub _insert_user($self, $companies_fkey, $users_fkey, $workflow, $workflow_id, $
     $self->db->insert($workflow->{workflow_relation},
         {
             users_fkey         => $key_value,
-            customers_fkey     => $companies_fkey,
+            companies_fkey     => $companies_fkey,
             workflow_id        => $workflow_id,
             creating_user_fkey => $users_fkey,
         }

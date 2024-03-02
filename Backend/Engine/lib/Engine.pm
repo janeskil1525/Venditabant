@@ -40,15 +40,18 @@ async sub execute  {
             $workflow, $data
         );
 
+        $wf->context->param(log => $self->log);
+
         foreach my $action (@{$data->{actions}}) {
             my @avail = $wf->get_current_actions();
-            my $avail =  \@avail;
+            my $avail = \@avail;
             if ($action matches $avail) {
                 if((!$wf->context->param('context_set')) or ($wf->context->param('context_set') == 0)) {
                     $wf->context(Workflow::Context->new(
                         %{ $data }
                     ));
                 }
+
                 $data = Engine::Load::Mappings->new(
                     pg => $self->pg
                 )->mappings(

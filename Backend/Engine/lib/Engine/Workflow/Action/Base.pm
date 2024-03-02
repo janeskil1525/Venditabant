@@ -17,6 +17,7 @@ has 'db';
 has 'tx';
 has 'data';
 has 'workflow';
+has 'log';
 
 sub _init($self, $wf, $persister) {
     $self->pg($self->get_pg($persister));
@@ -25,6 +26,8 @@ sub _init($self, $wf, $persister) {
     $self->tx($self->db->begin);
     $self->data($self->context->param('data'));
     $self->workflow($self->context->param('workflow'));
+    $self->log($self->context->param('log'));
+    my $temp=1;
 }
 
 sub get_pg($self, $persister) {
@@ -42,21 +45,27 @@ sub add_history($self, $wf, $action, $description, $user) {
 }
 
 sub set_workflow_relation($self, $companies_fkey, $users_fkey, $workflow, $workflow_id, $key_value){
-    Engine::Model::Workflowrelation->new(
-        db => $self->db
-    )->insert(
-        $companies_fkey,
-        0,
-        $workflow,
-        $workflow_id,
-        $key_value
-    );
+    my $err;
+    eval {
+        Engine::Model::Workflowrelation->new(
+            db => $self->db
+        )->insert(
+            $companies_fkey,
+            $users_fkey,
+            $workflow,
+            $workflow_id,
+            $key_value
+        );
+    };
+    $err = $@ if $@;
+    $self->capture_message($@, (caller(0))[1], (caller(0))[0], (caller(0))[3]) if $err;;
 }
 
 sub capture_message($self, $err, $caller1, $caller2, $caller3) {
     Sentinel::Helpers::Sentinelsender->new()->capture_message (
         $self->pg, $caller1, $caller2, $caller3, $err
     );
+    $self->log->error($err);
     workflow_error $err;
 }
 1;

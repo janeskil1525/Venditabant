@@ -57,7 +57,7 @@ sub _init($self, $workflow) {
             # validator  => $self->config->{engine}->{workflows_path} . "validator.xml",
         );
     };
-    $self->log->debug(
+    $self->log->error(
         $@
     ) if $@;
 

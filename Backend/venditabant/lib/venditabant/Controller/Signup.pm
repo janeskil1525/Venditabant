@@ -40,7 +40,7 @@ sub signup_company ($self) {
         $self->workflow->execute(
             $data->{workflow}->{workflow} , $data
         );
-        $users_fkey = $self->workflow->context('users_fkey');
+        $users_fkey = $self->workflow->context->param('users_fkey');
     }
 
     unless ($companies_fkey > 0 and $users_fkey > 0) {

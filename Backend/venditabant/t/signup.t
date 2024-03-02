@@ -27,8 +27,8 @@ $t->put_ok('/api/signup/' =>
                                              => json =>
     {
         'data'           => {
-            'userid'           => 'kalle_pelle@olle.com',
-            'name'            => 'kalle pelle',
+            'userid'          => 'test12345e@olle.com',
+            'username'        => 'kalle pelle',
             'password'        => 'password',
             'company_name'    => 'Knep',
             'company_address' => 'Kallevägen',
@@ -36,7 +36,7 @@ $t->put_ok('/api/signup/' =>
         'companies_fkey' => 0,
         'users_fkey'     => 0,
     }
-)->status_is(200)->content_like(qr/Success/i);
+)->status_is(200)->content_like(qr/success/i);
 
 done_testing();
 

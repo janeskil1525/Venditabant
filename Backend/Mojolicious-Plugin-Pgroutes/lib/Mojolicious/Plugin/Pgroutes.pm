@@ -1,0 +1,66 @@
+package Mojolicious::Plugin::Pgroutes;
+use Mojo::Base 'Mojolicious::Plugin', -signatures;
+
+our $VERSION = '0.01';
+
+sub register ($self, $app, $config) {
+
+  my $database = Database->new(
+      pg     => $app->pg,
+      log    => => $app->log,
+  );
+
+  my $tables = $database->get_tables();
+
+  foreach my $table (@{$tables->{'tables'}}) {
+    foreach my $action (@{$table->{action}}) {
+      my $route = "/" . lc($table->{name}) . "/" . lc($action->{name}) . "/";
+      $config->{route}->post($route)->to(
+          controller            => 'database',
+          table                 => $table->{name},
+          action                => $action->{name},
+          schema                => $action->{schema},
+      );
+    }
+  }
+
+  $app->helper(database => sub {$database});
+
+}
+
+1;
+
+=encoding utf8
+
+=head1 NAME
+
+Mojolicious::Plugin::Pgroutes - Mojolicious Plugin
+
+=head1 SYNOPSIS
+
+  # Mojolicious
+  $self->plugin('Pgroutes');
+
+  # Mojolicious::Lite
+  plugin 'Pgroutes';
+
+=head1 DESCRIPTION
+
+L<Mojolicious::Plugin::Pgroutes> is a L<Mojolicious> plugin.
+
+=head1 METHODS
+
+L<Mojolicious::Plugin::Pgroutes> inherits all methods from
+L<Mojolicious::Plugin> and implements the following new ones.
+
+=head2 register
+
+  $plugin->register(Mojolicious->new);
+
+Register plugin in L<Mojolicious> application.
+
+=head1 SEE ALSO
+
+L<Mojolicious>, L<Mojolicious::Guides>, L<https://mojolicious.org>.
+
+=cut

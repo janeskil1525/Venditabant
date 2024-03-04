@@ -8,57 +8,107 @@ sub get_tables($self, $excluded, $schema) {
 
     my @methods = ();
     my @tables = $self->_get_tables($excluded, $schema);
-    for my $i (0 .. $tables[0]) {
-        my $table = $tables[0][$i];
-        my $column_names = $self->get_table_column_names($table->{table_name}, $schema);
-        my $methods = $self->build_methods($table, $column_names);
-        push (@methods, $methods);
+    @tables = @{ $tables[0] };
+    my $length = scalar @tables;
+    for (my $i = 0; $i < $length; $i++) {
+        my $table = $tables[$i];
+        my @column_names = $self->get_table_column_names($table->{table_name}, $schema);
+        @column_names = @{ $column_names[0] };
+        my $method = $self->build_methods($table, @column_names);
+        push (@methods, $method);
         my $temp = 1;
     }
 
     return @methods;
 }
 
-sub build_methods($self, $table, $column_names) {
+sub build_methods($self, $table, @column_names) {
 
-    my $methods->{table} = $table;
-    $methods->{table}->{create} = $self->build_create($column_names);
-    $methods->{table}->{update} = $self->build_update($column_names);
-    $methods->{table}->{list} = $self->build_list($column_names);
-    $methods->{table}->{delete} = $self->build_delete($column_names);
+    my $methods->{table_name} = $table->{table_name};
+    $methods->{keys} = $self->_get_keys(@column_names);
+    $methods->{table}->{create} = $self->build_create($methods->{keys}->{pk}, @column_names);
+    $methods->{table}->{update} = $self->build_update($methods->{keys}->{pk}, @column_names);
+    $methods->{table}->{list} = $self->build_list(@column_names);
+    $methods->{table}->{delete} = $self->build_delete(@column_names);
 
     return $methods;
 }
 
-sub build_create($self, $column_names) {
+sub build_create($self, $primary_key, @column_names) {
     my $method->{method} = 'post';
 
-}
-
-sub build_update($self, $column_names) {
-    my $method->{method} = 'post';
-}
-
-sub build_list($self, $column_names) {
-    my $method->{method} = 'get';
-
-    $method->{select_fields} = '';
-    for my $i (0 .. $column_names) {
-        if ($i == 0) {
-            $method->{select_fields} = "( " . $columnames[$i]->{column_name};
-        } else {
-            $method->{select_fields} = $method->{select_fields} . ", " . $columnames[$i]->{column_name};
-        }
-        if (index($columnames[$i]->{column_name}, "_fkey")) {
-
+    $method->{create_fields} = {};
+    my $nocreate = "editnum insby insdatetime modby moddatetime $primary_key" ;
+    my $length = scalar @column_names;
+    for (my $i = 0; $i < $length; $i++) {
+        if (length($column_names[$i]->{column_name})) {
+            if (index($nocreate, $column_names[$i]->{column_name}) == -1) {
+                $method->{create_fields}->{$column_names[$i]->{column_name}} = $column_names[$i]->{column_name};
+            }
         }
     }
-    $method->{select_fields} = $method->{select_fields} . " )";
-
+    return $method;
 }
 
-sub build_delete($self, $column_names) {
+sub build_update($self, $primary_key, @column_names) {
     my $method->{method} = 'put';
+
+    $method->{update_fields} = {};
+    my $nocreate = "insby insdatetime $primary_key" ;
+    my $length = scalar @column_names;
+    for (my $i = 0; $i < $length; $i++ ) {
+        if (length($column_names[$i]->{column_name})) {
+            if (index($nocreate, $column_names[$i]->{column_name}) == -1) {
+                $method->{update_fields}->{$column_names[$i]->{column_name}} = $column_names[$i]->{column_name};
+            }
+        }
+    }
+    return $method;
+}
+
+sub build_list($self, @column_names) {
+
+    my $method->{method} = 'get';
+    $method->{select_fields} = '';
+    my $length = scalar @column_names;
+    for (my $i = 0; $i < $length; $i++) {
+        if (length($column_names[$i]->{column_name}) > 0) {
+            if ($i == 0) {
+                $method->{select_fields} = $column_names[$i]->{column_name};
+            } else {
+                $method->{select_fields} = $method->{select_fields} . ", " . $column_names[$i]->{column_name};
+            }
+        }
+    }
+    return $method;
+}
+
+sub build_delete($self, @column_names) {
+    my $method->{method} = 'delete';
+
+    return $method;
+}
+
+sub _get_keys($self, @column_names) {
+
+    my $keys->{has_companies} = 0;
+    $keys->{has_users} = 0;
+    $keys->{fk} = ();
+    my $length = scalar @column_names;
+    for (my $i = 0; $i < $length; $i++ ) {
+        if (length($column_names[$i]->{column_name}) > 0) {
+            if (index($column_names[$i]->{column_name},'_pkey') > -1){
+                $keys->{pk} = $column_names[$i]->{column_name};
+            } elsif ($column_names[$i]->{column_name} eq 'companies_fkey') {
+                $keys->{has_companies} = 1;
+            } elsif ($column_names[$i]->{column_name} eq 'users_fkey') {
+                $keys->{has_users} = 1;
+            } elsif (index($column_names[$i]->{column_name},'_fkey') > -1) {
+                push @{$keys->{fk}}, $column_names[$i]->{column_name};
+            }
+        }
+    }
+    return $keys;
 }
 
 sub _get_tables($self, $excluded, $schema) {

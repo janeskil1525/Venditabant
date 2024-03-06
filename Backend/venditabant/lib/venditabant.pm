@@ -27,6 +27,7 @@ use venditabant::Helpers::Stockitems::Mobilelist;
 use venditabant::Helpers::Minion;
 use venditabant::Helpers::History::History;
 use Workflows;
+use Pgroutes;
 
 use Data::Dumper;
 use File::Share;
@@ -175,6 +176,8 @@ sub startup ($self) {
     });
 
     $self->plugin('Workflow', {route => $auth} );
+    $self->plugin('Pgroutes', {route => $auth} );
+    Pgroutes
 
     $r->get('/')->to('Example#welcome');
 

@@ -2,6 +2,7 @@ package Database::Postgres;
 use Mojo::Base -base, -signatures, -async_await;
 
 has 'pg';
+has 'log';
 
 sub get_tables($self, $excluded, $schema) {
     $schema = 'public' unless $schema;
@@ -37,6 +38,7 @@ sub build_methods($self, $table, @column_names) {
 sub build_create($self, $primary_key, @column_names) {
     my $method->{method} = 'post';
 
+    $method->{controller} = 'pgcreate';
     $method->{create_fields} = {};
     my $nocreate = "editnum insby insdatetime modby moddatetime $primary_key" ;
     my $length = scalar @column_names;
@@ -53,6 +55,7 @@ sub build_create($self, $primary_key, @column_names) {
 sub build_update($self, $primary_key, @column_names) {
     my $method->{method} = 'put';
 
+    $method->{controller} = 'pgupdate';
     $method->{update_fields} = {};
     my $nocreate = "insby insdatetime $primary_key" ;
     my $length = scalar @column_names;
@@ -69,6 +72,7 @@ sub build_update($self, $primary_key, @column_names) {
 sub build_list($self, @column_names) {
 
     my $method->{method} = 'get';
+    $method->{controller} = 'pglist';
     $method->{select_fields} = '';
     my $length = scalar @column_names;
     for (my $i = 0; $i < $length; $i++) {
@@ -85,6 +89,7 @@ sub build_list($self, @column_names) {
 
 sub build_delete($self, @column_names) {
     my $method->{method} = 'delete';
+    $method->{controller} = 'pgdelete';
 
     return $method;
 }

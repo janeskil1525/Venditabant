@@ -1,30 +1,39 @@
 package Mojolicious::Plugin::Pgroutes;
 use Mojo::Base 'Mojolicious::Plugin', -signatures;
 
+use Database;
+
 our $VERSION = '0.01';
 
 sub register ($self, $app, $config) {
 
-  my $database = Database->new(
-      pg     => $app->pg,
-      log    => => $app->log,
-  );
+  my $err;
+  eval {
+    my $database = Database->new(
+        pg       => $app->pg,
+        log      => $app->log,
+        dist_dir => $app->dist_dir,
+    );
 
-  my $tables = $database->get_tables();
+    my $tables = $database->get_tables();
 
-  foreach my $table (@{$tables->{'tables'}}) {
-    foreach my $action (@{$table->{action}}) {
-      my $route = "/" . lc($table->{name}) . "/" . lc($action->{name}) . "/";
-      $config->{route}->post($route)->to(
-          controller            => 'database',
-          table                 => $table->{name},
-          action                => $action->{name},
-          schema                => $action->{schema},
-      );
+    foreach my $table (@{$tables->{'tables'}}) {
+      foreach my $action (@{$table->{action}}) {
+        my $route = "/" . lc($table->{name}) . "/" . lc($action->{name}) . "/";
+        $config->{route}->post($route)->to(
+            controller            => 'database',
+            table                 => $table,
+            action                => $action->{name},
+            schema                => $action->{schema},
+        );
+      }
     }
-  }
+    push @{$app->routes->namespaces}, 'Database::Controller';
 
-  $app->helper(database => sub {$database});
+    $app->helper(database => sub {$database});
+  };
+  $err = $@ if $@;
+my $test = 1;
 
 }
 

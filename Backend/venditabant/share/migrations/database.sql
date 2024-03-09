@@ -31,7 +31,6 @@ INSERT INTO database_excludes (table_name) VALUES
         ('workflow_pricelist'),
         ('workflow_companies'),
         ('workflow_users'),
-        ('workflow_stockitem'),
         ('workflow_customer'),
         ('workflow_mail'),
         ('workflow_invoice');

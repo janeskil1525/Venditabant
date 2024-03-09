@@ -19,8 +19,9 @@ sub get_tables($self, $excluded, $schema) {
         push (@methods, $method);
         my $temp = 1;
     }
+    my $meth = \@methods;
 
-    return @methods;
+    return $meth;
 }
 
 sub build_methods($self, $table, @column_names) {
@@ -117,6 +118,8 @@ sub _get_keys($self, @column_names) {
 }
 
 sub _get_tables($self, $excluded, $schema) {
+
+    $excluded = 'mojo_migrations' unless $excluded;
     my $tables = qq {
         SELECT table_name FROM
             information_schema.columns WHERE
@@ -125,7 +128,13 @@ sub _get_tables($self, $excluded, $schema) {
 
     return $self->pg->db->query($tables,($schema, $excluded))->hashes->to_array;;
 }
+sub _build_excluded_tables($self, $excluded) {
+    my $result;
+    $result = 'mojo_migrations' unless $excluded;
 
+
+    return $result;
+}
 sub get_table_column_names($self, $table, $schema) {
 
     $schema = 'public' unless $schema;

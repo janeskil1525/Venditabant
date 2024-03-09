@@ -19,11 +19,16 @@ my $pg = Mojo::Pg->new->dsn(
 );
 
 helper log => sub ($c) {
-  return $log
+    return Mojo::Log->new(
+        path => '/home/jan/IdeaProjects/Venditabant/Backend/venditabant/Log/mojo.log',
+        level => 'debug'
+    );
 };
 
 helper pg => sub ($c) {
-  return $pg;
+    return Mojo::Pg->new->dsn(
+        "dbi:Pg:dbname=Venditabant;host=database;port=15432;user=postgres;password=PV58nova64"
+    );;
 };
 
 helper dist_dir => sub($c) {
@@ -37,7 +42,7 @@ $ENV{VENDITABANT_HOME} = '/home/jan/IdeaProjects/Venditabant/Backend/venditabant
 
 
 helper home => sub($c) {
-  Mojo::Home->new($ENV{VENDITABANT_HOME});
+  return Mojo::Home->new($ENV{VENDITABANT_HOME});
 };
 
 plugin 'Pgroutes';

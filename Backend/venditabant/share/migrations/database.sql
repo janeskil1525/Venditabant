@@ -36,3 +36,29 @@ INSERT INTO database_excludes (table_name) VALUES
         ('workflow_invoice');
 
 -- 1 down
+
+-- 2 up
+
+ALTER TABLE database_specials
+    ADD COLUMN select_fields VARCHAR NOT NULL DEFAULT '';
+
+ALTER TABLE database_specials
+    ADD COLUMN fkey VARCHAR NOT NULL DEFAULT '';
+
+ALTER TABLE database_specials
+    ADD COLUMN table_schema VARCHAR NOT NULL DEFAULT 'public';
+
+-- 2 down
+
+-- 3 up
+ALTER TABLE database_specials
+    ADD COLUMN method_pseudo_name VARCHAR NOT NULL DEFAULT 'public';
+
+INSERT INTO database_specials (table_name, method, select_fields, fkey, method_pseudo_name)
+    VALUES('customers', 'list', '', 'active', 'active');
+
+INSERT INTO database_specials (table_name, method, select_fields, fkey, method_pseudo_name)
+    VALUES('customers', 'list', '', 'blocked', 'blocked');
+
+
+-- 3 down

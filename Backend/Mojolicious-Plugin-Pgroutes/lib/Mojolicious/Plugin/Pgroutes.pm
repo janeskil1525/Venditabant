@@ -17,7 +17,7 @@ sub register ($self, $app, $config) {
 
     my $tables = $database->get_tables();
 
-    foreach my $table (@{$tables->{'tables'}}) {
+    foreach my $table (@{$tables}) {
       foreach my $action (@{$table->{action}}) {
         my $route = "/" . lc($table->{name}) . "/" . lc($action->{name}) . "/";
         $config->{route}->post($route)->to(

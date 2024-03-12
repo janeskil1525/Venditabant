@@ -30,10 +30,25 @@ sub build_methods($self, $table, $specials, $column_names) {
 
     my $methods->{table_name} = $table->{table_name};
     $methods->{keys} = $self->_get_keys($specials, $column_names);
-    $methods->{table}->{create} = $self->build_create($methods->{keys}->{pk}, $specials, $column_names);
-    $methods->{table}->{update} = $self->build_update($methods->{keys}->{pk}, $specials, $column_names);
-    $methods->{table}->{list} = $self->build_list($specials, $column_names);
-    $methods->{table}->{delete} = $self->build_delete($specials, $column_names);
+    my $method = $self->build_create($methods->{keys}->{pk}, $specials, $column_names);
+    push @{$methods->{methods}}, $method ;
+    $method = $self->build_update($methods->{keys}->{pk}, $specials, $column_names);
+    push @{$methods->{methods}}, $method ;
+    $method = $self->build_delete($specials, $column_names);
+    push @{$methods->{methods}}, $method ;
+
+    my $length = scalar @{$specials};
+    if ($length > 0) {
+        for (my $i = 0; $i < $length; $i++) {
+            $method = $self->build_list(@{$specials}[$i], $column_names);
+            push @{$methods->{methods}}, $method ;
+        }
+
+    } else {
+        $method = $self->build_list('', $column_names);
+        push @{$methods->{methods}}, $method ;
+    }
+
 
     return $methods;
 }
@@ -41,6 +56,7 @@ sub build_methods($self, $table, $specials, $column_names) {
 sub build_create($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'post';
 
+    $method->{action} = 'create';
     $method->{controller} = 'pgcreate';
     $method->{create_fields} = {};
     my $nocreate = "editnum insby insdatetime modby moddatetime $primary_key" ;
@@ -58,6 +74,7 @@ sub build_create($self, $primary_key, $specials, $column_names) {
 sub build_update($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'put';
 
+    $method->{action} = 'update';
     $method->{controller} = 'pgupdate';
     $method->{update_fields} = {};
     my $nocreate = "insby insdatetime $primary_key" ;
@@ -75,6 +92,8 @@ sub build_update($self, $primary_key, $specials, $column_names) {
 sub build_list($self, $specials, $column_names) {
 
     my $method->{method} = 'get';
+
+    $method->{action} = 'list';
     $method->{controller} = 'pglist';
     $method->{select_fields} = '';
     my $length = scalar @{$column_names};
@@ -92,6 +111,7 @@ sub build_list($self, $specials, $column_names) {
 
 sub build_delete($self, $specials, $column_names) {
     my $method->{method} = 'delete';
+    $method->{action} = 'delete';
     $method->{controller} = 'pgdelete';
 
     return $method;

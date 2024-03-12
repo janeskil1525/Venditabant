@@ -45,10 +45,12 @@ helper home => sub($c) {
   return Mojo::Home->new($ENV{VENDITABANT_HOME});
 };
 
-plugin 'Pgroutes';
 
 get '/' => sub {
   my $c = shift;
+
+    plugin 'Pgroutes' => { route =>  $c->routes};
+
   $c->render(text => 'Hello Mojo!');
 };
 

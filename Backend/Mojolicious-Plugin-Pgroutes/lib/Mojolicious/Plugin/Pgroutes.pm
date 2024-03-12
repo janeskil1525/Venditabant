@@ -18,13 +18,14 @@ sub register ($self, $app, $config) {
     my $tables = $database->get_tables();
 
     foreach my $table (@{$tables}) {
-      foreach my $action (@{$table->{action}}) {
-        my $route = "/" . lc($table->{name}) . "/" . lc($action->{name}) . "/";
-        $config->{route}->post($route)->to(
+      foreach my $method (@{$table->{methods}}) {
+        my $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
+        my $method_name = $method->{method};
+        $config->{routes}->$method_name($route)->to(
             controller            => 'database',
-            table                 => $table,
-            action                => $action->{name},
-            schema                => $action->{schema},
+            table_name            => $table->{table_name},
+            method                => $method,
+            keys                  => $table->{keys},
         );
       }
     }

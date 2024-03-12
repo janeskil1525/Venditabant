@@ -34,6 +34,7 @@
       <path value="file://$MODULE_DIR$/Backend/Landing/lib" type="perl-library" />
       <path value="file://$MODULE_DIR$/Backend/Mojolicious-Plugin-Pgroutes/lib" type="perl-library" />
       <path value="file://$MODULE_DIR$/Backend/Database/lib" type="perl-library" />
+      <path value="file://$MODULE_DIR$/Backend/Mojolicious-Plugin-Pgroutes/blib/lib" type="perl-library" />
     </perl5>
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />

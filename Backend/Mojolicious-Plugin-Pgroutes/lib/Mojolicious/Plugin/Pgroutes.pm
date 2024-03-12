@@ -21,7 +21,7 @@ sub register ($self, $app, $config) {
       foreach my $method (@{$table->{methods}}) {
         my $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
         my $method_name = $method->{method};
-        $config->{routes}->$method_name($route)->to(
+        $config->{route}->$method_name($route)->to(
             controller            => 'database',
             table_name            => $table->{table_name},
             method                => $method,

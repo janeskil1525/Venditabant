@@ -60,5 +60,11 @@ INSERT INTO database_specials (table_name, method, select_fields, fkey, method_p
 INSERT INTO database_specials (table_name, method, select_fields, fkey, method_pseudo_name)
     VALUES('customers', 'list', '', 'blocked', 'blocked');
 
-
 -- 3 down
+-- 4 up
+INSERT INTO database_excludes (table_name) VALUES
+    ('mojo_migrations'),
+    ('workflow'),
+    ('workflow_history');
+
+-- 4 down

@@ -19,7 +19,7 @@ sub register ($self, $app, $config) {
 
     foreach my $table (@{$tables}) {
       foreach my $method (@{$table->{methods}}) {
-        my $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
+        my $route = $self->build_route($table, $method);
         my $method_name = $method->{method};
         $config->{route}->$method_name($route)->to(
             controller            => 'database',
@@ -38,6 +38,16 @@ my $test = 1;
 
 }
 
+sub build_route($self, $table, $method) {
+
+  my $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
+  if ($method->{action} eq 'load') {
+    $route .= ":" . $method->{primary_key};
+  } elsif ($method->{action} eq 'delete') {
+    $route .= ":" . $method->{primary_key};
+  }
+  return $route;
+}
 1;
 
 =encoding utf8

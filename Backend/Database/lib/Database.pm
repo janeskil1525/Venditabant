@@ -15,7 +15,7 @@ sub get_tables($self) {
 
     $self->pg->migrations->name('database')->from_file(
         $self->dist_dir->child('migrations/database.sql')
-    )->migrate(3);
+    )->migrate(4);
 
     my $table->{table_name} = 'database_excludes';
     $table->{keys}->{fk} = ();

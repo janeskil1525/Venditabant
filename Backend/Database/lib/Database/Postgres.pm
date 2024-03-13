@@ -36,6 +36,8 @@ sub build_methods($self, $table, $specials, $column_names) {
     push @{$methods->{methods}}, $method ;
     $method = $self->build_delete($specials, $column_names);
     push @{$methods->{methods}}, $method ;
+    $method = $self->build_load($methods->{keys}->{pk}, $specials, $column_names);
+    push @{$methods->{methods}}, $method ;
 
     my $length = scalar @{$specials};
     if ($length > 0) {
@@ -53,9 +55,30 @@ sub build_methods($self, $table, $specials, $column_names) {
     return $methods;
 }
 
+sub build_load($self, $primary_key, $specials, $column_names) {
+    my $method->{method} = 'get';
+
+    $method->{primary_key} = $primary_key;
+    $method->{action} = 'load';
+    $method->{controller} = 'pgload';
+
+    my $length = scalar @{$column_names};
+    for (my $i = 0; $i < $length; $i++) {
+        if ($i ==0) {
+            $method->{load_fields} = @{$column_names}[$i]->{column_name};
+        } else {
+            $method->{load_fields} .= ", " . @{$column_names}[$i]->{column_name};
+        }
+    }
+    return $method;
+}
+
 sub build_create($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'post';
 
+    unless ($primary_key) {
+        my $test = 1;
+    }
     $method->{action} = 'create';
     $method->{controller} = 'pgcreate';
     $method->{create_fields} = {};

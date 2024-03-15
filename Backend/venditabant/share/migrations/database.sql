@@ -68,3 +68,20 @@ INSERT INTO database_excludes (table_name) VALUES
     ('workflow_history');
 
 -- 4 down
+
+-- 5 up
+ALTER TABLE database_specials
+    ADD COLUMN pkey VARCHAR NOT NULL DEFAULT '';
+
+INSERT INTO database_specials (table_name, method, select_fields, fkey, method_pseudo_name, pkey)
+VALUES('companies', 'load', '*', '', '', 'companies_pkey');
+
+INSERT INTO database_specials (table_name, method, select_fields, fkey, method_pseudo_name, pkey)
+VALUES('users', 'load', '*', '', '', 'users_pkey');
+
+INSERT INTO database_specials (table_name, method, select_fields, fkey, method_pseudo_name, pkey)
+VALUES('customers', 'load', '*', '', '', 'customers_pkey');
+
+INSERT INTO database_specials (table_name, method, select_fields, fkey, method_pseudo_name, pkey)
+VALUES('customers', 'list', '*', 'companies_fkey', '', 'customers_pkey');
+-- 5 down

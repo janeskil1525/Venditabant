@@ -3,6 +3,7 @@ use Mojo::Base -base, -signatures, -async_await;
 
 use Database::Helper::Instring;
 use Scalar::Util qw {reftype};
+use Syntax::Operator::Matches qw( matches mismatches );
 
 has 'pg';
 has 'log';
@@ -58,6 +59,11 @@ sub build_methods($self, $table, $specials, $column_names) {
 sub build_load($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'get';
 
+    my $special_method;
+    if (scalar @{$specials} > 0) {
+        $special_method = $self->_exists_in_specials($specials, 'load');
+    }
+
     $method->{primary_key} = $primary_key;
     $method->{action} = 'load';
     $method->{controller} = 'pgload';
@@ -76,8 +82,9 @@ sub build_load($self, $primary_key, $specials, $column_names) {
 sub build_create($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'post';
 
-    unless ($primary_key) {
-        my $test = 1;
+    my $special_method;
+    if (scalar @{$specials} > 0) {
+        $special_method = $self->_exists_in_specials($specials, 'create');
     }
     $method->{action} = 'create';
     $method->{controller} = 'pgcreate';
@@ -97,6 +104,10 @@ sub build_create($self, $primary_key, $specials, $column_names) {
 sub build_update($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'put';
 
+    my $special_method;
+    if (scalar @{$specials} > 0) {
+        $special_method = $self->_exists_in_specials($specials, 'update');
+    }
     $method->{action} = 'update';
     $method->{controller} = 'pgupdate';
     $method->{update_fields} = {};
@@ -116,24 +127,39 @@ sub build_list($self, $specials, $column_names) {
 
     my $method->{method} = 'get';
 
-    $method->{action} = 'list';
-    $method->{controller} = 'pglist';
+    my $special_method;
     $method->{select_fields} = '';
-    my $length = scalar @{$column_names};
-    for (my $i = 0; $i < $length; $i++) {
-        if (length(@{$column_names}[$i]->{column_name}) > 0) {
-            if ($i == 0) {
-                $method->{select_fields} = @{$column_names}[$i]->{column_name};
-            } else {
-                $method->{select_fields} = $method->{select_fields} . ", " . @{$column_names}[$i]->{column_name};
+        #$special_method = $self->_exists_in_specials($specials, 'list');
+    if ( reftype $specials eq reftype {}) {
+        $method->{action} = $specials->{method_pseudo_name} if $specials->{method_pseudo_name};
+        $method->{select_fields} = $specials->{select_fields} if $specials->{select_fields};
+    }
+    $method->{action} = $specials->{method} unless $method->{action};
+    $method->{controller} = 'pglist';
+
+    unless ($method->{select_fields}) {
+        my $length = scalar @{$column_names};
+        for (my $i = 0; $i < $length; $i++) {
+            if (length(@{$column_names}[$i]->{column_name}) > 0) {
+                if ($i == 0) {
+                    $method->{select_fields} = @{$column_names}[$i]->{column_name};
+                } else {
+                    $method->{select_fields} = $method->{select_fields} . ", " . @{$column_names}[$i]->{column_name};
+                }
             }
         }
     }
+
     return $method;
 }
 
 sub build_delete($self, $specials, $column_names) {
     my $method->{method} = 'delete';
+
+    my $special_method;
+    if (scalar @{$specials} > 0) {
+        $special_method = $self->_exists_in_specials($specials, 'delete');
+    }
     $method->{action} = 'delete';
     $method->{controller} = 'pgdelete';
 
@@ -209,4 +235,12 @@ sub get_table_column_names($self, $table, $schema) {
     return \@column_names;
 }
 
+sub _exists_in_specials($self, $specials, $method) {
+
+    my $special;
+    if ($method matches $specials) {
+        my $test = 1;
+    }
+    return $special;
+}
 1;

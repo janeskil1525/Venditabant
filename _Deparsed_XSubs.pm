@@ -100,8 +100,8 @@ sub main_root;
 sub main_start;
 sub opnumber;
 sub perlstring;
-sub pp_infix_matches_0x7fbc507c33c0;
-sub pp_infix_mismatches_0x7fbc507c3370;
+sub pp_infix_matches_0x7fbfec93b680;
+sub pp_infix_mismatches_0x7fbfec93b630;
 sub svref_2object;
 }
 package B::FM {
@@ -484,82 +484,6 @@ sub uncompressedBytes;
 package Config {
 sub AUTOLOAD;
 }
-package Cpanel::JSON::XS {
-sub DESTROY;
-sub _from_json($;$$) ;
-sub _to_json($;$) ;
-sub allow_barekey;
-sub allow_bignum;
-sub allow_blessed;
-sub allow_dupkeys;
-sub allow_nonref;
-sub allow_singlequote;
-sub allow_stringify;
-sub allow_tags;
-sub allow_unknown;
-sub ascii;
-sub binary;
-sub canonical;
-sub convert_blessed;
-sub decode;
-sub decode_json($;$$) ;
-sub decode_prefix;
-sub dupkeys_as_arrayref;
-sub encode;
-sub encode_json($;$) ;
-sub escape_slash;
-sub filter_json_object;
-sub filter_json_single_key_object;
-sub get_allow_barekey;
-sub get_allow_bignum;
-sub get_allow_blessed;
-sub get_allow_dupkeys;
-sub get_allow_nonref;
-sub get_allow_singlequote;
-sub get_allow_stringify;
-sub get_allow_tags;
-sub get_allow_unknown;
-sub get_ascii;
-sub get_binary;
-sub get_canonical;
-sub get_convert_blessed;
-sub get_dupkeys_as_arrayref;
-sub get_escape_slash;
-sub get_indent;
-sub get_indent_length;
-sub get_latin1;
-sub get_max_depth;
-sub get_max_size;
-sub get_relaxed;
-sub get_require_types;
-sub get_shrink;
-sub get_space_after;
-sub get_space_before;
-sub get_stringify_infnan;
-sub get_type_all_string;
-sub get_unblessed_bool;
-sub get_utf8;
-sub incr_parse;
-sub incr_reset;
-sub incr_skip;
-sub indent;
-sub indent_length;
-sub latin1;
-sub max_depth;
-sub max_size;
-sub new;
-sub pretty;
-sub relaxed;
-sub require_types;
-sub shrink;
-sub sort_by;
-sub space_after;
-sub space_before;
-sub stringify_infnan;
-sub type_all_string;
-sub unblessed_bool;
-sub utf8;
-}
 package Crypt::OpenSSL::Bignum {
 sub DESTROY;
 sub add;
@@ -641,7 +565,6 @@ sub use_sha224_hash;
 sub use_sha256_hash;
 sub use_sha384_hash;
 sub use_sha512_hash;
-sub use_sslv23_padding;
 sub verify;
 }
 package Crypt::OpenSSL::Random {
@@ -2731,6 +2654,9 @@ sub EVP_DigestUpdate($$) ;
 sub EVP_MD_CTX_create() ;
 sub EVP_MD_CTX_destroy($) ;
 sub EVP_MD_CTX_md($) ;
+sub EVP_MD_get0_description($) ;
+sub EVP_MD_get0_name($) ;
+sub EVP_MD_get_type($) ;
 sub EVP_MD_size($) ;
 sub EVP_MD_type($) ;
 sub EVP_PKEY_assign_EC_KEY($$) ;
@@ -2784,12 +2710,27 @@ sub OCSP_response_verify($$;$$) ;
 sub OPENSSL_INIT_free($) ;
 sub OPENSSL_INIT_new() ;
 sub OPENSSL_INIT_set_config_appname($$) ;
+sub OPENSSL_INIT_set_config_file_flags($$) ;
 sub OPENSSL_INIT_set_config_filename($$) ;
 sub OPENSSL_add_all_algorithms_conf() ;
 sub OPENSSL_add_all_algorithms_noconf() ;
 sub OPENSSL_cleanup() ;
+sub OPENSSL_info($) ;
 sub OPENSSL_init_crypto($;$) ;
 sub OPENSSL_init_ssl($;$) ;
+sub OPENSSL_version_build_metadata() ;
+sub OPENSSL_version_major() ;
+sub OPENSSL_version_minor() ;
+sub OPENSSL_version_patch() ;
+sub OPENSSL_version_pre_release() ;
+sub OSSL_LIB_CTX_get0_global_default() ;
+sub OSSL_PROVIDER_available($$) ;
+sub OSSL_PROVIDER_do_all($$;$) ;
+sub OSSL_PROVIDER_get0_name($) ;
+sub OSSL_PROVIDER_load($$) ;
+sub OSSL_PROVIDER_self_test($) ;
+sub OSSL_PROVIDER_try_load($$$) ;
+sub OSSL_PROVIDER_unload($) ;
 sub OpenSSL_add_all_algorithms() ;
 sub OpenSSL_add_all_digests() ;
 sub OpenSSL_add_ssl_algorithms() ;
@@ -4207,6 +4148,24 @@ sub unpack_sockaddr_in6;
 sub unpack_sockaddr_in;
 sub unpack_sockaddr_un;
 }
+package Term::ReadKey {
+sub GetControlChars;
+sub GetSpeed;
+sub GetTermSizeGSIZE;
+sub GetTermSizeGWINSZ;
+sub GetTermSizeVIO;
+sub GetTermSizeWin32;
+sub SetControlChars;
+sub SetReadMode;
+sub SetTerminalSize;
+sub Win32PeekChar;
+sub blockoptions;
+sub pollfile;
+sub selectfile;
+sub setnodelay;
+sub termoptions;
+sub termsizeoptions;
+}
 package Test2::API {
 sub blessed($) ;
 sub time() ;
@@ -4225,6 +4184,9 @@ sub reftype($) ;
 }
 package Test2::Event::V2 {
 sub reftype($) ;
+}
+package Test2::EventFacet::Trace {
+sub time() ;
 }
 package Test2::Hub {
 sub first(&@) ;
@@ -4258,6 +4220,9 @@ sub error_input;
 sub getline;
 sub getline_all;
 sub print;
+}
+package Text::Levenshtein::XS {
+sub xs_distance($$$) ;
 }
 package Text::Soundex {
 sub soundex;
@@ -4482,16 +4447,6 @@ sub UnsetAllHandlers;
 package XString {
 sub cstring;
 sub perlstring;
-}
-package YAML::Syck {
-sub DumpJSON;
-sub DumpJSONFile;
-sub DumpJSONInto;
-sub DumpYAML;
-sub DumpYAMLFile;
-sub DumpYAMLInto;
-sub LoadJSON;
-sub LoadYAML;
 }
 package YAML::XS::LibYAML {
 sub Dump;

@@ -10,11 +10,13 @@
     "location": {
       "start": {
         "line": 1,
-        "column": 0
+        "column": 0,
+        "index": 0
       },
       "end": {
         "line": 34,
-        "column": 7
+        "column": 7,
+        "index": 1527
       }
     }
   },
@@ -23,11 +25,13 @@
     "location": {
       "start": {
         "line": 4,
-        "column": 19
+        "column": 19,
+        "index": 118
       },
       "end": {
         "line": 6,
-        "column": 9
+        "column": 9,
+        "index": 142
       }
     },
     "jsdoc": {}
@@ -36,11 +40,13 @@
     "location": {
       "start": {
         "line": 7,
-        "column": 18
+        "column": 18,
+        "index": 162
       },
       "end": {
         "line": 8,
-        "column": 9
+        "column": 9,
+        "index": 185
       }
     },
     "jsdoc": {}
@@ -50,11 +56,13 @@
       "location": {
         "start": {
           "line": 10,
-          "column": 12
+          "column": 12,
+          "index": 218
         },
         "end": {
           "line": 13,
-          "column": 13
+          "column": 13,
+          "index": 419
         }
       },
       "type": "function",
@@ -64,11 +72,13 @@
       "location": {
         "start": {
           "line": 14,
-          "column": 12
+          "column": 12,
+          "index": 433
         },
         "end": {
           "line": 17,
-          "column": 13
+          "column": 13,
+          "index": 647
         }
       },
       "type": "function",
@@ -78,11 +88,13 @@
       "location": {
         "start": {
           "line": 18,
-          "column": 12
+          "column": 12,
+          "index": 661
         },
         "end": {
           "line": 23,
-          "column": 13
+          "column": 13,
+          "index": 951
         }
       },
       "type": "function",
@@ -92,11 +104,13 @@
       "location": {
         "start": {
           "line": 24,
-          "column": 12
+          "column": 12,
+          "index": 965
         },
         "end": {
           "line": 27,
-          "column": 13
+          "column": 13,
+          "index": 1201
         }
       },
       "type": "function",
@@ -106,11 +120,13 @@
       "location": {
         "start": {
           "line": 28,
-          "column": 12
+          "column": 12,
+          "index": 1215
         },
         "end": {
           "line": 32,
-          "column": 13
+          "column": 13,
+          "index": 1508
         }
       },
       "type": "function",
@@ -204,6 +220,7 @@
         "@return": [
           {
             "name": "@return",
+            "type": "[[ ObjectMethod Function ]]",
             "desc": "Returns the value for qxObjectId"
           }
         ]
@@ -228,6 +245,7 @@
         "@param": [
           {
             "name": "@param",
+            "type": "[[ ObjectMethod Function ]]",
             "paramName": "value",
             "desc": "Value for qxObjectId"
           }
@@ -278,10 +296,10 @@
     "venditabant.sales.customers.views.Invoice",
     "venditabant.sales.customers.views.Delivery",
     "venditabant.sales.customers.views.Discounts",
+    "venditabant.History.views.HistoryList",
     "venditabant.cockpit.views.AutoTodo",
     "venditabant.sales.customers.views.StockitemDiscounts",
     "venditabant.sales.customers.views.ProductGroupDiscounts",
-    "venditabant.sales.customers.views.GeneralDiscounts",
-    "venditabant.History.views.HistoryList"
+    "venditabant.sales.customers.views.GeneralDiscounts"
   ]
 }

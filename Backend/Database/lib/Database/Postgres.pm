@@ -59,21 +59,23 @@ sub build_methods($self, $table, $specials, $column_names) {
 sub build_load($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'get';
 
-    my $special_method;
+    my $special_method = -1;
     if (scalar @{$specials} > 0) {
         $special_method = $self->_exists_in_specials($specials, 'load');
     }
+    if ($special_method == -1) {
+        $method->{primary_key} = $primary_key;
+        $method->{action} = 'load';
+        $method->{controller} = 'pgload';
 
-    $method->{primary_key} = $primary_key;
-    $method->{action} = 'load';
-    $method->{controller} = 'pgload';
-
-    my $length = scalar @{$column_names};
-    for (my $i = 0; $i < $length; $i++) {
-        if ($i ==0) {
-            $method->{load_fields} = @{$column_names}[$i]->{column_name};
-        } else {
-            $method->{load_fields} .= ", " . @{$column_names}[$i]->{column_name};
+        my $length = scalar @{$column_names};
+        for (my $i = 0; $i < $length; $i++) {
+            if ($i == 0) {
+                $method->{load_fields} = @{$column_names}[$i]->{column_name};
+            }
+            else {
+                $method->{load_fields} .= ", " . @{$column_names}[$i]->{column_name};
+            }
         }
     }
     return $method;
@@ -82,19 +84,21 @@ sub build_load($self, $primary_key, $specials, $column_names) {
 sub build_create($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'post';
 
-    my $special_method;
+    my $special_method = -1;
     if (scalar @{$specials} > 0) {
         $special_method = $self->_exists_in_specials($specials, 'create');
     }
-    $method->{action} = 'create';
-    $method->{controller} = 'pgcreate';
-    $method->{create_fields} = {};
-    my $nocreate = "editnum insby insdatetime modby moddatetime $primary_key" ;
-    my $length = scalar @{$column_names};
-    for (my $i = 0; $i < $length; $i++) {
-        if (length(@{$column_names}[$i]->{column_name})) {
-            if (index($nocreate, @{$column_names}[$i]->{column_name}) == -1) {
-                $method->{create_fields}->{@{$column_names}[$i]->{column_name}} = @{$column_names}[$i]->{column_name};
+    if ($special_method == -1) {
+        $method->{action} = 'create';
+        $method->{controller} = 'pgcreate';
+        $method->{create_fields} = {};
+        my $nocreate = "editnum insby insdatetime modby moddatetime $primary_key";
+        my $length = scalar @{$column_names};
+        for (my $i = 0; $i < $length; $i++) {
+            if (length(@{$column_names}[$i]->{column_name})) {
+                if (index($nocreate, @{$column_names}[$i]->{column_name}) == -1) {
+                    $method->{create_fields}->{@{$column_names}[$i]->{column_name}} = @{$column_names}[$i]->{column_name};
+                }
             }
         }
     }
@@ -104,22 +108,25 @@ sub build_create($self, $primary_key, $specials, $column_names) {
 sub build_update($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'put';
 
-    my $special_method;
+    my $special_method = -1;
     if (scalar @{$specials} > 0) {
         $special_method = $self->_exists_in_specials($specials, 'update');
     }
-    $method->{action} = 'update';
-    $method->{controller} = 'pgupdate';
-    $method->{update_fields} = {};
-    my $nocreate = "insby insdatetime $primary_key" ;
-    my $length = scalar @{$column_names};
-    for (my $i = 0; $i < $length; $i++ ) {
-        if (length(@{$column_names}[$i]->{column_name})) {
-            if (index($nocreate, @{$column_names}[$i]->{column_name}) == -1) {
-                $method->{update_fields}->{@{$column_names}[$i]->{column_name}} = @{$column_names}[$i]->{column_name};
+    if ($special_method == -1) {
+        $method->{action} = 'update';
+        $method->{controller} = 'pgupdate';
+        $method->{update_fields} = {};
+        my $nocreate = "insby insdatetime $primary_key" ;
+        my $length = scalar @{$column_names};
+        for (my $i = 0; $i < $length; $i++ ) {
+            if (length(@{$column_names}[$i]->{column_name})) {
+                if (index($nocreate, @{$column_names}[$i]->{column_name}) == -1) {
+                    $method->{update_fields}->{@{$column_names}[$i]->{column_name}} = @{$column_names}[$i]->{column_name};
+                }
             }
         }
     }
+
     return $method;
 }
 
@@ -127,14 +134,13 @@ sub build_list($self, $specials, $column_names) {
 
     my $method->{method} = 'get';
 
-    my $special_method;
     $method->{select_fields} = '';
         #$special_method = $self->_exists_in_specials($specials, 'list');
     if ( reftype $specials eq reftype {}) {
         $method->{action} = $specials->{method_pseudo_name} if $specials->{method_pseudo_name};
         $method->{select_fields} = $specials->{select_fields} if $specials->{select_fields};
     }
-    $method->{action} = $specials->{method} unless $method->{action};
+    $method->{action} = 'list' unless $method->{action};
     $method->{controller} = 'pglist';
 
     unless ($method->{select_fields}) {
@@ -156,12 +162,14 @@ sub build_list($self, $specials, $column_names) {
 sub build_delete($self, $specials, $column_names) {
     my $method->{method} = 'delete';
 
-    my $special_method;
+    my $special_method = -1;
     if (scalar @{$specials} > 0) {
         $special_method = $self->_exists_in_specials($specials, 'delete');
     }
-    $method->{action} = 'delete';
-    $method->{controller} = 'pgdelete';
+    if ($special_method == -1) {
+        $method->{action} = 'delete';
+        $method->{controller} = 'pgdelete';
+    }
 
     return $method;
 }
@@ -237,10 +245,15 @@ sub get_table_column_names($self, $table, $schema) {
 
 sub _exists_in_specials($self, $specials, $method) {
 
-    my $special;
-    if ($method matches $specials) {
-        my $test = 1;
+    my $special = -1;
+    my $length = scalar @{$specials};
+
+    for (my $i = 0; $i < $length; $i++) {
+        if (@{$specials}[$i]->{method} eq $method) {
+            $special = $i;
+        }
     }
+
     return $special;
 }
 1;

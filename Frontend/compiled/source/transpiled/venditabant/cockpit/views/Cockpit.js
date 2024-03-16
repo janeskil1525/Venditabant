@@ -33,9 +33,9 @@
     members: {
       getView: function getView() {
         var view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
-        var tabView = new qx.ui.tabview.TabView(); // tabView.setWidth(800);
+        var tabView = new qx.ui.tabview.TabView();
+        // tabView.setWidth(800);
         // tabView.setHeight(300);
-
         view.add(tabView, {
           top: 0,
           left: 5,
@@ -55,4 +55,4 @@
   venditabant.cockpit.views.Cockpit.$$dbClassInfo = $$dbClassInfo;
 })();
 
-//# sourceMappingURL=Cockpit.js.map?dt=1706805924772
+//# sourceMappingURL=Cockpit.js.map?dt=1707927126977

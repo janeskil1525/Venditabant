@@ -52,7 +52,6 @@ sub build_methods($self, $table, $specials, $column_names) {
         push @{$methods->{methods}}, $method ;
     }
 
-
     return $methods;
 }
 
@@ -136,7 +135,7 @@ sub build_list($self, $specials, $column_names) {
 
     $method->{select_fields} = '';
         #$special_method = $self->_exists_in_specials($specials, 'list');
-    if ( reftype $specials eq reftype {}) {
+    if ( $specials and reftype $specials eq reftype {}) {
         $method->{action} = $specials->{method_pseudo_name} if $specials->{method_pseudo_name};
         $method->{select_fields} = $specials->{select_fields} if $specials->{select_fields};
     }

@@ -4,6 +4,7 @@
     <option name="perlInterpreter" value="Local, Perlbrew[perl-5.38.2]: Perl 5.38.2" />
   </component>
   <component name="Perl5XSubsState">
+    <option name="isActual" value="false" />
     <option name="myFilesMap">
       <map>
         <entry key="$USER_HOME$/perl5/perlbrew/perls/perl-5.38.2/lib/5.38.2/x86_64-linux/auto/B/B.so" value="1707760958399" />

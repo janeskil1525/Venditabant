@@ -249,8 +249,7 @@ CREATE TABLE if not exists  stockitems_stock
     stockitems_fkey bigint NOT NULL,
     quantity bigint NOT NULL DEFAULT 0,
     warehouses_fkey bigint NOT NULL DEFAULT 0,
-    CONSTRAINT stockitems_stock_pkey PRIMARY KEY (stockitems_stock_pkey)
-        USING INDEX TABLESPACE webshop,
+    CONSTRAINT stockitems_stock_pkey PRIMARY KEY (stockitems_stock_pkey),
     CONSTRAINT stockitems_stock_fkey_fkey FOREIGN KEY (stockitems_fkey)
         REFERENCES public.stockitems (stockitems_pkey) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -1445,13 +1444,11 @@ CREATE TABLE IF NOT EXISTS translations
 
 CREATE UNIQUE INDEX if not exists idx_translations_languages_fkey_module_tag_unique
     ON translations USING btree
-        (languages_fkey, module, tag)
-    TABLESPACE webshop;
+        (languages_fkey, module, tag);
 
 CREATE  INDEX if not exists idx_translations_languages_fkey
     ON translations USING btree
-        (languages_fkey)
-    TABLESPACE translations;
+        (languages_fkey);
 
 INSERT INTO checks (check_type, check_name, check_condition, check_action)
 VALUES  ('SQL_FALSE', 'COMPANY_CHECK_GIRO','SELECT LENGTH(TRIM(giro)) > 0 as result FROM companies WHERE companies_pkey = ?',''),

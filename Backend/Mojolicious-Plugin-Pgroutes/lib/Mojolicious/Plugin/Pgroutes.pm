@@ -42,9 +42,9 @@ sub build_route($self, $table, $method) {
 
   my $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
   if ($method->{action} eq 'load') {
-    $route .= ":" . $method->{primary_key};
+    $route .= ":" . $table->{keys}->{pk};
   } elsif ($method->{action} eq 'delete') {
-    $route .= ":" . $method->{primary_key};
+    $route .= ":" . $table->{keys}->{pk};
   }
   return $route;
 }

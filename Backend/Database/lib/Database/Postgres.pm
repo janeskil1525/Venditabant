@@ -19,6 +19,7 @@ sub get_tables($self, $excluded, $schema) {
         my $column_names = $self->get_table_column_names($table->{table_name}, $schema);
         my $specials = $self->get_specials_data($table->{table_name}, $schema);
         my $method = $self->build_methods($table, $specials, $column_names);
+        $method->{column_names} = $column_names;
         push (@methods, $method);
         my $temp = 1;
     }
@@ -35,7 +36,7 @@ sub build_methods($self, $table, $specials, $column_names) {
     push @{$methods->{methods}}, $method ;
     $method = $self->build_update($methods->{keys}->{pk}, $specials, $column_names);
     push @{$methods->{methods}}, $method ;
-    $method = $self->build_delete($specials, $column_names);
+    $method = $self->build_delete($methods->{keys}->{pk},$specials, $column_names);
     push @{$methods->{methods}}, $method ;
     $method = $self->build_load($methods->{keys}->{pk}, $specials, $column_names);
     push @{$methods->{methods}}, $method ;
@@ -70,34 +71,35 @@ sub build_load($self, $primary_key, $specials, $column_names) {
         my $length = scalar @{$column_names};
         for (my $i = 0; $i < $length; $i++) {
             if ($i == 0) {
-                $method->{load_fields} = @{$column_names}[$i]->{column_name};
+                $method->{select_fields} = @{$column_names}[$i]->{column_name};
             }
             else {
-                $method->{load_fields} .= ", " . @{$column_names}[$i]->{column_name};
+                $method->{select_fields} .= ", " . @{$column_names}[$i]->{column_name};
             }
         }
+    } else {
+        my $special = @{$specials}[$special_method];
+        $method->{select_fields} = $special->{select_fields};
+        $method->{primary_key} = $special->{pk} if $special->{pk};
+        $method->{primary_key} = $primary_key unless $method->{primary_key};
+        $method->{action} = $special->{'method_pseudo_name'} if $special->{'method_pseudo_name'};
+        $method->{action} = $special->{method} unless $method->{action};
+        $method->{controller} = 'pgload';
     }
     return $method;
 }
 
 sub build_create($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'post';
-
-    my $special_method = -1;
-    if (scalar @{$specials} > 0) {
-        $special_method = $self->_exists_in_specials($specials, 'create');
-    }
-    if ($special_method == -1) {
-        $method->{action} = 'create';
-        $method->{controller} = 'pgcreate';
-        $method->{create_fields} = {};
-        my $nocreate = "editnum insby insdatetime modby moddatetime $primary_key";
-        my $length = scalar @{$column_names};
-        for (my $i = 0; $i < $length; $i++) {
-            if (length(@{$column_names}[$i]->{column_name})) {
-                if (index($nocreate, @{$column_names}[$i]->{column_name}) == -1) {
-                    $method->{create_fields}->{@{$column_names}[$i]->{column_name}} = @{$column_names}[$i]->{column_name};
-                }
+    $method->{action} = 'create';
+    $method->{controller} = 'pgcreate';
+    $method->{create_fields} = {};
+    my $nocreate = "editnum insby insdatetime modby moddatetime $primary_key";
+    my $length = scalar @{$column_names};
+    for (my $i = 0; $i < $length; $i++) {
+        if (length(@{$column_names}[$i]->{column_name})) {
+            if (index($nocreate, @{$column_names}[$i]->{column_name}) == -1) {
+                $method->{create_fields}->{@{$column_names}[$i]->{column_name}} = @{$column_names}[$i]->{column_name};
             }
         }
     }
@@ -106,22 +108,15 @@ sub build_create($self, $primary_key, $specials, $column_names) {
 
 sub build_update($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'put';
-
-    my $special_method = -1;
-    if (scalar @{$specials} > 0) {
-        $special_method = $self->_exists_in_specials($specials, 'update');
-    }
-    if ($special_method == -1) {
-        $method->{action} = 'update';
-        $method->{controller} = 'pgupdate';
-        $method->{update_fields} = {};
-        my $nocreate = "insby insdatetime $primary_key" ;
-        my $length = scalar @{$column_names};
-        for (my $i = 0; $i < $length; $i++ ) {
-            if (length(@{$column_names}[$i]->{column_name})) {
-                if (index($nocreate, @{$column_names}[$i]->{column_name}) == -1) {
-                    $method->{update_fields}->{@{$column_names}[$i]->{column_name}} = @{$column_names}[$i]->{column_name};
-                }
+    $method->{action} = 'update';
+    $method->{controller} = 'pgupdate';
+    $method->{update_fields} = {};
+    my $nocreate = "insby insdatetime $primary_key" ;
+    my $length = scalar @{$column_names};
+    for (my $i = 0; $i < $length; $i++ ) {
+        if (length(@{$column_names}[$i]->{column_name})) {
+            if (index($nocreate, @{$column_names}[$i]->{column_name}) == -1) {
+                $method->{update_fields}->{@{$column_names}[$i]->{column_name}} = @{$column_names}[$i]->{column_name};
             }
         }
     }
@@ -134,10 +129,10 @@ sub build_list($self, $specials, $column_names) {
     my $method->{method} = 'get';
 
     $method->{select_fields} = '';
-        #$special_method = $self->_exists_in_specials($specials, 'list');
     if ( $specials and reftype $specials eq reftype {}) {
         $method->{action} = $specials->{method_pseudo_name} if $specials->{method_pseudo_name};
         $method->{select_fields} = $specials->{select_fields} if $specials->{select_fields};
+        $method->{foreign_key} = $specials->{fk} if $specials->{fk};
     }
     $method->{action} = 'list' unless $method->{action};
     $method->{controller} = 'pglist';
@@ -158,7 +153,7 @@ sub build_list($self, $specials, $column_names) {
     return $method;
 }
 
-sub build_delete($self, $specials, $column_names) {
+sub build_delete($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'delete';
 
     my $special_method = -1;
@@ -168,6 +163,10 @@ sub build_delete($self, $specials, $column_names) {
     if ($special_method == -1) {
         $method->{action} = 'delete';
         $method->{controller} = 'pgdelete';
+        $method->{primary_key} = $primary_key;
+    } else {
+        my $special = @{$specials}[$special_method];
+        my $test = 1;
     }
 
     return $method;
@@ -216,7 +215,7 @@ sub get_specials_data($self, $table, $schema) {
     $schema = 'public' unless $schema;
     my $specials = $self->pg->db->query(
         qq{
-            SELECT method, select_fields, fkey
+            SELECT method, select_fields, fkey, pkey, method_pseudo_name
                 FROM database_specials
             WHERE table_schema = ?
                 AND table_name = ?

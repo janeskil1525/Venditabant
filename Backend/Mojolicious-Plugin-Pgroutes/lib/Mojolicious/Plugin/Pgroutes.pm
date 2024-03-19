@@ -22,10 +22,8 @@ sub register ($self, $app, $config) {
         my $route = $self->build_route($table, $method);
         my $method_name = $method->{method};
         $config->{route}->$method_name($route)->to(
-            controller            => 'database',
-            table_name            => $table->{table_name},
-            method                => $method,
-            keys                  => $table->{keys},
+            controller            => $method->{controller},
+            table                 => $table,
         );
       }
     }
@@ -40,11 +38,25 @@ my $test = 1;
 
 sub build_route($self, $table, $method) {
 
-  my $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
-  if ($method->{action} eq 'load') {
-    $route .= ":" . $table->{keys}->{pk};
-  } elsif ($method->{action} eq 'delete') {
-    $route .= ":" . $table->{keys}->{pk};
+  my $route;
+  my $err;
+  if($table->{table_name} eq "companies") {
+    my $test = 1;
+  }
+
+  eval {
+    say "Table " . $table->{table_name};
+    say "Method " . $method->{action};
+    $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
+    if ($method->{action} eq 'load') {
+      $route .= ":" . $table->{keys}->{pk};
+    } elsif ($method->{action} eq 'delete') {
+      $route .= ":" . $table->{keys}->{pk};
+    }
+  };
+  $err = $@ if $@;
+  if ($err) {
+    my $test = 1;
   }
   return $route;
 }

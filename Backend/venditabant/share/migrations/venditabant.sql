@@ -2668,4 +2668,17 @@ ALTER TABLE workflow_users
 ALTER TABLE workflow_users
     ADD COLUMN creating_user_fkey bigint NOT NULL DEFAULT 0;
 -- 52 down
+-- 53 up
+CREATE VIEW v_users_companies_fkey AS
+SELECT users.*, companies_fkey FROM
+    users JOIN users_companies
+               ON users_pkey = users_fkey;
 
+CREATE VIEW v_users_history_users_fkey AS
+SELECT workflow_history.*, users_fkey,
+       users.editnum, users.insby, users.insdatetime,
+       users.modby, users.moddatetime FROM
+    workflow_users JOIN workflow_history
+                        ON workflow_users.workflow_id = workflow_history.workflow_id
+                   JOIN users ON users_fkey = users_pkey;
+-- 53 down

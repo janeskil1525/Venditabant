@@ -12,46 +12,71 @@ sub get_tables($self, $excluded, $schema) {
     $schema = 'public' unless $schema;
 
     my @methods = ();
-    my @tables = $self->_get_tables($excluded, $schema);
+    my @tables = $self->_get_tables($schema);
+    my $excluded_tables = $self->_get_excluded_tables();
     my $length = scalar @tables;
     for (my $i = 0; $i < $length; $i++) {
         my $table = $tables[$i];
         my $column_names = $self->get_table_column_names($table->{table_name}, $schema);
         my $specials = $self->get_specials_data($table->{table_name}, $schema);
-        my $method = $self->build_methods($table, $specials, $column_names);
+        my $method = $self->build_methods($table, $specials, $column_names, $excluded_tables);
         $method->{column_names} = $column_names;
         push (@methods, $method);
         my $temp = 1;
+    }
+
+    my @views = $self->_get_views($schema);
+    $length = scalar @views;
+    for (my $i = 0; $i < $length; $i++ ) {
+        my $view = $views[$i];
+        my $column_names = $self->get_table_column_names($view->{table_name}, $schema);
+        my $method = $self->build_view_methods($view, $column_names);
+        $method->{column_names} = $column_names;
+        push (@methods, $method);
     }
     my $meth = \@methods;
 
     return $meth;
 }
 
-sub build_methods($self, $table, $specials, $column_names) {
+sub build_view_methods($self, $view, $column_names) {
+
+    my $methods->{table_name} = $view->{table_name};
+    $methods->{keys} = $self->_get_keys($column_names);
+    $methods->{create_endpoint} = 1;
+    my $method = $self->get_view_list($view->{table_name},$column_names);
+    push @{$methods->{methods}}, $method ;
+
+    return $methods;
+}
+
+sub build_methods($self, $table, $specials, $column_names, $excluded_tables) {
 
     my $methods->{table_name} = $table->{table_name};
-    $methods->{keys} = $self->_get_keys($specials, $column_names);
-    my $method = $self->build_create($methods->{keys}->{pk}, $specials, $column_names);
-    push @{$methods->{methods}}, $method ;
-    $method = $self->build_update($methods->{keys}->{pk}, $specials, $column_names);
-    push @{$methods->{methods}}, $method ;
-    $method = $self->build_delete($methods->{keys}->{pk},$specials, $column_names);
-    push @{$methods->{methods}}, $method ;
-    $method = $self->build_load($methods->{keys}->{pk}, $specials, $column_names);
-    push @{$methods->{methods}}, $method ;
+    $methods->{keys} = $self->_get_keys($column_names);
+    $methods->{create_endpoint} = $self->_create_endpoint($table->{table_name}, $excluded_tables);
+    if ($methods->{create_endpoint} > 0) {
+        my $method = $self->build_create($methods->{keys}->{pk}, $specials, $column_names);
+        push @{$methods->{methods}}, $method ;
+        $method = $self->build_update($methods->{keys}->{pk}, $specials, $column_names);
+        push @{$methods->{methods}}, $method ;
+        $method = $self->build_delete($methods->{keys}->{pk},$specials, $column_names);
+        push @{$methods->{methods}}, $method ;
+        $method = $self->build_load($methods->{keys}->{pk}, $specials, $column_names);
+        push @{$methods->{methods}}, $method ;
 
-    my $length = scalar @{$specials};
-    if ($length > 0) {
-        for (my $i = 0; $i < $length; $i++) {
-            $method = $self->build_list(@{$specials}[$i], $column_names);
+        my $length = scalar @{$specials};
+        if ($length > 0) {
+            for (my $i = 0; $i < $length; $i++) {
+                $method = $self->build_list(@{$specials}[$i], $column_names);
+                push @{$methods->{methods}}, $method ;
+            }
+        } else {
+            $method = $self->build_list('', $column_names);
             push @{$methods->{methods}}, $method ;
         }
-
-    } else {
-        $method = $self->build_list('', $column_names);
-        push @{$methods->{methods}}, $method ;
     }
+
 
     return $methods;
 }
@@ -90,6 +115,10 @@ sub build_load($self, $primary_key, $specials, $column_names) {
 }
 
 sub build_create($self, $primary_key, $specials, $column_names) {
+
+    unless ($primary_key) {
+        my $temp = 1;
+    }
     my $method->{method} = 'post';
     $method->{action} = 'create';
     $method->{controller} = 'pgcreate';
@@ -124,8 +153,34 @@ sub build_update($self, $primary_key, $specials, $column_names) {
     return $method;
 }
 
-sub build_list($self, $specials, $column_names) {
+sub get_view_list($self, $view_name, $column_names) {
+    my $method->{method} = 'get';
 
+    $method->{select_fields} = '';
+    $method->{action} = $view_name;
+    $method->{controller} = 'pglist';
+
+    my $length = scalar @{$column_names};
+    for (my $i = 0; $i < $length; $i++) {
+        if (length(@{$column_names}[$i]->{column_name}) > 0) {
+            if ($i == 0) {
+                $method->{select_fields} = @{$column_names}[$i]->{column_name};
+            } else {
+                $method->{select_fields} = $method->{select_fields} . ", " . @{$column_names}[$i]->{column_name};
+            }
+        }
+    }
+
+    for (my $i = 0; $i < $length; $i++) {
+        if (index($view_name, @{$column_names}[$i]->{column_name}) > -1) {
+            $method->{foreign_key} = @{$column_names}[$i]->{column_name};
+        }
+    }
+
+    return $method;
+}
+
+sub build_list($self, $specials, $column_names) {
     my $method->{method} = 'get';
 
     $method->{select_fields} = '';
@@ -172,7 +227,18 @@ sub build_delete($self, $primary_key, $specials, $column_names) {
     return $method;
 }
 
-sub _get_keys($self, $specials, $column_names) {
+sub _create_endpoint($self, $table, $excluded_tables) {
+    my $result = 1;
+    my $length = scalar @{$excluded_tables};
+    for (my $i = 0; $i < $length; $i++) {
+        if ($table eq @{$excluded_tables}[$i]->{table_name}) {
+            $result = 0;
+        }
+    }
+    return $result;
+}
+
+sub _get_keys($self, $column_names) {
 
     my $keys->{has_companies} = 0;
     $keys->{has_users} = 0;
@@ -194,20 +260,49 @@ sub _get_keys($self, $specials, $column_names) {
     return $keys;
 }
 
-sub _get_tables($self, $excluded, $schema) {
+sub _get_tables($self, $schema) {
 
     my $tables_stmt = qq {
-        SELECT table_name FROM
-            information_schema.columns WHERE
-                table_schema = ? AND table_name
-        NOT IN (SELECT table_name FROM database_excludes) GROUP BY table_name
+        SELECT table_name
+          FROM information_schema.tables
+         WHERE table_schema = ?
+           AND table_type='BASE TABLE';
     };
 
     my @tables = $self->pg->db->query($tables_stmt,($schema))->hashes;
     @tables = @{ $tables[0] };
 
     return @tables;
+}
 
+sub _get_excluded_tables($self) {
+
+    my $tables_stmt = qq {
+        SELECT table_name FROM database_excludes
+    };
+
+    my @tables = $self->pg->db->query($tables_stmt)->hashes;
+    @tables = @{ $tables[0] };
+    my $tables = \@tables;
+    return $tables;
+}
+
+sub _get_views($self, $schema) {
+    my $views_stmt = qq {
+        SELECT table_name
+            FROM
+              information_schema.views
+            WHERE
+              table_schema NOT IN (
+                'information_schema', 'pg_catalog'
+              ) AND table_schema = ?
+            ORDER BY table_name;
+    };
+
+    my @views = $self->pg->db->query($views_stmt,($schema))->hashes;
+    @views =  @{$views[0]};
+
+    return @views;
 }
 
 sub get_specials_data($self, $table, $schema) {

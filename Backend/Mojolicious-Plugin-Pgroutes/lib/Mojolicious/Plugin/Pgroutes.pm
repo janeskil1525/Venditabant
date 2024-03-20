@@ -19,12 +19,14 @@ sub register ($self, $app, $config) {
 
     foreach my $table (@{$tables}) {
       foreach my $method (@{$table->{methods}}) {
-        my $route = $self->build_route($table, $method);
-        my $method_name = $method->{method};
-        $config->{route}->$method_name($route)->to(
-            controller            => $method->{controller},
-            table                 => $table,
-        );
+        if ( $table->{create_endpoint} == 1 ) {
+          my $route = $self->build_route($table, $method);
+          my $method_name = $method->{method};
+          $config->{route}->$method_name($route)->to(
+              controller            => $method->{controller},
+              table                 => $table,
+          );
+        }
       }
     }
     push @{$app->routes->namespaces}, 'Database::Controller';
@@ -38,26 +40,13 @@ my $test = 1;
 
 sub build_route($self, $table, $method) {
 
-  my $route;
-  my $err;
-  if($table->{table_name} eq "companies") {
-    my $test = 1;
+  my $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
+  if ($method->{action} eq 'load') {
+    $route .= ":" . $table->{keys}->{pk};
+  } elsif ($method->{action} eq 'delete') {
+    $route .= ":" . $table->{keys}->{pk};
   }
 
-  eval {
-    say "Table " . $table->{table_name};
-    say "Method " . $method->{action};
-    $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
-    if ($method->{action} eq 'load') {
-      $route .= ":" . $table->{keys}->{pk};
-    } elsif ($method->{action} eq 'delete') {
-      $route .= ":" . $table->{keys}->{pk};
-    }
-  };
-  $err = $@ if $@;
-  if ($err) {
-    my $test = 1;
-  }
   return $route;
 }
 1;

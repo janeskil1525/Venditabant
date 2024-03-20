@@ -60,18 +60,9 @@ sub startup ($self) {
         state $users = venditabant::Helpers::Users->new(pg => $self->pg);
     });
     $self->helper(login => sub {state $login = venditabant::Helpers::Login->new(pg => shift->pg)});
-    $self->helper(stockitems => sub {state $stockitems = Stockitems->new(pg => shift->pg)});
+
     $self->helper(jwt => sub {state $jwt = System::Helpers::Jwt->new()});
-    $self->helper(pricelists => sub {state $pricelists = Pricelists->new(pg => shift->pg)});
-    $self->helper(
-      salesorders => sub {
-        state $salesorders = venditabant::Helpers::Salesorder::Salesorders->new(pg => shift->pg)
-      }
-    );
-    $self->helper(
-      customers => sub {
-        state  $customers = Customers->new(pg => shift->pg)
-    });
+
     $self->helper(
       parameters => sub {
         state  $parameters = venditabant::Helpers::Parameter::Parameters->new(pg => shift->pg)

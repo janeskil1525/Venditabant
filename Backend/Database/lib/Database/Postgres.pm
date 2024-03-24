@@ -84,6 +84,7 @@ sub build_methods($self, $table, $specials, $column_names, $excluded_tables) {
 sub build_load($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'get';
 
+    $method->{type} = 'table';
     my $special_method = -1;
     if (scalar @{$specials} > 0) {
         $special_method = $self->_exists_in_specials($specials, 'load');
@@ -123,6 +124,7 @@ sub build_create($self, $primary_key, $specials, $column_names) {
     $method->{action} = 'create';
     $method->{controller} = 'pgcreate';
     $method->{create_fields} = {};
+    $method->{type} = 'table';
     my $nocreate = "editnum insby insdatetime modby moddatetime $primary_key";
     my $length = scalar @{$column_names};
     for (my $i = 0; $i < $length; $i++) {
@@ -140,6 +142,8 @@ sub build_update($self, $primary_key, $specials, $column_names) {
     $method->{action} = 'update';
     $method->{controller} = 'pgupdate';
     $method->{update_fields} = {};
+    $method->{type} = 'table';
+
     my $nocreate = "insby insdatetime $primary_key" ;
     my $length = scalar @{$column_names};
     for (my $i = 0; $i < $length; $i++ ) {
@@ -157,8 +161,9 @@ sub get_view_list($self, $view_name, $column_names) {
     my $method->{method} = 'get';
 
     $method->{select_fields} = '';
-    $method->{action} = $view_name;
+    $method->{action} = 'list';
     $method->{controller} = 'pglist';
+    $method->{type} = 'view';
 
     my $length = scalar @{$column_names};
     for (my $i = 0; $i < $length; $i++) {
@@ -183,6 +188,7 @@ sub get_view_list($self, $view_name, $column_names) {
 sub build_list($self, $specials, $column_names) {
     my $method->{method} = 'get';
 
+    $method->{type} = 'table';
     $method->{select_fields} = '';
     if ( $specials and reftype $specials eq reftype {}) {
         $method->{action} = $specials->{method_pseudo_name} if $specials->{method_pseudo_name};
@@ -210,6 +216,7 @@ sub build_list($self, $specials, $column_names) {
 
 sub build_delete($self, $primary_key, $specials, $column_names) {
     my $method->{method} = 'delete';
+    $method->{type} = 'table';
 
     my $special_method = -1;
     if (scalar @{$specials} > 0) {

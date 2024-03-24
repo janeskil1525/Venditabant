@@ -40,13 +40,29 @@ my $test = 1;
 
 sub build_route($self, $table, $method) {
 
-  my $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
-  if ($method->{action} eq 'load') {
-    $route .= ":" . $table->{keys}->{pk};
-  } elsif ($method->{action} eq 'delete') {
-    $route .= ":" . $table->{keys}->{pk};
+  my $route = "";
+  if (lc($table->{table_name}) eq 'v_users_companies_fkey') {
+    my $test = 1;
   }
+  if ($method->{type} eq 'table') {
+    $route = "/" . lc($table->{table_name}) . "/" . lc($method->{action}) . "/";
+    if ($method->{action} eq 'load') {
+      $route .= ":" . $table->{keys}->{pk};
+    }
+    elsif ($method->{action} eq 'delete') {
+      $route .= ":" . $table->{keys}->{pk};
+    }
+  } elsif ($method->{type} eq 'view') {
+    if ( $method->{foreign_key} ne 'companies_fkey' and $method->{foreign_key} ne 'users_fkey') {
+      $route = "/" . lc($table->{table_name}) . "/" .
+          lc($method->{action}) . "/:" . $method->{foreign_key};
+    } else {
+      $route = "/" . lc($table->{table_name}) . "/" .
+          lc($method->{action}) . "/";
+    }
 
+
+  }
   return $route;
 }
 1;

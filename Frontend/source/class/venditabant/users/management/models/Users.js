@@ -15,10 +15,10 @@ qx.Class.define("venditabant.users.management.models.Users",
             _address: new venditabant.application.Const().venditabant_endpoint(),
             loadList:function(cb, ctx) {
                 let get = new venditabant.communication.Get;
-                let endpoint = "/api/v1/users/load_list/";
-                if(this.isSupport() === true) {
+                let endpoint = "/api/v1/v_users_companies_fkey/list/";
+                /*if(this.isSupport() === true) {
                     endpoint = "/api/v1/users/load_list/support/";
-                }
+                }*/
                 get.load(this._address, endpoint, '',function(response){
                     cb.call ( ctx,(response));
                 },this);

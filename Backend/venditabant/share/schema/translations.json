@@ -1,0 +1,139 @@
+{
+  "languages": {
+    "title": "Språk",
+    "description": "De språk som stöds av LagaPro",
+    "x-id-field": "languages_pkey",
+    "x-list-columns": [
+      "lan",
+      "lan_name"
+    ],
+    "properties": {
+      "languages_pkey": {
+        "type": "integer",
+        "title": "Språk id",
+        "x-order": 1,
+        "readOnly":true
+      },
+      "lan": {
+        "type": "string",
+        "title": "Språk kort",
+        "x-order": 2
+      },
+      "lan_name": {
+        "type": "string",
+        "title": "Beskrivning",
+        "x-order": 1
+      }
+    }
+  },
+  "translations": {
+    "title": "Översättningar",
+    "description": "Texter på olika språk",
+    "x-id-field": "translations_pkey",
+    "x-list-columns": [
+      "module",
+      "tag"
+    ],
+    "properties": {
+      "translations_pkey": {
+        "type": "integer",
+        "title": "Text id",
+        "x-order": 1,
+        "readOnly":true
+      },
+      "languages_fkey": {
+        "type": "integer",
+        "title": "Språk",
+        "x-order": 2,
+        "readOnly":true,
+        "x-foreign-key": "languages"
+      },
+      "module": {
+        "type": "string",
+        "title": "Modul",
+        "x-order": 3
+      },
+      "tag": {
+        "type": "string",
+        "title": "Tag",
+        "x-order": 4
+      },
+      "translation": {
+        "type": "string",
+        "title": "Text",
+        "x-order": 5,
+        "format" : "textarea"
+      }
+    }
+  },
+  "mail_templates": {
+    "title": "Mail templates",
+    "description": "Mail templates",
+    "x-id-field": "mail_templates_pkey",
+    "x-list-columns": [
+      "mailtemplate"
+    ],
+    "properties": {
+      "mail_templates_pkey": {
+        "type": "integer",
+        "title": "Template no",
+        "x-order": 1,
+        "readOnly": true
+      },
+      "mailtemplate": {
+        "type": "string",
+        "title": "Template",
+        "x-order": 2
+      }
+    }
+  },
+  "default_mail_templates": {
+    "title": "Default templates",
+    "description": "Default templates på olika språk",
+    "x-id-field": "default_mail_templates_pkey",
+    "x-list-columns": [
+      "default_mail_templates_pkey",
+      "languages_fkey",
+      "mail_templates_fkey",
+      "body_value"
+    ],
+    "properties": {
+      "default_mail_templates_pkey": {
+        "type": "integer",
+        "title": "Template id",
+        "x-order": 1,
+        "readOnly":true
+      },
+      "mail_templates_fkey": {
+        "type": "integer",
+        "title": "Template",
+        "x-order": 2,
+        "x-foreign-key": "mail_templates"
+      },
+      "languages_fkey": {
+        "type": "integer",
+        "title": "Språk",
+        "x-order": 3,
+        "x-foreign-key": "languages"
+      },
+      "header_value": {
+        "type": "string",
+        "title": "Header",
+        "x-order": 4,
+        "format" : "textarea"
+      },
+      "body_value": {
+        "type": "string",
+        "title": "Body",
+        "x-order": 5,
+        "format" : "textarea"
+      },
+      "footer_value": {
+        "type": "string",
+        "title": "Footer",
+        "x-order": 6,
+        "format" : "textarea"
+      }
+    }
+  }
+}

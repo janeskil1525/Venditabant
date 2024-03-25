@@ -153,6 +153,8 @@ sub startup ($self) {
         );
     })->wait;
 
+
+
     # Normal route to controller
     my $r = $self->routes;
 
@@ -165,6 +167,23 @@ sub startup ($self) {
         $c->render(json => '{"error":"unknown error"}');
         return undef;
     });
+    my $schema = from_json(Mojo::File->new(
+        $self->dist_dir->child('schema/translations.json')
+    )->slurp) ;
+
+    $self->plugin(
+        'Yancy' => {
+            route       => $auth,
+            backend     => {Pg => $self->pg},
+            schema      => $schema,
+            read_schema => 0,
+            'editor.return_to'   => '/app/menu/show/',
+            'editor.require_user' => undef,
+            file => {
+
+            }
+        }
+    );
 
     $self->plugin('Workflow', {route => $auth} );
     $self->plugin('Pgroutes', {route => $auth} );

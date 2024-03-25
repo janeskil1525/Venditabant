@@ -17,13 +17,15 @@ sub get_tables($self) {
         $self->dist_dir->child('migrations/database.sql')
     )->migrate(5);
 
+    my $data->{companies_fkey} = 0;
+    $data->{users_fkey} = 0;
     my $table->{table_name} = 'database_excludes';
     $table->{keys}->{fk} = ();
     $table->{table}->{list}->{select_fields} = 'table_name';
 
     my $excluded = Database::Model::Postgres->new(
         pg => $self->pg, log => $self->log
-    )->load_list($table,0);
+    )->list($data, $table, 0);
 
     my $tables = Database::Postgres->new(
         pg => $self->pg, log => $self->log

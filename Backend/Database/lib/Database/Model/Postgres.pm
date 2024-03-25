@@ -3,10 +3,10 @@ use Mojo::Base -base, -signatures, -async_await;
 
 has 'pg';
 has 'log';
-has 'table';
 
 
-sub load_list($self, $table, $key_value) {
+
+async sub list($self, $data, $table, $key_value) {
 
     my $fields = $table->{table}->{list}->{select_fields};
     my $mey_exists = 0;

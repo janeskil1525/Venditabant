@@ -5,8 +5,7 @@ has 'pg';
 has 'log';
 
 
-
-async sub list($self, $data, $table, $key_value) {
+sub list($self, $data, $table, $key_value) {
 
     my $fields = $table->{table}->{list}->{select_fields};
     my $mey_exists = 0;
@@ -20,7 +19,7 @@ async sub list($self, $data, $table, $key_value) {
 
     my $result = $self->pg->db->select(
         $table->{table_name},
-            [$fields],
+        [$fields],
         $condition
     );
 
@@ -29,4 +28,5 @@ async sub list($self, $data, $table, $key_value) {
 
     return $hash
 }
+
 1;

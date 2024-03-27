@@ -14,7 +14,7 @@ sub list($self) {
     my $key_value = $self->param('table');
 
     my $data = $common->get_basedata();
-    $self->pgmodel->list($data, $table, $key_value)->then(sub($result){
+    $self->pgmodel->list_p($data, $table, $key_value)->then(sub($result){
         $self->render(json => {'result' => 'success', data => $result});
     })-catch(sub($err){
         $self->render(json => {'result' => 'failed', data => $err});

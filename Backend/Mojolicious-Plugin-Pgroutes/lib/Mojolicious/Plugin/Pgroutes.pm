@@ -2,7 +2,7 @@ package Mojolicious::Plugin::Pgroutes;
 use Mojo::Base 'Mojolicious::Plugin', -signatures;
 
 use Database;
-use Database::Model::Postgres;
+use Database::Model;
 
 our $VERSION = '0.01';
 
@@ -35,8 +35,8 @@ sub register ($self, $app, $config) {
 
     $app->helper(database => sub {$database});
     $app->helper(pgmodel => sub {
-      state $pgmodel = Database::Model::Postgres->new(
-          pg => shift->pg, log => shift->log
+      state $pgmodel = Database::Model->new(
+          pg => $app->pg, log => $app->log
       )});
   };
   $err = $@ if $@;

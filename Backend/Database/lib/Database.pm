@@ -25,7 +25,7 @@ sub get_tables($self) {
 
     my $excluded = Database::Model::Postgres->new(
         pg => $self->pg, log => $self->log
-    )->list($data, $table, 0);
+    )->list($data, $table);
 
     my $tables = Database::Postgres->new(
         pg => $self->pg, log => $self->log

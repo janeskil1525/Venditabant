@@ -1,3 +1,4 @@
+
 package venditabant::Model::Login;
 use Mojo::Base 'Sentinel::Helpers::Sentinelsender', -base, -signatures, -async_await;
 

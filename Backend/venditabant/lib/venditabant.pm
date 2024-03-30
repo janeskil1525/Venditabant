@@ -1,5 +1,5 @@
 package venditabant;
-use Mojo::Base 'Mojolicious', -signatures, -async_await;;
+use Mojo::Base 'Mojolicious', -signatures, -async_await;
 
 use Mojo::Pg;
 
@@ -171,19 +171,19 @@ sub startup ($self) {
         $self->dist_dir->child('schema/translations.json')
     )->slurp) ;
 
-    $self->plugin(
-        'Yancy' => {
-            route       => $auth,
-            backend     => {Pg => $self->pg},
-            schema      => $schema,
-            read_schema => 0,
-            'editor.return_to'   => '/app/menu/show/',
-            'editor.require_user' => undef,
-            file => {
-
-            }
-        }
-    );
+    # $self->plugin(
+    #     'Yancy' => {
+    #         route       => $auth,
+    #         backend     => {Pg => $self->pg},
+    #         schema      => $schema,
+    #         read_schema => 0,
+    #         'editor.return_to'   => '/app/menu/show/',
+    #         'editor.require_user' => undef,
+    #         file => {
+    #
+    #         }
+    #     }
+    # );
 
     $self->plugin('Workflow', {route => $auth} );
     $self->plugin('Pgroutes', {route => $auth} );

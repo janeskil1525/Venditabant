@@ -6,6 +6,7 @@ use Data::Dumper;
 
 sub login_user ($self) {
 
+	say "Login user";
 	$self->render_later;
 
 	my $data = from_json($self->req->body);

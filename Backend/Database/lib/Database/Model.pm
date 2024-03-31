@@ -14,7 +14,7 @@ async sub list_p($self, $data, $table) {
     my $index = first_index { 'list' eq $_->{action}} @{$method};
 
     my $list = Database::Model::Postgres->new(
-         pg => $self-pg, log => $self->log
+         pg => $self->pg, log => $self->log
     )->test_list($data, $table, @{$method}[$index]);
 
     return $list;

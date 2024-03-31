@@ -2682,3 +2682,19 @@ SELECT workflow_history.*, users_fkey,
                         ON workflow_users.workflow_id = workflow_history.workflow_id
                    JOIN users ON users_fkey = users_pkey;
 -- 53 down
+-- 54 up
+DROP VIEW v_users_companies_fkey;
+CREATE OR REPLACE VIEW v_users_companies_fkey AS
+SELECT users_pkey, userid, username, active,
+       (SELECT lan_name FROM languages WHERE languages_pkey = languages_fkey) as lan ,
+       companies_fkey FROM
+    users JOIN users_companies
+               ON users_pkey = users_fkey;
+
+CREATE OR REPLACE VIEW v_users_support AS
+SELECT users_pkey, userid, username, active,
+       (SELECT lan_name FROM languages WHERE languages_pkey = languages_fkey) as lan ,
+       (SELECT name FROM companies WHERE companies_pkey = companies_fkey) as company FROM
+    users JOIN users_companies
+               ON users_pkey = users_fkey;
+-- 54 down

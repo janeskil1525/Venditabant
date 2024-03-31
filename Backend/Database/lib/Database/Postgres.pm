@@ -160,19 +160,16 @@ sub build_update($self, $primary_key, $specials, $column_names) {
 sub get_view_list($self, $view_name, $column_names) {
     my $method->{method} = 'get';
 
-    $method->{select_fields} = '';
+    $method->{select_fields} = ();
     $method->{action} = 'list';
     $method->{controller} = 'pglist';
     $method->{type} = 'view';
 
     my $length = scalar @{$column_names};
+    #$method->{select_fields} = \@{$column_names};
     for (my $i = 0; $i < $length; $i++) {
         if (length(@{$column_names}[$i]->{column_name}) > 0) {
-            if ($i == 0) {
-                $method->{select_fields} = @{$column_names}[$i]->{column_name};
-            } else {
-                $method->{select_fields} = $method->{select_fields} . ", " . @{$column_names}[$i]->{column_name};
-            }
+            push(@{$method->{select_fields}}, @{$column_names}[$i]->{column_name});
         }
     }
 
@@ -189,7 +186,7 @@ sub build_list($self, $specials, $column_names) {
     my $method->{method} = 'get';
 
     $method->{type} = 'table';
-    $method->{select_fields} = '';
+    $method->{select_fields} = ();
     if ( $specials and reftype $specials eq reftype {}) {
         $method->{action} = $specials->{method_pseudo_name} if $specials->{method_pseudo_name};
         $method->{select_fields} = $specials->{select_fields} if $specials->{select_fields};
@@ -202,11 +199,7 @@ sub build_list($self, $specials, $column_names) {
         my $length = scalar @{$column_names};
         for (my $i = 0; $i < $length; $i++) {
             if (length(@{$column_names}[$i]->{column_name}) > 0) {
-                if ($i == 0) {
-                    $method->{select_fields} = @{$column_names}[$i]->{column_name};
-                } else {
-                    $method->{select_fields} = $method->{select_fields} . ", " . @{$column_names}[$i]->{column_name};
-                }
+                push(@{$method->{select_fields}}, @{$column_names}[$i]->{column_name});
             }
         }
     }

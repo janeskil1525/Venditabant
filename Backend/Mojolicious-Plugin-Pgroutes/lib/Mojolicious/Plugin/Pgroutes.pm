@@ -9,6 +9,7 @@ our $VERSION = '0.01';
 sub register ($self, $app, $config) {
 
   my $err;
+  my $pg = $app->pg;
   eval {
     my $database = Database->new(
         pg       => $app->pg,
@@ -36,7 +37,7 @@ sub register ($self, $app, $config) {
     $app->helper(database => sub {$database});
     $app->helper(pgmodel => sub {
       state $pgmodel = Database::Model->new(
-          pg => $app->pg, log => $app->log
+          pg => $pg, log => $app->log
       )});
   };
   $err = $@ if $@;

@@ -43,7 +43,7 @@ sub test_list($self, $data, $table, $method) {
     $condition = $self->build_condition($condition, $data, $table->{column_names});
     my $result = $self->pg->db->select(
         $table->{table_name},
-        [$method->{select_fields}],
+        [@{$method->{select_fields}}],
         $condition
     );
 

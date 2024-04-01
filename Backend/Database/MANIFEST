@@ -6,8 +6,10 @@ lib/Database/Controller/Pgload.pm
 lib/Database/Controller/Pgupdate.pm
 lib/Database/Helper/Common.pm
 lib/Database/Helper/Instring.pm
+lib/Database/Model.pm
 lib/Database/Model/Postgres.pm
 lib/Database/Postgres.pm
 Makefile.PL
 MANIFEST			This list of files
+t/pglist.t
 t/tables.t

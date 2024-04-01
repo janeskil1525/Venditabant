@@ -24,6 +24,7 @@ has 'log';
 async sub execute  {
     my ($self, $workflow, $data) = @_;
 
+    $self->log->debug("Engine::execute starts");
     $data = Engine::Load::DataPrecheck->new(
         pg => $self->pg,
         log => $self->log,
@@ -68,6 +69,7 @@ async sub execute  {
     } else {
         say Dumper($data->{error});
     }
+    $self->log->debug("Engine::execute ends");
 }
 
 async sub auto_transits ($self) {

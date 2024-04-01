@@ -12,7 +12,7 @@ qx.Class.define("venditabant.communication.Post",
                 let address = url + endpoint;
 
                 let rpc = new qx.io.request.Xhr ( address);
-                rpc.setMethod("POST");
+                rpc.setMethod("PUT");
 
                 let jwt = new venditabant.utils.UserJwt();
                 let user_jwt = jwt.getUserJwt();

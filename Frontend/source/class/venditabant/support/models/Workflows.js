@@ -32,7 +32,7 @@ qx.Class.define("venditabant.support.models.Workflows",
                 },this)
             },
             save:function(data, cb, ctx) {
-                let com = new venditabant.communication.Post();
+                let com = new venditabant.communication.Put();
                 com.send(this._address, "/api/v1/workflows/save/", data, function (success) {
                     cb.call ( ctx, (success));
                 }, this);

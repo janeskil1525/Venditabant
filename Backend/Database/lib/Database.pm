@@ -13,9 +13,13 @@ has 'tables';
 
 sub get_tables($self) {
 
-    $self->pg->migrations->name('database')->from_file(
-        $self->dist_dir->child('migrations/database.sql')
-    )->migrate(5);
+    $self->log->debug("Database::get_tables start");
+    eval {
+        $self->pg->migrations->name('database')->from_file(
+            $self->dist_dir->child('migrations/database.sql')
+        )->migrate(5);
+    };
+    $self->log->error($@) if $@;
 
     my $data->{companies_fkey} = 0;
     $data->{users_fkey} = 0;
@@ -23,15 +27,20 @@ sub get_tables($self) {
     $table->{keys}->{fk} = ();
     $table->{table}->{list}->{select_fields} = 'table_name';
 
-    my $excluded = Database::Model::Postgres->new(
-        pg => $self->pg, log => $self->log
-    )->list($data, $table);
+    eval {
+        my $excluded = Database::Model::Postgres->new(
+            pg => $self->pg, log => $self->log
+        )->list($data, $table);
 
-    my $tables = Database::Postgres->new(
-        pg => $self->pg, log => $self->log
-    )->get_tables($excluded,'public');
+        my $tables = Database::Postgres->new(
+            pg => $self->pg, log => $self->log
+        )->get_tables($excluded,'public');
 
-    $self->tables($tables);
+        $self->tables($tables);
+    };
+    $self->log->error($@) if $@;
+
+    $self->log->debug("Database::get_tables stop");
 
     return $tables;
 }

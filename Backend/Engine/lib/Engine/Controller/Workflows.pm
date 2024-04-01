@@ -1,4 +1,4 @@
-package venditabant::Controller::Workflows;
+package Engine::Controller::Workflows;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 use Data::Dumper;
@@ -93,6 +93,7 @@ sub execute($self) {
     $data->{workflow}->{workflow_relation_key} = $self->stash('workflow_relation_key');
     $data->{workflow}->{workflow_origin_key} = $self->stash('workflow_origin_key');
 
+    say Dumper ($data);
     $self->engine->execute(
         $data->{workflow}->{workflow}, $data
     )->then(sub ($result) {

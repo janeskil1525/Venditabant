@@ -20,6 +20,8 @@ sub execute ($self, $wf) {
 
     my $pg = $self->get_pg('CompaniesPersister');
     my $context = $wf->context;
+    my $log = $context->param('log');
+    $log->debug("Users::Workflow::Action::Update::execute starts");
 
     my $data = $context->param('user');
 
@@ -39,6 +41,7 @@ sub execute ($self, $wf) {
             user        => $context->param('history')->{userid},
         })
     );
+    $log->debug("Users::Workflow::Action::Update::execute ends");
 
     return $result;
 }

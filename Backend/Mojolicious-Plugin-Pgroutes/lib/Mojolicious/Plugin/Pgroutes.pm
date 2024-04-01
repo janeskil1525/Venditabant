@@ -3,13 +3,14 @@ use Mojo::Base 'Mojolicious::Plugin', -signatures;
 
 use Database;
 use Database::Model;
+has 'log';
 
-our $VERSION = '0.01';
+our $VERSION = '0.10';
 
 sub register ($self, $app, $config) {
 
-  my $err;
-  my $pg = $app->pg;
+  $self->log($app->log);
+  $app->log->debug("Mojolicious::Plugin::Pgroutes::register start");
   eval {
     my $database = Database->new(
         pg       => $app->pg,
@@ -37,16 +38,17 @@ sub register ($self, $app, $config) {
     $app->helper(database => sub {$database});
     $app->helper(pgmodel => sub {
       state $pgmodel = Database::Model->new(
-          pg => $pg, log => $app->log
+          pg => $app->pg, log => $app->log
       )});
   };
-  $err = $@ if $@;
-my $test = 1;
+  $app->log->error($@) if $@;
 
+  $app->log->debug("Mojolicious::Plugin::Pgroutes::register ends");
 }
 
 sub build_route($self, $table, $method) {
 
+  $self->log->debug("Mojolicious::Plugin::Pgroutes::build_route start");
   my $route = "";
   if (lc($table->{table_name}) eq 'v_users_companies_fkey') {
     my $test = 1;
@@ -60,16 +62,17 @@ sub build_route($self, $table, $method) {
       $route .= ":" . $table->{keys}->{pk};
     }
   } elsif ($method->{type} eq 'view') {
-    if ( $method->{foreign_key} ne 'companies_fkey' and $method->{foreign_key} ne 'users_fkey') {
+    if ( exists $method->{foreign_key} and $method->{foreign_key}
+        and $method->{foreign_key} ne 'companies_fkey'
+        and $method->{foreign_key} ne 'users_fkey') {
       $route = "/" . lc($table->{table_name}) . "/" .
           lc($method->{action}) . "/:" . $method->{foreign_key};
     } else {
       $route = "/" . lc($table->{table_name}) . "/" .
           lc($method->{action}) . "/";
     }
-
-
   }
+  $self->log->debug("Mojolicious::Plugin::Pgroutes::build_route $route ends");
   return $route;
 }
 1;

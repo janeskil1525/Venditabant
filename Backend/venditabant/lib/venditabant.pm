@@ -287,12 +287,7 @@ sub startup ($self) {
     # $auth->put('/discounts/general/save/')->to('discounts#save_general_discount');
     # $auth->get('/discounts/general/delete/:customer_discount_pkey/:customers_fkey')->to('discounts#delete_general_discount');
 
-    $auth->get('/workflows/export/')->to('workflows#export');
-    $auth->get('/workflows/load_list/')->to('workflows#load_list');
-    $auth->put('/workflows/save/')->to('workflows#save_workflow');
-    $auth->get('/workflows/load/:workflows_fkey/:workflow_type')->to('workflows#load_workflow');
 
-    $auth->get('/workflows/history/load_list/:hist_type/:hist_key')->to('history#load_list');
 }
 
 1;

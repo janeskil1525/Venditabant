@@ -12,6 +12,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
         },
         members: {
             getView: function() {
+                this._newItem = 1;
                 let view = new qx.ui.container.Composite(new qx.ui.layout.Canvas());
                 view.setBackgroundColor("white");
                 // Add a TabView
@@ -56,6 +57,7 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
 
                 lbl = this._createLbl(this.tr( "Password" ),70);
                 page1.add ( lbl, { top: 50, left: 10 } );
+                this._passwordLbl = lbl;
 
                 var password1 = new qx.ui.form.PasswordField ( );
                 password1.setPlaceholder ( this.tr ( "Password 1" ) );
@@ -93,18 +95,23 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
 
                 let btnSave = this._createBtn ( this.tr ( "Save" ), "rgba(239,170,255,0.44)", 135, function ( ) {
                     if(this._validator.validate()) {
-                        if ( this._password2.getValue() !== this._password1.getValue() )  {
+                        if ( this._newItem === 1 && this._password2.getValue() !== this._password1.getValue() )  {
                             alert ( this.tr ( "Passwords do not match." ) );
                         } else {
                             this.saveUser ( );
                             this.loadUsers();
                         }
                     }
+                    that._newItem = 1;
                 }, this, this.tr("Save user") );
                 page1.add ( btnSave, { bottom: 10, left: 10 } );
 
                 let btnNew = this._createBtn ( this.tr ( "New" ), "#FFAAAA70", 135, function ( ) {
                     this.clearFields ( );
+                    this._password1.setVisibility('visible');
+                    this._password2.setVisibility('visible');
+                    this._passwordLbl.setVisibility('visible');
+                    this._newItem = 1;
                 }, this, this.tr("New user") );
                 page1.add ( btnNew, { bottom: 10, right: 10 } );
 
@@ -138,39 +145,55 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                 let password1  = this._password1.getValue();
                 let password2  = this._password2.getValue();
                 let languages_fkey = this._languages.getKey();
-                if ( password1 === null )  {
-                    alert ( this.tr ( "Password can't be empty" ) );
-                    return;
-                }
 
-                if ( password1 !== password2 )  {
-                    alert ( this.tr ( "Passwords do not match." ) );
-                    return;
-                }
-
-                if ( password1.length < 5 )  {
-                    alert ( this.tr ( "Password is to short" ) );
-                    return;
-                }
 
                 let data = {
                     users_pkey: users_pkey,
                     userid: userid,
                     username: username,
                     active:active,
-                    password:password1,
+
                     languages_fkey:languages_fkey,
                 }
-                
-                let model = new venditabant.users.management.models.Users();
-                model.saveUser(data,function ( success ) {
-                    if (success) {
-                        that.loadUsers();
-                        that.clearFields();
-                    } else {
-                        alert(this.tr('Something went wrong saving the user'));
+                if (this._newItem === 1) {
+                    if ( password1 === null )  {
+                        alert ( this.tr ( "Password can't be empty" ) );
+                        return;
                     }
-                },this);
+
+                    if ( password1 !== password2 )  {
+                        alert ( this.tr ( "Passwords do not match." ) );
+                        return;
+                    }
+
+                    if ( password1.length < 5 )  {
+                        alert ( this.tr ( "Password is to short" ) );
+                        return;
+                    }
+                    data.password = password1;
+                }
+
+                let model = new venditabant.users.management.models.Users();
+                if(users_pkey > 0) {
+                    model.saveUser(data,function ( success ) {
+                        if (success) {
+                            that.loadUsers();
+                            that.clearFields();
+                        } else {
+                            alert(this.tr('Something went wrong saving the user'));
+                        }
+                    },this);
+                } else {
+                    model.createUser(data,function ( success ) {
+                        if (success) {
+                            that.loadUsers();
+                            that.clearFields();
+                        } else {
+                            alert(this.tr('Something went wrong saving the user'));
+                        }
+                    },this);
+                }
+
 
             },
             _createTable : function() {
@@ -204,10 +227,14 @@ qx.Class.define ( "venditabant.users.management.views.Definition",
                     that._users_pkey = selectedRows[0][0];
                     that._userid.setValue(selectedRows[0][1]);
                     that._username.setValue(selectedRows[0][2]);
-                    let active = selectedRows[0][4] ? true : false;
+                    let active = selectedRows[0][3] ? true : false;
                     that._active.setValue(active);
-                    that._password1.setValue('');
-                    that._password2.setValue('');
+                    // that._password1.setValue('');
+                    // that._password2.setValue('');
+                    that._password1.setVisibility('hidden');
+                    that._password2.setVisibility('hidden');
+                    that._passwordLbl.setVisibility('hidden');
+                    that._newItem = 0;
                     that._languages.setKey(selectedRows[0][4]);
                     that.history.loadHistory('users',that._users_pkey);
                 });
